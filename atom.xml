@@ -489,9 +489,9 @@
     <category term="RAG系统" scheme="https://www.coomatrix.com/categories/RAG%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="RAG" scheme="https://www.coomatrix.com/tags/RAG/"/>
-    
     <category term="向量数据库" scheme="https://www.coomatrix.com/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    <category term="RAG" scheme="https://www.coomatrix.com/tags/RAG/"/>
     
     <category term="检索增强" scheme="https://www.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/"/>
     
