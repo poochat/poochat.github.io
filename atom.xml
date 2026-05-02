@@ -624,9 +624,9 @@
     
     <category term="推理优化" scheme="https://www.coomatrix.com/tags/%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/"/>
     
-    <category term="TensorRT-LLM" scheme="https://www.coomatrix.com/tags/TensorRT-LLM/"/>
-    
     <category term="vLLM" scheme="https://www.coomatrix.com/tags/vLLM/"/>
+    
+    <category term="TensorRT-LLM" scheme="https://www.coomatrix.com/tags/TensorRT-LLM/"/>
     
     <category term="KV Cache" scheme="https://www.coomatrix.com/tags/KV-Cache/"/>
     
