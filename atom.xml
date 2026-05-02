@@ -193,11 +193,11 @@
     
     <category term="LLaMA" scheme="https://www.coomatrix.com/tags/LLaMA/"/>
     
+    <category term="Qwen" scheme="https://www.coomatrix.com/tags/Qwen/"/>
+    
     <category term="开源大模型" scheme="https://www.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     <category term="Mistral" scheme="https://www.coomatrix.com/tags/Mistral/"/>
-    
-    <category term="Qwen" scheme="https://www.coomatrix.com/tags/Qwen/"/>
     
     <category term="DeepSeek" scheme="https://www.coomatrix.com/tags/DeepSeek/"/>
     
