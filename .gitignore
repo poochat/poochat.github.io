@@ -8,4 +8,7 @@ public/
 .2.deploy_git/
 npm-debug.log
 yarn-error.log
+2.deploy_git/
+themes/landscape/
+themes/landscape2/
 node_modules
