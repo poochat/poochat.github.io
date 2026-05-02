@@ -1,0 +1,23 @@
+cmake -D WITH_TBB=ON \
+-D OPENCV_GENERATE_PKGCONFIG=ON \
+-D CMAKE_BUILD_TYPE=RELEASE \
+-D BUILD_EXAMPLES=OFF \
+-D WITH_FFMPEG=ON \
+-D WITH_V4L=ON \
+-D BUILD_opencv_gapi=OFF \
+-D WITH_OPENGL=ON \
+-D WITH_CUDA=ON \
+-D WITH_CUDNN=ON \
+-D ENABLE_FAST_MATH=1 \
+-D CUDA_FAST_MATH=1 \
+-D WITH_CUBLAS=ON \
+-D WITH_CUFFT=ON \
+-D WITH_EIGEN=ON \
+-D EIGEN_INCLUDE_vPATH=/usr/include/eigen3 \
+-D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-5.x/modules/ \
+-D OPENCV_ENABLE_NONFREE=ON \
+-D CMAKE_INSTALL_PREFIX=$(/usr/bin/python3 -c "import sys; print(sys.prefix)") \
+-D PYTHON_EXECUTABLE=$(which python3) \
+-D PYTHON_INCLUDE_DIR=$(/usr/bin/python3 -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())") \
+-D PYTHON_PACKAGES_PATH=$(/usr/bin/python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())") \
+.. 
