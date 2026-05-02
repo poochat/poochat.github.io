@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>clip模型原理与多模态学习 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="CLIP模型原理与多模态学习CLIP（Contrastive Language-Image Pre-training）是OpenAI提出的多模态模型，通过对比学习将视觉和语言映射到同一特征空间，开创了视觉-语言预训练的新范式。 1. CLIP的核心思想传统计算机视觉模型需要为每个任务收集标注数据，而CLIP通过从互联网上收集的4亿对图文数据进行对比学习，实现了零样本迁移： 12传统方案: 标注数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CLIP模型原理与多模态学习">
+<meta property="og:url" content="https://www.coomatrix.com/2022/04/05/2022-04-05-CLIP%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="CLIP模型原理与多模态学习CLIP（Contrastive Language-Image Pre-training）是OpenAI提出的多模态模型，通过对比学习将视觉和语言映射到同一特征空间，开创了视觉-语言预训练的新范式。 1. CLIP的核心思想传统计算机视觉模型需要为每个任务收集标注数据，而CLIP通过从互联网上收集的4亿对图文数据进行对比学习，实现了零样本迁移： 12传统方案: 标注数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558618666-fcd25c85cd64">
+<meta property="article:published_time" content="2022-04-05T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:30.601Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="对比学习">
+<meta property="article:tag" content="CLIP">
+<meta property="article:tag" content="视觉语言">
+<meta property="article:tag" content="多模态">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558618666-fcd25c85cd64">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-04-05-CLIP模型原理与多模态学习" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558618666-fcd25c85cd64" rel="gallery_cmoopizre005c9cv689zudl3c noopener">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      CLIP模型原理与多模态学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/04/05/2022-04-05-CLIP%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0/" class="article-date">
+	  <time datetime="2022-04-05T03:00:00.000Z" itemprop="datePublished">四月 5, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="CLIP模型原理与多模态学习"><a href="#CLIP模型原理与多模态学习" class="headerlink" title="CLIP模型原理与多模态学习"></a>CLIP模型原理与多模态学习</h1><p>CLIP（Contrastive Language-Image Pre-training）是OpenAI提出的多模态模型，通过对比学习将视觉和语言映射到同一特征空间，开创了视觉-语言预训练的新范式。</p>
+<h2 id="1-CLIP的核心思想"><a href="#1-CLIP的核心思想" class="headerlink" title="1. CLIP的核心思想"></a>1. CLIP的核心思想</h2><p>传统计算机视觉模型需要为每个任务收集标注数据，而CLIP通过从互联网上收集的4亿对图文数据进行对比学习，实现了零样本迁移：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">传统方案: 标注数据 → 训练模型 → 特定任务</span><br><span class="line">CLIP方案: 海量图文对 → 对比预训练 → 零样本迁移到任何任务</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-模型架构"><a href="#2-模型架构" class="headerlink" title="2. 模型架构"></a>2. 模型架构</h2><p>CLIP由两个编码器组成：图像编码器和文本编码器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CLIPModel</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, image_encoder, text_encoder, </span></span><br><span class="line"><span class="params">                 embed_dim=<span class="number">512</span>, temperature=<span class="number">0.07</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.image_encoder = image_encoder  <span class="comment"># ViT或ResNet</span></span><br><span class="line">        self.text_encoder = text_encoder    <span class="comment"># Transformer</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影头</span></span><br><span class="line">        self.image_projection = nn.Sequential(</span><br><span class="line">            nn.Linear(image_encoder.embed_dim, embed_dim),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        )</span><br><span class="line">        self.text_projection = nn.Sequential(</span><br><span class="line">            nn.Linear(text_encoder.embed_dim, embed_dim),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 温度参数（可学习）</span></span><br><span class="line">        self.logit_scale = nn.Parameter(</span><br><span class="line">            torch.ones([]) * np.log(<span class="number">1</span> / temperature)</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, images, texts</span>):</span><br><span class="line">        <span class="comment"># 编码图像和文本</span></span><br><span class="line">        image_features = self.image_encoder(images)</span><br><span class="line">        text_features = self.text_encoder(texts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影到共享空间</span></span><br><span class="line">        image_embeddings = self.image_projection(image_features)</span><br><span class="line">        text_embeddings = self.text_projection(text_features)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># L2归一化</span></span><br><span class="line">        image_embeddings = F.normalize(image_embeddings, dim=-<span class="number">1</span>)</span><br><span class="line">        text_embeddings = F.normalize(text_embeddings, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算相似度矩阵</span></span><br><span class="line">        logit_scale = self.logit_scale.exp()</span><br><span class="line">        logits = logit_scale * image_embeddings @ text_embeddings.T</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> logits, image_embeddings, text_embeddings</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-对比学习损失函数"><a href="#3-对比学习损失函数" class="headerlink" title="3. 对比学习损失函数"></a>3. 对比学习损失函数</h2><p>CLIP使用对称的对比损失，让匹配的图文对相似度最高：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">clip_loss</span>(<span class="params">logits</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对称对比损失</span></span><br><span class="line"><span class="string">    logits: [batch_size, batch_size] 相似度矩阵</span></span><br><span class="line"><span class="string">    对角线上是匹配的图文对，其余为不匹配的</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    labels = torch.arange(logits.shape[<span class="number">0</span>], device=logits.device)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 图像到文本方向</span></span><br><span class="line">    loss_i2t = F.cross_entropy(logits, labels)</span><br><span class="line">    <span class="comment"># 文本到图像方向</span></span><br><span class="line">    loss_t2i = F.cross_entropy(logits.T, labels)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (loss_i2t + loss_t2i) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：一个batch中有4对图文</span></span><br><span class="line"><span class="comment"># logits[i][j] 表示第i张图和第j段文本的相似度</span></span><br><span class="line"><span class="comment"># 好的模型应该让logits[i][i]最大（对角线最高）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-零样本分类"><a href="#4-零样本分类" class="headerlink" title="4. 零样本分类"></a>4. 零样本分类</h2><p>CLIP最强大的能力是零样本分类，无需任何训练数据即可完成分类任务：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">zero_shot_classify</span>(<span class="params">model, image, class_names, template</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    零样本图像分类</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        model: CLIP模型</span></span><br><span class="line"><span class="string">        image: 输入图像</span></span><br><span class="line"><span class="string">        class_names: 类别名称列表，如[&quot;cat&quot;, &quot;dog&quot;, &quot;bird&quot;]</span></span><br><span class="line"><span class="string">        template: 提示模板，如&quot;A photo of a &#123;&#125;&quot;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 构造文本提示</span></span><br><span class="line">    text_inputs = [template.<span class="built_in">format</span>(name) <span class="keyword">for</span> name <span class="keyword">in</span> class_names]</span><br><span class="line">    text_tokens = tokenizer(text_inputs)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="comment"># 编码图像</span></span><br><span class="line">        image_features = model.image_encoder(image)</span><br><span class="line">        image_embeddings = model.image_projection(image_features)</span><br><span class="line">        image_embeddings = F.normalize(image_embeddings, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 编码所有类别文本</span></span><br><span class="line">        text_features = model.text_encoder(text_tokens)</span><br><span class="line">        text_embeddings = model.text_projection(text_features)</span><br><span class="line">        text_embeddings = F.normalize(text_embeddings, dim=-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算图像与每个类别的相似度</span></span><br><span class="line">    similarity = (image_embeddings @ text_embeddings.T).squeeze(<span class="number">0</span>)</span><br><span class="line">    probs = F.softmax(similarity * model.logit_scale.exp(), dim=-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 输出预测</span></span><br><span class="line">    <span class="keyword">for</span> name, prob <span class="keyword">in</span> <span class="built_in">zip</span>(class_names, probs):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span>: <span class="subst">&#123;prob:<span class="number">.2</span>%&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> class_names[probs.argmax()]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">result = zero_shot_classify(</span><br><span class="line">    model, </span><br><span class="line">    image, </span><br><span class="line">    [<span class="string">&quot;猫&quot;</span>, <span class="string">&quot;狗&quot;</span>, <span class="string">&quot;鸟&quot;</span>, <span class="string">&quot;鱼&quot;</span>],</span><br><span class="line">    <span class="string">&quot;一张&#123;&#125;的照片&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-实际应用场景"><a href="#5-实际应用场景" class="headerlink" title="5. 实际应用场景"></a>5. 实际应用场景</h2><h3 id="5-1-图像检索"><a href="#5-1-图像检索" class="headerlink" title="5.1 图像检索"></a>5.1 图像检索</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image_text_retrieval</span>(<span class="params">model, query_text, image_database, top_k=<span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;基于文本的图像检索&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 预计算所有图像的特征</span></span><br><span class="line">    image_features = []</span><br><span class="line">    <span class="keyword">for</span> img <span class="keyword">in</span> image_database:</span><br><span class="line">        feat = model.image_encoder(img)</span><br><span class="line">        emb = model.image_projection(feat)</span><br><span class="line">        image_features.append(F.normalize(emb, dim=-<span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    image_features = torch.cat(image_features, dim=<span class="number">0</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 编码查询文本</span></span><br><span class="line">    text_tokens = tokenizer([query_text])</span><br><span class="line">    text_feat = model.text_encoder(text_tokens)</span><br><span class="line">    text_emb = F.normalize(model.text_projection(text_feat), dim=-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算相似度并排序</span></span><br><span class="line">    similarities = text_emb @ image_features.T</span><br><span class="line">    top_indices = similarities.argsort(descending=<span class="literal">True</span>)[:top_k]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> [image_database[i] <span class="keyword">for</span> i <span class="keyword">in</span> top_indices]</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-图像描述生成"><a href="#5-2-图像描述生成" class="headerlink" title="5.2 图像描述生成"></a>5.2 图像描述生成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">image_captioning</span>(<span class="params">model, image, candidate_captions</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;从候选描述中选择最匹配的&quot;&quot;&quot;</span></span><br><span class="line">    image_feat = model.encode_image(image)</span><br><span class="line">    best_score = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    best_caption = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> caption <span class="keyword">in</span> candidate_captions:</span><br><span class="line">        text_feat = model.encode_text(tokenizer(caption))</span><br><span class="line">        score = (image_feat @ text_feat.T).item()</span><br><span class="line">        <span class="keyword">if</span> score &gt; best_score:</span><br><span class="line">            best_score = score</span><br><span class="line">            best_caption = caption</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> best_caption</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-CLIP的局限性与改进方向"><a href="#6-CLIP的局限性与改进方向" class="headerlink" title="6. CLIP的局限性与改进方向"></a>6. CLIP的局限性与改进方向</h2><table>
+<thead>
+<tr>
+<th>局限</th>
+<th>描述</th>
+<th>改进方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>细粒度识别弱</td>
+<td>对子类区分能力有限</td>
+<td>细粒度对比学习</td>
+</tr>
+<tr>
+<td>OCR能力差</td>
+<td>难以识别图像中的文字</td>
+<td>引入OCR数据</td>
+</tr>
+<tr>
+<td>计数能力弱</td>
+<td>难以准确计数物体</td>
+<td>添加计数任务</td>
+</tr>
+<tr>
+<td>分辨率限制</td>
+<td>输入图像分辨率较低</td>
+<td>高分辨率适配器</td>
+</tr>
+</tbody></table>
+<h2 id="7-CLIP的后续发展"><a href="#7-CLIP的后续发展" class="headerlink" title="7. CLIP的后续发展"></a>7. CLIP的后续发展</h2><ul>
+<li><strong>OpenCLIP</strong>：开源复现版本</li>
+<li><strong>EVA-CLIP</strong>：更强的训练策略</li>
+<li><strong>SIGLIP</strong>：Sigmoid损失替代Softmax</li>
+<li><strong>Chinese-CLIP</strong>：中文多模态模型</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CLIP通过对比学习将视觉和语言统一到同一特征空间，实现了强大的零样本迁移能力。它不仅是一个模型，更是一种新范式——用自然语言作为监督信号来训练视觉模型，这为多模态AI的发展奠定了基础。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81/">多模态</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/">对比学习</a>
+    
+      <a href="/tags/CLIP/">CLIP</a>
+    
+      <a href="/tags/%E8%A7%86%E8%A7%89%E8%AF%AD%E8%A8%80/">视觉语言</a>
+    
+      <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/">多模态</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/04/05/2022-04-05-CLIP模型原理与多模态学习/" target="_blank" title="CLIP模型原理与多模态学习">https://www.coomatrix.com/2022/04/05/2022-04-05-CLIP模型原理与多模态学习/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/12/2022-05-12-DALL-E%E4%B8%8E%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%E6%8A%80%E6%9C%AF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          DALL-E与文本生成图像技术
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/10/2022-03-10-RLHF%E4%BA%BA%E7%B1%BB%E5%8F%8D%E9%A6%88%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">RLHF人类反馈强化学习详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CLIP%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">CLIP模型原理与多模态学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CLIP%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.</span> <span class="nav-text">1. CLIP的核心思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">2. 模型架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">3. 对比学习损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%9B%B6%E6%A0%B7%E6%9C%AC%E5%88%86%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">4. 零样本分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.5.</span> <span class="nav-text">5. 实际应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E5%9B%BE%E5%83%8F%E6%A3%80%E7%B4%A2"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 图像检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E5%9B%BE%E5%83%8F%E6%8F%8F%E8%BF%B0%E7%94%9F%E6%88%90"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 图像描述生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-CLIP%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7%E4%B8%8E%E6%94%B9%E8%BF%9B%E6%96%B9%E5%90%91"><span class="nav-number">1.6.</span> <span class="nav-text">6. CLIP的局限性与改进方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-CLIP%E7%9A%84%E5%90%8E%E7%BB%AD%E5%8F%91%E5%B1%95"><span class="nav-number">1.7.</span> <span class="nav-text">7. CLIP的后续发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.8.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

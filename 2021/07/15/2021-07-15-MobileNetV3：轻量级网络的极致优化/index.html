@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>mobilenetv3：轻量级网络的极致优化 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="MobileNetV3架构与移动端部署">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MobileNetV3：轻量级网络的极致优化">
+<meta property="og:url" content="https://www.coomatrix.com/2021/07/15/2021-07-15-MobileNetV3%EF%BC%9A%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BD%91%E7%BB%9C%E7%9A%84%E6%9E%81%E8%87%B4%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="MobileNetV3架构与移动端部署">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb">
+<meta property="article:published_time" content="2021-07-15T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:02.751Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="模型优化">
+<meta property="article:tag" content="MobileNet">
+<meta property="article:tag" content="边缘计算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-07-15-MobileNetV3：轻量级网络的极致优化" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb" rel="gallery_cmoopizrb004t9cv67483cssj noopener">
+        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      MobileNetV3：轻量级网络的极致优化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/07/15/2021-07-15-MobileNetV3%EF%BC%9A%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BD%91%E7%BB%9C%E7%9A%84%E6%9E%81%E8%87%B4%E4%BC%98%E5%8C%96/" class="article-date">
+	  <time datetime="2021-07-15T02:00:00.000Z" itemprop="datePublished">七月 15, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MobileNetV3是Google在2019年发布的轻量级神经网络，通过NAS（神经架构搜索）和多种优化技术，在保持高精度的同时实现了极致的效率和速度。</p>
+<h2 id="MobileNetV3核心组件"><a href="#MobileNetV3核心组件" class="headerlink" title="MobileNetV3核心组件"></a>MobileNetV3核心组件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HardSwish</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;HardSwish激活函数&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">return</span> x * F.relu6(x + <span class="number">3</span>) / <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HardSigmoid</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;HardSigmoid&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">return</span> F.relu6(x + <span class="number">3</span>) / <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SqueezeExcitation</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Squeeze-and-Excitation模块&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, reduced_dim</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.se = nn.Sequential(</span><br><span class="line">            nn.AdaptiveAvgPool2d(<span class="number">1</span>),</span><br><span class="line">            nn.Conv2d(in_channels, reduced_dim, <span class="number">1</span>),</span><br><span class="line">            HardSwish(),</span><br><span class="line">            nn.Conv2d(reduced_dim, in_channels, <span class="number">1</span>),</span><br><span class="line">            HardSigmoid()</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">return</span> x * self.se(x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Bneck</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MobileNetV3的基本模块&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, kernel_size=<span class="number">3</span>,</span></span><br><span class="line"><span class="params">                 stride=<span class="number">1</span>, expanded_dim=<span class="number">16</span>, se=<span class="literal">True</span>, nl=<span class="string">&#x27;RE&#x27;</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.stride = stride</span><br><span class="line">        self.use_residual = (stride == <span class="number">1</span> <span class="keyword">and</span> in_channels == out_channels)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 非线性激活函数</span></span><br><span class="line">        <span class="keyword">if</span> nl == <span class="string">&#x27;RE&#x27;</span>:</span><br><span class="line">            self.nl = nn.ReLU(inplace=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">elif</span> nl == <span class="string">&#x27;HS&#x27;</span>:</span><br><span class="line">            self.nl = HardSwish()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 逐点卷积扩展</span></span><br><span class="line">        self.expanded_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels, expanded_dim, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(expanded_dim),</span><br><span class="line">            self.nl</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 深度可分离卷积</span></span><br><span class="line">        self.depthwise_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(</span><br><span class="line">                expanded_dim, expanded_dim, kernel_size,</span><br><span class="line">                stride, (kernel_size - <span class="number">1</span>) // <span class="number">2</span>, groups=expanded_dim, bias=<span class="literal">False</span></span><br><span class="line">            ),</span><br><span class="line">            nn.BatchNorm2d(expanded_dim),</span><br><span class="line">            self.nl</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># SE模块</span></span><br><span class="line">        <span class="keyword">if</span> se:</span><br><span class="line">            reduced_dim = <span class="built_in">max</span>(<span class="number">1</span>, expanded_dim // <span class="number">4</span>)</span><br><span class="line">            self.se = SqueezeExcitation(expanded_dim, reduced_dim)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.se = nn.Identity()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影层</span></span><br><span class="line">        self.project_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(expanded_dim, out_channels, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(out_channels)</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        identity = x</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 扩展</span></span><br><span class="line">        x = self.expanded_conv(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 深度卷积</span></span><br><span class="line">        x = self.depthwise_conv(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># SE注意力</span></span><br><span class="line">        x = self.se(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影</span></span><br><span class="line">        x = self.project_conv(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 残差连接</span></span><br><span class="line">        <span class="keyword">if</span> self.use_residual:</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<h2 id="MobileNetV3整体架构"><a href="#MobileNetV3整体架构" class="headerlink" title="MobileNetV3整体架构"></a>MobileNetV3整体架构</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MobileNetV3Large</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MobileNetV3-Large&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">1000</span>, dropout=<span class="number">0.0005</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Stem</span></span><br><span class="line">        self.stem = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">3</span>, <span class="number">16</span>, <span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">16</span>),</span><br><span class="line">            HardSwish()</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 配置: (out_channels, kernel_size, stride, expanded_dim, se, nl)</span></span><br><span class="line">        config = [</span><br><span class="line">            <span class="comment"># Stage 1</span></span><br><span class="line">            (<span class="number">16</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">16</span>, <span class="literal">False</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            <span class="comment"># Stage 2</span></span><br><span class="line">            (<span class="number">24</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">64</span>, <span class="literal">False</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            (<span class="number">24</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">72</span>, <span class="literal">False</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            <span class="comment"># Stage 3</span></span><br><span class="line">            (<span class="number">40</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">72</span>, <span class="literal">True</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            (<span class="number">40</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">120</span>, <span class="literal">True</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            (<span class="number">40</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">120</span>, <span class="literal">True</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            <span class="comment"># Stage 4</span></span><br><span class="line">            (<span class="number">80</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">240</span>, <span class="literal">False</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">80</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">200</span>, <span class="literal">False</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">80</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">184</span>, <span class="literal">False</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">80</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">184</span>, <span class="literal">False</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            <span class="comment"># Stage 5</span></span><br><span class="line">            (<span class="number">112</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">480</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">112</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">672</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            <span class="comment"># Stage 6</span></span><br><span class="line">            (<span class="number">160</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">672</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">160</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">960</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">160</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">960</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 构建bottleneck层</span></span><br><span class="line">        layers = []</span><br><span class="line">        <span class="keyword">for</span> out_ch, kernel, stride, exp_ch, se, nl <span class="keyword">in</span> config:</span><br><span class="line">            layers.append(Bneck(</span><br><span class="line">                in_channels=<span class="number">16</span> <span class="keyword">if</span> <span class="built_in">len</span>(layers) == <span class="number">0</span> <span class="keyword">else</span> config[<span class="built_in">len</span>(layers)-<span class="number">1</span>][<span class="number">0</span>],</span><br><span class="line">                out_channels=out_ch,</span><br><span class="line">                kernel_size=kernel,</span><br><span class="line">                stride=stride,</span><br><span class="line">                expanded_dim=exp_ch,</span><br><span class="line">                se=se,</span><br><span class="line">                nl=nl</span><br><span class="line">            ))</span><br><span class="line">        </span><br><span class="line">        self.bottlenecks = nn.Sequential(*layers)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 最后的卷积</span></span><br><span class="line">        self.final_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">160</span>, <span class="number">960</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">960</span>),</span><br><span class="line">            HardSwish()</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 全局池化和分类器</span></span><br><span class="line">        self.avgpool = nn.AdaptiveAvgPool2d(<span class="number">1</span>)</span><br><span class="line">        self.classifier = nn.Sequential(</span><br><span class="line">            nn.Dropout(dropout),</span><br><span class="line">            nn.Linear(<span class="number">960</span>, <span class="number">1280</span>),</span><br><span class="line">            HardSwish(),</span><br><span class="line">            nn.Dropout(dropout),</span><br><span class="line">            nn.Linear(<span class="number">1280</span>, num_classes)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self._initialize_weights()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.stem(x)</span><br><span class="line">        x = self.bottlenecks(x)</span><br><span class="line">        x = self.final_conv(x)</span><br><span class="line">        x = self.avgpool(x)</span><br><span class="line">        x = x.view(x.size(<span class="number">0</span>), -<span class="number">1</span>)</span><br><span class="line">        x = self.classifier(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_initialize_weights</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(m, nn.Conv2d):</span><br><span class="line">                nn.init.kaiming_normal_(m.weight, mode=<span class="string">&#x27;fan_out&#x27;</span>)</span><br><span class="line">                <span class="keyword">if</span> m.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    nn.init.zeros_(m.bias)</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(m, nn.BatchNorm2d):</span><br><span class="line">                nn.init.ones_(m.weight)</span><br><span class="line">                nn.init.zeros_(m.bias)</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(m, nn.Linear):</span><br><span class="line">                nn.init.normal_(m.weight, <span class="number">0</span>, <span class="number">0.01</span>)</span><br><span class="line">                <span class="keyword">if</span> m.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    nn.init.zeros_(m.bias)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MobileNetV3Small</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MobileNetV3-Small（更轻量）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">1000</span>, dropout=<span class="number">0.0005</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.stem = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">3</span>, <span class="number">16</span>, <span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">16</span>),</span><br><span class="line">            HardSwish()</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        config = [</span><br><span class="line">            (<span class="number">16</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">16</span>, <span class="literal">True</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            (<span class="number">24</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">72</span>, <span class="literal">False</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            (<span class="number">24</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">88</span>, <span class="literal">False</span>, <span class="string">&#x27;RE&#x27;</span>),</span><br><span class="line">            (<span class="number">40</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">96</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">40</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">240</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">40</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">240</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">48</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">120</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">48</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">144</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">96</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">288</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">96</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">576</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">            (<span class="number">96</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">576</span>, <span class="literal">True</span>, <span class="string">&#x27;HS&#x27;</span>),</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        layers = []</span><br><span class="line">        <span class="keyword">for</span> out_ch, kernel, stride, exp_ch, se, nl <span class="keyword">in</span> config:</span><br><span class="line">            layers.append(Bneck(</span><br><span class="line">                in_channels=<span class="number">16</span> <span class="keyword">if</span> <span class="built_in">len</span>(layers) == <span class="number">0</span> <span class="keyword">else</span> config[<span class="built_in">len</span>(layers)-<span class="number">1</span>][<span class="number">0</span>],</span><br><span class="line">                out_channels=out_ch,</span><br><span class="line">                kernel_size=kernel,</span><br><span class="line">                stride=stride,</span><br><span class="line">                expanded_dim=exp_ch,</span><br><span class="line">                se=se,</span><br><span class="line">                nl=nl</span><br><span class="line">            ))</span><br><span class="line">        </span><br><span class="line">        self.bottlenecks = nn.Sequential(*layers)</span><br><span class="line">        </span><br><span class="line">        self.final_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">96</span>, <span class="number">576</span>, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">576</span>),</span><br><span class="line">            HardSwish()</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.avgpool = nn.AdaptiveAvgPool2d(<span class="number">1</span>)</span><br><span class="line">        self.classifier = nn.Sequential(</span><br><span class="line">            nn.Dropout(dropout),</span><br><span class="line">            nn.Linear(<span class="number">576</span>, <span class="number">1024</span>),</span><br><span class="line">            HardSwish(),</span><br><span class="line">            nn.Dropout(dropout),</span><br><span class="line">            nn.Linear(<span class="number">1024</span>, num_classes)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<h2 id="训练与评估"><a href="#训练与评估" class="headerlink" title="训练与评估"></a>训练与评估</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_mobilenetv3</span>(<span class="params">model, train_loader, criterion, optimizer, device, epochs=<span class="number">300</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MobileNetV3训练&quot;&quot;&quot;</span></span><br><span class="line">    model = model.to(device)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        model.train()</span><br><span class="line">        running_loss = <span class="number">0.0</span></span><br><span class="line">        correct = <span class="number">0</span></span><br><span class="line">        total = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> inputs, labels <span class="keyword">in</span> train_loader:</span><br><span class="line">            inputs, labels = inputs.to(device), labels.to(device)</span><br><span class="line">            </span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            outputs = model(inputs)</span><br><span class="line">            loss = criterion(outputs, labels)</span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">            </span><br><span class="line">            running_loss += loss.item()</span><br><span class="line">            _, predicted = outputs.<span class="built_in">max</span>(<span class="number">1</span>)</span><br><span class="line">            total += labels.size(<span class="number">0</span>)</span><br><span class="line">            correct += predicted.eq(labels).<span class="built_in">sum</span>().item()</span><br><span class="line">        </span><br><span class="line">        accuracy = <span class="number">100.</span> * correct / total</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>: Loss=<span class="subst">&#123;running_loss/<span class="built_in">len</span>(train_loader):<span class="number">.4</span>f&#125;</span>, Acc=<span class="subst">&#123;accuracy:<span class="number">.2</span>f&#125;</span>%&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_mobilenetv3</span>(<span class="params">model, test_loader, device</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MobileNetV3评估&quot;&quot;&quot;</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> inputs, labels <span class="keyword">in</span> test_loader:</span><br><span class="line">            inputs, labels = inputs.to(device), labels.to(device)</span><br><span class="line">            outputs = model(inputs)</span><br><span class="line">            _, predicted = outputs.<span class="built_in">max</span>(<span class="number">1</span>)</span><br><span class="line">            total += labels.size(<span class="number">0</span>)</span><br><span class="line">            correct += predicted.eq(labels).<span class="built_in">sum</span>().item()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">100.</span> * correct / total</span><br></pre></td></tr></table></figure>
+
+<h2 id="MobileNetV3特性对比"><a href="#MobileNetV3特性对比" class="headerlink" title="MobileNetV3特性对比"></a>MobileNetV3特性对比</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>MobileNetV1</th>
+<th>MobileNetV2</th>
+<th>MobileNetV3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>深度可分离卷积</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>线性瓶颈</td>
+<td>-</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>倒残差</td>
+<td>-</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>SE注意力</td>
+<td>-</td>
+<td>-</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Hard-Swish</td>
+<td>-</td>
+<td>-</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>NAS搜索</td>
+<td>-</td>
+<td>-</td>
+<td>✓</td>
+</tr>
+</tbody></table>
+<h2 id="模型量化和部署"><a href="#模型量化和部署" class="headerlink" title="模型量化和部署"></a>模型量化和部署</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">quantize_mobilenetv3</span>(<span class="params">model, dataloader</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;量化MobileNetV3&quot;&quot;&quot;</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 动态量化</span></span><br><span class="line">    quantized_model = torch.quantization.quantize_dynamic(</span><br><span class="line">        model,</span><br><span class="line">        &#123;nn.Conv2d, nn.Linear&#125;,</span><br><span class="line">        dtype=torch.qint8</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> quantized_model</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">export_to_tflite</span>(<span class="params">model, input_shape=(<span class="params"><span class="number">1</span>, <span class="number">3</span>, <span class="number">224</span>, <span class="number">224</span></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;导出为TensorFlow Lite格式&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 1. 导出为ONNX</span></span><br><span class="line">    dummy_input = torch.randn(input_shape)</span><br><span class="line">    torch.onnx.export(</span><br><span class="line">        model, dummy_input, <span class="string">&quot;mobilenetv3.onnx&quot;</span>,</span><br><span class="line">        export_params=<span class="literal">True</span>, opset_version=<span class="number">11</span>,</span><br><span class="line">        do_constant_folding=<span class="literal">True</span>,</span><br><span class="line">        input_names=[<span class="string">&#x27;input&#x27;</span>],</span><br><span class="line">        output_names=[<span class="string">&#x27;output&#x27;</span>]</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 使用ONNX TensorFlow转换</span></span><br><span class="line">    <span class="comment"># onnx_tf.backend.prepare(onnx_model)</span></span><br><span class="line">    <span class="comment"># tf_model = onnx_tf.backend.tfgraph_def_from_onnx_model(onnx_model)</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 转换为TensorFlow Lite</span></span><br><span class="line">    <span class="comment"># converter = tf.lite.TFLiteConverter.from_session(tf_session,...)</span></span><br><span class="line">    <span class="comment"># tflite_model = converter.convert()</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="MobileNetV3应用场景"><a href="#MobileNetV3应用场景" class="headerlink" title="MobileNetV3应用场景"></a>MobileNetV3应用场景</h2><ul>
+<li><strong>移动端图像分类</strong>：手机APP中的实时识别</li>
+<li><strong>边缘设备</strong>：IoT设备上的AI推理</li>
+<li><strong>自动驾驶</strong>：车载系统的目标检测</li>
+<li><strong>视频监控</strong>：低功耗设备的视频分析</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>MobileNetV3通过NAS搜索、SE注意力、Hard-Swish激活等多种优化技术，实现了轻量级网络在精度和速度上的最佳平衡，为移动端和边缘设备的深度学习应用提供了优秀的基础模型。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1905.02244">Searching for MobileNetV3</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet">MobileNetV3 Official Implementation</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a>
+    
+      <a href="/tags/MobileNet/">MobileNet</a>
+    
+      <a href="/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/">边缘计算</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/07/15/2021-07-15-MobileNetV3：轻量级网络的极致优化/" target="_blank" title="MobileNetV3：轻量级网络的极致优化">https://www.coomatrix.com/2021/07/15/2021-07-15-MobileNetV3：轻量级网络的极致优化/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/25/2021-07-25-%E7%A5%9E%E7%BB%8F%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2%EF%BC%9AAutoML%E7%9A%84%E6%B7%B1%E5%BA%A6%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          神经架构搜索：AutoML的深度实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/05/2021-07-05-CLIP%EF%BC%9A%E5%AF%B9%E6%AF%94%E8%AF%AD%E8%A8%80%E5%9B%BE%E5%83%8F%E9%A2%84%E8%AE%AD%E7%BB%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">CLIP：对比语言图像预训练</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MobileNetV3%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">MobileNetV3核心组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MobileNetV3%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">MobileNetV3整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E4%B8%8E%E8%AF%84%E4%BC%B0"><span class="nav-number">4.</span> <span class="nav-text">训练与评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MobileNetV3%E7%89%B9%E6%80%A7%E5%AF%B9%E6%AF%94"><span class="nav-number">5.</span> <span class="nav-text">MobileNetV3特性对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="nav-number">6.</span> <span class="nav-text">模型量化和部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MobileNetV3%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">7.</span> <span class="nav-text">MobileNetV3应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">9.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>prompt engineering技巧与最佳实践 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="Prompt Engineering技巧与最佳实践随着ChatGPT等大模型的普及，Prompt Engineering成为2022年最热门的AI技能。如何编写有效的提示词来引导大模型产生高质量输出，已成为一门重要的工程学科。 1. Prompt Engineering的核心原则1.1 基本原则graph TB     A[有效的Prompt] --&gt; B[清晰明确]     A --&gt; C[上下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Prompt Engineering技巧与最佳实践">
+<meta property="og:url" content="https://www.coomatrix.com/2022/08/10/2022-08-10-Prompt-Engineering%E6%8A%80%E5%B7%A7%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="Prompt Engineering技巧与最佳实践随着ChatGPT等大模型的普及，Prompt Engineering成为2022年最热门的AI技能。如何编写有效的提示词来引导大模型产生高质量输出，已成为一门重要的工程学科。 1. Prompt Engineering的核心原则1.1 基本原则graph TB     A[有效的Prompt] --&gt; B[清晰明确]     A --&gt; C[上下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1686191128892-17be59f9c4b4">
+<meta property="article:published_time" content="2022-08-10T06:20:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:45.573Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="ChatGPT">
+<meta property="article:tag" content="Prompt Engineering">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="提示工程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1686191128892-17be59f9c4b4">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-08-10-Prompt-Engineering技巧与最佳实践" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1686191128892-17be59f9c4b4" rel="gallery_cmoopizrf005o9cv68v0vbfmc noopener">
+        <img src="https://images.unsplash.com/photo-1686191128892-17be59f9c4b4" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Prompt Engineering技巧与最佳实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/08/10/2022-08-10-Prompt-Engineering%E6%8A%80%E5%B7%A7%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2022-08-10T06:20:00.000Z" itemprop="datePublished">八月 10, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="Prompt-Engineering技巧与最佳实践"><a href="#Prompt-Engineering技巧与最佳实践" class="headerlink" title="Prompt Engineering技巧与最佳实践"></a>Prompt Engineering技巧与最佳实践</h1><p>随着ChatGPT等大模型的普及，Prompt Engineering成为2022年最热门的AI技能。如何编写有效的提示词来引导大模型产生高质量输出，已成为一门重要的工程学科。</p>
+<h2 id="1-Prompt-Engineering的核心原则"><a href="#1-Prompt-Engineering的核心原则" class="headerlink" title="1. Prompt Engineering的核心原则"></a>1. Prompt Engineering的核心原则</h2><h3 id="1-1-基本原则"><a href="#1-1-基本原则" class="headerlink" title="1.1 基本原则"></a>1.1 基本原则</h3><pre class="mermaid">graph TB
+    A[有效的Prompt] --> B[清晰明确]
+    A --> C[上下文充足]
+    A --> D[示例驱动]
+    A --> E[结构化输出]
+    A --> F[迭代优化]</pre>
+
+<h3 id="1-2-Prompt构成要素"><a href="#1-2-Prompt构成要素" class="headerlink" title="1.2 Prompt构成要素"></a>1.2 Prompt构成要素</h3><p>一个完整的Prompt通常包含以下部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[角色设定] + [背景上下文] + [任务描述] + [输出格式] + [约束条件] + [示例]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用OpenAI API的Prompt工程示例</span></span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">structured_prompt</span>(<span class="params">role, context, task, format_spec, constraints, examples=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;构建结构化Prompt&quot;&quot;&quot;</span></span><br><span class="line">    messages = []</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 1. 角色设定</span></span><br><span class="line">    system_msg = <span class="string">f&quot;你是一个<span class="subst">&#123;role&#125;</span>。&quot;</span></span><br><span class="line">    messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>, <span class="string">&quot;content&quot;</span>: system_msg&#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 构建用户消息</span></span><br><span class="line">    user_parts = []</span><br><span class="line">    user_parts.append(<span class="string">f&quot;背景信息：<span class="subst">&#123;context&#125;</span>&quot;</span>)</span><br><span class="line">    user_parts.append(<span class="string">f&quot;任务：<span class="subst">&#123;task&#125;</span>&quot;</span>)</span><br><span class="line">    user_parts.append(<span class="string">f&quot;输出格式：<span class="subst">&#123;format_spec&#125;</span>&quot;</span>)</span><br><span class="line">    user_parts.append(<span class="string">f&quot;约束条件：<span class="subst">&#123;constraints&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> examples:</span><br><span class="line">        user_parts.append(<span class="string">f&quot;参考示例：\n<span class="subst">&#123;examples&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;\n\n&quot;</span>.join(user_parts)&#125;)</span><br><span class="line">    <span class="keyword">return</span> messages</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：代码审查Prompt</span></span><br><span class="line">messages = structured_prompt(</span><br><span class="line">    role=<span class="string">&quot;高级Python开发工程师和代码审查专家&quot;</span>,</span><br><span class="line">    context=<span class="string">&quot;这是一个数据处理服务的核心模块，需要高可靠性和性能&quot;</span>,</span><br><span class="line">    task=<span class="string">&quot;审查以下代码，找出潜在的bug、性能问题和安全漏洞&quot;</span>,</span><br><span class="line">    format_spec=<span class="string">&quot;按严重程度分类：🔴严重 🟡中等 🟢建议，每项包含：问题描述、代码位置、修复建议&quot;</span>,</span><br><span class="line">    constraints=<span class="string">&quot;1. 重点关注并发安全问题\n2. 检查是否有资源泄漏\n3. 注意异常处理的完整性&quot;</span>,</span><br><span class="line">    examples=<span class="string">&quot;输入: def add(a,b): return a+b\n输出: 🟢建议: 缺少类型注解和输入验证&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = openai.ChatCompletion.create(</span><br><span class="line">    model=<span class="string">&quot;gpt-3.5-turbo&quot;</span>,</span><br><span class="line">    messages=messages,</span><br><span class="line">    temperature=<span class="number">0.3</span>  <span class="comment"># 代码审查用低温度</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-核心技巧详解"><a href="#2-核心技巧详解" class="headerlink" title="2. 核心技巧详解"></a>2. 核心技巧详解</h2><h3 id="2-1-少样本学习（Few-Shot）"><a href="#2-1-少样本学习（Few-Shot）" class="headerlink" title="2.1 少样本学习（Few-Shot）"></a>2.1 少样本学习（Few-Shot）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">few_shot_prompt</span>(<span class="params">task_description, examples, query</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;少样本学习Prompt&quot;&quot;&quot;</span></span><br><span class="line">    prompt = <span class="string">f&quot;<span class="subst">&#123;task_description&#125;</span>\n\n&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> example <span class="keyword">in</span> examples:</span><br><span class="line">        prompt += <span class="string">f&quot;输入: <span class="subst">&#123;example[<span class="string">&#x27;input&#x27;</span>]&#125;</span>\n&quot;</span></span><br><span class="line">        prompt += <span class="string">f&quot;输出: <span class="subst">&#123;example[<span class="string">&#x27;output&#x27;</span>]&#125;</span>\n\n&quot;</span></span><br><span class="line">    </span><br><span class="line">    prompt += <span class="string">f&quot;输入: <span class="subst">&#123;query&#125;</span>\n输出:&quot;</span></span><br><span class="line">    <span class="keyword">return</span> prompt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 情感分析Few-Shot示例</span></span><br><span class="line">sentiment_examples = [</span><br><span class="line">    &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;这个产品太棒了，强烈推荐！&quot;</span>, <span class="string">&quot;output&quot;</span>: <span class="string">&quot;正面&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;质量一般，不太满意&quot;</span>, <span class="string">&quot;output&quot;</span>: <span class="string">&quot;中性&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;完全不能用，浪费钱&quot;</span>, <span class="string">&quot;output&quot;</span>: <span class="string">&quot;负面&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;input&quot;</span>: <span class="string">&quot;物流很快，但包装有破损&quot;</span>, <span class="string">&quot;output&quot;</span>: <span class="string">&quot;混合&quot;</span>&#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">result = few_shot_prompt(</span><br><span class="line">    task_description=<span class="string">&quot;请判断以下评论的情感倾向：&quot;</span>,</span><br><span class="line">    examples=sentiment_examples,</span><br><span class="line">    query=<span class="string">&quot;服务态度很好，下次还会光顾&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-Chain-of-Thought（思维链）"><a href="#2-2-Chain-of-Thought（思维链）" class="headerlink" title="2.2 Chain-of-Thought（思维链）"></a>2.2 Chain-of-Thought（思维链）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cot_prompt</span>(<span class="params">question</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;思维链Prompt - 引导模型逐步推理&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;&quot;&quot;请一步步思考以下问题，展示完整的推理过程：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：<span class="subst">&#123;question&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请按以下格式回答：</span></span><br><span class="line"><span class="string">1. 理解问题：提取关键信息</span></span><br><span class="line"><span class="string">2. 分析思路：列出解题步骤</span></span><br><span class="line"><span class="string">3. 逐步推理：每步给出详细计算</span></span><br><span class="line"><span class="string">4. 最终答案：简洁明确的结论</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">示例：</span></span><br><span class="line"><span class="string">问题：一个商店打8折后价格是160元，原价是多少？</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">1. 理解问题：已知折扣后价格=160元，折扣率=80%</span></span><br><span class="line"><span class="string">2. 分析思路：原价 × 折扣率 = 折后价，因此原价 = 折后价 / 折扣率</span></span><br><span class="line"><span class="string">3. 逐步推理：原价 = 160 / 0.8 = 200元</span></span><br><span class="line"><span class="string">4. 最终答案：原价是200元&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数学推理</span></span><br><span class="line">math_prompt = cot_prompt(</span><br><span class="line">    <span class="string">&quot;小明有5个苹果，给了小红2个，又从商店买了3个，最后吃掉了1个。小明现在有几个苹果？&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-Self-Consistency（自一致性）"><a href="#2-3-Self-Consistency（自一致性）" class="headerlink" title="2.3 Self-Consistency（自一致性）"></a>2.3 Self-Consistency（自一致性）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">self_consistency_query</span>(<span class="params">question, n_samples=<span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    自一致性方法：多次采样取多数投票</span></span><br><span class="line"><span class="string">    适用于需要精确答案的推理任务</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    prompt = <span class="string">f&quot;&quot;&quot;请一步步思考以下问题，在最后用####标出最终答案。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：<span class="subst">&#123;question&#125;</span>&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    answers = []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n_samples):</span><br><span class="line">        response = openai.ChatCompletion.create(</span><br><span class="line">            model=<span class="string">&quot;gpt-3.5-turbo&quot;</span>,</span><br><span class="line">            messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;],</span><br><span class="line">            temperature=<span class="number">0.7</span>,  <span class="comment"># 较高温度增加多样性</span></span><br><span class="line">            max_tokens=<span class="number">500</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        text = response.choices[<span class="number">0</span>].message.content</span><br><span class="line">        <span class="comment"># 提取####后的答案</span></span><br><span class="line">        match = re.search(<span class="string">r&#x27;####\s*(.+)&#x27;</span>, text)</span><br><span class="line">        <span class="keyword">if</span> match:</span><br><span class="line">            answers.append(match.group(<span class="number">1</span>).strip())</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 多数投票</span></span><br><span class="line">    counter = Counter(answers)</span><br><span class="line">    best_answer = counter.most_common(<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;各次采样答案: <span class="subst">&#123;answers&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;投票结果: <span class="subst">&#123;best_answer[<span class="number">0</span>]&#125;</span> (出现<span class="subst">&#123;best_answer[<span class="number">1</span>]&#125;</span>次)&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> best_answer[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-高级技巧"><a href="#3-高级技巧" class="headerlink" title="3. 高级技巧"></a>3. 高级技巧</h2><h3 id="3-1-ReAct框架"><a href="#3-1-ReAct框架" class="headerlink" title="3.1 ReAct框架"></a>3.1 ReAct框架</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">react_prompt</span>(<span class="params">question, tools</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ReAct: 推理+行动框架&quot;&quot;&quot;</span></span><br><span class="line">    tool_descriptions = <span class="string">&quot;\n&quot;</span>.join(</span><br><span class="line">        [<span class="string">f&quot;- <span class="subst">&#123;t[<span class="string">&#x27;name&#x27;</span>]&#125;</span>: <span class="subst">&#123;t[<span class="string">&#x27;description&#x27;</span>]&#125;</span>&quot;</span> <span class="keyword">for</span> t <span class="keyword">in</span> tools]</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;&quot;&quot;你是一个能够使用工具的智能助手。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">可用工具：</span></span><br><span class="line"><span class="string"><span class="subst">&#123;tool_descriptions&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请按以下格式回答问题：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">思考：分析当前需要什么信息</span></span><br><span class="line"><span class="string">行动：使用工具获取信息（格式：工具名[参数]）</span></span><br><span class="line"><span class="string">观察：工具返回的结果</span></span><br><span class="line"><span class="string">...（重复思考-行动-观察直到得出答案）</span></span><br><span class="line"><span class="string">回答：最终答案</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：<span class="subst">&#123;question&#125;</span>&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">tools = [</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Search&quot;</span>, <span class="string">&quot;description&quot;</span>: <span class="string">&quot;搜索互联网获取信息&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Calculator&quot;</span>, <span class="string">&quot;description&quot;</span>: <span class="string">&quot;进行数学计算&quot;</span>&#125;,</span><br><span class="line">    &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Weather&quot;</span>, <span class="string">&quot;description&quot;</span>: <span class="string">&quot;查询天气信息&quot;</span>&#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">react_query = react_prompt(</span><br><span class="line">    <span class="string">&quot;北京今天天气如何？如果下雨，室内活动推荐什么？&quot;</span>,</span><br><span class="line">    tools</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-结构化输出"><a href="#3-2-结构化输出" class="headerlink" title="3.2 结构化输出"></a>3.2 结构化输出</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">structured_output_prompt</span>(<span class="params">data, schema</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;确保LLM输出结构化数据&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;&quot;&quot;请根据以下数据，按指定JSON Schema生成结果。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">数据：</span></span><br><span class="line"><span class="string"><span class="subst">&#123;data&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">输出Schema：</span></span><br><span class="line"><span class="string"><span class="subst">&#123;schema&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">要求：</span></span><br><span class="line"><span class="string">1. 严格按照Schema格式输出</span></span><br><span class="line"><span class="string">2. 所有字段都必须填写</span></span><br><span class="line"><span class="string">3. 只输出JSON，不要其他内容</span></span><br><span class="line"><span class="string">4. 确保JSON格式正确可解析</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">示例输出：</span></span><br><span class="line"><span class="string">&#123;&#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 25, &quot;skills&quot;: [&quot;Python&quot;, &quot;ML&quot;]&#125;&#125;&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实际使用</span></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">resume_text = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">张三，男，28岁</span></span><br><span class="line"><span class="string">5年Python开发经验，3年机器学习经验</span></span><br><span class="line"><span class="string">精通PyTorch、TensorFlow</span></span><br><span class="line"><span class="string">参与过3个大型推荐系统项目</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">schema = &#123;</span><br><span class="line">    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;object&quot;</span>,</span><br><span class="line">    <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;name&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>&#125;,</span><br><span class="line">        <span class="string">&quot;age&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span>&#125;,</span><br><span class="line">        <span class="string">&quot;skills&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;array&quot;</span>, <span class="string">&quot;items&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span>&#125;&#125;,</span><br><span class="line">        <span class="string">&quot;experience_years&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span>&#125;,</span><br><span class="line">        <span class="string">&quot;projects&quot;</span>: &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">response = openai.ChatCompletion.create(</span><br><span class="line">    model=<span class="string">&quot;gpt-3.5-turbo&quot;</span>,</span><br><span class="line">    messages=[&#123;</span><br><span class="line">        <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, </span><br><span class="line">        <span class="string">&quot;content&quot;</span>: structured_output_prompt(resume_text, json.dumps(schema))</span><br><span class="line">    &#125;],</span><br><span class="line">    temperature=<span class="number">0</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">result = json.loads(response.choices[<span class="number">0</span>].message.content)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Prompt模板管理"><a href="#4-Prompt模板管理" class="headerlink" title="4. Prompt模板管理"></a>4. Prompt模板管理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PromptTemplate</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;可复用的Prompt模板管理&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.templates = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">self, name, template, variables</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;注册模板&quot;&quot;&quot;</span></span><br><span class="line">        self.templates[name] = &#123;</span><br><span class="line">            <span class="string">&quot;template&quot;</span>: template,</span><br><span class="line">            <span class="string">&quot;variables&quot;</span>: variables</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">render</span>(<span class="params">self, name, **kwargs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;渲染模板&quot;&quot;&quot;</span></span><br><span class="line">        template = self.templates[name]</span><br><span class="line">        </span><br><span class="line">        missing = <span class="built_in">set</span>(template[<span class="string">&quot;variables&quot;</span>]) - <span class="built_in">set</span>(kwargs.keys())</span><br><span class="line">        <span class="keyword">if</span> missing:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">f&quot;缺少变量: <span class="subst">&#123;missing&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> template[<span class="string">&quot;template&quot;</span>].<span class="built_in">format</span>(**kwargs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注册常用模板</span></span><br><span class="line">pm = PromptTemplate()</span><br><span class="line"></span><br><span class="line">pm.register(</span><br><span class="line">    name=<span class="string">&quot;code_explain&quot;</span>,</span><br><span class="line">    template=<span class="string">&quot;&quot;&quot;请解释以下&#123;language&#125;代码的功能：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">```&#123;language&#125;</span></span><br><span class="line"><span class="string">&#123;code&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>要求：</p>
+<ol>
+<li>先概述整体功能</li>
+<li>然后逐段解释关键逻辑</li>
+<li>最后说明输入输出格式</li>
+<li>指出潜在的改进点”””,<br> variables&#x3D;[“language”, “code”]<br>)</li>
+</ol>
+<p>pm.register(<br>    name&#x3D;”bug_fix”,<br>    template&#x3D;”””以下{language}代码存在bug：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;code&#125;</span><br></pre></td></tr></table></figure>
+
+<p>错误信息：{error_msg}</p>
+<p>请：</p>
+<ol>
+<li>分析bug原因</li>
+<li>提供修复方案</li>
+<li>解释为什么修复有效</li>
+<li>建议如何避免类似问题”””,<br> variables&#x3D;[“language”, “code”, “error_msg”]<br>)</li>
+</ol>
+<h1 id="使用模板"><a href="#使用模板" class="headerlink" title="使用模板"></a>使用模板</h1><p>prompt &#x3D; pm.render(<br>    “code_explain”,<br>    language&#x3D;”Python”,<br>    code&#x3D;”def quicksort(arr): return arr if len(arr)&lt;&#x3D;1 else quicksort([x for x in arr[1:] if x&lt;&#x3D;arr[0]]) + [arr[0]] + quicksort([x for x in arr[1:] if x&gt;arr[0]])”<br>)</p>
+<pre><code>
+## 5. Prompt优化策略
+
+&lt;pre class=&quot;mermaid&quot;&gt;graph TD
+    A[初始Prompt] --&gt; B[测试评估]
+    B --&gt; C&#123;效果如何?&#125;
+    C --&gt;|好| D[记录最佳版本]
+    C --&gt;|差| E[分析失败原因]
+    E --&gt; F[调整Prompt]
+    F --&gt; B
+    D --&gt; G[A/B测试不同版本]
+    G --&gt; H[选择最优版本]&lt;/pre&gt;
+
+### 优化检查清单
+
+| 维度 | 检查项 | 优化方向 |
+|------|--------|----------|
+| 清晰度 | 是否有歧义 | 更精确的措辞 |
+| 上下文 | 背景是否充分 | 补充领域知识 |
+| 示例 | Few-shot是否有效 | 增加多样性示例 |
+| 格式 | 输出是否一致 | 明确格式要求 |
+| 约束 | 是否有违规输出 | 添加负面约束 |
+| 温度 | 创造性vs准确性 | 调整temperature |
+
+## 总结
+
+Prompt Engineering是大模型时代的关键技能。通过掌握Few-Shot、CoT、ReAct等技巧，并建立模板管理和迭代优化流程，可以显著提升大模型的输出质量。这不是临时技巧，而是一门需要持续学习和实践的工程学科。
+</code></pre>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/LLM%E5%BA%94%E7%94%A8/">LLM应用</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/ChatGPT/">ChatGPT</a>
+    
+      <a href="/tags/Prompt-Engineering/">Prompt Engineering</a>
+    
+      <a href="/tags/LLM/">LLM</a>
+    
+      <a href="/tags/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/">提示工程</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/08/10/2022-08-10-Prompt-Engineering技巧与最佳实践/" target="_blank" title="Prompt Engineering技巧与最佳实践">https://www.coomatrix.com/2022/08/10/2022-08-10-Prompt-Engineering技巧与最佳实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/25/2022-08-25-LangChain%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%A1%86%E6%9E%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          LangChain大模型应用开发框架
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/05/2022-07-05-Stable-Diffusion%E5%AE%9E%E6%88%98%E4%B8%8ELoRA%E5%BE%AE%E8%B0%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Stable Diffusion实战与LoRA微调</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Prompt-Engineering%E6%8A%80%E5%B7%A7%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.</span> <span class="nav-text">Prompt Engineering技巧与最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Prompt-Engineering%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99"><span class="nav-number">1.1.</span> <span class="nav-text">1. Prompt Engineering的核心原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 基本原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Prompt%E6%9E%84%E6%88%90%E8%A6%81%E7%B4%A0"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 Prompt构成要素</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E6%8A%80%E5%B7%A7%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">2. 核心技巧详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%B0%91%E6%A0%B7%E6%9C%AC%E5%AD%A6%E4%B9%A0%EF%BC%88Few-Shot%EF%BC%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 少样本学习（Few-Shot）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Chain-of-Thought%EF%BC%88%E6%80%9D%E7%BB%B4%E9%93%BE%EF%BC%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 Chain-of-Thought（思维链）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Self-Consistency%EF%BC%88%E8%87%AA%E4%B8%80%E8%87%B4%E6%80%A7%EF%BC%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 Self-Consistency（自一致性）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7"><span class="nav-number">1.3.</span> <span class="nav-text">3. 高级技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-ReAct%E6%A1%86%E6%9E%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 ReAct框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 结构化输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Prompt%E6%A8%A1%E6%9D%BF%E7%AE%A1%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">4. Prompt模板管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.</span> <span class="nav-text">使用模板</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

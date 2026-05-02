@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>mixture of experts (moe)：大模型稀疏激活技术深度解析 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="概述Mixture of Experts (MoE) 混合专家模型是一种突破性的模型架构，通过稀疏激活机制实现大规模参数的同时保持高效计算。本文深入解析MoE的原理、实现和应用。 MoE核心原理密集模型 vs 稀疏模型flowchart TB     subgraph Dense Model 密集模型         D1[输入x] --&gt; DH[所有参数参与计算]         DH --&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mixture of Experts (MoE)：大模型稀疏激活技术深度解析">
+<meta property="og:url" content="https://www.coomatrix.com/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="概述Mixture of Experts (MoE) 混合专家模型是一种突破性的模型架构，通过稀疏激活机制实现大规模参数的同时保持高效计算。本文深入解析MoE的原理、实现和应用。 MoE核心原理密集模型 vs 稀疏模型flowchart TB     subgraph Dense Model 密集模型         D1[输入x] --&gt; DH[所有参数参与计算]         DH --&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+<meta property="article:published_time" content="2026-04-20T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:54:35.165Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="GPT-4">
+<meta property="article:tag" content="MoE">
+<meta property="article:tag" content="混合专家">
+<meta property="article:tag" content="稀疏激活">
+<meta property="article:tag" content="大模型架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2026-04-20-Mixture-of-Experts-MoE大模型稀疏激活技术深度解析" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1544256718-3bcf237f3974" rel="gallery_cmoopizsp00am9cv67274hj8s noopener">
+        <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Mixture of Experts (MoE)：大模型稀疏激活技术深度解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="article-date">
+	  <time datetime="2026-04-20T02:00:00.000Z" itemprop="datePublished">四月 20, 2026</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Mixture of Experts (MoE) 混合专家模型是一种突破性的模型架构，通过稀疏激活机制实现大规模参数的同时保持高效计算。本文深入解析MoE的原理、实现和应用。</p>
+<h2 id="MoE核心原理"><a href="#MoE核心原理" class="headerlink" title="MoE核心原理"></a>MoE核心原理</h2><h3 id="密集模型-vs-稀疏模型"><a href="#密集模型-vs-稀疏模型" class="headerlink" title="密集模型 vs 稀疏模型"></a>密集模型 vs 稀疏模型</h3><pre class="mermaid">flowchart TB
+    subgraph Dense Model 密集模型
+        D1[输入x] --> DH[所有参数参与计算]
+        DH --> DO1[输出]
+        
+        style DH fill:#ffcccc
+    end
+    
+    subgraph MoE 稀疏激活
+        M1[输入x] --> GATE[门控网络]
+        GATE --> TOPK[选择Top-K专家]
+        TOPK --> E1[专家1]
+        TOPK --> E3[专家3]
+        TOPK --> E8[专家8]
+        
+        E1 --> OUT1[加权输出]
+        E3 --> OUT1
+        E8 --> OUT1
+        
+        style E1 fill:#ccffcc
+        style E3 fill:#ccffcc
+        style E8 fill:#ccffcc
+        style TOPK fill:#ffffcc
+    end</pre>
+
+<h3 id="门控机制详解"><a href="#门控机制详解" class="headerlink" title="门控机制详解"></a>门控机制详解</h3><pre class="mermaid">sequenceDiagram
+    participant Input as 输入x
+    participant Gate as 门控网络
+    participant Experts as 专家网络
+    participant Out as 输出
+    
+    Input->>Gate: 发送输入x
+    Gate->>Gate: 计算专家权重
+    
+    Note over Gate: G(x) = Softmax(TopK(Wg · x))
+    
+    Gate->>Experts: 激活Top-K专家
+    Experts->>Out: 返回专家输出
+    Out->>Out: 加权求和
+    
+    Note over Out: y = Σ(g_i · E_i(x))</pre>
+
+<h2 id="MoE架构实现"><a href="#MoE架构实现" class="headerlink" title="MoE架构实现"></a>MoE架构实现</h2><h3 id="基础MoE层"><a href="#基础MoE层" class="headerlink" title="基础MoE层"></a>基础MoE层</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MoELayer</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Mixture of Experts层实现&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_experts, top_k=<span class="number">2</span>, dropout=<span class="number">0.0</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_experts = num_experts</span><br><span class="line">        self.top_k = top_k</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 专家网络</span></span><br><span class="line">        self.experts = nn.ModuleList([</span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.Linear(d_model, d_model * <span class="number">4</span>),</span><br><span class="line">                nn.GELU(),</span><br><span class="line">                nn.Dropout(dropout),</span><br><span class="line">                nn.Linear(d_model * <span class="number">4</span>, d_model)</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_experts)</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 门控网络</span></span><br><span class="line">        self.gate = nn.Linear(d_model, num_experts, bias=<span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 辅助损失参数</span></span><br><span class="line">        self.alpha = <span class="number">0.01</span>  <span class="comment"># 负载均衡损失权重</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            x: [batch_size, seq_len, d_model]</span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            output: [batch_size, seq_len, d_model]</span></span><br><span class="line"><span class="string">            aux_loss: 辅助损失（用于训练）</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        batch_size, seq_len, d_model = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 重塑为序列形式</span></span><br><span class="line">        x_flat = x.view(-<span class="number">1</span>, d_model)  <span class="comment"># [B*L, D]</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算门控权重</span></span><br><span class="line">        gate_logits = self.gate(x_flat)  <span class="comment"># [B*L, num_experts]</span></span><br><span class="line">        gate_weights = F.softmax(gate_logits, dim=-<span class="number">1</span>)  <span class="comment"># [B*L, num_experts]</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 选择Top-K专家</span></span><br><span class="line">        top_k_weights, top_k_indices = torch.topk(</span><br><span class="line">            gate_weights, self.top_k, dim=-<span class="number">1</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 归一化</span></span><br><span class="line">        top_k_weights = top_k_weights / top_k_weights.<span class="built_in">sum</span>(dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化输出</span></span><br><span class="line">        output = torch.zeros_like(x_flat)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 遍历每个token</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(batch_size * seq_len):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.top_k):</span><br><span class="line">                expert_idx = top_k_indices[i, j].item()</span><br><span class="line">                expert_weight = top_k_weights[i, j]</span><br><span class="line">                output[i] += expert_weight * self.experts[expert_idx](x_flat[i:i+<span class="number">1</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算辅助损失（负载均衡）</span></span><br><span class="line">        aux_loss = self._load_balancing_loss(gate_weights, top_k_indices)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output.view(batch_size, seq_len, d_model), aux_loss</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_load_balancing_loss</span>(<span class="params">self, gate_weights, top_k_indices</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        负载均衡损失：鼓励专家被均匀选择</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 计算每个专家被选中的频率</span></span><br><span class="line">        num_tokens = gate_weights.shape[<span class="number">0</span>]</span><br><span class="line">        expert_counts = torch.zeros(self.num_experts, device=x.device)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_tokens):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.top_k):</span><br><span class="line">                expert_idx = top_k_indices[i, j].item()</span><br><span class="line">                expert_counts[expert_idx] += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        expert_probs = expert_counts / (num_tokens * self.top_k)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算平均门控权重</span></span><br><span class="line">        avg_gate_prob = gate_weights.mean(dim=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 辅助损失 = Σ(pi · ai)</span></span><br><span class="line">        aux_loss = self.num_experts * torch.<span class="built_in">sum</span>(avg_gate_prob * expert_probs)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> aux_loss</span><br></pre></td></tr></table></figure>
+
+<h3 id="Switch-Transformer实现"><a href="#Switch-Transformer实现" class="headerlink" title="Switch Transformer实现"></a>Switch Transformer实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SwitchTransformerLayer</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Switch Transformer层 - MoE的简化版本&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_experts=<span class="number">8</span>, capacity_factor=<span class="number">1.25</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.capacity_factor = capacity_factor</span><br><span class="line">        self.num_experts = num_experts</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Switch层：每个token只路由到一个专家</span></span><br><span class="line">        self.experts = nn.ModuleList([</span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.Linear(d_model, d_model * <span class="number">2</span>),</span><br><span class="line">                nn.GELU(),</span><br><span class="line">                nn.Linear(d_model * <span class="number">2</span>, d_model)</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_experts)</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        self.router = nn.Linear(d_model, num_experts)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        batch_size, seq_len, d_model = x.shape</span><br><span class="line">        x_flat = x.reshape(-<span class="number">1</span>, d_model)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 路由决策</span></span><br><span class="line">        router_probs = F.softmax(self.router(x_flat), dim=-<span class="number">1</span>)</span><br><span class="line">        routing_weights, expert_indices = torch.<span class="built_in">max</span>(router_probs, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算容量</span></span><br><span class="line">        capacity = <span class="built_in">int</span>(self.capacity_factor * <span class="built_in">len</span>(x_flat) / self.num_experts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化输出</span></span><br><span class="line">        output = torch.zeros_like(x_flat)</span><br><span class="line">        expert_capacity = &#123;i: <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.num_experts)&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分发到专家</span></span><br><span class="line">        <span class="keyword">for</span> i, (expert_idx, weight) <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">zip</span>(expert_indices, routing_weights)):</span><br><span class="line">            <span class="keyword">if</span> expert_capacity[expert_idx.item()] &lt; capacity:</span><br><span class="line">                output[i] = self.experts[expert_idx](x_flat[i]) * weight</span><br><span class="line">                expert_capacity[expert_idx.item()] += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output.reshape(batch_size, seq_len, d_model)</span><br></pre></td></tr></table></figure>
+
+<h2 id="MoE与Transformer结合"><a href="#MoE与Transformer结合" class="headerlink" title="MoE与Transformer结合"></a>MoE与Transformer结合</h2><h3 id="完整MoE-Transformer架构"><a href="#完整MoE-Transformer架构" class="headerlink" title="完整MoE Transformer架构"></a>完整MoE Transformer架构</h3><pre class="mermaid">flowchart TB
+    subgraph MoE Transformer Block
+        X1[输入x] --> LN1[LayerNorm]
+        LN1 --> ATTN[多头注意力]
+        ATTN --> ADD1[残差连接]
+        ADD1 --> LN2[LayerNorm]
+        LN2 --> MOE[MoE FFN层]
+        MOE --> ADD2[残差连接]
+        ADD2 --> Y1[输出y]
+    end
+    
+    subgraph MoE FFN详细
+        MOE --> GATE[门控路由]
+        GATE --> ROUTING[路由决策]
+        ROUTING --> E1[专家1]
+        ROUTING --> E2[专家2]
+        ROUTING --> EN[专家N]
+        
+        E1 --> SUM1[加权求和]
+        E2 --> SUM1
+        EN --> SUM1
+    end</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MoETransformerBlock</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;MoE增强的Transformer块&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model, num_heads, num_experts, top_k=<span class="number">2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.attention = nn.MultiheadAttention(d_model, num_heads)</span><br><span class="line">        self.moe = MoELayer(d_model, num_experts, top_k)</span><br><span class="line">        self.norm1 = nn.LayerNorm(d_model)</span><br><span class="line">        self.norm2 = nn.LayerNorm(d_model)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 自注意力</span></span><br><span class="line">        attn_out, _ = self.attention(x, x, x)</span><br><span class="line">        x = self.norm1(x + attn_out)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># MoE前馈层</span></span><br><span class="line">        moe_out, aux_loss = self.moe(x)</span><br><span class="line">        x = self.norm2(x + moe_out)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x, aux_loss</span><br></pre></td></tr></table></figure>
+
+<h2 id="主流MoE模型对比"><a href="#主流MoE模型对比" class="headerlink" title="主流MoE模型对比"></a>主流MoE模型对比</h2><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>参数量</th>
+<th>激活参数</th>
+<th>专家数</th>
+<th>Top-K</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Switch Transformer</td>
+<td>1.6T</td>
+<td>6B</td>
+<td>2048</td>
+<td>1</td>
+<td>稀疏路由</td>
+</tr>
+<tr>
+<td>GLaM</td>
+<td>1.2T</td>
+<td>97B</td>
+<td>64</td>
+<td>2</td>
+<td>双向上下文</td>
+</tr>
+<tr>
+<td>ST-MoE</td>
+<td>269B</td>
+<td>12B</td>
+<td>32</td>
+<td>-</td>
+<td>稳定训练</td>
+</tr>
+<tr>
+<td>Mixtral 8x7B</td>
+<td>46.7B</td>
+<td>12.9B</td>
+<td>8</td>
+<td>2</td>
+<td>开源MoE</td>
+</tr>
+<tr>
+<td>DBRX</td>
+<td>132B</td>
+<td>36B</td>
+<td>16</td>
+<td>4</td>
+<td>Transformer-XL</td>
+</tr>
+<tr>
+<td>GPT-4</td>
+<td>~1.8T</td>
+<td>~100B</td>
+<td>8</td>
+<td>2</td>
+<td>MoE架构</td>
+</tr>
+</tbody></table>
+<h2 id="MoE训练挑战与解决方案"><a href="#MoE训练挑战与解决方案" class="headerlink" title="MoE训练挑战与解决方案"></a>MoE训练挑战与解决方案</h2><pre class="mermaid">flowchart TB
+    subgraph 训练挑战
+        LOAD[负载不均衡]
+        COMM[通信开销]
+        EXPERT[专家崩溃]
+        LOSS[损失波动]
+    end
+    
+    subgraph 解决方案
+        LOAD --> AUX[辅助损失]
+        LOAD --> CAP[容量限制]
+        
+        COMM --> ALLP[All-to-All优化]
+        COMM --> PIPELINE[流水线并行]
+        
+        EXPERT --> RAND[随机路由]
+        EXPERT --> NOISE[噪声辅助]
+        
+        LOSS --> WARM[预热+衰减]
+    end</pre>
+
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>训练FLOPs</th>
+<th>推理FLOPs</th>
+<th>内存占用</th>
+<th>质量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dense 530B</td>
+<td>1.0x</td>
+<td>1.0x</td>
+<td>1.0x</td>
+<td>1.0x</td>
+</tr>
+<tr>
+<td>Switch-L</td>
+<td>0.33x</td>
+<td>0.012x</td>
+<td>0.33x</td>
+<td>0.95x</td>
+</tr>
+<tr>
+<td>GLaM</td>
+<td>0.50x</td>
+<td>0.10x</td>
+<td>0.50x</td>
+<td>1.0x</td>
+</tr>
+<tr>
+<td>Mixtral 8x7B</td>
+<td>0.28x</td>
+<td>0.12x</td>
+<td>0.28x</td>
+<td>0.98x</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre class="mermaid">mindmap
+  root((MoE架构))
+    核心组件
+      门控网络
+      专家网络
+      Top-K路由
+    训练技术
+      负载均衡
+      容量限制
+      辅助损失
+    部署优化
+      模型并行
+      通信优化
+      专家缓存
+    应用场景
+      超大语言模型
+      多模态模型
+      特定领域专家</pre>
+
+<p>MoE架构通过稀疏激活机制，使得训练万亿参数级别的模型成为可能，是大模型时代的关键技术之一。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/">AI大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/GPT-4/">GPT-4</a>
+    
+      <a href="/tags/MoE/">MoE</a>
+    
+      <a href="/tags/%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6/">混合专家</a>
+    
+      <a href="/tags/%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB/">稀疏激活</a>
+    
+      <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/">大模型架构</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2026/04/20/2026-04-20-Mixture-of-Experts-MoE大模型稀疏激活技术深度解析/" target="_blank" title="Mixture of Experts (MoE)：大模型稀疏激活技术深度解析">https://www.coomatrix.com/2026/04/20/2026-04-20-Mixture-of-Experts-MoE大模型稀疏激活技术深度解析/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/04/25/2026-04-25-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95-%E4%BB%8EGPT-4V%E5%88%B0GPT-4o/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          多模态大模型最新进展：从GPT-4V到GPT-4o的演进
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/04/05/2026-04-05-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD-AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C%E7%9A%84%E6%96%B0%E8%8C%83%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">世界模型与具身智能：AI理解物理世界的新范式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoE%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">MoE核心原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%9B%86%E6%A8%A1%E5%9E%8B-vs-%E7%A8%80%E7%96%8F%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">密集模型 vs 稀疏模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%A8%E6%8E%A7%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3"><span class="nav-number">2.2.</span> <span class="nav-text">门控机制详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoE%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">MoE架构实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80MoE%E5%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">基础MoE层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Switch-Transformer%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">Switch Transformer实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoE%E4%B8%8ETransformer%E7%BB%93%E5%90%88"><span class="nav-number">4.</span> <span class="nav-text">MoE与Transformer结合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4MoE-Transformer%E6%9E%B6%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">完整MoE Transformer架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%B5%81MoE%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94"><span class="nav-number">5.</span> <span class="nav-text">主流MoE模型对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoE%E8%AE%AD%E7%BB%83%E6%8C%91%E6%88%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">6.</span> <span class="nav-text">MoE训练挑战与解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">7.</span> <span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

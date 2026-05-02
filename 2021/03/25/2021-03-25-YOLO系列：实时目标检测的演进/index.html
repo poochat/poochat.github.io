@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>yolo系列：实时目标检测的演进 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="YOLO目标检测算法发展历程与原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLO系列：实时目标检测的演进">
+<meta property="og:url" content="https://www.coomatrix.com/2021/03/25/2021-03-25-YOLO%E7%B3%BB%E5%88%97%EF%BC%9A%E5%AE%9E%E6%97%B6%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%9A%84%E6%BC%94%E8%BF%9B/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="YOLO目标检测算法发展历程与原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<meta property="article:published_time" content="2021-03-25T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:34:36.532Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="目标检测">
+<meta property="article:tag" content="YOLO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-03-25-YOLO系列：实时目标检测的演进" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1551288049-bebda4e38f71" rel="gallery_cmoopizr7003w9cv656ie1obz noopener">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLO系列：实时目标检测的演进
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/03/25/2021-03-25-YOLO%E7%B3%BB%E5%88%97%EF%BC%9A%E5%AE%9E%E6%97%B6%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%9A%84%E6%BC%94%E8%BF%9B/" class="article-date">
+	  <time datetime="2021-03-25T02:00:00.000Z" itemprop="datePublished">三月 25, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>YOLO（You Only Look Once）是实时目标检测领域的里程碑式算法。从2016年首次提出到如今的YOLOv5&#x2F;YOLOX，该系列算法经历了多次重大革新。本文将系统梳理YOLO的发展历程和核心技术。</p>
+<h2 id="YOLO核心原理"><a href="#YOLO核心原理" class="headerlink" title="YOLO核心原理"></a>YOLO核心原理</h2><p>YOLO将目标检测任务重新定义为单一的回归问题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入图像 → CNN → 输出(边界框+类别+置信度)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOLoss</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLO损失函数&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">80</span>, grid_size=<span class="number">13</span>, num_boxes=<span class="number">5</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.grid_size = grid_size</span><br><span class="line">        self.num_boxes = num_boxes</span><br><span class="line">        </span><br><span class="line">        self.lambda_coord = <span class="number">5.0</span></span><br><span class="line">        self.lambda_noobj = <span class="number">0.5</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, predictions, targets</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            predictions: 模型预测 (batch, grid*grid*boxes, 5+num_classes)</span></span><br><span class="line"><span class="string">            targets: 真实标签</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        batch_size = predictions.size(<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 重塑预测</span></span><br><span class="line">        predictions = predictions.view(batch_size, self.grid_size, </span><br><span class="line">                                       self.grid_size, self.num_boxes, </span><br><span class="line">                                       <span class="number">5</span> + self.num_classes)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 提取各部分</span></span><br><span class="line">        pred_box = predictions[..., :<span class="number">4</span>]  <span class="comment"># 边界框</span></span><br><span class="line">        pred_conf = predictions[..., <span class="number">4</span>]   <span class="comment"># 置信度</span></span><br><span class="line">        pred_cls = predictions[..., <span class="number">5</span>:]   <span class="comment"># 类别</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算各项损失</span></span><br><span class="line">        box_loss = self._compute_box_loss(pred_box, targets)</span><br><span class="line">        conf_loss = self._compute_conf_loss(pred_conf, targets)</span><br><span class="line">        cls_loss = self._compute_cls_loss(pred_cls, targets)</span><br><span class="line">        </span><br><span class="line">        total_loss = (self.lambda_coord * box_loss + </span><br><span class="line">                     conf_loss + </span><br><span class="line">                     cls_loss)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> total_loss</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_compute_box_loss</span>(<span class="params">self, pred_box, targets</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;边界框损失（MSELoss）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 简化的box loss计算</span></span><br><span class="line">        mask = targets[..., <span class="number">4</span>] &gt; <span class="number">0</span>  <span class="comment"># 有目标的网格</span></span><br><span class="line">        <span class="keyword">if</span> mask.<span class="built_in">sum</span>() == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> torch.tensor(<span class="number">0.0</span>, device=pred_box.device)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nn.MSELoss(reduction=<span class="string">&#x27;sum&#x27;</span>)(pred_box[mask], targets[mask][..., :<span class="number">4</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_compute_conf_loss</span>(<span class="params">self, pred_conf, targets</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;置信度损失&quot;&quot;&quot;</span></span><br><span class="line">        obj_mask = targets[..., <span class="number">4</span>] &gt; <span class="number">0</span></span><br><span class="line">        noobj_mask = targets[..., <span class="number">4</span>] == <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        obj_loss = nn.MSELoss(reduction=<span class="string">&#x27;sum&#x27;</span>)(</span><br><span class="line">            pred_conf[obj_mask], targets[obj_mask][..., <span class="number">4</span>]</span><br><span class="line">        ) <span class="keyword">if</span> obj_mask.<span class="built_in">sum</span>() &gt; <span class="number">0</span> <span class="keyword">else</span> torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">        </span><br><span class="line">        noobj_loss = self.lambda_noobj * nn.MSELoss(reduction=<span class="string">&#x27;sum&#x27;</span>)(</span><br><span class="line">            pred_conf[noobj_mask], targets[noobj_mask][..., <span class="number">4</span>]</span><br><span class="line">        ) <span class="keyword">if</span> noobj_mask.<span class="built_in">sum</span>() &gt; <span class="number">0</span> <span class="keyword">else</span> torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> obj_loss + noobj_loss</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_compute_cls_loss</span>(<span class="params">self, pred_cls, targets</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;类别损失&quot;&quot;&quot;</span></span><br><span class="line">        mask = targets[..., <span class="number">4</span>] &gt; <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> mask.<span class="built_in">sum</span>() == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> torch.tensor(<span class="number">0.0</span>, device=pred_cls.device)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nn.CrossEntropyLoss(reduction=<span class="string">&#x27;sum&#x27;</span>)(</span><br><span class="line">            pred_cls[mask].view(-<span class="number">1</span>, self.num_classes),</span><br><span class="line">            targets[mask][..., <span class="number">5</span>].long().view(-<span class="number">1</span>)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<h2 id="YOLOv3：多尺度检测"><a href="#YOLOv3：多尺度检测" class="headerlink" title="YOLOv3：多尺度检测"></a>YOLOv3：多尺度检测</h2><p>YOLOv3引入FPN进行多尺度预测：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOv3Backbone</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLOv3骨干网络（Darknet-53）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.stem = self._make_conv(<span class="number">3</span>, <span class="number">32</span>, <span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Darknet-53主体</span></span><br><span class="line">        self.layer1 = self._make_residual(<span class="number">32</span>, <span class="number">64</span>, <span class="number">1</span>)</span><br><span class="line">        self.layer2 = self._make_residual(<span class="number">64</span>, <span class="number">128</span>, <span class="number">2</span>)</span><br><span class="line">        self.layer3 = self._make_residual(<span class="number">128</span>, <span class="number">256</span>, <span class="number">8</span>)</span><br><span class="line">        self.layer4 = self._make_residual(<span class="number">256</span>, <span class="number">512</span>, <span class="number">8</span>)</span><br><span class="line">        self.layer5 = self._make_residual(<span class="number">512</span>, <span class="number">1024</span>, <span class="number">4</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_conv</span>(<span class="params">self, in_ch, out_ch, kernel, stride</span>):</span><br><span class="line">        <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_ch, out_ch, kernel, stride, kernel//<span class="number">2</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(out_ch),</span><br><span class="line">            nn.LeakyReLU(<span class="number">0.1</span>)</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_residual</span>(<span class="params">self, in_ch, out_ch, num_blocks</span>):</span><br><span class="line">        layers = [self._make_conv(in_ch, out_ch, <span class="number">3</span>, <span class="number">2</span>)]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_blocks):</span><br><span class="line">            layers.append(self._make_conv(out_ch, out_ch, <span class="number">1</span>, <span class="number">1</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nn.Sequential(*layers)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        c1 = self.layer3(self.layer2(self.layer1(self.stem(x))))</span><br><span class="line">        c2 = self.layer4(c1)</span><br><span class="line">        c3 = self.layer5(c2)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> c1, c2, c3</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOv3Neck</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLOv3的FPN颈部网络&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 上采样分支</span></span><br><span class="line">        self.up1 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">1024</span>, <span class="number">512</span>, <span class="number">1</span>),</span><br><span class="line">            nn.Upsample(scale_factor=<span class="number">2</span>, mode=<span class="string">&#x27;nearest&#x27;</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.conv1 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">768</span>, <span class="number">512</span>, <span class="number">1</span>),</span><br><span class="line">            nn.Conv2d(<span class="number">512</span>, <span class="number">1024</span>, <span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.Conv2d(<span class="number">1024</span>, <span class="number">512</span>, <span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.up2 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">512</span>, <span class="number">256</span>, <span class="number">1</span>),</span><br><span class="line">            nn.Upsample(scale_factor=<span class="number">2</span>, mode=<span class="string">&#x27;nearest&#x27;</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.conv2 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">384</span>, <span class="number">256</span>, <span class="number">1</span>),</span><br><span class="line">            nn.Conv2d(<span class="number">256</span>, <span class="number">512</span>, <span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.Conv2d(<span class="number">512</span>, <span class="number">256</span>, <span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOv3Head</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLOv3检测头&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">80</span>, anchors_per_scale=<span class="number">3</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.num_anchors = anchors_per_scale</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 三个尺度的检测头</span></span><br><span class="line">        self.detect1 = self._make_detect_layer(<span class="number">512</span>, num_classes)</span><br><span class="line">        self.detect2 = self._make_detect_layer(<span class="number">256</span>, num_classes)</span><br><span class="line">        self.detect3 = self._make_detect_layer(<span class="number">128</span>, num_classes)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_detect_layer</span>(<span class="params">self, in_channels, num_classes</span>):</span><br><span class="line">        <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels, <span class="number">1024</span>, <span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.Conv2d(<span class="number">1024</span>, <span class="number">255</span>, <span class="number">1</span>)  <span class="comment"># 255 = 3*(4+1+80)</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, features</span>):</span><br><span class="line">        <span class="comment"># features: [f1, f2, f3] 三个尺度特征</span></span><br><span class="line">        out1 = self.detect1(features[<span class="number">2</span>])  <span class="comment"># 大目标</span></span><br><span class="line">        out2 = self.detect2(features[<span class="number">1</span>])  <span class="comment"># 中目标</span></span><br><span class="line">        out3 = self.detect3(features[<span class="number">0</span>])  <span class="comment"># 小目标</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> [out1, out2, out3]</span><br></pre></td></tr></table></figure>
+
+<h2 id="YOLOv4：Bag-of-Freebies"><a href="#YOLOv4：Bag-of-Freebies" class="headerlink" title="YOLOv4：Bag of Freebies"></a>YOLOv4：Bag of Freebies</h2><p>YOLOv4引入了大量训练技巧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOv4Loss</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLOv4损失函数组合&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.ciou_loss = CIoULoss()</span><br><span class="line">        self.focal_loss = FocalLoss()</span><br><span class="line">        self.bce_loss = nn.BCEWithLogitsLoss(reduction=<span class="string">&#x27;sum&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute</span>(<span class="params">self, pred_boxes, pred_conf, pred_cls,</span></span><br><span class="line"><span class="params">                target_boxes, target_conf, target_cls</span>):</span><br><span class="line">        <span class="comment"># CIoU边界框损失</span></span><br><span class="line">        box_loss = self.ciou_loss(pred_boxes, target_boxes)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Focal Loss处理类别不平衡</span></span><br><span class="line">        cls_loss = self.focal_loss(pred_cls, pred_conf, target_cls)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 置信度损失</span></span><br><span class="line">        conf_loss = self.bce_loss(pred_conf, target_conf)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> box_loss + cls_loss + conf_loss</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CIoULoss</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Complete IoU Loss&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, pred, target</span>):</span><br><span class="line">        <span class="comment"># 计算IoU</span></span><br><span class="line">        iou = self._calculate_iou(pred, target)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算中心点距离</span></span><br><span class="line">        pred_center = self._get_center(pred)</span><br><span class="line">        target_center = self._get_center(target)</span><br><span class="line">        center_distance = torch.<span class="built_in">sum</span>((pred_center - target_center) ** <span class="number">2</span>, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算最小包围框</span></span><br><span class="line">        enclose = self._get_enclose(pred, target)</span><br><span class="line">        enclose_diagonal = torch.<span class="built_in">sum</span>(enclose ** <span class="number">2</span>, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算CIoU</span></span><br><span class="line">        ciou = iou - (center_distance / (enclose_diagonal + <span class="number">1e-7</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> (<span class="number">1</span> - ciou).mean()</span><br></pre></td></tr></table></figure>
+
+<h2 id="YOLOX：Anchor-Free时代"><a href="#YOLOX：Anchor-Free时代" class="headerlink" title="YOLOX：Anchor-Free时代"></a>YOLOX：Anchor-Free时代</h2><p>YOLOX去掉锚框，简化检测流程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOXHead</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLOX无锚框检测头&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">80</span>, in_channels=<span class="number">256</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 共享卷积</span></span><br><span class="line">        self.cls_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels, in_channels, <span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Conv2d(in_channels, num_classes, <span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.reg_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels, in_channels, <span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Conv2d(in_channels, <span class="number">4</span>, <span class="number">1</span>)  <span class="comment"># 直接预测边界框</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.obj_conv = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels, in_channels, <span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.Conv2d(in_channels, <span class="number">1</span>, <span class="number">1</span>)  <span class="comment"># 置信度</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 预测类别（SimOTA需要）</span></span><br><span class="line">        cls_output = self.cls_conv(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预测边界框</span></span><br><span class="line">        bbox_output = self.reg_conv(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预测置信度</span></span><br><span class="line">        obj_output = self.obj_conv(x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> cls_output, bbox_output, obj_output</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimOTA</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;SimOTA标签分配&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, pred_cls, pred_box, gt_box, gt_label, fg_mask</span>):</span><br><span class="line">        <span class="comment"># 计算匹配成本</span></span><br><span class="line">        cost = (self._calc_cls_cost(pred_cls, gt_label, fg_mask) +</span><br><span class="line">                self._calc_reg_cost(pred_box, gt_box, fg_mask) +</span><br><span class="line">                self._calc_iou_cost(pred_box, gt_box, fg_mask))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Top-k选择</span></span><br><span class="line">        k = <span class="built_in">min</span>(<span class="number">10</span>, fg_mask.<span class="built_in">sum</span>())</span><br><span class="line">        matching_matrix = self._dynamic_k_matching(cost, gt_box, k)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> matching_matrix</span><br></pre></td></tr></table></figure>
+
+<h2 id="模型推理"><a href="#模型推理" class="headerlink" title="模型推理"></a>模型推理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">yolo_inference</span>(<span class="params">model, image, conf_thresh=<span class="number">0.5</span>, iou_thresh=<span class="number">0.5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLO推理流程&quot;&quot;&quot;</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 预处理</span></span><br><span class="line">    input_tensor = preprocess_image(image, target_size=<span class="number">416</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        predictions = model(input_tensor)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 后处理</span></span><br><span class="line">    boxes, scores, class_ids = postprocess(</span><br><span class="line">        predictions, </span><br><span class="line">        conf_threshold=conf_thresh,</span><br><span class="line">        iou_threshold=iou_thresh</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> boxes, scores, class_ids</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">postprocess</span>(<span class="params">predictions, conf_threshold=<span class="number">0.5</span>, iou_threshold=<span class="number">0.5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;预测后处理&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 过滤低置信度框</span></span><br><span class="line">    mask = predictions[..., <span class="number">4</span>] &gt; conf_threshold</span><br><span class="line">    </span><br><span class="line">    boxes = predictions[mask][..., :<span class="number">4</span>]</span><br><span class="line">    scores = predictions[mask][..., <span class="number">4</span>]</span><br><span class="line">    class_ids = predictions[mask][..., <span class="number">5</span>:].argmax(dim=-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># NMS</span></span><br><span class="line">    boxes = xywh2xyxy(boxes)</span><br><span class="line">    keep = torchvision.ops.nms(boxes, scores, iou_threshold)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> boxes[keep], scores[keep], class_ids[keep]</span><br></pre></td></tr></table></figure>
+
+<h2 id="YOLO各版本对比"><a href="#YOLO各版本对比" class="headerlink" title="YOLO各版本对比"></a>YOLO各版本对比</h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>mAP@50</th>
+<th>FPS</th>
+<th>参数量</th>
+<th>主要创新</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YOLOv3</td>
+<td>57.9</td>
+<td>35</td>
+<td>62M</td>
+<td>多尺度、FPN</td>
+</tr>
+<tr>
+<td>YOLOv4</td>
+<td>62.8</td>
+<td>65</td>
+<td>27M</td>
+<td>CSPDarknet、Mish</td>
+</tr>
+<tr>
+<td>YOLOv5</td>
+<td>66.9</td>
+<td>140</td>
+<td>7.2M</td>
+<td>AutoAnchor、Data Aug</td>
+</tr>
+<tr>
+<td>YOLOX</td>
+<td>67.2</td>
+<td>68</td>
+<td>9.0M</td>
+<td>Anchor-Free、SimOTA</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>YOLO系列从最初的简单设计发展到如今的高性能实时检测器，经历了anchor-based到anchor-free的转变，引入了大量训练技巧和优化策略，在工业界得到广泛应用。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1804.02767">YOLOv3: An Incremental Improvement</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2004.10934">YOLOv4: Optimal Speed and Accuracy of Object Detection</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.08430">YOLOX: Exceeding YOLO Series in 2021</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
+    
+      <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+    
+      <a href="/tags/YOLO/">YOLO</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/03/25/2021-03-25-YOLO系列：实时目标检测的演进/" target="_blank" title="YOLO系列：实时目标检测的演进">https://www.coomatrix.com/2021/03/25/2021-03-25-YOLO系列：实时目标检测的演进/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/04/05/2021-04-05-%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%EF%BC%9A%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E4%B8%8E%E5%8A%A0%E9%80%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          模型量化：深度学习模型压缩与加速
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/03/15/2021-03-15-%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F%EF%BC%9A%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E4%B8%8E%E7%9F%A5%E8%AF%86%E8%BF%81%E7%A7%BB/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">知识蒸馏：模型压缩与知识迁移</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">YOLO核心原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLOv3%EF%BC%9A%E5%A4%9A%E5%B0%BA%E5%BA%A6%E6%A3%80%E6%B5%8B"><span class="nav-number">3.</span> <span class="nav-text">YOLOv3：多尺度检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLOv4%EF%BC%9ABag-of-Freebies"><span class="nav-number">4.</span> <span class="nav-text">YOLOv4：Bag of Freebies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLOX%EF%BC%9AAnchor-Free%E6%97%B6%E4%BB%A3"><span class="nav-number">5.</span> <span class="nav-text">YOLOX：Anchor-Free时代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">模型推理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO%E5%90%84%E7%89%88%E6%9C%AC%E5%AF%B9%E6%AF%94"><span class="nav-number">7.</span> <span class="nav-text">YOLO各版本对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">9.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

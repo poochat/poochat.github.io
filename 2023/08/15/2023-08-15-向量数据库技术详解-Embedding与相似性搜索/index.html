@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>向量数据库技术详解：embedding与相似性搜索 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言向量数据库是2023年AI基础设施领域最热门的技术之一。随着大语言模型和RAG系统的快速发展，高效的向量存储和检索成为关键能力。本文将全面介绍向量数据库的核心技术、主流产品对比以及工程实践。 向量Embedding基础1. 什么是向量Embedding向量Embedding是将高维稀疏数据（如文本、图像）映射到低维稠密向量的技术。相似的对象在向量空间中距离更近。 123456789101112">
+<meta property="og:type" content="article">
+<meta property="og:title" content="向量数据库技术详解：Embedding与相似性搜索">
+<meta property="og:url" content="https://www.coomatrix.com/2023/08/15/2023-08-15-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3-Embedding%E4%B8%8E%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%90%9C%E7%B4%A2/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言向量数据库是2023年AI基础设施领域最热门的技术之一。随着大语言模型和RAG系统的快速发展，高效的向量存储和检索成为关键能力。本文将全面介绍向量数据库的核心技术、主流产品对比以及工程实践。 向量Embedding基础1. 什么是向量Embedding向量Embedding是将高维稀疏数据（如文本、图像）映射到低维稠密向量的技术。相似的对象在向量空间中距离更近。 123456789101112">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1518186285589-2f7649de83e0">
+<meta property="article:published_time" content="2023-08-15T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:02.513Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="向量数据库">
+<meta property="article:tag" content="Embedding">
+<meta property="article:tag" content="Pinecone">
+<meta property="article:tag" content="Milvus">
+<meta property="article:tag" content="FAISS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1518186285589-2f7649de83e0">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-08-15-向量数据库技术详解-Embedding与相似性搜索" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1518186285589-2f7649de83e0" rel="gallery_cmoopizrm00769cv601pbeedh noopener">
+        <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      向量数据库技术详解：Embedding与相似性搜索
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/08/15/2023-08-15-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3-Embedding%E4%B8%8E%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%90%9C%E7%B4%A2/" class="article-date">
+	  <time datetime="2023-08-15T01:00:00.000Z" itemprop="datePublished">八月 15, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>向量数据库是2023年AI基础设施领域最热门的技术之一。随着大语言模型和RAG系统的快速发展，高效的向量存储和检索成为关键能力。本文将全面介绍向量数据库的核心技术、主流产品对比以及工程实践。</p>
+<h2 id="向量Embedding基础"><a href="#向量Embedding基础" class="headerlink" title="向量Embedding基础"></a>向量Embedding基础</h2><h3 id="1-什么是向量Embedding"><a href="#1-什么是向量Embedding" class="headerlink" title="1. 什么是向量Embedding"></a>1. 什么是向量Embedding</h3><p>向量Embedding是将高维稀疏数据（如文本、图像）映射到低维稠密向量的技术。相似的对象在向量空间中距离更近。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Union</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingModel</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Embedding模型封装</span></span><br><span class="line"><span class="string">    支持多种Embedding服务</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, provider=<span class="string">&quot;openai&quot;</span>, model=<span class="string">&quot;text-embedding-ada-002&quot;</span></span>):</span><br><span class="line">        self.provider = provider</span><br><span class="line">        self.model = model</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> provider == <span class="string">&quot;openai&quot;</span>:</span><br><span class="line">            <span class="keyword">import</span> openai</span><br><span class="line">            self.client = openai.Embedding</span><br><span class="line">        <span class="keyword">elif</span> provider == <span class="string">&quot;huggingface&quot;</span>:</span><br><span class="line">            <span class="keyword">from</span> sentence_transformers <span class="keyword">import</span> SentenceTransformer</span><br><span class="line">            self.model = SentenceTransformer(model)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">embed</span>(<span class="params">self, text: <span class="built_in">str</span></span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        单文本嵌入</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.provider == <span class="string">&quot;openai&quot;</span>:</span><br><span class="line">            response = self.client.create(</span><br><span class="line">                <span class="built_in">input</span>=text,</span><br><span class="line">                model=self.model</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> np.array(response[<span class="string">&#x27;data&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;embedding&#x27;</span>])</span><br><span class="line">        <span class="keyword">elif</span> self.provider == <span class="string">&quot;huggingface&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> self.model.encode(text)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">embed_batch</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        批量嵌入</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.provider == <span class="string">&quot;openai&quot;</span>:</span><br><span class="line">            response = self.client.create(</span><br><span class="line">                <span class="built_in">input</span>=texts,</span><br><span class="line">                model=self.model</span><br><span class="line">            )</span><br><span class="line">            embeddings = [item[<span class="string">&#x27;embedding&#x27;</span>] <span class="keyword">for</span> item <span class="keyword">in</span> response[<span class="string">&#x27;data&#x27;</span>]]</span><br><span class="line">            <span class="keyword">return</span> np.array(embeddings)</span><br><span class="line">        <span class="keyword">elif</span> self.provider == <span class="string">&quot;huggingface&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> self.model.encode(texts)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_similarity</span>(<span class="params">self, emb1: np.ndarray, emb2: np.ndarray</span>) -&gt; <span class="built_in">float</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        计算两个向量的相似度</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 余弦相似度</span></span><br><span class="line">        <span class="keyword">return</span> np.dot(emb1, emb2) / (np.linalg.norm(emb1) * np.linalg.norm(emb2))</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-常见Embedding模型"><a href="#2-常见Embedding模型" class="headerlink" title="2. 常见Embedding模型"></a>2. 常见Embedding模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingModels</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    常用Embedding模型对比</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    MODELS = &#123;</span><br><span class="line">        <span class="comment"># OpenAI</span></span><br><span class="line">        <span class="string">&quot;text-embedding-ada-002&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dims&quot;</span>: <span class="number">1536</span>,</span><br><span class="line">            <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;openai&quot;</span>,</span><br><span class="line">            <span class="string">&quot;context_length&quot;</span>: <span class="number">8191</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;最强通用模型&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment"># HuggingFace</span></span><br><span class="line">        <span class="string">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dims&quot;</span>: <span class="number">384</span>,</span><br><span class="line">            <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;轻量高效，适合中文&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;moka-ai/m3e-base&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dims&quot;</span>: <span class="number">768</span>,</span><br><span class="line">            <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;中文优化，M3E&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment"># BGE</span></span><br><span class="line">        <span class="string">&quot;BAAI/bge-large-zh&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dims&quot;</span>: <span class="number">1024</span>,</span><br><span class="line">            <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;中文BGE，大型模型&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="comment"># Cohere</span></span><br><span class="line">        <span class="string">&quot;embed-english-v3.0&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dims&quot;</span>: <span class="number">1024</span>,</span><br><span class="line">            <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;cohere&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;英文专用&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="相似性搜索算法"><a href="#相似性搜索算法" class="headerlink" title="相似性搜索算法"></a>相似性搜索算法</h2><h3 id="1-精确搜索-vs-近似搜索"><a href="#1-精确搜索-vs-近似搜索" class="headerlink" title="1. 精确搜索 vs 近似搜索"></a>1. 精确搜索 vs 近似搜索</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ExactSearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    精确最近邻搜索</span></span><br><span class="line"><span class="string">    适用于小规模数据集</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim: <span class="built_in">int</span></span>):</span><br><span class="line">        self.dim = dim</span><br><span class="line">        self.vectors = []</span><br><span class="line">        self.metadata = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self, vectors: np.ndarray, metadata: <span class="type">List</span>[<span class="built_in">dict</span>]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        添加向量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.vectors.append(vectors)</span><br><span class="line">        self.metadata.extend(metadata)</span><br><span class="line">        self.vectors = np.vstack(self.vectors) <span class="keyword">if</span> <span class="built_in">len</span>(self.vectors) &gt; <span class="number">1</span> <span class="keyword">else</span> self.vectors[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query: np.ndarray, k: <span class="built_in">int</span> = <span class="number">5</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        精确搜索</span></span><br><span class="line"><span class="string">        O(N) 时间复杂度</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 计算所有距离</span></span><br><span class="line">        distances = np.linalg.norm(self.vectors - query, axis=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取top-k</span></span><br><span class="line">        top_k_idx = np.argsort(distances)[:k]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: idx,</span><br><span class="line">                <span class="string">&quot;distance&quot;</span>: <span class="built_in">float</span>(distances[idx]),</span><br><span class="line">                <span class="string">&quot;metadata&quot;</span>: self.metadata[idx]</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> idx <span class="keyword">in</span> top_k_idx</span><br><span class="line">        ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-FAISS索引详解"><a href="#2-FAISS索引详解" class="headerlink" title="2. FAISS索引详解"></a>2. FAISS索引详解</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> faiss</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FAISSIndex</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    FAISS向量索引封装</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim: <span class="built_in">int</span>, index_type: <span class="built_in">str</span> = <span class="string">&quot;IVF&quot;</span></span>):</span><br><span class="line">        self.dim = dim</span><br><span class="line">        self.index_type = index_type</span><br><span class="line">        self.index = <span class="literal">None</span></span><br><span class="line">        self.metadata = []</span><br><span class="line">        self._build_index()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_index</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        根据类型构建索引</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.index_type == <span class="string">&quot;Flat&quot;</span>:</span><br><span class="line">            <span class="comment"># IndexFlatIP: 内积相似度（余弦相似度需归一化）</span></span><br><span class="line">            <span class="comment"># IndexFlatL2: 欧氏距离</span></span><br><span class="line">            self.index = faiss.IndexFlatIP(self.dim)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">elif</span> self.index_type == <span class="string">&quot;IVF&quot;</span>:</span><br><span class="line">            <span class="comment"># 倒排文件索引</span></span><br><span class="line">            quantizer = faiss.IndexFlatIP(self.dim)</span><br><span class="line">            self.index = faiss.IndexIVFFlat(</span><br><span class="line">                quantizer, </span><br><span class="line">                self.dim, </span><br><span class="line">                nlist=<span class="number">100</span>  <span class="comment"># 聚类中心数</span></span><br><span class="line">            )</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">elif</span> self.index_type == <span class="string">&quot;HNSW&quot;</span>:</span><br><span class="line">            <span class="comment"># 分层可导航小世界图</span></span><br><span class="line">            self.index = faiss.IndexHNSWFlat(self.dim, m=<span class="number">32</span>)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">elif</span> self.index_type == <span class="string">&quot;PQ&quot;</span>:</span><br><span class="line">            <span class="comment"># 产品量化</span></span><br><span class="line">            self.index = faiss.IndexPQ(self.dim, m=<span class="number">16</span>, nbits=<span class="number">8</span>)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">elif</span> self.index_type == <span class="string">&quot;IVF_PQ&quot;</span>:</span><br><span class="line">            <span class="comment"># 组合IVF和PQ</span></span><br><span class="line">            quantizer = faiss.IndexFlatIP(self.dim)</span><br><span class="line">            self.index = faiss.IndexIVFPQ(</span><br><span class="line">                quantizer, </span><br><span class="line">                self.dim, </span><br><span class="line">                nlist=<span class="number">100</span>,</span><br><span class="line">                m=<span class="number">16</span>,</span><br><span class="line">                nbits=<span class="number">8</span></span><br><span class="line">            )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self, vectors: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        训练索引（某些索引需要训练）</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.index.is_trained:</span><br><span class="line">            <span class="comment"># 归一化用于余弦相似度</span></span><br><span class="line">            vectors = vectors / np.linalg.norm(vectors, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">            self.index.train(vectors)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self, vectors: np.ndarray, metadata: <span class="type">List</span>[<span class="built_in">dict</span>]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        添加向量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 归一化</span></span><br><span class="line">        vectors = vectors / np.linalg.norm(vectors, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">        self.index.add(vectors)</span><br><span class="line">        self.metadata.extend(metadata)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query: np.ndarray, k: <span class="built_in">int</span> = <span class="number">5</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        近似最近邻搜索</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 归一化</span></span><br><span class="line">        query = query / np.linalg.norm(query)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 搜索</span></span><br><span class="line">        distances, indices = self.index.search(query.reshape(<span class="number">1</span>, -<span class="number">1</span>), k)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 构建结果</span></span><br><span class="line">        results = []</span><br><span class="line">        <span class="keyword">for</span> dist, idx <span class="keyword">in</span> <span class="built_in">zip</span>(distances[<span class="number">0</span>], indices[<span class="number">0</span>]):</span><br><span class="line">            <span class="keyword">if</span> idx &gt;= <span class="number">0</span> <span class="keyword">and</span> idx &lt; <span class="built_in">len</span>(self.metadata):</span><br><span class="line">                results.append(&#123;</span><br><span class="line">                    <span class="string">&quot;id&quot;</span>: <span class="built_in">int</span>(idx),</span><br><span class="line">                    <span class="string">&quot;score&quot;</span>: <span class="built_in">float</span>(dist),</span><br><span class="line">                    <span class="string">&quot;metadata&quot;</span>: self.metadata[idx]</span><br><span class="line">                &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> results</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save</span>(<span class="params">self, path: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;保存索引&quot;&quot;&quot;</span></span><br><span class="line">        faiss.write_index(self.index, path)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load</span>(<span class="params">self, path: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载索引&quot;&quot;&quot;</span></span><br><span class="line">        self.index = faiss.read_index(path)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-HNSW算法原理"><a href="#3-HNSW算法原理" class="headerlink" title="3. HNSW算法原理"></a>3. HNSW算法原理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HNSWIndex</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    HNSW (Hierarchical Navigable Small World) 算法实现</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    核心思想：</span></span><br><span class="line"><span class="string">    1. 构建多层图，上层稀疏、下层稠密</span></span><br><span class="line"><span class="string">    2. 搜索时从上层开始，快速定位到大致区域</span></span><br><span class="line"><span class="string">    3. 在下层精细搜索</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim: <span class="built_in">int</span>, m: <span class="built_in">int</span> = <span class="number">16</span>, ef_construction: <span class="built_in">int</span> = <span class="number">200</span></span>):</span><br><span class="line">        self.dim = dim</span><br><span class="line">        self.m = m  <span class="comment"># 每个节点的最大连接数</span></span><br><span class="line">        self.ef_construction = ef_construction  <span class="comment"># 构建时的搜索范围</span></span><br><span class="line">        self.ef_search = <span class="number">100</span>  <span class="comment"># 搜索时的搜索范围</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># FAISS提供了HNSW实现</span></span><br><span class="line">        self.index = faiss.IndexHNSWFlat(dim, m)</span><br><span class="line">        self.index.hnsw.efConstruction = ef_construction</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_search_params</span>(<span class="params">self, ef: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;设置搜索参数&quot;&quot;&quot;</span></span><br><span class="line">        self.ef_search = ef</span><br><span class="line">        self.index.hnsw.efSearch = ef</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self, vectors: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加向量&quot;&quot;&quot;</span></span><br><span class="line">        self.index.add(vectors)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query: np.ndarray, k: <span class="built_in">int</span> = <span class="number">5</span></span>) -&gt; <span class="built_in">tuple</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;搜索&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.index.search(query, k)</span><br></pre></td></tr></table></figure>
+
+<h2 id="主流向量数据库对比"><a href="#主流向量数据库对比" class="headerlink" title="主流向量数据库对比"></a>主流向量数据库对比</h2><h3 id="1-Milvus部署与使用"><a href="#1-Milvus部署与使用" class="headerlink" title="1. Milvus部署与使用"></a>1. Milvus部署与使用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymilvus <span class="keyword">import</span> connections, Collection, FieldSchema, CollectionSchema, DataType, utility</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MilvusDB</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Milvus向量数据库操作封装</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, host=<span class="string">&quot;localhost&quot;</span>, port=<span class="string">&quot;19530&quot;</span></span>):</span><br><span class="line">        connections.connect(host=host, port=port)</span><br><span class="line">        self.collection = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create_collection</span>(<span class="params">self, name: <span class="built_in">str</span>, dim: <span class="built_in">int</span>, metric_type=<span class="string">&quot;IP&quot;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        创建集合</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> utility.has_collection(name):</span><br><span class="line">            utility.drop_collection(name)</span><br><span class="line">        </span><br><span class="line">        fields = [</span><br><span class="line">            FieldSchema(name=<span class="string">&quot;id&quot;</span>, dtype=DataType.INT64, is_primary=<span class="literal">True</span>, auto_id=<span class="literal">True</span>),</span><br><span class="line">            FieldSchema(name=<span class="string">&quot;embedding&quot;</span>, dtype=DataType.FLOAT_VECTOR, dim=dim),</span><br><span class="line">            FieldSchema(name=<span class="string">&quot;text&quot;</span>, dtype=DataType.VARCHAR, max_length=<span class="number">65535</span>),</span><br><span class="line">            FieldSchema(name=<span class="string">&quot;metadata&quot;</span>, dtype=DataType.VARCHAR, max_length=<span class="number">65535</span>)</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        schema = CollectionSchema(fields=fields, description=<span class="string">f&quot;Collection: <span class="subst">&#123;name&#125;</span>&quot;</span>)</span><br><span class="line">        self.collection = Collection(name=name, schema=schema)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 创建索引</span></span><br><span class="line">        index_params = &#123;</span><br><span class="line">            <span class="string">&quot;metric_type&quot;</span>: metric_type,</span><br><span class="line">            <span class="string">&quot;index_type&quot;</span>: <span class="string">&quot;IVF_FLAT&quot;</span>,</span><br><span class="line">            <span class="string">&quot;params&quot;</span>: &#123;<span class="string">&quot;nlist&quot;</span>: <span class="number">128</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        self.collection.create_index(</span><br><span class="line">            field_name=<span class="string">&quot;embedding&quot;</span>,</span><br><span class="line">            index_params=index_params</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.collection.load()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">insert</span>(<span class="params">self, embeddings: np.ndarray, texts: <span class="type">List</span>[<span class="built_in">str</span>], metadata: <span class="type">List</span>[<span class="built_in">dict</span>]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        插入数据</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> json</span><br><span class="line">        </span><br><span class="line">        entities = [</span><br><span class="line">            embeddings.tolist(),</span><br><span class="line">            texts,</span><br><span class="line">            [json.dumps(m) <span class="keyword">for</span> m <span class="keyword">in</span> metadata]</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        self.collection.insert(entities)</span><br><span class="line">        self.collection.flush()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query_embedding: np.ndarray, top_k: <span class="built_in">int</span> = <span class="number">5</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        相似性搜索</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> json</span><br><span class="line">        </span><br><span class="line">        search_params = &#123;<span class="string">&quot;metric_type&quot;</span>: <span class="string">&quot;IP&quot;</span>, <span class="string">&quot;params&quot;</span>: &#123;<span class="string">&quot;nprobe&quot;</span>: <span class="number">10</span>&#125;&#125;</span><br><span class="line">        </span><br><span class="line">        results = self.collection.search(</span><br><span class="line">            data=[query_embedding.tolist()],</span><br><span class="line">            anns_field=<span class="string">&quot;embedding&quot;</span>,</span><br><span class="line">            param=search_params,</span><br><span class="line">            limit=top_k,</span><br><span class="line">            output_fields=[<span class="string">&quot;text&quot;</span>, <span class="string">&quot;metadata&quot;</span>]</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: hit.<span class="built_in">id</span>,</span><br><span class="line">                <span class="string">&quot;distance&quot;</span>: hit.distance,</span><br><span class="line">                <span class="string">&quot;text&quot;</span>: hit.entity.get(<span class="string">&quot;text&quot;</span>),</span><br><span class="line">                <span class="string">&quot;metadata&quot;</span>: json.loads(hit.entity.get(<span class="string">&quot;metadata&quot;</span>))</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> hit <span class="keyword">in</span> results[<span class="number">0</span>]</span><br><span class="line">        ]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">delete_by_ids</span>(<span class="params">self, ids: <span class="type">List</span>[<span class="built_in">int</span>]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;删除数据&quot;&quot;&quot;</span></span><br><span class="line">        self.collection.delete(<span class="string">f&quot;id in <span class="subst">&#123;ids&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">drop</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;删除集合&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.collection:</span><br><span class="line">            self.collection.drop()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Chroma向量数据库"><a href="#2-Chroma向量数据库" class="headerlink" title="2. Chroma向量数据库"></a>2. Chroma向量数据库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> chromadb</span><br><span class="line"><span class="keyword">from</span> chromadb.config <span class="keyword">import</span> Settings</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChromaDB</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Chroma向量数据库</span></span><br><span class="line"><span class="string">    轻量级，易于使用</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, persist_directory: <span class="built_in">str</span> = <span class="string">&quot;./chroma_db&quot;</span></span>):</span><br><span class="line">        self.client = chromadb.Client(Settings(</span><br><span class="line">            anonymized_telemetry=<span class="literal">False</span>,</span><br><span class="line">            allow_reset=<span class="literal">True</span></span><br><span class="line">        ))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 持久化版本</span></span><br><span class="line">        self.client = chromadb.PersistentClient(path=persist_directory)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_or_create_collection</span>(<span class="params">self, name: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取或创建集合&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.client.get_or_create_collection(name=name)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_documents</span>(<span class="params">self, collection_name: <span class="built_in">str</span>, documents: <span class="type">List</span>[<span class="built_in">str</span>], </span></span><br><span class="line"><span class="params">                      embeddings: np.ndarray, metadatas: <span class="type">List</span>[<span class="built_in">dict</span>] = <span class="literal">None</span>, </span></span><br><span class="line"><span class="params">                      ids: <span class="type">List</span>[<span class="built_in">str</span>] = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        添加文档</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        collection = self.get_or_create_collection(collection_name)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ids <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            ids = [<span class="string">f&quot;doc_<span class="subst">&#123;i&#125;</span>&quot;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(documents))]</span><br><span class="line">        <span class="keyword">if</span> metadatas <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            metadatas = [&#123;&#125; <span class="keyword">for</span> _ <span class="keyword">in</span> documents]</span><br><span class="line">        </span><br><span class="line">        collection.add(</span><br><span class="line">            embeddings=embeddings.tolist(),</span><br><span class="line">            documents=documents,</span><br><span class="line">            metadatas=metadatas,</span><br><span class="line">            ids=ids</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, collection_name: <span class="built_in">str</span>, query_embedding: np.ndarray, </span></span><br><span class="line"><span class="params">              n_results: <span class="built_in">int</span> = <span class="number">5</span>, where: <span class="built_in">dict</span> = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        查询</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        collection = self.get_or_create_collection(collection_name)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> collection.query(</span><br><span class="line">            query_embeddings=query_embedding.tolist(),</span><br><span class="line">            n_results=n_results,</span><br><span class="line">            where=where</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">delete_collection</span>(<span class="params">self, name: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;删除集合&quot;&quot;&quot;</span></span><br><span class="line">        self.client.delete_collection(name)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-向量数据库对比"><a href="#3-向量数据库对比" class="headerlink" title="3. 向量数据库对比"></a>3. 向量数据库对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Milvus</th>
+<th>Chroma</th>
+<th>Pinecone</th>
+<th>Weaviate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部署方式</td>
+<td>自托管&#x2F;云</td>
+<td>本地&#x2F;嵌入式</td>
+<td>云服务</td>
+<td>自托管&#x2F;云</td>
+</tr>
+<tr>
+<td>规模</td>
+<td>十亿级</td>
+<td>百万级</td>
+<td>亿级</td>
+<td>亿级</td>
+</tr>
+<tr>
+<td>延迟</td>
+<td>低</td>
+<td>低</td>
+<td>低</td>
+<td>低</td>
+</tr>
+<tr>
+<td>过滤</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>开源免费</td>
+<td>开源免费</td>
+<td>按量付费</td>
+<td>开源免费</td>
+</tr>
+</tbody></table>
+<h2 id="工程最佳实践"><a href="#工程最佳实践" class="headerlink" title="工程最佳实践"></a>工程最佳实践</h2><h3 id="1-向量索引配置"><a href="#1-向量索引配置" class="headerlink" title="1. 向量索引配置"></a>1. 向量索引配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VectorIndexConfig</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    向量索引配置指南</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_config</span>(<span class="params">dataset_size: <span class="built_in">int</span>, dim: <span class="built_in">int</span>, use_case: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        根据场景选择索引配置</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> use_case == <span class="string">&quot;recall_first&quot;</span>:</span><br><span class="line">            <span class="comment"># 优先召回率</span></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="string">&quot;index_type&quot;</span>: <span class="string">&quot;HNSW&quot;</span>,</span><br><span class="line">                <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;m&quot;</span>: <span class="number">32</span>,</span><br><span class="line">                    <span class="string">&quot;efConstruction&quot;</span>: <span class="number">200</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;ef_search&quot;</span>: <span class="number">500</span></span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> use_case == <span class="string">&quot;balance&quot;</span>:</span><br><span class="line">            <span class="comment"># 均衡模式</span></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="string">&quot;index_type&quot;</span>: <span class="string">&quot;IVF_PQ&quot;</span>,</span><br><span class="line">                <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;nlist&quot;</span>: <span class="built_in">max</span>(<span class="number">100</span>, dataset_size // <span class="number">10</span>),</span><br><span class="line">                    <span class="string">&quot;m&quot;</span>: <span class="number">16</span>,</span><br><span class="line">                    <span class="string">&quot;nbits&quot;</span>: <span class="number">8</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">&quot;nprobe&quot;</span>: <span class="number">20</span></span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> use_case == <span class="string">&quot;memory_optimized&quot;</span>:</span><br><span class="line">            <span class="comment"># 内存优化</span></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                <span class="string">&quot;index_type&quot;</span>: <span class="string">&quot;PQ&quot;</span>,</span><br><span class="line">                <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;m&quot;</span>: <span class="number">16</span>,</span><br><span class="line">                    <span class="string">&quot;nbits&quot;</span>: <span class="number">8</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;index_type&quot;</span>: <span class="string">&quot;Flat&quot;</span>&#125;</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">estimate_memory</span>(<span class="params">dim: <span class="built_in">int</span>, num_vectors: <span class="built_in">int</span>, index_type: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        估算内存占用</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        bytes_per_float = <span class="number">4</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> index_type == <span class="string">&quot;Flat&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> dim * num_vectors * bytes_per_float</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> index_type == <span class="string">&quot;HNSW&quot;</span>:</span><br><span class="line">            <span class="comment"># 图结构开销</span></span><br><span class="line">            m = <span class="number">32</span></span><br><span class="line">            <span class="keyword">return</span> dim * num_vectors * bytes_per_float * <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> index_type == <span class="string">&quot;PQ&quot;</span>:</span><br><span class="line">            <span class="comment"># 量化压缩</span></span><br><span class="line">            m = <span class="number">16</span></span><br><span class="line">            <span class="keyword">return</span> num_vectors * m * bytes_per_float</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dim * num_vectors * bytes_per_float</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-混合搜索实现"><a href="#2-混合搜索实现" class="headerlink" title="2. 混合搜索实现"></a>2. 混合搜索实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HybridSearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    混合搜索：向量检索 + 标量过滤</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vector_db, mysql_db</span>):</span><br><span class="line">        self.vector_db = vector_db</span><br><span class="line">        self.mysql_db = mysql_db</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search_with_filter</span>(<span class="params">self, query: <span class="built_in">str</span>, embedding_model, </span></span><br><span class="line"><span class="params">                           filter_conditions: <span class="built_in">dict</span>, top_k: <span class="built_in">int</span> = <span class="number">10</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        带过滤的混合搜索</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 1. 获取向量</span></span><br><span class="line">        query_emb = embedding_model.embed(query)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 向量检索</span></span><br><span class="line">        vector_results = self.vector_db.search(query_emb, top_k * <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 标量过滤</span></span><br><span class="line">        filtered_results = []</span><br><span class="line">        <span class="keyword">for</span> result <span class="keyword">in</span> vector_results:</span><br><span class="line">            metadata = result[<span class="string">&#x27;metadata&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 检查过滤条件</span></span><br><span class="line">            match = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">for</span> key, value <span class="keyword">in</span> filter_conditions.items():</span><br><span class="line">                <span class="keyword">if</span> metadata.get(key) != value:</span><br><span class="line">                    match = <span class="literal">False</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> match:</span><br><span class="line">                filtered_results.append(result)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(filtered_results) &gt;= top_k:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> filtered_results</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>向量数据库是现代AI应用的核心基础设施。通过合理选择索引类型、配置搜索参数，可以实现高效的向量存储和检索。本文介绍的FAISS、Milvus、Chroma等工具各有特点，开发者应根据具体场景选择合适的方案。随着AI应用的持续发展，向量数据库将在知识管理、推荐系统、语义搜索等领域发挥越来越重要的作用。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://faiss.ai/">FAISS官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://milvus.io/">Milvus官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.trychroma.com/">Chroma文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://superlinked.com/vector-db-comparison">向量数据库对比</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/RAG%E7%B3%BB%E7%BB%9F/">RAG系统</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/">向量数据库</a>
+    
+      <a href="/tags/Embedding/">Embedding</a>
+    
+      <a href="/tags/Pinecone/">Pinecone</a>
+    
+      <a href="/tags/Milvus/">Milvus</a>
+    
+      <a href="/tags/FAISS/">FAISS</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/08/15/2023-08-15-向量数据库技术详解-Embedding与相似性搜索/" target="_blank" title="向量数据库技术详解：Embedding与相似性搜索">https://www.coomatrix.com/2023/08/15/2023-08-15-向量数据库技术详解-Embedding与相似性搜索/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/08/20/2023-08-20-vLLM%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E-%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          vLLM高性能推理引擎：原理与实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/07/22/2023-07-22-Qwen%E9%98%BF%E9%87%8C%E9%80%9A%E4%B9%89%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%80%81%E4%B8%8E%E5%AE%9E%E8%B7%B5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Qwen：阿里通义大模型生态与实践</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8FEmbedding%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">向量Embedding基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%90%91%E9%87%8FEmbedding"><span class="nav-number">2.1.</span> <span class="nav-text">1. 什么是向量Embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B8%B8%E8%A7%81Embedding%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2. 常见Embedding模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">相似性搜索算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%B2%BE%E7%A1%AE%E6%90%9C%E7%B4%A2-vs-%E8%BF%91%E4%BC%BC%E6%90%9C%E7%B4%A2"><span class="nav-number">3.1.</span> <span class="nav-text">1. 精确搜索 vs 近似搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-FAISS%E7%B4%A2%E5%BC%95%E8%AF%A6%E8%A7%A3"><span class="nav-number">3.2.</span> <span class="nav-text">2. FAISS索引详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-HNSW%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.</span> <span class="nav-text">3. HNSW算法原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%B5%81%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E6%AF%94"><span class="nav-number">4.</span> <span class="nav-text">主流向量数据库对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Milvus%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">1. Milvus部署与使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Chroma%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.2.</span> <span class="nav-text">2. Chroma向量数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E6%AF%94"><span class="nav-number">4.3.</span> <span class="nav-text">3. 向量数据库对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E7%A8%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">5.</span> <span class="nav-text">工程最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%90%91%E9%87%8F%E7%B4%A2%E5%BC%95%E9%85%8D%E7%BD%AE"><span class="nav-number">5.1.</span> <span class="nav-text">1. 向量索引配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B7%B7%E5%90%88%E6%90%9C%E7%B4%A2%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.2.</span> <span class="nav-text">2. 混合搜索实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

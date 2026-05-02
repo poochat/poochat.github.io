@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>llm大模型量化技术：int4与int8实战指南 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言大语言模型的参数规模庞大，给部署和推理带来了巨大挑战。模型量化通过降低权重精度，在保持模型性能的同时大幅减少内存占用和计算开销。本文深入解析LLM量化的技术原理，包括INT8、INT4量化方法以及GPTQ、AWQ等先进量化算法。 量化基础理论1. 量化原理1234567891011121314151617181920212223242526272829303132333435363738394">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM大模型量化技术：INT4与INT8实战指南">
+<meta property="og:url" content="https://www.coomatrix.com/2023/06/28/2023-06-28-LLM%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%E6%8A%80%E6%9C%AF-INT4%E4%B8%8EINT8%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言大语言模型的参数规模庞大，给部署和推理带来了巨大挑战。模型量化通过降低权重精度，在保持模型性能的同时大幅减少内存占用和计算开销。本文深入解析LLM量化的技术原理，包括INT8、INT4量化方法以及GPTQ、AWQ等先进量化算法。 量化基础理论1. 量化原理1234567891011121314151617181920212223242526272829303132333435363738394">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1460925895917-afdab827c52f">
+<meta property="article:published_time" content="2023-06-28T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:47.762Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="模型量化">
+<meta property="article:tag" content="INT8">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="INT4">
+<meta property="article:tag" content="量化感知训练">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1460925895917-afdab827c52f">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-06-28-LLM大模型量化技术-INT4与INT8实战" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1460925895917-afdab827c52f" rel="gallery_cmoopizrl006y9cv66beo5jno noopener">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      LLM大模型量化技术：INT4与INT8实战指南
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/06/28/2023-06-28-LLM%E5%A4%A7%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96%E6%8A%80%E6%9C%AF-INT4%E4%B8%8EINT8%E5%AE%9E%E6%88%98/" class="article-date">
+	  <time datetime="2023-06-28T01:00:00.000Z" itemprop="datePublished">六月 28, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>大语言模型的参数规模庞大，给部署和推理带来了巨大挑战。模型量化通过降低权重精度，在保持模型性能的同时大幅减少内存占用和计算开销。本文深入解析LLM量化的技术原理，包括INT8、INT4量化方法以及GPTQ、AWQ等先进量化算法。</p>
+<h2 id="量化基础理论"><a href="#量化基础理论" class="headerlink" title="量化基础理论"></a>量化基础理论</h2><h3 id="1-量化原理"><a href="#1-量化原理" class="headerlink" title="1. 量化原理"></a>1. 量化原理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Quantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    量化器基类</span></span><br><span class="line"><span class="string">    将浮点张量量化为低比特整数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_bits=<span class="number">8</span></span>):</span><br><span class="line">        self.num_bits = num_bits</span><br><span class="line">        self.qmin = -(<span class="number">2</span> ** (num_bits - <span class="number">1</span>))</span><br><span class="line">        self.qmax = <span class="number">2</span> ** (num_bits - <span class="number">1</span>) - <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize</span>(<span class="params">self, x: torch.Tensor</span>) -&gt; <span class="built_in">tuple</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        量化：张量 -&gt; (量化值, scale, zero_point)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 计算scale和zero_point</span></span><br><span class="line">        x_min = x.<span class="built_in">min</span>()</span><br><span class="line">        x_max = x.<span class="built_in">max</span>()</span><br><span class="line">        </span><br><span class="line">        scale = (x_max - x_min) / (self.qmax - self.qmin)</span><br><span class="line">        zero_point = self.qmin - x_min / scale</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 量化</span></span><br><span class="line">        x_quant = torch.<span class="built_in">round</span>(x / scale + zero_point)</span><br><span class="line">        x_quant = torch.clamp(x_quant, self.qmin, self.qmax)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x_quant.to(torch.int8), scale, zero_point</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dequantize</span>(<span class="params">self, x_quant, scale, zero_point</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        反量化：量化值 -&gt; 浮点张量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> (x_quant.<span class="built_in">float</span>() - zero_point) * scale</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DynamicQuantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    动态量化</span></span><br><span class="line"><span class="string">    仅在推理时量化权重，激活值动态量化</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.weight_scale = <span class="literal">None</span></span><br><span class="line">        self.weight_zero_point = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_weights</span>(<span class="params">self, weight: torch.Tensor</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;量化权重&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># per-tensor量化</span></span><br><span class="line">        scale = weight.<span class="built_in">abs</span>().<span class="built_in">max</span>() / <span class="number">127.0</span></span><br><span class="line">        weight_quant = torch.<span class="built_in">round</span>(weight / scale)</span><br><span class="line">        weight_quant = torch.clamp(weight_quant, -<span class="number">128</span>, <span class="number">127</span>)</span><br><span class="line">        </span><br><span class="line">        self.weight_scale = scale</span><br><span class="line">        <span class="keyword">return</span> weight_quant.to(torch.int8)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_activations</span>(<span class="params">self, x: torch.Tensor</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;动态量化激活值&quot;&quot;&quot;</span></span><br><span class="line">        scale = x.<span class="built_in">abs</span>().<span class="built_in">max</span>() / <span class="number">127.0</span></span><br><span class="line">        x_quant = torch.<span class="built_in">round</span>(x / scale)</span><br><span class="line">        x_quant = torch.clamp(x_quant, -<span class="number">128</span>, <span class="number">127</span>)</span><br><span class="line">        <span class="keyword">return</span> x_quant.to(torch.int8), scale</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">matmul_int8</span>(<span class="params">self, x_quant, x_scale, w_quant</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;INT8矩阵乘法&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 反量化相乘</span></span><br><span class="line">        x_float = x_quant.<span class="built_in">float</span>() * x_scale</span><br><span class="line">        w_float = w_quant.<span class="built_in">float</span>() * self.weight_scale</span><br><span class="line">        <span class="keyword">return</span> torch.matmul(x_float, w_float.t())</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-GPTQ量化算法"><a href="#2-GPTQ量化算法" class="headerlink" title="2. GPTQ量化算法"></a>2. GPTQ量化算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">GPTQQuantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    GPTQ (Generative Pretrained Transformer Quantization)</span></span><br><span class="line"><span class="string">    基于近似二阶信息的逐层量化方法</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, bit_width=<span class="number">4</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.bit_width = bit_width</span><br><span class="line">        self.quant_stats = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_layer</span>(<span class="params">self, layer, weight_name: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        量化单个层</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        weight = layer.state_dict()[weight_name].clone()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取权重形状</span></span><br><span class="line">        out_features, in_features = weight.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 量化参数</span></span><br><span class="line">        <span class="keyword">if</span> self.bit_width == <span class="number">4</span>:</span><br><span class="line">            num_groups = <span class="number">128</span>  <span class="comment"># 每128列一组</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num_groups = <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        groups = out_features // num_groups</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 逐组量化</span></span><br><span class="line">        quantized_weights = torch.zeros_like(weight)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> g <span class="keyword">in</span> <span class="built_in">range</span>(groups):</span><br><span class="line">            start = g * num_groups</span><br><span class="line">            end = <span class="built_in">min</span>((g + <span class="number">1</span>) * num_groups, out_features)</span><br><span class="line">            </span><br><span class="line">            w_g = weight[start:end, :]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算量化参数</span></span><br><span class="line">            scale = w_g.<span class="built_in">abs</span>().<span class="built_in">max</span>() / (<span class="number">2</span> ** (self.bit_width - <span class="number">1</span>) - <span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 量化</span></span><br><span class="line">            w_q = torch.<span class="built_in">round</span>(w_g / scale)</span><br><span class="line">            w_q = torch.clamp(w_q, -(<span class="number">2</span>**(self.bit_width-<span class="number">1</span>)), <span class="number">2</span>**(self.bit_width-<span class="number">1</span>)-<span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">            quantized_weights[start:end, :] = w_q * scale</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> quantized_weights</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calibrate</span>(<span class="params">self, calibration_data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        校准：使用少量数据确定量化参数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model.<span class="built_in">eval</span>()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">for</span> batch <span class="keyword">in</span> calibration_data:</span><br><span class="line">                self.model(batch)</span><br><span class="line">                </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        量化整个模型</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        quantized_state_dict = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> name, module <span class="keyword">in</span> self.model.named_modules():</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, torch.nn.Linear):</span><br><span class="line">                <span class="comment"># 量化线性层</span></span><br><span class="line">                weight = module.weight.data</span><br><span class="line">                quantized_weight = self.quantize_layer(module, <span class="string">&#x27;weight&#x27;</span>)</span><br><span class="line">                quantized_state_dict[name + <span class="string">&#x27;.weight&#x27;</span>] = quantized_weight</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> quantized_state_dict</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-AWQ量化算法"><a href="#3-AWQ量化算法" class="headerlink" title="3. AWQ量化算法"></a>3. AWQ量化算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AWQQuantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    AWQ (Activation-Aware Weight Quantization)</span></span><br><span class="line"><span class="string">    考虑激活分布的权重量化</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, bit_width=<span class="number">4</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.bit_width = bit_width</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">find_best_scale</span>(<span class="params">self, weight, activations, n_grid=<span class="number">128</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        寻找最优量化scale</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        best_scale = <span class="literal">None</span></span><br><span class="line">        best_error = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 权重标准差</span></span><br><span class="line">        weight_scale = weight.<span class="built_in">abs</span>().<span class="built_in">max</span>()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> scale_percent <span class="keyword">in</span> np.linspace(<span class="number">0.5</span>, <span class="number">2.0</span>, n_grid):</span><br><span class="line">            scale = weight_scale * scale_percent</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 量化</span></span><br><span class="line">            w_q = torch.<span class="built_in">round</span>(weight / scale)</span><br><span class="line">            w_q = torch.clamp(w_q, -<span class="number">128</span>, <span class="number">127</span>) * scale</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算误差</span></span><br><span class="line">            error = ((weight - w_q) ** <span class="number">2</span>).mean()</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> error &lt; best_error:</span><br><span class="line">                best_error = error</span><br><span class="line">                best_scale = scale</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> best_scale</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_with_calibration</span>(<span class="params">self, calibration_loader</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用校准数据量化</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 收集激活值统计</span></span><br><span class="line">        act_scales = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">hook_fn</span>(<span class="params">module, <span class="built_in">input</span>, output</span>):</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(<span class="built_in">input</span>[<span class="number">0</span>], torch.Tensor):</span><br><span class="line">                key = <span class="built_in">id</span>(module)</span><br><span class="line">                <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> act_scales:</span><br><span class="line">                    act_scales[key] = []</span><br><span class="line">                act_scales[key].append(<span class="built_in">input</span>[<span class="number">0</span>].detach().<span class="built_in">abs</span>().<span class="built_in">max</span>())</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 注册hook</span></span><br><span class="line">        handles = []</span><br><span class="line">        <span class="keyword">for</span> name, module <span class="keyword">in</span> self.model.named_modules():</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, torch.nn.Linear):</span><br><span class="line">                h = module.register_forward_hook(hook_fn)</span><br><span class="line">                handles.append(h)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 运行校准数据</span></span><br><span class="line">        self.model.<span class="built_in">eval</span>()</span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">for</span> batch <span class="keyword">in</span> calibration_loader:</span><br><span class="line">                self.model(batch)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 移除hook</span></span><br><span class="line">        <span class="keyword">for</span> h <span class="keyword">in</span> handles:</span><br><span class="line">            h.remove()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算激活scale</span></span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> act_scales:</span><br><span class="line">            act_scales[key] = torch.stack(act_scales[key]).mean()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> act_scales</span><br></pre></td></tr></table></figure>
+
+<h2 id="Transformers量化实战"><a href="#Transformers量化实战" class="headerlink" title="Transformers量化实战"></a>Transformers量化实战</h2><h3 id="1-BitsAndBytes配置"><a href="#1-BitsAndBytes配置" class="headerlink" title="1. BitsAndBytes配置"></a>1. BitsAndBytes配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LLMQuantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用HuggingFace BitsAndBytes进行量化</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path: <span class="built_in">str</span></span>):</span><br><span class="line">        self.model_path = model_path</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_int8_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        加载INT8量化模型</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        quant_config = BitsAndBytesConfig(</span><br><span class="line">            load_in_8bit=<span class="literal">True</span>,</span><br><span class="line">            llm_int8_threshold=<span class="number">6.0</span>,      <span class="comment"># 离群值阈值</span></span><br><span class="line">            llm_int8_has_fp16_weight=<span class="literal">False</span>,</span><br><span class="line">            llm_int8_skip_modules=<span class="literal">None</span>,    <span class="comment"># 不量化的模块</span></span><br><span class="line">            llm_int8_enable_fp32_cpu_offload=<span class="literal">False</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        model = AutoModelForCausalLM.from_pretrained(</span><br><span class="line">            self.model_path,</span><br><span class="line">            quantization_config=quant_config,</span><br><span class="line">            device_map=<span class="string">&quot;auto&quot;</span>,</span><br><span class="line">            trust_remote_code=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> model</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_int4_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        加载INT4量化模型 (QLoRA)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        quant_config = BitsAndBytesConfig(</span><br><span class="line">            load_in_4bit=<span class="literal">True</span>,</span><br><span class="line">            bnb_4bit_compute_dtype=torch.float16,</span><br><span class="line">            bnb_4bit_quant_type=<span class="string">&quot;nf4&quot;</span>,     <span class="comment"># Normal Float 4</span></span><br><span class="line">            bnb_4bit_use_double_quant=<span class="literal">True</span>,  <span class="comment"># 双重量化</span></span><br><span class="line">            bnb_4bit_quant_storage=torch.uint8</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        model = AutoModelForCausalLM.from_pretrained(</span><br><span class="line">            self.model_path,</span><br><span class="line">            quantization_config=quant_config,</span><br><span class="line">            device_map=<span class="string">&quot;auto&quot;</span>,</span><br><span class="line">            trust_remote_code=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> model</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_memory_footprint</span>(<span class="params">self, model</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获取模型内存占用</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        param_size = <span class="number">0</span></span><br><span class="line">        buffer_size = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">            param_size += param.nelement() * param.element_size()</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">for</span> buffer <span class="keyword">in</span> model.buffers():</span><br><span class="line">            buffer_size += buffer.nelement() * buffer.element_size()</span><br><span class="line">        </span><br><span class="line">        total_size = param_size + buffer_size</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;total_mb&quot;</span>: total_size / <span class="number">1024</span> / <span class="number">1024</span>,</span><br><span class="line">            <span class="string">&quot;total_gb&quot;</span>: total_size / <span class="number">1024</span> / <span class="number">1024</span> / <span class="number">1024</span>,</span><br><span class="line">            <span class="string">&quot;param_size_mb&quot;</span>: param_size / <span class="number">1024</span> / <span class="number">1024</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-GGML-x2F-llama-cpp量化"><a href="#2-GGML-x2F-llama-cpp量化" class="headerlink" title="2. GGML&#x2F;llama.cpp量化"></a>2. GGML&#x2F;llama.cpp量化</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用llama.cpp量化模型</span></span><br><span class="line"><span class="comment"># 1. 转换为GGUF格式</span></span><br><span class="line">python3 convert.py models/llama-7b --outfile models/llama-7b/ggml-model-f16.gguf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 量化</span></span><br><span class="line">./quantize models/llama-7b/ggml-model-f16.gguf \</span><br><span class="line">            models/llama-7b/ggml-model-q4_0.gguf q4_0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">GGMLQuantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    GGML量化配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    QUANT_TYPES = &#123;</span><br><span class="line">        <span class="string">&quot;q4_0&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;bits&quot;</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;4-bit 量化, 传统方法&quot;</span>,</span><br><span class="line">            <span class="string">&quot;memory_factor&quot;</span>: <span class="number">4.5</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;q4_1&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;bits&quot;</span>: <span class="number">4</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;4-bit 量化, 带scale&quot;</span>,</span><br><span class="line">            <span class="string">&quot;memory_factor&quot;</span>: <span class="number">4.7</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;q5_0&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;bits&quot;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;5-bit 量化&quot;</span>,</span><br><span class="line">            <span class="string">&quot;memory_factor&quot;</span>: <span class="number">5.5</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;q5_1&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;bits&quot;</span>: <span class="number">5</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;5-bit 量化, 带scale&quot;</span>,</span><br><span class="line">            <span class="string">&quot;memory_factor&quot;</span>: <span class="number">5.7</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;q8_0&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;bits&quot;</span>: <span class="number">8</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;8-bit 量化, 几乎无损&quot;</span>,</span><br><span class="line">            <span class="string">&quot;memory_factor&quot;</span>: <span class="number">8.5</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;f16&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;bits&quot;</span>: <span class="number">16</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;半精度&quot;</span>,</span><br><span class="line">            <span class="string">&quot;memory_factor&quot;</span>: <span class="number">2.0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_model</span>(<span class="params">self, input_path: <span class="built_in">str</span>, output_path: <span class="built_in">str</span>, </span></span><br><span class="line"><span class="params">                       quant_type: <span class="built_in">str</span> = <span class="string">&quot;q4_0&quot;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        调用llama.cpp量化</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> subprocess</span><br><span class="line">        </span><br><span class="line">        cmd = [</span><br><span class="line">            <span class="string">&quot;./llama.cpp/quantize&quot;</span>,</span><br><span class="line">            input_path,</span><br><span class="line">            output_path,</span><br><span class="line">            quant_type</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        result = subprocess.run(cmd, capture_output=<span class="literal">True</span>, text=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> result.returncode == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="量化性能对比"><a href="#量化性能对比" class="headerlink" title="量化性能对比"></a>量化性能对比</h2><h3 id="内存与性能对比"><a href="#内存与性能对比" class="headerlink" title="内存与性能对比"></a>内存与性能对比</h3><table>
+<thead>
+<tr>
+<th>量化方法</th>
+<th>精度</th>
+<th>7B模型大小</th>
+<th>相对精度</th>
+<th>推理速度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FP16</td>
+<td>16bit</td>
+<td>~14GB</td>
+<td>100%</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>INT8</td>
+<td>8bit</td>
+<td>~7GB</td>
+<td>~98%</td>
+<td>1.5x</td>
+</tr>
+<tr>
+<td>Q4_0</td>
+<td>4bit</td>
+<td>~3.5GB</td>
+<td>~96%</td>
+<td>2.2x</td>
+</tr>
+<tr>
+<td>Q4_K_S</td>
+<td>4bit</td>
+<td>~3.9GB</td>
+<td>~97%</td>
+<td>2.0x</td>
+</tr>
+<tr>
+<td>Q5_K_M</td>
+<td>5bit</td>
+<td>~4.5GB</td>
+<td>~98%</td>
+<td>1.8x</td>
+</tr>
+<tr>
+<td>Q8_0</td>
+<td>8bit</td>
+<td>~6.5GB</td>
+<td>~99%</td>
+<td>1.6x</td>
+</tr>
+</tbody></table>
+<h3 id="量化校准实现"><a href="#量化校准实现" class="headerlink" title="量化校准实现"></a>量化校准实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CalibrationDataset</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    量化校准数据集</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, tokenizer, max_samples=<span class="number">512</span></span>):</span><br><span class="line">        self.tokenizer = tokenizer</span><br><span class="line">        self.max_samples = max_samples</span><br><span class="line">        self.data = []</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_samples</span>(<span class="params">self, texts: <span class="built_in">list</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加校准样本&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> text <span class="keyword">in</span> texts:</span><br><span class="line">            encoded = self.tokenizer(</span><br><span class="line">                text,</span><br><span class="line">                truncation=<span class="literal">True</span>,</span><br><span class="line">                max_length=<span class="number">2048</span>,</span><br><span class="line">                return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line">            )</span><br><span class="line">            self.data.append(encoded)</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;迭代返回校准数据&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i, sample <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.data[:self.max_samples]):</span><br><span class="line">            <span class="keyword">if</span> i &gt;= self.max_samples:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">yield</span> sample[<span class="string">&#x27;input_ids&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">len</span>(self.data), self.max_samples)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_quantized_model</span>(<span class="params">model, quantizer, test_data</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    评估量化模型性能</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> test_data:</span><br><span class="line">            outputs = model(batch)</span><br><span class="line">            <span class="comment"># 计算准确率</span></span><br><span class="line">            <span class="comment"># ...</span></span><br><span class="line">            </span><br><span class="line">    accuracy = correct / total</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 获取内存占用</span></span><br><span class="line">    memory = quantizer.get_memory_footprint(model)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&quot;accuracy&quot;</span>: accuracy,</span><br><span class="line">        <span class="string">&quot;memory_gb&quot;</span>: memory[<span class="string">&quot;total_gb&quot;</span>]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>模型量化是LLM部署的关键技术。通过INT8和INT4量化，可以将模型大小压缩4-8倍，同时保持较高的模型性能。GPTQ和AWQ等先进量化算法在低比特量化下表现优异。本文详细介绍了量化的技术原理和实战代码，帮助开发者在大模型部署中做出最优选择。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.17323">GPTQ论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2306.00978">AWQ论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ggerganov/llama.cpp">llama.cpp</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/TimDettmers/bitsandbytes">BitsAndBytes</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96/">模型量化</a>
+    
+      <a href="/tags/INT8/">INT8</a>
+    
+      <a href="/tags/LLM/">LLM</a>
+    
+      <a href="/tags/INT4/">INT4</a>
+    
+      <a href="/tags/%E9%87%8F%E5%8C%96%E6%84%9F%E7%9F%A5%E8%AE%AD%E7%BB%83/">量化感知训练</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/06/28/2023-06-28-LLM大模型量化技术-INT4与INT8实战/" target="_blank" title="LLM大模型量化技术：INT4与INT8实战指南">https://www.coomatrix.com/2023/06/28/2023-06-28-LLM大模型量化技术-INT4与INT8实战/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/07/15/2023-07-15-LLaMA2%E5%BC%80%E6%BA%90%E7%94%9F%E6%80%81%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90-%E5%BE%AE%E8%B0%83%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          LLaMA2开源生态全面解析：微调与部署实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/06/18/2023-06-18-AutoGPT%E4%B8%8EAI-Agent%E8%87%AA%E4%B8%BB%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">AutoGPT与AI Agent：自主代理技术原理与实践</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">量化基础理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%87%8F%E5%8C%96%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">1. 量化原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-GPTQ%E9%87%8F%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">2. GPTQ量化算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-AWQ%E9%87%8F%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">3. AWQ量化算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transformers%E9%87%8F%E5%8C%96%E5%AE%9E%E6%88%98"><span class="nav-number">3.</span> <span class="nav-text">Transformers量化实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-BitsAndBytes%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">1. BitsAndBytes配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-GGML-x2F-llama-cpp%E9%87%8F%E5%8C%96"><span class="nav-number">3.2.</span> <span class="nav-text">2. GGML&#x2F;llama.cpp量化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">4.</span> <span class="nav-text">量化性能对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%8E%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">4.1.</span> <span class="nav-text">内存与性能对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E6%A0%A1%E5%87%86%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">量化校准实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">6.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

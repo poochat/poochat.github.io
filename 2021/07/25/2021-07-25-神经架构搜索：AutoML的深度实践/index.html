@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>神经架构搜索：automl的深度实践 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="神经架构搜索原理与实践">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经架构搜索：AutoML的深度实践">
+<meta property="og:url" content="https://www.coomatrix.com/2021/07/25/2021-07-25-%E7%A5%9E%E7%BB%8F%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2%EF%BC%9AAutoML%E7%9A%84%E6%B7%B1%E5%BA%A6%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="神经架构搜索原理与实践">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<meta property="article:published_time" content="2021-07-25T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:16.189Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="神经架构搜索">
+<meta property="article:tag" content="NAS">
+<meta property="article:tag" content="AutoML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-07-25-神经架构搜索：AutoML的深度实践" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1551288049-bebda4e38f71" rel="gallery_cmoopizrc004w9cv60xuzhap8 noopener">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      神经架构搜索：AutoML的深度实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/07/25/2021-07-25-%E7%A5%9E%E7%BB%8F%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2%EF%BC%9AAutoML%E7%9A%84%E6%B7%B1%E5%BA%A6%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2021-07-25T02:00:00.000Z" itemprop="datePublished">七月 25, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>神经架构搜索（Neural Architecture Search, NAS）是自动化机器学习（AutoML）的核心技术，通过算法自动设计神经网络架构。本文深入解析NAS的原理、方法和实现。</p>
+<h2 id="NAS概述"><a href="#NAS概述" class="headerlink" title="NAS概述"></a>NAS概述</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mermaid</span><br><span class="line">graph LR</span><br><span class="line">A[搜索空间] --&gt; B[搜索策略]</span><br><span class="line">B --&gt; C[性能评估]</span><br><span class="line">C --&gt; D[架构优化]</span><br><span class="line">D --&gt; B</span><br></pre></td></tr></table></figure>
+
+<h2 id="搜索空间定义"><a href="#搜索空间定义" class="headerlink" title="搜索空间定义"></a>搜索空间定义</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SearchSpace</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;搜索空间定义&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 操作类型</span></span><br><span class="line">        self.operations = [</span><br><span class="line">            <span class="string">&#x27;conv3x3&#x27;</span>,      <span class="comment"># 3x3卷积</span></span><br><span class="line">            <span class="string">&#x27;conv5x5&#x27;</span>,      <span class="comment"># 5x5卷积</span></span><br><span class="line">            <span class="string">&#x27;conv7x7&#x27;</span>,      <span class="comment"># 7x7卷积</span></span><br><span class="line">            <span class="string">&#x27;depthwise_conv3x3&#x27;</span>,  <span class="comment"># 深度卷积</span></span><br><span class="line">            <span class="string">&#x27;max_pool3x3&#x27;</span>, <span class="comment"># 最大池化</span></span><br><span class="line">            <span class="string">&#x27;avg_pool3x3&#x27;</span>,  <span class="comment"># 平均池化</span></span><br><span class="line">            <span class="string">&#x27;skip_connect&#x27;</span>, <span class="comment"># 恒等映射</span></span><br><span class="line">            <span class="string">&#x27;sep_conv3x3&#x27;</span>, <span class="comment"># 分离卷积</span></span><br><span class="line">            <span class="string">&#x27;sep_conv5x5&#x27;</span>, <span class="comment"># 分离卷积</span></span><br><span class="line">            <span class="string">&#x27;none&#x27;</span>,         <span class="comment"># 无操作</span></span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 通道数选项</span></span><br><span class="line">        self.channel_choices = [<span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>, <span class="number">256</span>, <span class="number">512</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 层数选项</span></span><br><span class="line">        self.depth_choices = [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">12</span>, <span class="number">16</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_num_operations</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.operations)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_operation</span>(<span class="params">self, idx</span>):</span><br><span class="line">        <span class="keyword">return</span> self.operations[idx]</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NASCell</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;NAS中的基本单元&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, num_nodes, search_space</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_nodes = num_nodes</span><br><span class="line">        self.search_space = search_space</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 每个节点的输入混合</span></span><br><span class="line">        self.input_probs = nn.Parameter(</span><br><span class="line">            torch.randn(num_nodes, num_nodes) * <span class="number">0.01</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 每个节点的操作选择</span></span><br><span class="line">        self.op_probs = nn.Parameter(</span><br><span class="line">            torch.randn(num_nodes, <span class="built_in">len</span>(search_space.operations)) * <span class="number">0.01</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            inputs: list of tensors</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        num_nodes = <span class="built_in">len</span>(inputs)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算每个节点的操作权重</span></span><br><span class="line">        op_weights = F.softmax(self.op_probs, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算每个节点之间的连接权重</span></span><br><span class="line">        edge_weights = F.softmax(self.input_probs, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 构建DAG</span></span><br><span class="line">        states = <span class="built_in">list</span>(inputs)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> node_idx <span class="keyword">in</span> <span class="built_in">range</span>(num_nodes):</span><br><span class="line">            <span class="comment"># 混合所有前驱节点的表示</span></span><br><span class="line">            aggregated = torch.zeros_like(states[<span class="number">0</span>])</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> prev_idx <span class="keyword">in</span> <span class="built_in">range</span>(node_idx):</span><br><span class="line">                <span class="comment"># 边的权重</span></span><br><span class="line">                weight = edge_weights[node_idx, prev_idx]</span><br><span class="line">                aggregated += weight * states[prev_idx]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 应用操作</span></span><br><span class="line">            op_idx = torch.argmax(op_weights[node_idx]).item()</span><br><span class="line">            op = self._get_operation(op_idx, states[<span class="number">0</span>].shape[<span class="number">1</span>])</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> op <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                states.append(op(aggregated))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                states.append(aggregated)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 输出是所有节点的拼接</span></span><br><span class="line">        <span class="keyword">return</span> torch.cat(states[num_nodes:], dim=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_get_operation</span>(<span class="params">self, op_idx, channels</span>):</span><br><span class="line">        op_name = self.search_space.get_operation(op_idx)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> op_name == <span class="string">&#x27;conv3x3&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">                nn.Conv2d(channels, channels, <span class="number">3</span>, padding=<span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(channels),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>)</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> op_name == <span class="string">&#x27;conv5x5&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">                nn.Conv2d(channels, channels, <span class="number">5</span>, padding=<span class="number">2</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(channels),</span><br><span class="line">                nn.ReLU(inplace=<span class="literal">True</span>)</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> op_name == <span class="string">&#x27;max_pool3x3&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> nn.MaxPool2d(<span class="number">3</span>, padding=<span class="number">1</span>, stride=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">elif</span> op_name == <span class="string">&#x27;avg_pool3x3&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> nn.AvgPool2d(<span class="number">3</span>, padding=<span class="number">1</span>, stride=<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">elif</span> op_name == <span class="string">&#x27;skip_connect&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> nn.Identity()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="DARTS：可微分架构搜索"><a href="#DARTS：可微分架构搜索" class="headerlink" title="DARTS：可微分架构搜索"></a>DARTS：可微分架构搜索</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DARTSCell</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;DARTS的Cell结构&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, num_nodes=<span class="number">4</span>, is_reduction=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.num_nodes = num_nodes</span><br><span class="line">        self.is_reduction = is_reduction</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 输入节点</span></span><br><span class="line">        <span class="keyword">if</span> is_reduction:</span><br><span class="line">            self.preprocess0 = nn.Sequential(</span><br><span class="line">                nn.Conv2d(in_channels, out_channels, <span class="number">1</span>, stride=<span class="number">2</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            )</span><br><span class="line">            self.preprocess1 = nn.Sequential(</span><br><span class="line">                nn.Conv2d(in_channels, out_channels, <span class="number">1</span>, stride=<span class="number">2</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.preprocess0 = nn.Sequential(</span><br><span class="line">                nn.Conv2d(in_channels, out_channels, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            )</span><br><span class="line">            self.preprocess1 = nn.Sequential(</span><br><span class="line">                nn.Conv2d(in_channels, out_channels, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 候选操作（使用Gumbel Softmax）</span></span><br><span class="line">        self._ops = nn.ModuleList([</span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.Conv2d(out_channels, out_channels, <span class="number">3</span>, padding=<span class="number">1</span>, bias=<span class="literal">False</span>, groups=out_channels),</span><br><span class="line">                nn.BatchNorm2d(out_channels),</span><br><span class="line">                nn.Conv2d(out_channels, out_channels, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            ),  <span class="comment"># sep_conv_3x3</span></span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.Conv2d(out_channels, out_channels, <span class="number">5</span>, padding=<span class="number">2</span>, bias=<span class="literal">False</span>, groups=out_channels),</span><br><span class="line">                nn.BatchNorm2d(out_channels),</span><br><span class="line">                nn.Conv2d(out_channels, out_channels, <span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            ),  <span class="comment"># sep_conv_5x5</span></span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.AvgPool2d(<span class="number">3</span>, padding=<span class="number">1</span>, stride=<span class="number">1</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            ),  <span class="comment"># avg_pool_3x3</span></span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.MaxPool2d(<span class="number">3</span>, padding=<span class="number">1</span>, stride=<span class="number">1</span>),</span><br><span class="line">                nn.BatchNorm2d(out_channels)</span><br><span class="line">            ),  <span class="comment"># max_pool_3x3</span></span><br><span class="line">            nn.Sequential(</span><br><span class="line">                nn.Identity(),</span><br><span class="line">                nn.BatchNorm2d(out_channels, affine=<span class="literal">False</span>)</span><br><span class="line">            ),  <span class="comment"># skip_connect</span></span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 边权重（可学习）</span></span><br><span class="line">        self.edge_weights = nn.Parameter(</span><br><span class="line">            torch.randn(num_nodes, <span class="built_in">len</span>(self._ops)) * <span class="number">1e-3</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, s0, s1</span>):</span><br><span class="line">        <span class="comment"># 预处理</span></span><br><span class="line">        s0 = self.preprocess0(s0)</span><br><span class="line">        s1 = self.preprocess1(s1)</span><br><span class="line">        </span><br><span class="line">        states = [s0, s1]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> node_idx <span class="keyword">in</span> <span class="built_in">range</span>(self.num_nodes):</span><br><span class="line">            <span class="comment"># 计算该节点的输出</span></span><br><span class="line">            node_result = torch.zeros_like(s0)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> prev_idx <span class="keyword">in</span> <span class="built_in">range</span>(node_idx + <span class="number">2</span>):</span><br><span class="line">                <span class="comment"># 边权重</span></span><br><span class="line">                weights = F.softmax(self.edge_weights[node_idx], dim=<span class="number">0</span>)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 对每条边求和</span></span><br><span class="line">                <span class="keyword">for</span> op_idx, op <span class="keyword">in</span> <span class="built_in">enumerate</span>(self._ops):</span><br><span class="line">                    node_result += weights[op_idx] * op(states[prev_idx])</span><br><span class="line">            </span><br><span class="line">            states.append(node_result)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 输出是最后两个节点的拼接</span></span><br><span class="line">        <span class="keyword">return</span> torch.cat(states[-self.num_nodes:], dim=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DARTSNetwork</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;DARTS网络&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">10</span>, num_layers=<span class="number">8</span>, channels=<span class="number">36</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.num_layers = num_layers</span><br><span class="line">        self.channels = channels</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Stem</span></span><br><span class="line">        self.stem = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">3</span>, channels, <span class="number">3</span>, padding=<span class="number">1</span>, bias=<span class="literal">False</span>),</span><br><span class="line">            nn.BatchNorm2d(channels)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 中间层</span></span><br><span class="line">        self.cells = nn.ModuleList()</span><br><span class="line">        self.reductions = nn.ModuleList()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_layers):</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">in</span> [num_layers // <span class="number">3</span>, <span class="number">2</span> * num_layers // <span class="number">3</span>]:</span><br><span class="line">                <span class="comment"># Reduction cell</span></span><br><span class="line">                self.cells.append(</span><br><span class="line">                    DARTSCell(channels, channels * <span class="number">2</span>, is_reduction=<span class="literal">True</span>)</span><br><span class="line">                )</span><br><span class="line">                channels *= <span class="number">2</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># Normal cell</span></span><br><span class="line">                self.cells.append(</span><br><span class="line">                    DARTSCell(channels, channels)</span><br><span class="line">                )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分类头</span></span><br><span class="line">        self.classifier = nn.Sequential(</span><br><span class="line">            nn.ReLU(inplace=<span class="literal">True</span>),</span><br><span class="line">            nn.AdaptiveAvgPool2d(<span class="number">1</span>),</span><br><span class="line">            nn.Flatten(),</span><br><span class="line">            nn.Linear(channels, num_classes)</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.stem(x)</span><br><span class="line">        s0 = s1 = x</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> cell <span class="keyword">in</span> self.cells:</span><br><span class="line">            s0, s1 = s1, cell(s0, s1)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.classifier(s1)</span><br></pre></td></tr></table></figure>
+
+<h2 id="强化学习搜索策略"><a href="#强化学习搜索策略" class="headerlink" title="强化学习搜索策略"></a>强化学习搜索策略</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Controller</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;RNN控制器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_ops=<span class="number">5</span>, hidden_size=<span class="number">100</span>, num_layers=<span class="number">2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.lstm = nn.LSTM(</span><br><span class="line">            input_size=hidden_size,</span><br><span class="line">            hidden_size=hidden_size,</span><br><span class="line">            num_layers=num_layers,</span><br><span class="line">            batch_first=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.fc = nn.Linear(hidden_size, num_ops)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 嵌入层</span></span><br><span class="line">        self.embed = nn.Embedding(num_ops, hidden_size)</span><br><span class="line">        </span><br><span class="line">        self.num_ops = num_ops</span><br><span class="line">        self.hidden_size = hidden_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, inputs, hidden=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            inputs: 当前的action</span></span><br><span class="line"><span class="string">            hidden: LSTM的隐藏状态</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> hidden <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            batch_size = inputs.size(<span class="number">0</span>)</span><br><span class="line">            hidden = (</span><br><span class="line">                torch.zeros(<span class="number">2</span>, batch_size, self.hidden_size),</span><br><span class="line">                torch.zeros(<span class="number">2</span>, batch_size, self.hidden_size)</span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 嵌入</span></span><br><span class="line">        x = self.embed(inputs)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># LSTM前向</span></span><br><span class="line">        output, hidden = self.lstm(x, hidden)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预测下一个action</span></span><br><span class="line">        logits = self.fc(output)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> logits, hidden</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ReinforceOptimizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;REINFORCE优化器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, controller, baseline_value=<span class="number">0</span></span>):</span><br><span class="line">        self.controller = controller</span><br><span class="line">        self.baseline = baseline_value</span><br><span class="line">        self.optimizer = torch.optim.Adam(</span><br><span class="line">            controller.parameters(), lr=<span class="number">0.01</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, rewards, log_probs</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            rewards: 多个架构的验证集准确率</span></span><br><span class="line"><span class="string">            log_probs: 每个架构的采样对数概率</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 优势函数</span></span><br><span class="line">        advantages = rewards - self.baseline</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 更新baseline</span></span><br><span class="line">        self.baseline = <span class="number">0.9</span> * self.baseline + <span class="number">0.1</span> * rewards.mean()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算策略梯度</span></span><br><span class="line">        policy_loss = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> advantage, lp <span class="keyword">in</span> <span class="built_in">zip</span>(advantages, log_probs):</span><br><span class="line">            <span class="comment"># 负对数似然 * 优势</span></span><br><span class="line">            policy_loss.append(-lp * advantage)</span><br><span class="line">        </span><br><span class="line">        policy_loss = torch.stack(policy_loss).mean()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 反向传播</span></span><br><span class="line">        self.optimizer.zero_grad()</span><br><span class="line">        policy_loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> policy_loss.item()</span><br></pre></td></tr></table></figure>
+
+<h2 id="超网络训练"><a href="#超网络训练" class="headerlink" title="超网络训练"></a>超网络训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SuperNet</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;超网络（用于One-Shot NAS）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 路径权重</span></span><br><span class="line">        self.path_weights = nn.Parameter(</span><br><span class="line">            torch.ones(<span class="number">10</span>, <span class="number">5</span>) / <span class="number">5</span>  <span class="comment"># 10条边，5种操作</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, sampling=<span class="string">&#x27;softmax&#x27;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;前向传播&quot;&quot;&quot;</span></span><br><span class="line">        weights = F.softmax(self.path_weights, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> sampling == <span class="string">&#x27;hard&#x27;</span>:</span><br><span class="line">            <span class="comment"># 硬采样：选择权重最大的路径</span></span><br><span class="line">            op_indices = torch.argmax(weights, dim=-<span class="number">1</span>)</span><br><span class="line">            <span class="comment"># 实际执行对应操作</span></span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 软采样：所有路径加权求和</span></span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_supernet</span>(<span class="params">supernet, dataloader, epochs=<span class="number">50</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;训练超网络&quot;&quot;&quot;</span></span><br><span class="line">    optimizer = torch.optim.Adam(supernet.parameters(), lr=<span class="number">0.01</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        <span class="keyword">for</span> inputs, targets <span class="keyword">in</span> dataloader:</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            </span><br><span class="line">            outputs = supernet(inputs)</span><br><span class="line">            loss = nn.CrossEntropyLoss()(outputs, targets)</span><br><span class="line">            </span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>: Loss=<span class="subst">&#123;loss.item():<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="NAS方法对比"><a href="#NAS方法对比" class="headerlink" title="NAS方法对比"></a>NAS方法对比</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>搜索策略</th>
+<th>搜索速度</th>
+<th>精度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NASNet</td>
+<td>强化学习</td>
+<td>慢</td>
+<td>高</td>
+</tr>
+<tr>
+<td>DARTS</td>
+<td>梯度</td>
+<td>快</td>
+<td>高</td>
+</tr>
+<tr>
+<td>ENAS</td>
+<td>权重共享</td>
+<td>中</td>
+<td>中</td>
+</tr>
+<tr>
+<td>ProxylessNAS</td>
+<td>梯度</td>
+<td>快</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Once-for-All</td>
+<td>渐进式</td>
+<td>中</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>神经架构搜索通过自动化设计神经网络架构，大大降低了深度学习模型设计的门槛。DARTS等方法使得NAS在大规模网络上变得可行，推动了AutoML的发展。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1611.01578">Neural Architecture Search with Reinforcement Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1806.09055">DARTS: Differentiable Architecture Search</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1802.03268">Efficient Neural Architecture Search via Parameters Sharing</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E7%A5%9E%E7%BB%8F%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2/">神经架构搜索</a>
+    
+      <a href="/tags/NAS/">NAS</a>
+    
+      <a href="/tags/AutoML/">AutoML</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/07/25/2021-07-25-神经架构搜索：AutoML的深度实践/" target="_blank" title="神经架构搜索：AutoML的深度实践">https://www.coomatrix.com/2021/07/25/2021-07-25-神经架构搜索：AutoML的深度实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/15/2022-01-15-ChatGPT%E5%8E%9F%E7%90%86%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ChatGPT原理深度解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/15/2021-07-15-MobileNetV3%EF%BC%9A%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BD%91%E7%BB%9C%E7%9A%84%E6%9E%81%E8%87%B4%E4%BC%98%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MobileNetV3：轻量级网络的极致优化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAS%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">NAS概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E7%A9%BA%E9%97%B4%E5%AE%9A%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">搜索空间定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DARTS%EF%BC%9A%E5%8F%AF%E5%BE%AE%E5%88%86%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2"><span class="nav-number">4.</span> <span class="nav-text">DARTS：可微分架构搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%90%9C%E7%B4%A2%E7%AD%96%E7%95%A5"><span class="nav-number">5.</span> <span class="nav-text">强化学习搜索策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83"><span class="nav-number">6.</span> <span class="nav-text">超网络训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAS%E6%96%B9%E6%B3%95%E5%AF%B9%E6%AF%94"><span class="nav-number">7.</span> <span class="nav-text">NAS方法对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">9.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

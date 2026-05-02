@@ -11,22 +11,22 @@ Tags: black, white, red, two-columns, fixed-layout, threaded-comments, full-widt
 */
 
 
-/* Global
+/* Global - 红色主题
 ----------------------------------------------- */
 body {
-	color: #333;
+	color: #e0e0e0;
 	font-weight: 400;
-	font-family: Arial, Helvetica, Microsoft Yahei;
+	font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
 	line-height: 1.8;
-	background: #fff;
+	background: #1a0000;
 	}
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
 	margin: 1.25em 0 .5em;
-	color: #222;
-	font-weight: normal;
-	font-family: "Yanone Kaffeesatz", "Microsoft YaHei Light", Arial, Helvetica, sans-serif;
+	color: #ff4444;
+	font-weight: bold;
+	font-family: "Microsoft YaHei Light", Arial, Helvetica, sans-serif;
 	line-height: 1.2em;
 	}
 h1 {
@@ -66,7 +66,7 @@ a {
 a:hover,
 a:focus,
 a:active {
-	color: #333;
+	color: #ff4444;
 	}
 
 /* Text Elements */
@@ -137,11 +137,11 @@ input[type="submit"] {
 	color: #fff;
 	font-size: 1.2em;
 	font-weight: 400;
-	font-family: "Yanone Kaffeesatz", "方正姚体", Arial, Helvetica, sans-serif;
+	font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
 	line-height: 30px;
 	text-transform: uppercase;
-	background: #060608;
-	border: 1px solid #060608;
+	background: #00d4ff;
+	border: 1px solid #00d4ff;
 	}
 button:hover,
 a.button:hover,
@@ -250,29 +250,32 @@ object {
 	clear: both;
 	}
 
-/* HEADER
+/* HEADER - 红色主题
 ----------------------------------------------- */
 .site-header {
 	padding: 20px 0 0;
-	background: #16171b;
+	background: #ff0000;
+	border-bottom: 2px solid #cc0000;
 	}
 .site-branding {
 	float: left;
 	}
 .site-title {
 	margin: 0;
-	font-size: 4.25em;
-	font-family: "Yanone Kaffeesatz", "Microsoft YaHei Light", Arial, Helvetica, sans-serif;
+	font-size: 3em;
+	font-family: "Microsoft YaHei Light", Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
 	line-height: 1;
+	color: #ffffff;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 	}
 .site-title a {
-	color: #fff;
+	color: #ffffff;
 	text-decoration: none;
 	}
 .site-description {
-	color: #999;
-	font-family: "Yanone Kaffeesatz", "Microsoft YaHei Light", Arial, Helvetica, sans-serif;
+	color: #ffe0e0;
+	font-family: "Microsoft YaHei Light", Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	}
@@ -327,10 +330,29 @@ object {
 
 #main-navigation {
 	clear: both;
-	padding: 20px 0 0;
+	padding: 0;
+	background: #ff0000;
+	margin: 0;
 	}
 #main-navigation .sf-menu {
-	background: #060608;
+	background: #ff0000;
+	padding: 10px 0;
+	}
+#main-navigation .sf-menu > ul {
+	background: #ff0000;
+	}
+#main-navigation .sf-menu > ul > li > a {
+	background: transparent;
+	color: #ffffff;
+	padding: 10px 20px;
+	border-radius: 4px;
+	}
+#main-navigation li a {
+	color: #ffffff;
+	}
+#main-navigation li a:hover {
+	color: #ffffff;
+	background: rgba(255, 255, 255, 0.2);
 	}
 #main-navigation .sf-menu > ul > li:after {
 	width: 1px;
@@ -406,15 +428,15 @@ object {
 .nav-open,
 .nav-close {
 	display: none;
-	color: #eb2121;
+	color: #00d4ff;
 	font-size: 1.2em;
 	font-weight: 400;
-	font-family: "Yanone Kaffeesatz", "方正姚体", Arial, Helvetica, sans-serif;
+	font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
 	text-decoration: none;
 	text-transform: uppercase;
 	line-height: 50px;
 	letter-spacing: 1px;
-	background: #060608;
+	background: #0a0a0a;
 	}
 @media only screen and (max-width: 60em) {
 	.nav-open {
@@ -517,29 +539,29 @@ object {
 	line-height: 1.2;
 	}
 .entry-title a {
-	color: #222;
+	color: #ff4444;
 	text-decoration: none;
 	}
 .entry-title a:hover {
-	color: #ff2828;
+	color: #ff6666;
 	}
 .entry-meta {
-	color: #999;
+	color: #888;
 	font-size: .9em;
 	}
 .entry-meta a {
-	color: #999;
+	color: #ff4444;
 	text-decoration: none;
 	}
 .entry-meta a:hover {
-	color: #222;
+	color: #ff6666;
 	}
 .entry-meta .cat-links {
 	margin: 0 20px 0 0;
 	}
 .entry-meta [class^="ico-"]:before {
 	margin-right: 5px;
-	color: #333;
+	color: #ff4444;
 	}
 .comments-link {
 	float: right;
@@ -572,6 +594,51 @@ object {
 .entry-content {
 	margin: 0 0 20px;
 	}
+/* 文章内图片样式 */
+.article-entry img,
+.entry-content img {
+	max-width: 100% !important;
+	height: auto !important;
+	display: block;
+	margin: 15px auto;
+	border: 1px solid #444;
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+	background-color: #2a0a0a;
+}
+/* 图片加载中/失败占位符 */
+.article-entry img[src=""],
+.article-entry img:not([src]),
+.entry-content img[src=""],
+.entry-content img:not([src]) {
+	min-height: 200px;
+	background: #2a0a0a url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60"><rect fill="%232a0a0a" width="200" height="60"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23999" font-family="Arial" font-size="14">图片加载中...</text></svg>') center no-repeat;
+}
+.article-entry a img,
+.entry-content a img {
+	border: 1px solid #555;
+}
+.article-entry a:hover img,
+.entry-content a:hover img {
+	border-color: #ff4444;
+	opacity: 0.9;
+}
+.article-entry figure,
+.entry-content figure {
+	margin: 20px 0;
+	text-align: center;
+}
+.article-entry figure img,
+.entry-content figure img {
+	margin: 0 auto;
+}
+.article-entry figcaption,
+.entry-content figcaption {
+	font-size: 0.85em;
+	color: #888;
+	margin-top: 5px;
+	text-align: center;
+}
 .entry-summary {
 	margin: 0 0 20px 260px;
 	}
@@ -613,8 +680,8 @@ body.search .page .entry-footer {
 .author-info {
 	margin: 0 0 30px;
 	padding: 15px 20px;
-	background: #f6f6f6;
-	border: 1px solid #e6e6e6;
+	background: #1a1a1a;
+	border: 1px solid #333;
 	}
 .author-info .author-photo {
 	float: left;
@@ -752,43 +819,43 @@ body.search .page .entry-footer {
 	display: block;
 	}
 .comment-list li.comment .comment-author .fn {
-	color: #999;
+	color: #ff9999;
 	font-size: 1.2em;
 	font-family: "Yanone Kaffeesatz", "方正姚体", Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
 	}
 .comment-list li.comment .comment-author .fn a {
-	color: #333;
+	color: #ff6666;
 	text-decoration: none;
 	}
 .comment-list li.comment .comment-author .fn a:hover {
-	color: #ff2828;
+	color: #ff0000;
 	}
 .comment-list li.comment .comment-metadata {
 	margin: 0 0 2px;
 	font-size: .875em;
 	}
 .comment-list li.comment .comment-metadata a {
-	color: #999;
+	color: #ff9999;
 	text-decoration: none;
 	}
 .comment-list li.comment .comment-metadata a:hover {
-	color: #333;
+	color: #ff6666;
 	}
 .comment-list li.comment .reply {
 	float: right;
 	}
 .comment-list li.comment .reply a {
-	color: #ff2828;
+	color: #00d4ff;
 	font-size: .9em;
 	font-weight: 300;
-	font-family: "Yanone Kaffeesatz", "方正姚体", Arial, Helvetica, sans-serif;
+	font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
 	text-decoration: none;
 	letter-spacing: 1px;
 	}
 .comment-list li.comment .reply a:hover {
-	color: #333;
+	color: #00ff88;
 	}
 .comment-content {
 	clear: both;
@@ -1219,3 +1286,132 @@ body.search .page .entry-footer {
 	}
 @media screen and (max-width: 320px) {
 	}
+
+/* 语音播报按钮样式 */
+.tts-controls {
+	margin-bottom: 20px;
+	padding: 20px;
+	background: linear-gradient(135deg, #2a0a0a 0%, #1a0505 100%);
+	border-radius: 16px;
+	border: 2px solid #ff4444;
+	box-shadow: 0 4px 20px rgba(255, 68, 68, 0.2);
+}
+
+.tts-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+.tts-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #ff4444;
+}
+
+.tts-current {
+	font-size: 13px;
+	color: #888;
+}
+
+.tts-body {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	align-items: center;
+}
+
+.tts-btn {
+	background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+	color: #ffffff;
+	border: none;
+	padding: 15px 30px;
+	border-radius: 30px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: bold;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.tts-btn:hover {
+	background: linear-gradient(135deg, #ff6666 0%, #ff4444 100%);
+	transform: translateY(-3px);
+	box-shadow: 0 6px 20px rgba(255, 68, 68, 0.5);
+}
+
+.tts-btn:active {
+	transform: translateY(0);
+}
+
+.voice-toggle {
+	display: flex;
+	gap: 10px;
+}
+
+.voice-btn {
+	padding: 12px 16px;
+	border: 3px solid #444;
+	border-radius: 12px;
+	background: #1a0000;
+	cursor: pointer;
+	font-size: 12px;
+	transition: all 0.3s;
+	text-align: center;
+	min-width: 90px;
+}
+
+.voice-btn:hover {
+	border-color: #666;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.voice-btn.active {
+	border-color: #ff4444;
+	background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+	color: white;
+	box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+}
+
+.voice-icon {
+	font-size: 32px;
+	margin-bottom: 5px;
+}
+
+.voice-name {
+	font-weight: bold;
+	margin: 3px 0;
+}
+
+.voice-desc {
+	font-size: 10px;
+	color: #888;
+}
+
+.voice-btn.active .voice-desc {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+	.tts-body {
+		flex-direction: column;
+	}
+	.tts-btn {
+		width: 100%;
+		justify-content: center;
+	}
+	.voice-toggle {
+		width: 100%;
+		justify-content: center;
+	}
+	.voice-btn {
+		flex: 1;
+	}
+}

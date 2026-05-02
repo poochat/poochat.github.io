@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>stable diffusion原理深度解析 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="Stable Diffusion原理深度解析2022年8月，Stable Diffusion开源发布，彻底引爆了AIGC浪潮。与DALL-E不同，它可以在消费级GPU上运行，让每个人都能使用AI生成图像。本文将深入解析其技术原理。 1. 扩散模型基础1.1 前向扩散过程逐步向图像添加高斯噪声，直到变成纯噪声： graph LR     A[原始图像 x₀] --&gt; B[x₁ &#x3D; √α₁x₀ + √">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stable Diffusion原理深度解析">
+<meta property="og:url" content="https://www.coomatrix.com/2022/06/08/2022-06-08-Stable-Diffusion%E5%8E%9F%E7%90%86%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="Stable Diffusion原理深度解析2022年8月，Stable Diffusion开源发布，彻底引爆了AIGC浪潮。与DALL-E不同，它可以在消费级GPU上运行，让每个人都能使用AI生成图像。本文将深入解析其技术原理。 1. 扩散模型基础1.1 前向扩散过程逐步向图像添加高斯噪声，直到变成纯噪声： graph LR     A[原始图像 x₀] --&gt; B[x₁ &#x3D; √α₁x₀ + √">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1531746790731-6c087fecd65a">
+<meta property="article:published_time" content="2022-06-08T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:30.636Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="图像生成">
+<meta property="article:tag" content="Stable Diffusion">
+<meta property="article:tag" content="扩散模型">
+<meta property="article:tag" content="AIGC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1531746790731-6c087fecd65a">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-06-08-Stable-Diffusion原理深度解析" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1531746790731-6c087fecd65a" rel="gallery_cmoopizre005f9cv63fxw69r6 noopener">
+        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Stable Diffusion原理深度解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/06/08/2022-06-08-Stable-Diffusion%E5%8E%9F%E7%90%86%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="article-date">
+	  <time datetime="2022-06-08T02:00:00.000Z" itemprop="datePublished">六月 8, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="Stable-Diffusion原理深度解析"><a href="#Stable-Diffusion原理深度解析" class="headerlink" title="Stable Diffusion原理深度解析"></a>Stable Diffusion原理深度解析</h1><p>2022年8月，Stable Diffusion开源发布，彻底引爆了AIGC浪潮。与DALL-E不同，它可以在消费级GPU上运行，让每个人都能使用AI生成图像。本文将深入解析其技术原理。</p>
+<h2 id="1-扩散模型基础"><a href="#1-扩散模型基础" class="headerlink" title="1. 扩散模型基础"></a>1. 扩散模型基础</h2><h3 id="1-1-前向扩散过程"><a href="#1-1-前向扩散过程" class="headerlink" title="1.1 前向扩散过程"></a>1.1 前向扩散过程</h3><p>逐步向图像添加高斯噪声，直到变成纯噪声：</p>
+<pre class="mermaid">graph LR
+    A[原始图像 x₀] --> B[x₁ = √α₁x₀ + √1-α₁ε₁]
+    B --> C[x₂ = √α₂x₁ + √1-α₂ε₂]
+    C --> D[...]
+    D --> E[xₜ = √ᾱₜx₀ + √1-ᾱₜε]
+    E --> F[纯噪声 xₜ]</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">GaussianDiffusion</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_timesteps=<span class="number">1000</span>, beta_start=<span class="number">1e-4</span>, beta_end=<span class="number">0.02</span></span>):</span><br><span class="line">        self.num_timesteps = num_timesteps</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 线性噪声调度</span></span><br><span class="line">        self.betas = torch.linspace(beta_start, beta_end, num_timesteps)</span><br><span class="line">        self.alphas = <span class="number">1.0</span> - self.betas</span><br><span class="line">        self.alphas_cumprod = torch.cumprod(self.alphas, dim=<span class="number">0</span>)</span><br><span class="line">        self.sqrt_alphas_cumprod = torch.sqrt(self.alphas_cumprod)</span><br><span class="line">        self.sqrt_one_minus_alphas_cumprod = torch.sqrt(<span class="number">1.0</span> - self.alphas_cumprod)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">q_sample</span>(<span class="params">self, x_start, t, noise=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;前向扩散：在时间步t添加噪声&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> noise <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            noise = torch.randn_like(x_start)</span><br><span class="line">        </span><br><span class="line">        sqrt_alpha = self._extract(self.sqrt_alphas_cumprod, t, x_start.shape)</span><br><span class="line">        sqrt_one_minus_alpha = self._extract(</span><br><span class="line">            self.sqrt_one_minus_alphas_cumprod, t, x_start.shape</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 重参数化：直接从x₀采样xₜ</span></span><br><span class="line">        <span class="keyword">return</span> sqrt_alpha * x_start + sqrt_one_minus_alpha * noise</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_extract</span>(<span class="params">self, a, t, x_shape</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;从预计算数组中提取对应时间步的值&quot;&quot;&quot;</span></span><br><span class="line">        b = t.shape[<span class="number">0</span>]</span><br><span class="line">        out = a.gather(-<span class="number">1</span>, t)</span><br><span class="line">        <span class="keyword">return</span> out.reshape(b, *((<span class="number">1</span>,) * (<span class="built_in">len</span>(x_shape) - <span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-反向去噪过程"><a href="#1-2-反向去噪过程" class="headerlink" title="1.2 反向去噪过程"></a>1.2 反向去噪过程</h3><p>训练神经网络预测噪声，逐步去噪还原图像：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DiffusionUNet</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;U-Net噪声预测网络&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels=<span class="number">4</span>, out_channels=<span class="number">4</span>, </span></span><br><span class="line"><span class="params">                 model_channels=<span class="number">320</span>, num_res_blocks=<span class="number">2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 时间步嵌入</span></span><br><span class="line">        self.time_embed = nn.Sequential(</span><br><span class="line">            nn.Linear(model_channels, model_channels * <span class="number">4</span>),</span><br><span class="line">            nn.SiLU(),</span><br><span class="line">            nn.Linear(model_channels * <span class="number">4</span>, model_channels * <span class="number">4</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 下采样</span></span><br><span class="line">        self.down_blocks = nn.ModuleList([</span><br><span class="line">            DownBlock(model_channels, model_channels * <span class="number">2</span>, num_res_blocks),</span><br><span class="line">            DownBlock(model_channels * <span class="number">2</span>, model_channels * <span class="number">4</span>, num_res_blocks),</span><br><span class="line">            DownBlock(model_channels * <span class="number">4</span>, model_channels * <span class="number">8</span>, num_res_blocks),</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 中间块（含注意力）</span></span><br><span class="line">        self.middle = MiddleBlock(model_channels * <span class="number">8</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 上采样（含跳跃连接）</span></span><br><span class="line">        self.up_blocks = nn.ModuleList([</span><br><span class="line">            UpBlock(model_channels * <span class="number">8</span> + model_channels * <span class="number">4</span>, model_channels * <span class="number">4</span>),</span><br><span class="line">            UpBlock(model_channels * <span class="number">4</span> + model_channels * <span class="number">2</span>, model_channels * <span class="number">2</span>),</span><br><span class="line">            UpBlock(model_channels * <span class="number">2</span> + model_channels, model_channels),</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        self.out = nn.Conv2d(model_channels, out_channels, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, t, context=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;预测噪声ε&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 时间嵌入</span></span><br><span class="line">        t_emb = self.time_embed(timestep_embedding(t, self.model_channels))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 下采样并保存跳跃连接</span></span><br><span class="line">        skips = []</span><br><span class="line">        h = x</span><br><span class="line">        <span class="keyword">for</span> block <span class="keyword">in</span> self.down_blocks:</span><br><span class="line">            h = block(h, t_emb, context)</span><br><span class="line">            skips.append(h)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 中间处理</span></span><br><span class="line">        h = self.middle(h, t_emb, context)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 上采样 + 跳跃连接</span></span><br><span class="line">        <span class="keyword">for</span> block, skip <span class="keyword">in</span> <span class="built_in">zip</span>(self.up_blocks, <span class="built_in">reversed</span>(skips)):</span><br><span class="line">            h = block(h, skip, t_emb, context)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.out(h)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-潜扩散模型（Latent-Diffusion）"><a href="#2-潜扩散模型（Latent-Diffusion）" class="headerlink" title="2. 潜扩散模型（Latent Diffusion）"></a>2. 潜扩散模型（Latent Diffusion）</h2><p>Stable Diffusion的核心创新是在潜空间中进行扩散，大幅降低计算成本：</p>
+<pre class="mermaid">graph TB
+    A[图像 512×512×3] -->|VAE编码器| B[潜表示 64×64×4]
+    B -->|前向扩散| C[噪声潜表示]
+    C -->|U-Net去噪| D[去噪潜表示]
+    D -->|VAE解码器| E[生成图像 512×512×3]
+    
+    F[文本Prompt] -->|CLIP文本编码器| G[文本Embedding]
+    G -->|Cross-Attention| D</pre>
+
+<h3 id="2-1-VAE编码器-x2F-解码器"><a href="#2-1-VAE编码器-x2F-解码器" class="headerlink" title="2.1 VAE编码器&#x2F;解码器"></a>2.1 VAE编码器&#x2F;解码器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VAE</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;变分自编码器：图像↔潜空间&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, z_channels=<span class="number">4</span>, in_channels=<span class="number">3</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment"># 编码器：512×512×3 → 64×64×4</span></span><br><span class="line">        self.encoder = nn.Sequential(</span><br><span class="line">            nn.Conv2d(in_channels, <span class="number">128</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">            ResBlock(<span class="number">128</span>, <span class="number">128</span>),</span><br><span class="line">            Downsample(<span class="number">128</span>),</span><br><span class="line">            ResBlock(<span class="number">128</span>, <span class="number">256</span>),</span><br><span class="line">            Downsample(<span class="number">256</span>),</span><br><span class="line">            ResBlock(<span class="number">256</span>, <span class="number">512</span>),</span><br><span class="line">            Downsample(<span class="number">512</span>),</span><br><span class="line">            ResBlock(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            <span class="comment"># 输出均值和方差</span></span><br><span class="line">            nn.Conv2d(<span class="number">512</span>, z_channels * <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 解码器：64×64×4 → 512×512×3</span></span><br><span class="line">        self.decoder = nn.Sequential(</span><br><span class="line">            nn.Conv2d(z_channels, <span class="number">512</span>, <span class="number">1</span>),</span><br><span class="line">            ResBlock(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            Upsample(<span class="number">512</span>),</span><br><span class="line">            ResBlock(<span class="number">512</span>, <span class="number">512</span>),</span><br><span class="line">            Upsample(<span class="number">512</span>),</span><br><span class="line">            ResBlock(<span class="number">512</span>, <span class="number">256</span>),</span><br><span class="line">            Upsample(<span class="number">256</span>),</span><br><span class="line">            ResBlock(<span class="number">256</span>, <span class="number">128</span>),</span><br><span class="line">            nn.Conv2d(<span class="number">128</span>, in_channels, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">            nn.Tanh()</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, x</span>):</span><br><span class="line">        h = self.encoder(x)</span><br><span class="line">        mean, logvar = h.chunk(<span class="number">2</span>, dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 重参数化</span></span><br><span class="line">        z = mean + torch.randn_like(mean) * torch.exp(<span class="number">0.5</span> * logvar)</span><br><span class="line">        <span class="keyword">return</span> z</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decode</span>(<span class="params">self, z</span>):</span><br><span class="line">        <span class="keyword">return</span> self.decoder(z)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-文本条件注入"><a href="#2-2-文本条件注入" class="headerlink" title="2.2 文本条件注入"></a>2.2 文本条件注入</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CrossAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Cross-Attention: U-Net特征关注文本特征&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, query_dim, context_dim, heads=<span class="number">8</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.heads = heads</span><br><span class="line">        self.scale = (query_dim // heads) ** -<span class="number">0.5</span></span><br><span class="line">        </span><br><span class="line">        self.to_q = nn.Linear(query_dim, query_dim)</span><br><span class="line">        self.to_k = nn.Linear(context_dim, query_dim)</span><br><span class="line">        self.to_v = nn.Linear(context_dim, query_dim)</span><br><span class="line">        self.to_out = nn.Linear(query_dim, query_dim)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, context</span>):</span><br><span class="line">        b, n, _ = x.shape</span><br><span class="line">        </span><br><span class="line">        q = self.to_q(x).reshape(b, n, self.heads, -<span class="number">1</span>).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        k = self.to_k(context).reshape(b, -<span class="number">1</span>, self.heads, q.shape[-<span class="number">1</span>]).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        v = self.to_v(context).reshape(b, -<span class="number">1</span>, self.heads, q.shape[-<span class="number">1</span>]).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        attn = (q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) * self.scale</span><br><span class="line">        attn = attn.softmax(dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        out = (attn @ v).transpose(<span class="number">1</span>, <span class="number">2</span>).reshape(b, n, -<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> self.to_out(out)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-训练与采样"><a href="#3-训练与采样" class="headerlink" title="3. 训练与采样"></a>3. 训练与采样</h2><h3 id="3-1-训练循环"><a href="#3-1-训练循环" class="headerlink" title="3.1 训练循环"></a>3.1 训练循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_latent_diffusion</span>(<span class="params">model, vae, text_encoder, dataloader, optimizer</span>):</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> dataloader:</span><br><span class="line">        images, captions = batch[<span class="string">&quot;image&quot;</span>], batch[<span class="string">&quot;caption&quot;</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 编码到潜空间</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            latents = vae.encode(images)</span><br><span class="line">            text_embeddings = text_encoder(captions)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 随机时间步</span></span><br><span class="line">        t = torch.randint(<span class="number">0</span>, num_timesteps, (latents.shape[<span class="number">0</span>],))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加噪声</span></span><br><span class="line">        noise = torch.randn_like(latents)</span><br><span class="line">        noisy_latents = diffusion.q_sample(latents, t, noise)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预测噪声</span></span><br><span class="line">        noise_pred = model(noisy_latents, t, text_embeddings)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 简单MSE损失</span></span><br><span class="line">        loss = F.mse_loss(noise_pred, noise)</span><br><span class="line">        </span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-DDIM采样"><a href="#3-2-DDIM采样" class="headerlink" title="3.2 DDIM采样"></a>3.2 DDIM采样</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@torch.no_grad()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ddim_sample</span>(<span class="params">model, vae, text_encoder, prompt, </span></span><br><span class="line"><span class="params">                num_steps=<span class="number">50</span>, eta=<span class="number">0.0</span>, guidance_scale=<span class="number">7.5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;DDIM确定性采样 + Classifier-Free Guidance&quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 文本编码</span></span><br><span class="line">    text_emb = text_encoder(prompt)          <span class="comment"># 条件</span></span><br><span class="line">    uncond_emb = text_encoder([<span class="string">&quot;&quot;</span>] * <span class="built_in">len</span>(prompt))  <span class="comment"># 无条件</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 从纯噪声开始</span></span><br><span class="line">    latents = torch.randn(<span class="built_in">len</span>(prompt), <span class="number">4</span>, <span class="number">64</span>, <span class="number">64</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 逐步去噪</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(num_steps)):</span><br><span class="line">        t = torch.tensor([i] * <span class="built_in">len</span>(prompt))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Classifier-Free Guidance</span></span><br><span class="line">        noise_cond = model(latents, t, text_emb)</span><br><span class="line">        noise_uncond = model(latents, t, uncond_emb)</span><br><span class="line">        noise_pred = noise_uncond + guidance_scale * (noise_cond - noise_uncond)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># DDIM更新</span></span><br><span class="line">        alpha_t = alphas_cumprod[i]</span><br><span class="line">        alpha_prev = alphas_cumprod[<span class="built_in">max</span>(i - <span class="number">1</span>, <span class="number">0</span>)]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预测x₀</span></span><br><span class="line">        x0_pred = (latents - (<span class="number">1</span> - alpha_t).sqrt() * noise_pred) / alpha_t.sqrt()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 方向指向xₜ</span></span><br><span class="line">        dir_xt = (<span class="number">1</span> - alpha_prev - eta**<span class="number">2</span> * (<span class="number">1</span> - alpha_t)).sqrt() * noise_pred</span><br><span class="line">        </span><br><span class="line">        latents = alpha_prev.sqrt() * x0_pred + dir_xt</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> eta &gt; <span class="number">0</span>:</span><br><span class="line">            noise = torch.randn_like(latents)</span><br><span class="line">            latents += eta * (<span class="number">1</span> - alpha_prev).sqrt() * noise</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 解码回图像空间</span></span><br><span class="line">    images = vae.decode(latents)</span><br><span class="line">    <span class="keyword">return</span> images</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Classifier-Free-Guidance"><a href="#4-Classifier-Free-Guidance" class="headerlink" title="4. Classifier-Free Guidance"></a>4. Classifier-Free Guidance</h2><p>CFG是Stable Diffusion高质量生成的关键：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">classifier_free_guidance</span>(<span class="params">noise_cond, noise_uncond, guidance_scale=<span class="number">7.5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    guidance_scale &gt; 1: 增强条件影响，图像更符合文本但多样性降低</span></span><br><span class="line"><span class="string">    guidance_scale = 1: 标准条件采样</span></span><br><span class="line"><span class="string">    guidance_scale &lt; 1: 降低条件影响</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> noise_uncond + guidance_scale * (noise_cond - noise_uncond)</span><br></pre></td></tr></table></figure>
+
+<pre class="mermaid">graph LR
+    A[噪声图像] --> B[U-Net]
+    C[条件文本] --> B
+    D[空文本] --> E[U-Net]
+    A --> E
+    B --> F[条件噪声预测]
+    E --> G[无条件噪声预测]
+    F --> H[CFG: ε_uncond + s×ε_cond - ε_uncond]
+    G --> H</pre>
+
+<h2 id="5-本地部署Stable-Diffusion"><a href="#5-本地部署Stable-Diffusion" class="headerlink" title="5. 本地部署Stable Diffusion"></a>5. 本地部署Stable Diffusion</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/CompVis/stable-diffusion.git</span><br><span class="line"><span class="built_in">cd</span> stable-diffusion</span><br><span class="line">conda <span class="built_in">env</span> create -f environment.yaml</span><br><span class="line">conda activate ldm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载模型权重</span></span><br><span class="line">wget https://huggingface.co/CompVis/stable-diffusion-v-1-4/resolve/main/sd-v1-4.ckpt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成图像</span></span><br><span class="line">python scripts/txt2img.py \</span><br><span class="line">    --prompt <span class="string">&quot;a photograph of an astronaut riding a horse&quot;</span> \</span><br><span class="line">    --plms \</span><br><span class="line">    --outdir outputs \</span><br><span class="line">    --ckpt sd-v1-4.ckpt \</span><br><span class="line">    --n_samples 4 \</span><br><span class="line">    --ddim_steps 50 \</span><br><span class="line">    --cfg_scale 7.5</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用diffusers库（推荐方式）</span></span><br><span class="line"><span class="keyword">from</span> diffusers <span class="keyword">import</span> StableDiffusionPipeline</span><br><span class="line"></span><br><span class="line">pipe = StableDiffusionPipeline.from_pretrained(</span><br><span class="line">    <span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>,</span><br><span class="line">    torch_dtype=torch.float16,</span><br><span class="line">    revision=<span class="string">&quot;fp16&quot;</span></span><br><span class="line">).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line">image = pipe(</span><br><span class="line">    <span class="string">&quot;a photograph of an astronaut riding a horse, detailed, 4k&quot;</span>,</span><br><span class="line">    num_inference_steps=<span class="number">50</span>,</span><br><span class="line">    guidance_scale=<span class="number">7.5</span>,</span><br><span class="line">    width=<span class="number">512</span>,</span><br><span class="line">    height=<span class="number">512</span></span><br><span class="line">).images[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">image.save(<span class="string">&quot;astronaut_horse.png&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Stable Diffusion通过潜扩散模型将扩散过程从像素空间转移到低维潜空间，使消费级GPU上的高质量图像生成成为可能。配合Classifier-Free Guidance和DDIM采样，它实现了质量与效率的平衡。其开源发布标志着AIGC民主化的里程碑。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81/">多模态</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/">图像生成</a>
+    
+      <a href="/tags/Stable-Diffusion/">Stable Diffusion</a>
+    
+      <a href="/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/">扩散模型</a>
+    
+      <a href="/tags/AIGC/">AIGC</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/06/08/2022-06-08-Stable-Diffusion原理深度解析/" target="_blank" title="Stable Diffusion原理深度解析">https://www.coomatrix.com/2022/06/08/2022-06-08-Stable-Diffusion原理深度解析/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/05/2022-07-05-Stable-Diffusion%E5%AE%9E%E6%88%98%E4%B8%8ELoRA%E5%BE%AE%E8%B0%83/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Stable Diffusion实战与LoRA微调
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/12/2022-05-12-DALL-E%E4%B8%8E%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F%E6%8A%80%E6%9C%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">DALL-E与文本生成图像技术</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Stable-Diffusion%E5%8E%9F%E7%90%86%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">Stable Diffusion原理深度解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">1. 扩散模型基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%89%8D%E5%90%91%E6%89%A9%E6%95%A3%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 前向扩散过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%8F%8D%E5%90%91%E5%8E%BB%E5%99%AA%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 反向去噪过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%BD%9C%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%EF%BC%88Latent-Diffusion%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">2. 潜扩散模型（Latent Diffusion）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-VAE%E7%BC%96%E7%A0%81%E5%99%A8-x2F-%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 VAE编码器&#x2F;解码器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%96%87%E6%9C%AC%E6%9D%A1%E4%BB%B6%E6%B3%A8%E5%85%A5"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 文本条件注入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AE%AD%E7%BB%83%E4%B8%8E%E9%87%87%E6%A0%B7"><span class="nav-number">1.3.</span> <span class="nav-text">3. 训练与采样</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%AE%AD%E7%BB%83%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 训练循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-DDIM%E9%87%87%E6%A0%B7"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 DDIM采样</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Classifier-Free-Guidance"><span class="nav-number">1.4.</span> <span class="nav-text">4. Classifier-Free Guidance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2Stable-Diffusion"><span class="nav-number">1.5.</span> <span class="nav-text">5. 本地部署Stable Diffusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

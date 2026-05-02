@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>nvidia jetson nano边缘ai部署实战 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="NVIDIA Jetson Nano边缘AI部署实战Jetson Nano是NVIDIA推出的入门级边缘AI计算平台，搭载128核Maxwell GPU和4核ARM Cortex-A57 CPU，以不到千元的价格提供了472 GFLOPS的AI算力，是学习和实践边缘AI部署的理想平台。 1. Jetson Nano环境搭建1.1 系统安装123456789101112131415161718192">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NVIDIA Jetson Nano边缘AI部署实战">
+<meta property="og:url" content="https://www.coomatrix.com/2022/10/25/2022-10-25-NVIDIA-Jetson-Nano%E8%BE%B9%E7%BC%98AI%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="NVIDIA Jetson Nano边缘AI部署实战Jetson Nano是NVIDIA推出的入门级边缘AI计算平台，搭载128核Maxwell GPU和4核ARM Cortex-A57 CPU，以不到千元的价格提供了472 GFLOPS的AI算力，是学习和实践边缘AI部署的理想平台。 1. Jetson Nano环境搭建1.1 系统安装123456789101112131415161718192">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475">
+<meta property="article:published_time" content="2022-10-25T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:01.712Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="YOLO">
+<meta property="article:tag" content="Jetson Nano">
+<meta property="article:tag" content="边缘部署">
+<meta property="article:tag" content="TensorRT">
+<meta property="article:tag" content="嵌入式AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-10-25-NVIDIA-Jetson-Nano边缘AI部署实战" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1518770660439-4636190af475" rel="gallery_cmoopizrh00649cv6hwrl2x2x noopener">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      NVIDIA Jetson Nano边缘AI部署实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/10/25/2022-10-25-NVIDIA-Jetson-Nano%E8%BE%B9%E7%BC%98AI%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98/" class="article-date">
+	  <time datetime="2022-10-25T01:00:00.000Z" itemprop="datePublished">十月 25, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="NVIDIA-Jetson-Nano边缘AI部署实战"><a href="#NVIDIA-Jetson-Nano边缘AI部署实战" class="headerlink" title="NVIDIA Jetson Nano边缘AI部署实战"></a>NVIDIA Jetson Nano边缘AI部署实战</h1><p>Jetson Nano是NVIDIA推出的入门级边缘AI计算平台，搭载128核Maxwell GPU和4核ARM Cortex-A57 CPU，以不到千元的价格提供了472 GFLOPS的AI算力，是学习和实践边缘AI部署的理想平台。</p>
+<h2 id="1-Jetson-Nano环境搭建"><a href="#1-Jetson-Nano环境搭建" class="headerlink" title="1. Jetson Nano环境搭建"></a>1. Jetson Nano环境搭建</h2><h3 id="1-1-系统安装"><a href="#1-1-系统安装" class="headerlink" title="1.1 系统安装"></a>1.1 系统安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 下载JetPack SDK镜像</span></span><br><span class="line"><span class="comment"># 访问 https://developer.nvidia.com/embedded/jetpack</span></span><br><span class="line"><span class="comment"># 下载JetPack 4.6.x for Jetson Nano</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 烧录SD卡</span></span><br><span class="line">sudo <span class="built_in">dd</span> <span class="keyword">if</span>=jetson-nano-jp461-sd-card-image.img \</span><br><span class="line">    of=/dev/sdX bs=4M status=progress</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 首次启动配置</span></span><br><span class="line"><span class="comment"># 插入SD卡，连接显示器、键盘、鼠标，开机</span></span><br><span class="line"><span class="comment"># 完成初始设置（语言、时区、用户等）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 验证安装</span></span><br><span class="line">nvidia@jetson:~$ <span class="built_in">cat</span> /etc/nv_tegra_release</span><br><span class="line"><span class="comment"># R32 (release), REVISION: 7.1</span></span><br><span class="line"></span><br><span class="line">nvidia@jetson:~$ nvcc --version</span><br><span class="line"><span class="comment"># nvcc: NVIDIA (R) Cuda compiler driver, release 10.2</span></span><br><span class="line"></span><br><span class="line">nvidia@jetson:~$ tegrastats</span><br><span class="line"><span class="comment"># RAM 1584/3964MB, CPU [28%@1479, 32%@1479, ...], GPU 208MHz</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-性能模式切换"><a href="#1-2-性能模式切换" class="headerlink" title="1.2 性能模式切换"></a>1.2 性能模式切换</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前模式</span></span><br><span class="line">sudo nvpmodel -q verbose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7W高性能模式（推荐，需要散热风扇）</span></span><br><span class="line">sudo nvpmodel -m 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5W节能模式</span></span><br><span class="line">sudo nvpmodel -m 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启最大频率</span></span><br><span class="line">sudo jetson_clocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看详细频率信息</span></span><br><span class="line">sudo jetson_clocks --show</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-Python环境配置"><a href="#1-3-Python环境配置" class="headerlink" title="1.3 Python环境配置"></a>1.3 Python环境配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># JetPack自带Python3，安装PyTorch</span></span><br><span class="line"><span class="comment"># 需要安装适配ARM架构的PyTorch版本</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">sudo apt-get install python3-pip libopenblas-base libopenmpi-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载预编译的PyTorch wheel</span></span><br><span class="line">wget https://nvidia.box.com/shared/static/fjtbno0vho6e4j7lnn3sa2prcrhis4wh.whl -O torch-1.10.0-cp36-cp36m-linux_aarch64.whl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装PyTorch</span></span><br><span class="line">pip3 install torch-1.10.0-cp36-cp36m-linux_aarch64.whl</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装TorchVision</span></span><br><span class="line">sudo apt-get install libjpeg-dev zlib1g-dev libpython3-dev</span><br><span class="line">pip3 install torchvision==0.11.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">python3 -c <span class="string">&quot;import torch; print(torch.__version__); print(torch.cuda.is_available())&quot;</span></span><br><span class="line"><span class="comment"># 1.10.0</span></span><br><span class="line"><span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-YOLO目标检测部署"><a href="#2-YOLO目标检测部署" class="headerlink" title="2. YOLO目标检测部署"></a>2. YOLO目标检测部署</h2><h3 id="2-1-模型准备"><a href="#2-1-模型准备" class="headerlink" title="2.1 模型准备"></a>2.1 模型准备</h3><pre class="mermaid">graph LR
+    A[YOLOv5 PyTorch模型] -->|export| B[ONNX模型]
+    B -->|trtexec| C[TensorRT引擎]
+    C -->|部署| D[Jetson Nano推理]
+    
+    subgraph "开发机"
+        A
+        B
+    end
+    
+    subgraph "Jetson Nano"
+        C
+        D
+    end</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在开发机上：导出YOLOv5为ONNX</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> models.experimental <span class="keyword">import</span> attempt_load</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载YOLOv5s模型</span></span><br><span class="line">model = attempt_load(<span class="string">&#x27;yolov5s.pt&#x27;</span>, map_location=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line">model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建示例输入</span></span><br><span class="line">dummy_input = torch.randn(<span class="number">1</span>, <span class="number">3</span>, <span class="number">640</span>, <span class="number">640</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导出ONNX</span></span><br><span class="line">torch.onnx.export(</span><br><span class="line">    model,</span><br><span class="line">    dummy_input,</span><br><span class="line">    <span class="string">&quot;yolov5s.onnx&quot;</span>,</span><br><span class="line">    opset_version=<span class="number">11</span>,</span><br><span class="line">    input_names=[<span class="string">&#x27;images&#x27;</span>],</span><br><span class="line">    output_names=[<span class="string">&#x27;output&#x27;</span>],</span><br><span class="line">    dynamic_axes=&#123;</span><br><span class="line">        <span class="string">&#x27;images&#x27;</span>: &#123;<span class="number">0</span>: <span class="string">&#x27;batch&#x27;</span>&#125;,</span><br><span class="line">        <span class="string">&#x27;output&#x27;</span>: &#123;<span class="number">0</span>: <span class="string">&#x27;batch&#x27;</span>&#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ONNX导出完成&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-ONNX转TensorRT"><a href="#2-2-ONNX转TensorRT" class="headerlink" title="2.2 ONNX转TensorRT"></a>2.2 ONNX转TensorRT</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将ONNX模型复制到Jetson Nano</span></span><br><span class="line">scp yolov5s.onnx nvidia@&lt;jetson-ip&gt;:~/models/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在Jetson Nano上转换为TensorRT引擎</span></span><br><span class="line"><span class="comment"># FP16精度（推荐，速度翻倍）</span></span><br><span class="line">trtexec \</span><br><span class="line">    --onnx=yolov5s.onnx \</span><br><span class="line">    --saveEngine=yolov5s_fp16.engine \</span><br><span class="line">    --fp16 \</span><br><span class="line">    --batch=1 \</span><br><span class="line">    --workspace=1024 \</span><br><span class="line">    --verbose</span><br><span class="line"></span><br><span class="line"><span class="comment"># INT8精度（需要校准数据）</span></span><br><span class="line">trtexec \</span><br><span class="line">    --onnx=yolov5s.onnx \</span><br><span class="line">    --saveEngine=yolov5s_int8.engine \</span><br><span class="line">    --int8 \</span><br><span class="line">    --calib=calibration_cache.bin \</span><br><span class="line">    --batch=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-TensorRT推理代码"><a href="#2-3-TensorRT推理代码" class="headerlink" title="2.3 TensorRT推理代码"></a>2.3 TensorRT推理代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorrt <span class="keyword">as</span> trt</span><br><span class="line"><span class="keyword">import</span> pycuda.driver <span class="keyword">as</span> cuda</span><br><span class="line"><span class="keyword">import</span> pycuda.autoinit</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TensorRTInference</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;TensorRT推理引擎&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, engine_path, conf_thres=<span class="number">0.5</span>, iou_thres=<span class="number">0.45</span></span>):</span><br><span class="line">        self.conf_thres = conf_thres</span><br><span class="line">        self.iou_thres = iou_thres</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载引擎</span></span><br><span class="line">        self.logger = trt.Logger(trt.Logger.WARNING)</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(engine_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            runtime = trt.Runtime(self.logger)</span><br><span class="line">            self.engine = runtime.deserialize_cuda_engine(f.read())</span><br><span class="line">        </span><br><span class="line">        self.context = self.engine.create_execution_context()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分配GPU内存</span></span><br><span class="line">        self.inputs = []</span><br><span class="line">        self.outputs = []</span><br><span class="line">        self.bindings = []</span><br><span class="line">        self.stream = cuda.Stream()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.engine.num_bindings):</span><br><span class="line">            shape = self.engine.get_binding_shape(i)</span><br><span class="line">            dtype = trt.nptype(self.engine.get_binding_dtype(i))</span><br><span class="line">            size = np.prod(shape)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 分配主机和设备内存</span></span><br><span class="line">            host_mem = cuda.pagelocked_empty(size, dtype)</span><br><span class="line">            device_mem = cuda.mem_alloc(host_mem.nbytes)</span><br><span class="line">            </span><br><span class="line">            self.bindings.append(<span class="built_in">int</span>(device_mem))</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> self.engine.binding_is_input(i):</span><br><span class="line">                self.inputs.append(&#123;</span><br><span class="line">                    <span class="string">&#x27;host&#x27;</span>: host_mem,</span><br><span class="line">                    <span class="string">&#x27;device&#x27;</span>: device_mem,</span><br><span class="line">                    <span class="string">&#x27;shape&#x27;</span>: shape</span><br><span class="line">                &#125;)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self.outputs.append(&#123;</span><br><span class="line">                    <span class="string">&#x27;host&#x27;</span>: host_mem,</span><br><span class="line">                    <span class="string">&#x27;device&#x27;</span>: device_mem,</span><br><span class="line">                    <span class="string">&#x27;shape&#x27;</span>: shape</span><br><span class="line">                &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">preprocess</span>(<span class="params">self, img</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;图像预处理&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 保存原始尺寸用于后处理</span></span><br><span class="line">        self.orig_shape = img.shape[:<span class="number">2</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Letterbox缩放</span></span><br><span class="line">        h, w = img.shape[:<span class="number">2</span>]</span><br><span class="line">        target = <span class="number">640</span></span><br><span class="line">        scale = <span class="built_in">min</span>(target / h, target / w)</span><br><span class="line">        new_h, new_w = <span class="built_in">int</span>(h * scale), <span class="built_in">int</span>(w * scale)</span><br><span class="line">        </span><br><span class="line">        img_resized = cv2.resize(img, (new_w, new_h))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 填充</span></span><br><span class="line">        pad_h = (target - new_h) // <span class="number">2</span></span><br><span class="line">        pad_w = (target - new_w) // <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        canvas = np.full((target, target, <span class="number">3</span>), <span class="number">114</span>, dtype=np.uint8)</span><br><span class="line">        canvas[pad_h:pad_h+new_h, pad_w:pad_w+new_w] = img_resized</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 归一化</span></span><br><span class="line">        blob = canvas.astype(np.float32) / <span class="number">255.0</span></span><br><span class="line">        blob = blob.transpose(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>)[np.newaxis]  <span class="comment"># NCHW</span></span><br><span class="line">        </span><br><span class="line">        self.scale = scale</span><br><span class="line">        self.pad = (pad_w, pad_h)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> blob</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">infer</span>(<span class="params">self, img</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;执行推理&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 预处理</span></span><br><span class="line">        blob = self.preprocess(img)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 拷贝到GPU</span></span><br><span class="line">        np.copyto(self.inputs[<span class="number">0</span>][<span class="string">&#x27;host&#x27;</span>], blob.ravel())</span><br><span class="line">        cuda.memcpy_htod_async(</span><br><span class="line">            self.inputs[<span class="number">0</span>][<span class="string">&#x27;device&#x27;</span>], </span><br><span class="line">            self.inputs[<span class="number">0</span>][<span class="string">&#x27;host&#x27;</span>], </span><br><span class="line">            self.stream</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 执行推理</span></span><br><span class="line">        self.context.execute_async_v2(</span><br><span class="line">            bindings=self.bindings, </span><br><span class="line">            stream_handle=self.stream.handle</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 拷贝回CPU</span></span><br><span class="line">        cuda.memcpy_dtoh_async(</span><br><span class="line">            self.outputs[<span class="number">0</span>][<span class="string">&#x27;host&#x27;</span>], </span><br><span class="line">            self.outputs[<span class="number">0</span>][<span class="string">&#x27;device&#x27;</span>], </span><br><span class="line">            self.stream</span><br><span class="line">        )</span><br><span class="line">        self.stream.synchronize()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 后处理</span></span><br><span class="line">        output = self.outputs[<span class="number">0</span>][<span class="string">&#x27;host&#x27;</span>].reshape(self.outputs[<span class="number">0</span>][<span class="string">&#x27;shape&#x27;</span>])</span><br><span class="line">        detections = self.postprocess(output)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> detections</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">postprocess</span>(<span class="params">self, output</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;YOLOv5后处理&quot;&quot;&quot;</span></span><br><span class="line">        predictions = output[<span class="number">0</span>]  <span class="comment"># [1, 25200, 85]</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 过滤低置信度</span></span><br><span class="line">        scores = predictions[:, <span class="number">4</span>:].<span class="built_in">max</span>(axis=<span class="number">1</span>)</span><br><span class="line">        mask = scores &gt; self.conf_thres</span><br><span class="line">        predictions = predictions[mask]</span><br><span class="line">        scores = scores[mask]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取类别</span></span><br><span class="line">        class_ids = predictions[:, <span class="number">4</span>:].argmax(axis=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取边界框</span></span><br><span class="line">        boxes = predictions[:, :<span class="number">4</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 转换回原始坐标</span></span><br><span class="line">        pad_w, pad_h = self.pad</span><br><span class="line">        boxes[:, <span class="number">0</span>] = (boxes[:, <span class="number">0</span>] - pad_w) / self.scale</span><br><span class="line">        boxes[:, <span class="number">1</span>] = (boxes[:, <span class="number">1</span>] - pad_h) / self.scale</span><br><span class="line">        boxes[:, <span class="number">2</span>] = (boxes[:, <span class="number">2</span>] - pad_w) / self.scale</span><br><span class="line">        boxes[:, <span class="number">3</span>] = (boxes[:, <span class="number">3</span>] - pad_h) / self.scale</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># NMS</span></span><br><span class="line">        indices = self.nms(boxes, scores, self.iou_thres)</span><br><span class="line">        </span><br><span class="line">        results = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> indices:</span><br><span class="line">            results.append(&#123;</span><br><span class="line">                <span class="string">&#x27;bbox&#x27;</span>: boxes[i].tolist(),</span><br><span class="line">                <span class="string">&#x27;score&#x27;</span>: <span class="built_in">float</span>(scores[i]),</span><br><span class="line">                <span class="string">&#x27;class_id&#x27;</span>: <span class="built_in">int</span>(class_ids[i])</span><br><span class="line">            &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> results</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">nms</span>(<span class="params">self, boxes, scores, iou_thres</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;非极大值抑制&quot;&quot;&quot;</span></span><br><span class="line">        x1, y1, x2, y2 = boxes[:, <span class="number">0</span>], boxes[:, <span class="number">1</span>], boxes[:, <span class="number">2</span>], boxes[:, <span class="number">3</span>]</span><br><span class="line">        areas = (x2 - x1) * (y2 - y1)</span><br><span class="line">        order = scores.argsort()[::-<span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        keep = []</span><br><span class="line">        <span class="keyword">while</span> order.size &gt; <span class="number">0</span>:</span><br><span class="line">            i = order[<span class="number">0</span>]</span><br><span class="line">            keep.append(i)</span><br><span class="line">            </span><br><span class="line">            xx1 = np.maximum(x1[i], x1[order[<span class="number">1</span>:]])</span><br><span class="line">            yy1 = np.maximum(y1[i], y1[order[<span class="number">1</span>:]])</span><br><span class="line">            xx2 = np.minimum(x2[i], x2[order[<span class="number">1</span>:]])</span><br><span class="line">            yy2 = np.minimum(y2[i], y2[order[<span class="number">1</span>:]])</span><br><span class="line">            </span><br><span class="line">            inter = np.maximum(<span class="number">0</span>, xx2-xx1) * np.maximum(<span class="number">0</span>, yy2-yy1)</span><br><span class="line">            iou = inter / (areas[i] + areas[order[<span class="number">1</span>:]] - inter)</span><br><span class="line">            </span><br><span class="line">            inds = np.where(iou &lt;= iou_thres)[<span class="number">0</span>]</span><br><span class="line">            order = order[inds + <span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> keep</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实时推理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">realtime_detection</span>(<span class="params">engine_path, camera_id=<span class="number">0</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;实时目标检测&quot;&quot;&quot;</span></span><br><span class="line">    detector = TensorRTInference(engine_path)</span><br><span class="line">    cap = cv2.VideoCapture(camera_id)</span><br><span class="line">    cap.<span class="built_in">set</span>(cv2.CAP_PROP_FRAME_WIDTH, <span class="number">640</span>)</span><br><span class="line">    cap.<span class="built_in">set</span>(cv2.CAP_PROP_FRAME_HEIGHT, <span class="number">480</span>)</span><br><span class="line">    </span><br><span class="line">    COCO_CLASSES = [</span><br><span class="line">        <span class="string">&#x27;person&#x27;</span>, <span class="string">&#x27;bicycle&#x27;</span>, <span class="string">&#x27;car&#x27;</span>, <span class="string">&#x27;motorcycle&#x27;</span>, <span class="string">&#x27;airplane&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;bus&#x27;</span>, <span class="string">&#x27;train&#x27;</span>, <span class="string">&#x27;truck&#x27;</span>, <span class="string">&#x27;boat&#x27;</span>, <span class="string">&#x27;traffic light&#x27;</span>, ...</span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    fps_list = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        ret, frame = cap.read()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">        start = time.time()</span><br><span class="line">        detections = detector.infer(frame)</span><br><span class="line">        fps = <span class="number">1.0</span> / (time.time() - start)</span><br><span class="line">        fps_list.append(fps)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 绘制结果</span></span><br><span class="line">        <span class="keyword">for</span> det <span class="keyword">in</span> detections:</span><br><span class="line">            x1, y1, x2, y2 = [<span class="built_in">int</span>(v) <span class="keyword">for</span> v <span class="keyword">in</span> det[<span class="string">&#x27;bbox&#x27;</span>]]</span><br><span class="line">            label = <span class="string">f&quot;<span class="subst">&#123;COCO_CLASSES[det[<span class="string">&#x27;class_id&#x27;</span>]]&#125;</span> <span class="subst">&#123;det[<span class="string">&#x27;score&#x27;</span>]:<span class="number">.2</span>f&#125;</span>&quot;</span></span><br><span class="line">            cv2.rectangle(frame, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">            cv2.putText(frame, label, (x1, y1-<span class="number">10</span>),</span><br><span class="line">                       cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.5</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        avg_fps = np.mean(fps_list[-<span class="number">30</span>:])</span><br><span class="line">        cv2.putText(frame, <span class="string">f&quot;FPS: <span class="subst">&#123;avg_fps:<span class="number">.1</span>f&#125;</span>&quot;</span>, (<span class="number">10</span>, <span class="number">30</span>),</span><br><span class="line">                   cv2.FONT_HERSHEY_SIMPLEX, <span class="number">1</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        cv2.imshow(<span class="string">&#x27;YOLOv5 Detection&#x27;</span>, frame)</span><br><span class="line">        <span class="keyword">if</span> cv2.waitKey(<span class="number">1</span>) &amp; <span class="number">0xFF</span> == <span class="built_in">ord</span>(<span class="string">&#x27;q&#x27;</span>):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    cap.release()</span><br><span class="line">    cv2.destroyAllWindows()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">realtime_detection(<span class="string">&#x27;yolov5s_fp16.engine&#x27;</span>, camera_id=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-性能基准测试"><a href="#3-性能基准测试" class="headerlink" title="3. 性能基准测试"></a>3. 性能基准测试</h2><h3 id="3-1-不同模型和精度对比"><a href="#3-1-不同模型和精度对比" class="headerlink" title="3.1 不同模型和精度对比"></a>3.1 不同模型和精度对比</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">benchmark_models</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Jetson Nano性能基准测试&quot;&quot;&quot;</span></span><br><span class="line">    models = &#123;</span><br><span class="line">        <span class="string">&#x27;YOLOv5s FP32&#x27;</span>: <span class="string">&#x27;yolov5s_fp32.engine&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;YOLOv5s FP16&#x27;</span>: <span class="string">&#x27;yolov5s_fp16.engine&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;YOLOv5s INT8&#x27;</span>: <span class="string">&#x27;yolov5s_int8.engine&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;YOLOv5n FP16&#x27;</span>: <span class="string">&#x27;yolov5n_fp16.engine&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    results = &#123;&#125;</span><br><span class="line">    dummy_img = np.random.randint(<span class="number">0</span>, <span class="number">255</span>, (<span class="number">480</span>, <span class="number">640</span>, <span class="number">3</span>), dtype=np.uint8)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> name, engine <span class="keyword">in</span> models.items():</span><br><span class="line">        detector = TensorRTInference(engine)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预热</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">            detector.infer(dummy_img)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 测试</span></span><br><span class="line">        times = []</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">            start = time.time()</span><br><span class="line">            detector.infer(dummy_img)</span><br><span class="line">            times.append(time.time() - start)</span><br><span class="line">        </span><br><span class="line">        avg_time = np.mean(times) * <span class="number">1000</span></span><br><span class="line">        fps = <span class="number">1000</span> / avg_time</span><br><span class="line">        results[name] = &#123;<span class="string">&#x27;latency_ms&#x27;</span>: avg_time, <span class="string">&#x27;fps&#x27;</span>: fps&#125;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span>: <span class="subst">&#123;avg_time:<span class="number">.1</span>f&#125;</span>ms, <span class="subst">&#123;fps:<span class="number">.1</span>f&#125;</span> FPS&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-性能数据参考"><a href="#3-2-性能数据参考" class="headerlink" title="3.2 性能数据参考"></a>3.2 性能数据参考</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>精度</th>
+<th>延迟(ms)</th>
+<th>FPS</th>
+<th>功耗(W)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YOLOv5s</td>
+<td>FP32</td>
+<td>180</td>
+<td>5.5</td>
+<td>7.5</td>
+</tr>
+<tr>
+<td>YOLOv5s</td>
+<td>FP16</td>
+<td>95</td>
+<td>10.5</td>
+<td>7.2</td>
+</tr>
+<tr>
+<td>YOLOv5s</td>
+<td>INT8</td>
+<td>65</td>
+<td>15.4</td>
+<td>6.8</td>
+</tr>
+<tr>
+<td>YOLOv5n</td>
+<td>FP16</td>
+<td>45</td>
+<td>22.2</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td>MobileNetV2</td>
+<td>FP16</td>
+<td>18</td>
+<td>55.6</td>
+<td>5.8</td>
+</tr>
+</tbody></table>
+<h2 id="4-系统优化"><a href="#4-系统优化" class="headerlink" title="4. 系统优化"></a>4. 系统优化</h2><h3 id="4-1-内存优化"><a href="#4-1-内存优化" class="headerlink" title="4.1 内存优化"></a>4.1 内存优化</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看内存使用</span></span><br><span class="line">free -h</span><br><span class="line"><span class="comment"># 总内存约4GB，需精打细算</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加Swap空间</span></span><br><span class="line">sudo fallocate -l 4G /swapfile</span><br><span class="line">sudo <span class="built_in">chmod</span> 600 /swapfile</span><br><span class="line">sudo mkswap /swapfile</span><br><span class="line">sudo swapon /swapfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;/swapfile none swap sw 0 0&#x27;</span> | sudo <span class="built_in">tee</span> -a /etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭桌面环境（无头模式，释放约500MB内存）</span></span><br><span class="line">sudo systemctl set-default multi-user.target</span><br><span class="line"><span class="comment"># 恢复桌面：sudo systemctl set-default graphical.target</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-摄像头优化"><a href="#4-2-摄像头优化" class="headerlink" title="4.2 摄像头优化"></a>4.2 摄像头优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用GStreamer加速摄像头读取</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gstreamer_pipeline</span>(<span class="params"></span></span><br><span class="line"><span class="params">    sensor_id=<span class="number">0</span>,</span></span><br><span class="line"><span class="params">    capture_width=<span class="number">1280</span>,</span></span><br><span class="line"><span class="params">    capture_height=<span class="number">720</span>,</span></span><br><span class="line"><span class="params">    display_width=<span class="number">640</span>,</span></span><br><span class="line"><span class="params">    display_height=<span class="number">480</span>,</span></span><br><span class="line"><span class="params">    framerate=<span class="number">30</span>,</span></span><br><span class="line"><span class="params">    flip_method=<span class="number">0</span></span></span><br><span class="line"><span class="params"></span>):</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="string">f&quot;nvarguscamerasrc sensor-id=<span class="subst">&#123;sensor_id&#125;</span> ! &quot;</span></span><br><span class="line">        <span class="string">f&quot;video/x-raw(memory:NVMM), &quot;</span></span><br><span class="line">        <span class="string">f&quot;width=(int)<span class="subst">&#123;capture_width&#125;</span>, height=(int)<span class="subst">&#123;capture_height&#125;</span>, &quot;</span></span><br><span class="line">        <span class="string">f&quot;framerate=(fraction)<span class="subst">&#123;framerate&#125;</span>/1 ! &quot;</span></span><br><span class="line">        <span class="string">f&quot;nvvidconv flip-method=<span class="subst">&#123;flip_method&#125;</span> ! &quot;</span></span><br><span class="line">        <span class="string">f&quot;video/x-raw, width=(int)<span class="subst">&#123;display_width&#125;</span>, &quot;</span></span><br><span class="line">        <span class="string">f&quot;height=(int)<span class="subst">&#123;display_height&#125;</span>, format=(string)BGRx ! &quot;</span></span><br><span class="line">        <span class="string">f&quot;videoconvert ! &quot;</span></span><br><span class="line">        <span class="string">f&quot;video/x-raw, format=(string)BGR ! appsink&quot;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用CSI摄像头</span></span><br><span class="line">cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=<span class="number">0</span>), cv2.CAP_GSTREAMER)</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Docker容器化部署"><a href="#5-Docker容器化部署" class="headerlink" title="5. Docker容器化部署"></a>5. Docker容器化部署</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dockerfile for Jetson Nano AI Service</span></span><br><span class="line"><span class="keyword">FROM</span> nvcr.io/nvidia/l4t-pytorch:r32.<span class="number">7.1</span>-pth1.<span class="number">10</span>-py3</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip3 install --no-cache-dir \</span></span><br><span class="line"><span class="language-bash">    fastapi==0.85.0 \</span></span><br><span class="line"><span class="language-bash">    uvicorn==0.19.0 \</span></span><br><span class="line"><span class="language-bash">    python-multipart \</span></span><br><span class="line"><span class="language-bash">    opencv-python-headless</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制应用代码和模型</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . /app/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 暴露端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动命令</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;python3&quot;</span>, <span class="string">&quot;server.py&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 构建镜像</span></span><br><span class="line">docker build -t jetson-ai:latest .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行容器（启用GPU）</span></span><br><span class="line">docker run -it --<span class="built_in">rm</span> \</span><br><span class="line">    --runtime nvidia \</span><br><span class="line">    --network host \</span><br><span class="line">    -v /tmp/.X11-unix:/tmp/.X11-unix \</span><br><span class="line">    -e DISPLAY=<span class="variable">$DISPLAY</span> \</span><br><span class="line">    jetson-ai:latest</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Jetson Nano为边缘AI部署提供了高性价比的解决方案。通过TensorRT加速，YOLOv5s在FP16精度下可以达到10+FPS的实时检测速度。关键优化策略包括：使用FP16&#x2F;INT8量化、关闭桌面释放内存、使用GStreamer加速摄像头、Docker容器化部署。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FAI/">嵌入式AI</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/YOLO/">YOLO</a>
+    
+      <a href="/tags/Jetson-Nano/">Jetson Nano</a>
+    
+      <a href="/tags/%E8%BE%B9%E7%BC%98%E9%83%A8%E7%BD%B2/">边缘部署</a>
+    
+      <a href="/tags/TensorRT/">TensorRT</a>
+    
+      <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8FAI/">嵌入式AI</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/10/25/2022-10-25-NVIDIA-Jetson-Nano边缘AI部署实战/" target="_blank" title="NVIDIA Jetson Nano边缘AI部署实战">https://www.coomatrix.com/2022/10/25/2022-10-25-NVIDIA-Jetson-Nano边缘AI部署实战/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/11/10/2022-11-10-TensorRT%E6%A8%A1%E5%9E%8B%E5%8A%A0%E9%80%9F%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          TensorRT模型加速优化详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/10/10/2022-10-10-ChatBot%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%88%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">ChatBot对话系统构建实战</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NVIDIA-Jetson-Nano%E8%BE%B9%E7%BC%98AI%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98"><span class="nav-number">1.</span> <span class="nav-text">NVIDIA Jetson Nano边缘AI部署实战</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Jetson-Nano%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">1. Jetson Nano环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 系统安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E6%80%A7%E8%83%BD%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 性能模式切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 Python环境配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-YOLO%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E9%83%A8%E7%BD%B2"><span class="nav-number">1.2.</span> <span class="nav-text">2. YOLO目标检测部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%A8%A1%E5%9E%8B%E5%87%86%E5%A4%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 模型准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-ONNX%E8%BD%ACTensorRT"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 ONNX转TensorRT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-TensorRT%E6%8E%A8%E7%90%86%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 TensorRT推理代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="nav-number">1.3.</span> <span class="nav-text">3. 性能基准测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%B8%8D%E5%90%8C%E6%A8%A1%E5%9E%8B%E5%92%8C%E7%B2%BE%E5%BA%A6%E5%AF%B9%E6%AF%94"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 不同模型和精度对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%80%A7%E8%83%BD%E6%95%B0%E6%8D%AE%E5%8F%82%E8%80%83"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 性能数据参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">4. 系统优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1 内存优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E6%91%84%E5%83%8F%E5%A4%B4%E4%BC%98%E5%8C%96"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 摄像头优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Docker%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="nav-number">1.5.</span> <span class="nav-text">5. Docker容器化部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

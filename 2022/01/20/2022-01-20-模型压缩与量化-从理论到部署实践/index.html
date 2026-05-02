@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>模型压缩与量化：从理论到部署实践 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="概述随着深度学习模型越来越大，模型压缩与量化成为部署到边缘设备的关键技术。本文系统介绍模型压缩的各种方法，重点讲解量化技术的原理与实践。 模型压缩方法总览flowchart TB     subgraph 模型压缩         COMP[模型压缩]         COMP --&gt; Q[量化 Quantization]         COMP --&gt; P[剪枝 Pruning]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型压缩与量化：从理论到部署实践">
+<meta property="og:url" content="https://www.coomatrix.com/2022/01/20/2022-01-20-%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E4%B8%8E%E9%87%8F%E5%8C%96-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="概述随着深度学习模型越来越大，模型压缩与量化成为部署到边缘设备的关键技术。本文系统介绍模型压缩的各种方法，重点讲解量化技术的原理与实践。 模型压缩方法总览flowchart TB     subgraph 模型压缩         COMP[模型压缩]         COMP --&gt; Q[量化 Quantization]         COMP --&gt; P[剪枝 Pruning]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+<meta property="article:published_time" content="2022-01-20T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:16.183Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="知识蒸馏">
+<meta property="article:tag" content="模型压缩">
+<meta property="article:tag" content="量化">
+<meta property="article:tag" content="模型部署">
+<meta property="article:tag" content="INT8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-01-20-模型压缩与量化-从理论到部署实践" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1544256718-3bcf237f3974" rel="gallery_cmoopizrc00519cv6db7ega4t noopener">
+        <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      模型压缩与量化：从理论到部署实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/01/20/2022-01-20-%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E4%B8%8E%E9%87%8F%E5%8C%96-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2022-01-20T02:00:00.000Z" itemprop="datePublished">一月 20, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>随着深度学习模型越来越大，模型压缩与量化成为部署到边缘设备的关键技术。本文系统介绍模型压缩的各种方法，重点讲解量化技术的原理与实践。</p>
+<h2 id="模型压缩方法总览"><a href="#模型压缩方法总览" class="headerlink" title="模型压缩方法总览"></a>模型压缩方法总览</h2><pre class="mermaid">flowchart TB
+    subgraph 模型压缩
+        COMP[模型压缩]
+        COMP --> Q[量化 Quantization]
+        COMP --> P[剪枝 Pruning]
+        COMP --> D[知识蒸馏 Distillation]
+        COMP --> K[知识共享 Knowledge Sharing]
+        
+        Q --> DQ[动态量化]
+        Q --> SQ[静态量化]
+        Q --> QAT[量化感知训练]
+        
+        P --> SP[结构化剪枝]
+        P --> UP[非结构化剪枝]
+        
+        D --> PKD[特征蒸馏]
+        D --> PD[ logits蒸馏]
+    end</pre>
+
+<h2 id="量化技术详解"><a href="#量化技术详解" class="headerlink" title="量化技术详解"></a>量化技术详解</h2><h3 id="量化原理"><a href="#量化原理" class="headerlink" title="量化原理"></a>量化原理</h3><pre class="mermaid">flowchart LR
+    subgraph 浮点表示
+        F32[Float32: 1.234567]
+        F16[Float16: 1.25]
+    end
+    
+    subgraph 量化过程
+        F32 --> SCALE[缩放因子S]
+        SCALE --> ROUND[四舍五入]
+        ROUND --> INT8[Int8: 123]
+    end
+    
+    subgraph 反量化
+        INT8 --> DEQ[反量化]
+        DEQ --> REC[重建值]
+    end
+    
+    F16 -.->|模拟| INT8</pre>
+
+<h3 id="量化公式"><a href="#量化公式" class="headerlink" title="量化公式"></a>量化公式</h3><table>
+<thead>
+<tr>
+<th>量化类型</th>
+<th>公式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>对称量化</td>
+<td>$x_{int8} &#x3D; \text{round}(x_{fp32} &#x2F; s)$</td>
+<td>零点为0</td>
+</tr>
+<tr>
+<td>非对称量化</td>
+<td>$x_{int8} &#x3D; \text{round}(x_{fp32} &#x2F; s + z)$</td>
+<td>有零点偏移</td>
+</tr>
+</tbody></table>
+<h3 id="PyTorch量化实现"><a href="#PyTorch量化实现" class="headerlink" title="PyTorch量化实现"></a>PyTorch量化实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.quantization</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QuantizedConv2d</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;支持量化的卷积层&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, kernel_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size)</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 量化配置</span></span><br><span class="line">        self.quant = torch.quantization.QuantStub()</span><br><span class="line">        self.dequant = torch.quantization.DeQuantStub()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.quant(x)</span><br><span class="line">        x = self.conv(x)</span><br><span class="line">        x = self.relu(x)</span><br><span class="line">        x = self.dequant(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态量化示例"><a href="#动态量化示例" class="headerlink" title="动态量化示例"></a>动态量化示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 动态量化 - 最简单的方式</span></span><br><span class="line">model_dynamic = torch.quantization.quantize_dynamic(</span><br><span class="line">    model,</span><br><span class="line">    &#123;nn.Linear, nn.LSTM, nn.GRU&#125;,  <span class="comment"># 要量化的层类型</span></span><br><span class="line">    dtype=torch.qint8  <span class="comment"># 量化数据类型</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 静态量化 - 需要校准</span></span><br><span class="line">model_static = nn.Sequential(</span><br><span class="line">    nn.Conv2d(<span class="number">3</span>, <span class="number">64</span>, <span class="number">3</span>),</span><br><span class="line">    nn.ReLU(),</span><br><span class="line">    nn.Conv2d(<span class="number">64</span>, <span class="number">128</span>, <span class="number">3</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 融合操作</span></span><br><span class="line">model_static = torch.quantization.fuse_model(model_static)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置量化参数</span></span><br><span class="line">model_static.qconfig = torch.quantization.get_default_qconfig(<span class="string">&#x27;fbgemm&#x27;</span>)</span><br><span class="line">torch.quantization.prepare(model_static, inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 校准（使用训练数据）</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    <span class="keyword">for</span> data, _ <span class="keyword">in</span> calibration_loader:</span><br><span class="line">        model_static(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换为量化模型</span></span><br><span class="line">model_quantized = torch.quantization.convert(model_static, inplace=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="量化感知训练（QAT）"><a href="#量化感知训练（QAT）" class="headerlink" title="量化感知训练（QAT）"></a>量化感知训练（QAT）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">QATAwareModel</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;量化感知训练模型&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">3</span>, <span class="number">64</span>, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.bn1 = nn.BatchNorm2d(<span class="number">64</span>)</span><br><span class="line">        self.conv2 = nn.Conv2d(<span class="number">64</span>, <span class="number">128</span>, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.bn2 = nn.BatchNorm2d(<span class="number">128</span>)</span><br><span class="line">        self.fc = nn.Linear(<span class="number">128</span>, <span class="number">10</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># QAT钩子</span></span><br><span class="line">        self.quant = torch.quantization.QuantStub()</span><br><span class="line">        self.dequant = torch.quantization.DeQuantStub()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = self.quant(x)</span><br><span class="line">        x = self.conv1(x)</span><br><span class="line">        x = self.bn1(x)</span><br><span class="line">        x = F.relu(x)</span><br><span class="line">        x = self.conv2(x)</span><br><span class="line">        x = self.bn2(x)</span><br><span class="line">        x = F.relu(x)</span><br><span class="line">        x = F.adaptive_avg_pool2d(x, <span class="number">1</span>)</span><br><span class="line">        x = x.view(x.size(<span class="number">0</span>), -<span class="number">1</span>)</span><br><span class="line">        x = self.dequant(x)</span><br><span class="line">        x = self.fc(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="comment"># QAT训练流程</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_qat</span>(<span class="params">model, train_loader, epochs=<span class="number">10</span></span>):</span><br><span class="line">    model.qconfig = torch.quantization.get_default_qat_qconfig(<span class="string">&#x27;fbgemm&#x27;</span>)</span><br><span class="line">    torch.quantization.prepare_qat(model, inplace=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    optimizer = torch.optim.Adam(model.parameters())</span><br><span class="line">    criterion = nn.CrossEntropyLoss()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        model.train()</span><br><span class="line">        <span class="keyword">for</span> data, target <span class="keyword">in</span> train_loader:</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            output = model(data)</span><br><span class="line">            loss = criterion(output, target)</span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 转换为量化模型</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    model = torch.quantization.convert(model, inplace=<span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+
+<h2 id="剪枝技术"><a href="#剪枝技术" class="headerlink" title="剪枝技术"></a>剪枝技术</h2><h3 id="剪枝类型对比"><a href="#剪枝类型对比" class="headerlink" title="剪枝类型对比"></a>剪枝类型对比</h3><pre class="mermaid">flowchart TB
+    subgraph 原始权重
+        W1[█][█][█][█][█]
+        W2[█][█][█][█][█]
+        W3[█][█][█][█][█]
+        W4[█][█][█][█][█]
+    end
+    
+    subgraph 非结构化剪枝
+        U1[█][ ][█][ ][█]
+        U2[ ][█][ ][█][ ]
+        U3[█][ ][ ][█][█]
+        U4[ ][ ][█][ ][█]
+    end
+    
+    subgraph 结构化剪枝
+        S1[ ][ ][ ][ ][ ]
+        S2[█][█][█][█][█]
+        S3[ ][ ][ ][ ][ ]
+        S4[█][█][█][█][█]
+    end</pre>
+
+<h3 id="剪枝实现"><a href="#剪枝实现" class="headerlink" title="剪枝实现"></a>剪枝实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PruningModel</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;模型剪枝工具类&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">magnitude_pruning</span>(<span class="params">model, pruning_ratio=<span class="number">0.3</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;幅度剪枝 - 移除幅度最小的权重&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> name, param <span class="keyword">in</span> model.named_parameters():</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&#x27;weight&#x27;</span> <span class="keyword">in</span> name:</span><br><span class="line">                <span class="comment"># 计算剪枝阈值</span></span><br><span class="line">                threshold = torch.quantile(torch.<span class="built_in">abs</span>(param.data), pruning_ratio)</span><br><span class="line">                <span class="comment"># 创建掩码</span></span><br><span class="line">                mask = torch.<span class="built_in">abs</span>(param.data) &gt; threshold</span><br><span class="line">                param.data = param.data * mask.<span class="built_in">float</span>()</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">structured_pruning</span>(<span class="params">model, layer_pruning_ratio=<span class="number">0.3</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;结构化剪枝 - 移除整个神经元/通道&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> name, module <span class="keyword">in</span> model.named_modules():</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, nn.Conv2d):</span><br><span class="line">                <span class="comment"># 基于通道重要性</span></span><br><span class="line">                importance = torch.<span class="built_in">sum</span>(torch.<span class="built_in">abs</span>(module.weight.data), dim=(<span class="number">2</span>, <span class="number">3</span>))</span><br><span class="line">                importance = torch.<span class="built_in">sum</span>(importance, dim=<span class="number">0</span>)</span><br><span class="line">                </span><br><span class="line">                num_keep = <span class="built_in">int</span>(importance.shape[<span class="number">0</span>] * (<span class="number">1</span> - layer_pruning_ratio))</span><br><span class="line">                keep_indices = torch.topk(importance, num_keep).indices</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 更新权重</span></span><br><span class="line">                module.weight.data = module.weight.data[keep_indices]</span><br><span class="line">                module.out_channels = <span class="built_in">len</span>(keep_indices)</span><br></pre></td></tr></table></figure>
+
+<h2 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><pre class="mermaid">flowchart TB
+    subgraph 教师模型
+        T[教师模型 - 复杂/大型]
+        T --> LOGITS_T[教师Logits]
+        LOGITS_T --> SOFT[软标签]
+    end
+    
+    subgraph 知识传递
+        SOFT --> KD[蒸馏损失]
+        HARD[硬标签] --> KD
+    end
+    
+    subgraph 学生模型
+        S[学生模型 - 简单/小型]
+        S --> LOGITS_S[学生Logits]
+        LOGITS_S --> KD
+    end
+    
+    KD --> TRAIN[联合训练]</pre>
+
+<h3 id="蒸馏实现"><a href="#蒸馏实现" class="headerlink" title="蒸馏实现"></a>蒸馏实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DistillationLoss</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;知识蒸馏损失&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, temperature=<span class="number">4.0</span>, alpha=<span class="number">0.7</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.temperature = temperature</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, student_logits, teacher_logits, labels</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        student_logits: 学生模型输出</span></span><br><span class="line"><span class="string">        teacher_logits: 教师模型输出</span></span><br><span class="line"><span class="string">        labels: 真实标签</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 软损失 - KL散度</span></span><br><span class="line">        soft_loss = F.kl_div(</span><br><span class="line">            F.log_softmax(student_logits / self.temperature, dim=<span class="number">1</span>),</span><br><span class="line">            F.softmax(teacher_logits / self.temperature, dim=<span class="number">1</span>),</span><br><span class="line">            reduction=<span class="string">&#x27;batchmean&#x27;</span></span><br><span class="line">        ) * (self.temperature ** <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 硬损失 - 交叉熵</span></span><br><span class="line">        hard_loss = F.cross_entropy(student_logits, labels)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 组合损失</span></span><br><span class="line">        total_loss = self.alpha * soft_loss + (<span class="number">1</span> - self.alpha) * hard_loss</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> total_loss, soft_loss, hard_loss</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DistillationTrainer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, teacher, student, train_loader, temperature=<span class="number">4.0</span>, alpha=<span class="number">0.7</span></span>):</span><br><span class="line">        self.teacher = teacher</span><br><span class="line">        self.student = student</span><br><span class="line">        self.train_loader = train_loader</span><br><span class="line">        self.criterion = DistillationLoss(temperature, alpha)</span><br><span class="line">        self.optimizer = torch.optim.Adam(student.parameters())</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self, epochs</span>):</span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">            <span class="keyword">for</span> data, labels <span class="keyword">in</span> self.train_loader:</span><br><span class="line">                <span class="comment"># 教师前向传播</span></span><br><span class="line">                <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">                    teacher_logits = self.teacher(data)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 学生前向传播</span></span><br><span class="line">                student_logits = self.student(data)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 计算蒸馏损失</span></span><br><span class="line">                loss, soft_loss, hard_loss = self.criterion(</span><br><span class="line">                    student_logits, teacher_logits, labels</span><br><span class="line">                )</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 反向传播</span></span><br><span class="line">                self.optimizer.zero_grad()</span><br><span class="line">                loss.backward()</span><br><span class="line">                self.optimizer.step()</span><br><span class="line">                </span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span>, Loss: <span class="subst">&#123;loss.item():<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>压缩比</th>
+<th>精度损失</th>
+<th>推理加速</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FP32基线</td>
+<td>1x</td>
+<td>0%</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>INT8动态量化</td>
+<td>4x</td>
+<td>~1%</td>
+<td>2-3x</td>
+</tr>
+<tr>
+<td>INT8静态量化</td>
+<td>4x</td>
+<td>~2%</td>
+<td>3-4x</td>
+</tr>
+<tr>
+<td>QAT量化</td>
+<td>4x</td>
+<td>&lt;1%</td>
+<td>3-4x</td>
+</tr>
+<tr>
+<td>剪枝50%</td>
+<td>2x</td>
+<td>~3%</td>
+<td>1.5-2x</td>
+</tr>
+<tr>
+<td>知识蒸馏</td>
+<td>可调</td>
+<td>&lt;2%</td>
+<td>取决于学生模型</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre class="mermaid">mindmap
+  root((模型压缩))
+    量化
+      对称/非对称
+      动态/静态/QAT
+      INT8/FP16
+    剪枝
+      结构化/非结构化
+      幅度剪枝
+      重要性剪枝
+    知识蒸馏
+      Logits蒸馏
+      特征蒸馏
+      中间层蒸馏
+    部署优化
+      TensorRT
+      ONNX Runtime
+      OpenVINO</pre>
+
+<p>模型压缩是部署深度学习模型到资源受限设备的关键技术，需要根据具体场景选择合适的压缩方法。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F/">知识蒸馏</a>
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/">模型压缩</a>
+    
+      <a href="/tags/%E9%87%8F%E5%8C%96/">量化</a>
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">模型部署</a>
+    
+      <a href="/tags/INT8/">INT8</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/01/20/2022-01-20-模型压缩与量化-从理论到部署实践/" target="_blank" title="模型压缩与量化：从理论到部署实践">https://www.coomatrix.com/2022/01/20/2022-01-20-模型压缩与量化-从理论到部署实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/20/2022-02-20-InstructGPT%E4%B8%8E%E4%BA%BA%E7%B1%BB%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          InstructGPT与人类对齐技术
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/15/2022-01-15-ChatGPT%E5%8E%9F%E7%90%86%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">ChatGPT原理深度解析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E6%96%B9%E6%B3%95%E6%80%BB%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">模型压缩方法总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">量化技术详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E5%8E%9F%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">量化原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E5%85%AC%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">量化公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PyTorch%E9%87%8F%E5%8C%96%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.3.</span> <span class="nav-text">PyTorch量化实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E9%87%8F%E5%8C%96%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.4.</span> <span class="nav-text">动态量化示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E6%84%9F%E7%9F%A5%E8%AE%AD%E7%BB%83%EF%BC%88QAT%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">量化感知训练（QAT）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E6%8A%80%E6%9C%AF"><span class="nav-number">4.</span> <span class="nav-text">剪枝技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E7%B1%BB%E5%9E%8B%E5%AF%B9%E6%AF%94"><span class="nav-number">4.1.</span> <span class="nav-text">剪枝类型对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">剪枝实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F"><span class="nav-number">5.</span> <span class="nav-text">知识蒸馏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%92%B8%E9%A6%8F%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.1.</span> <span class="nav-text">蒸馏实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">6.</span> <span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

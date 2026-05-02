@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>clip：对比语言图像预训练 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="CLIP对比学习原理解析与实践">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CLIP：对比语言图像预训练">
+<meta property="og:url" content="https://www.coomatrix.com/2021/07/05/2021-07-05-CLIP%EF%BC%9A%E5%AF%B9%E6%AF%94%E8%AF%AD%E8%A8%80%E5%9B%BE%E5%83%8F%E9%A2%84%E8%AE%AD%E7%BB%83/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="CLIP对比学习原理解析与实践">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1">
+<meta property="article:published_time" content="2021-07-05T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:02.729Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="CLIP">
+<meta property="article:tag" content="多模态学习">
+<meta property="article:tag" content="视觉语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-07-05-CLIP：对比语言图像预训练" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1" rel="gallery_cmoopizrb004q9cv6f5dzdxci noopener">
+        <img src="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      CLIP：对比语言图像预训练
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/07/05/2021-07-05-CLIP%EF%BC%9A%E5%AF%B9%E6%AF%94%E8%AF%AD%E8%A8%80%E5%9B%BE%E5%83%8F%E9%A2%84%E8%AE%AD%E7%BB%83/" class="article-date">
+	  <time datetime="2021-07-05T02:00:00.000Z" itemprop="datePublished">七月 5, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>CLIP（Contrastive Language-Image Pre-training）由OpenAI在2021年发布，通过大规模图文对比学习实现了零样本图像分类，展现了多模态学习的强大能力。</p>
+<h2 id="CLIP核心思想"><a href="#CLIP核心思想" class="headerlink" title="CLIP核心思想"></a>CLIP核心思想</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mermaid</span><br><span class="line">graph TB</span><br><span class="line">A[图像] --&gt; B[图像Encoder]</span><br><span class="line">A --&gt; C[图像特征]</span><br><span class="line">C --&gt; F[相似度计算]</span><br><span class="line">D[文本] --&gt; E[文本Encoder]</span><br><span class="line">D --&gt; G[文本特征]</span><br><span class="line">G --&gt; F</span><br><span class="line">F --&gt; H[对比损失]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CLIP</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;CLIP模型&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, image_encoder, text_encoder, embed_dim=<span class="number">512</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.image_encoder = image_encoder</span><br><span class="line">        self.text_encoder = text_encoder</span><br><span class="line">        self.image_proj = nn.Linear(image_encoder.embed_dim, embed_dim)</span><br><span class="line">        self.text_proj = nn.Linear(text_encoder.embed_dim, embed_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 温度参数</span></span><br><span class="line">        self.logit_scale = nn.Parameter(torch.ones([]) * np.log(<span class="number">1</span> / <span class="number">0.07</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode_image</span>(<span class="params">self, images</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;编码图像&quot;&quot;&quot;</span></span><br><span class="line">        features = self.image_encoder(images)</span><br><span class="line">        features = self.image_proj(features)</span><br><span class="line">        <span class="keyword">return</span> F.normalize(features, dim=-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode_text</span>(<span class="params">self, texts</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;编码文本&quot;&quot;&quot;</span></span><br><span class="line">        features = self.text_encoder(texts)</span><br><span class="line">        features = self.text_proj(features)</span><br><span class="line">        <span class="keyword">return</span> F.normalize(features, dim=-<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, images, texts</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;前向传播&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 编码</span></span><br><span class="line">        image_features = self.encode_image(images)</span><br><span class="line">        text_features = self.encode_text(texts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算相似度</span></span><br><span class="line">        logit_scale = self.logit_scale.exp()</span><br><span class="line">        logits_per_image = logit_scale * image_features @ text_features.t()</span><br><span class="line">        logits_per_text = logit_scale * text_features @ image_features.t()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> logits_per_image, logits_per_text</span><br></pre></td></tr></table></figure>
+
+<h2 id="CLIP损失函数"><a href="#CLIP损失函数" class="headerlink" title="CLIP损失函数"></a>CLIP损失函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CLIPLoss</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;CLIP对比损失&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, image_features, text_features</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        计算对称对比损失</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 计算相似度矩阵</span></span><br><span class="line">        logits = image_features @ text_features.t()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 温度缩放</span></span><br><span class="line">        temperature = <span class="number">0.1</span></span><br><span class="line">        logits = logits / temperature</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 标签：对角线为正样本</span></span><br><span class="line">        batch_size = image_features.shape[<span class="number">0</span>]</span><br><span class="line">        labels = torch.arange(batch_size, device=image_features.device)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 图像到文本的损失</span></span><br><span class="line">        loss_i2t = F.cross_entropy(logits, labels)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 文本到图像的损失</span></span><br><span class="line">        loss_t2i = F.cross_entropy(logits.t(), labels)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 总损失</span></span><br><span class="line">        loss = (loss_i2t + loss_t2i) / <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">clip_loss</span>(<span class="params">logits_per_image, logits_per_text</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;CLIP损失函数&quot;&quot;&quot;</span></span><br><span class="line">    batch_size = logits_per_image.shape[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对角线为正样本</span></span><br><span class="line">    labels = torch.arange(batch_size, device=logits_per_image.device)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 对称损失</span></span><br><span class="line">    loss_i = F.cross_entropy(logits_per_image, labels)</span><br><span class="line">    loss_t = F.cross_entropy(logits_per_text, labels)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> (loss_i + loss_t) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="图像编码器（ResNet）"><a href="#图像编码器（ResNet）" class="headerlink" title="图像编码器（ResNet）"></a>图像编码器（ResNet）</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ImageEncoder</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;图像编码器（ResNet）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_dim=<span class="number">512</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 使用ResNet50作为骨干</span></span><br><span class="line">        <span class="keyword">from</span> torchvision.models <span class="keyword">import</span> resnet50, ResNet50_Weights</span><br><span class="line">        backbone = resnet50(weights=ResNet50_Weights.DEFAULT)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 去掉最后的分类层</span></span><br><span class="line">        self.backbone = nn.Sequential(*<span class="built_in">list</span>(backbone.children())[:-<span class="number">1</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影层</span></span><br><span class="line">        self.projection = nn.Linear(<span class="number">2048</span>, embed_dim)</span><br><span class="line">        self.embed_dim = <span class="number">2048</span>  <span class="comment"># ResNet50特征维度</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        features = self.backbone(x)  <span class="comment"># (B, 2048, 1, 1)</span></span><br><span class="line">        features = features.flatten(<span class="number">1</span>)  <span class="comment"># (B, 2048)</span></span><br><span class="line">        features = self.projection(features)  <span class="comment"># (B, embed_dim)</span></span><br><span class="line">        <span class="keyword">return</span> features</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ImageEncoderViT</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ViT图像编码器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_dim=<span class="number">512</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vit_b_16, ViT_B_16_Weights</span><br><span class="line">        backbone = vit_b_16(weights=ViT_B_16_Weights.DEFAULT)</span><br><span class="line">        </span><br><span class="line">        self.backbone = backbone</span><br><span class="line">        self.projection = nn.Linear(<span class="number">768</span>, embed_dim)</span><br><span class="line">        self.embed_dim = <span class="number">768</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        features = self.backbone(x)</span><br><span class="line">        features = self.projection(features)</span><br><span class="line">        <span class="keyword">return</span> features</span><br></pre></td></tr></table></figure>
+
+<h2 id="文本编码器（Transformer）"><a href="#文本编码器（Transformer）" class="headerlink" title="文本编码器（Transformer）"></a>文本编码器（Transformer）</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TextEncoder</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;文本编码器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_size=<span class="number">49408</span>, embed_dim=<span class="number">512</span>, </span></span><br><span class="line"><span class="params">                 context_length=<span class="number">77</span>, transformer_width=<span class="number">512</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.token_embedding = nn.Embedding(vocab_size, transformer_width)</span><br><span class="line">        self.positional_embedding = nn.Parameter(</span><br><span class="line">            torch.empty(context_length, transformer_width)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        encoder_layer = nn.TransformerEncoderLayer(</span><br><span class="line">            d_model=transformer_width,</span><br><span class="line">            nhead=<span class="number">8</span>,</span><br><span class="line">            dim_feedforward=<span class="number">2048</span>,</span><br><span class="line">            activation=<span class="string">&#x27;gelu&#x27;</span>,</span><br><span class="line">            batch_first=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=<span class="number">12</span>)</span><br><span class="line">        </span><br><span class="line">        self.ln_final = nn.LayerNorm(transformer_width)</span><br><span class="line">        self.projection = nn.Linear(transformer_width, embed_dim)</span><br><span class="line">        </span><br><span class="line">        self.context_length = context_length</span><br><span class="line">        self.embed_dim = transformer_width</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, text</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            text: tokenized text (B, context_length)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        x = self.token_embedding(text)  <span class="comment"># (B, L, D)</span></span><br><span class="line">        x = x + self.positional_embedding[:x.size(<span class="number">1</span>)]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Transformer处理</span></span><br><span class="line">        x = self.transformer(x)</span><br><span class="line">        x = self.ln_final(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 使用[EOS]位置的表示</span></span><br><span class="line">        x = x[:, -<span class="number">1</span>, :]  <span class="comment"># 简化的EOS表示</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影</span></span><br><span class="line">        x = self.projection(x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<h2 id="零样本分类"><a href="#零样本分类" class="headerlink" title="零样本分类"></a>零样本分类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ZeroShotClassifier</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;零样本图像分类&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, tokenizer</span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.tokenizer = tokenizer</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">classify</span>(<span class="params">self, image, class_names</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        零样本分类</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            image: 输入图像</span></span><br><span class="line"><span class="string">            class_names: 类别名称列表，如[&quot;cat&quot;, &quot;dog&quot;, &quot;bird&quot;]</span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            预测的类别索引和置信度</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 编码图像</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            image_features = self.model.encode_image(image)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 编码文本提示</span></span><br><span class="line">        text_descriptions = [<span class="string">f&quot;a photo of a <span class="subst">&#123;name&#125;</span>&quot;</span> <span class="keyword">for</span> name <span class="keyword">in</span> class_names]</span><br><span class="line">        text_tokens = self.tokenizer(text_descriptions, padding=<span class="literal">True</span>, return_tensors=<span class="string">&#x27;pt&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            text_features = self.model.encode_text(text_tokens)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算相似度</span></span><br><span class="line">        image_features = image_features / image_features.norm(dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        text_features = text_features / text_features.norm(dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        similarity = (<span class="number">100.0</span> * image_features @ text_features.T).softmax(dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取最高置信度的类别</span></span><br><span class="line">        values, indices = similarity[<span class="number">0</span>].topk(<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> indices[<span class="number">0</span>].item(), values[<span class="number">0</span>].item()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">zero_shot_classification</span>(<span class="params">model, image, class_names, tokenizer</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;零样本分类函数&quot;&quot;&quot;</span></span><br><span class="line">    classifier = ZeroShotClassifier(model, tokenizer)</span><br><span class="line">    pred_idx, confidence = classifier.classify(image, class_names)</span><br><span class="line">    <span class="keyword">return</span> class_names[pred_idx], confidence</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">class_names = [<span class="string">&quot;cat&quot;</span>, <span class="string">&quot;dog&quot;</span>, <span class="string">&quot;bird&quot;</span>, <span class="string">&quot;fish&quot;</span>, <span class="string">&quot;horse&quot;</span>]</span><br><span class="line">image = preprocess_image(<span class="string">&quot;test.jpg&quot;</span>)</span><br><span class="line"></span><br><span class="line">predicted_class, confidence = zero_shot_classification(model, image, class_names, tokenizer)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Predicted: <span class="subst">&#123;predicted_class&#125;</span>, Confidence: <span class="subst">&#123;confidence:<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="CLIP训练"><a href="#CLIP训练" class="headerlink" title="CLIP训练"></a>CLIP训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_clip</span>(<span class="params">model, train_loader, optimizer, epochs=<span class="number">32</span>, device=<span class="string">&#x27;cuda&#x27;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;CLIP训练&quot;&quot;&quot;</span></span><br><span class="line">    model = model.to(device)</span><br><span class="line">    clip_loss = CLIPLoss()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        total_loss = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> batch_idx, (images, texts) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line">            images = images.to(device)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 前向传播</span></span><br><span class="line">            logits_per_image, logits_per_text = model(images, texts)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算损失</span></span><br><span class="line">            loss = clip_loss(</span><br><span class="line">                model.encode_image(images),</span><br><span class="line">                model.encode_text(texts)</span><br><span class="line">            )</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 反向传播</span></span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">            </span><br><span class="line">            total_loss += loss.item()</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> batch_idx % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>, Batch <span class="subst">&#123;batch_idx&#125;</span>, Loss: <span class="subst">&#123;loss.item():<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        avg_loss = total_loss / <span class="built_in">len</span>(train_loader)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span> Average Loss: <span class="subst">&#123;avg_loss:<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="CLIP应用"><a href="#CLIP应用" class="headerlink" title="CLIP应用"></a>CLIP应用</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CLIPImageSearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;CLIP图像搜索&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, tokenizer</span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.tokenizer = tokenizer</span><br><span class="line">        self.image_features = []</span><br><span class="line">        self.image_paths = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_to_index</span>(<span class="params">self, image, path</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加图像到索引&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            features = self.model.encode_image(image)</span><br><span class="line">            features = F.normalize(features, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        self.image_features.append(features.cpu())</span><br><span class="line">        self.image_paths.append(path)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query, top_k=<span class="number">5</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;搜索最相似的图像&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 编码查询</span></span><br><span class="line">        text_tokens = self.tokenizer([query], return_tensors=<span class="string">&#x27;pt&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            query_features = self.model.encode_text(text_tokens)</span><br><span class="line">            query_features = F.normalize(query_features, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算相似度</span></span><br><span class="line">        image_features = torch.cat(self.image_features)</span><br><span class="line">        similarities = (query_features @ image_features.t()).squeeze()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取top-k</span></span><br><span class="line">        values, indices = similarities.topk(top_k)</span><br><span class="line">        </span><br><span class="line">        results = [(self.image_paths[idx], values[i].item()) </span><br><span class="line">                   <span class="keyword">for</span> i, idx <span class="keyword">in</span> <span class="built_in">enumerate</span>(indices)]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
+
+<h2 id="CLIP局限性"><a href="#CLIP局限性" class="headerlink" title="CLIP局限性"></a>CLIP局限性</h2><ul>
+<li>对细粒度分类可能不准确</li>
+<li>需要大量训练数据</li>
+<li>文本提示工程重要</li>
+<li>对分布外数据泛化有限</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>CLIP开创了大规模图文对比学习的先河，其零样本分类能力和跨模态理解能力为多模态AI奠定了基础，后续的BLIP、ALIGN等模型在此基础上进一步发展。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.00020">Learning Transferable Visual Models From Natural Language Supervision</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/openai/CLIP">CLIP官方代码</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/CLIP/">CLIP</a>
+    
+      <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0/">多模态学习</a>
+    
+      <a href="/tags/%E8%A7%86%E8%A7%89%E8%AF%AD%E8%A8%80/">视觉语言</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/07/05/2021-07-05-CLIP：对比语言图像预训练/" target="_blank" title="CLIP：对比语言图像预训练">https://www.coomatrix.com/2021/07/05/2021-07-05-CLIP：对比语言图像预训练/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/15/2021-07-15-MobileNetV3%EF%BC%9A%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BD%91%E7%BB%9C%E7%9A%84%E6%9E%81%E8%87%B4%E4%BC%98%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          MobileNetV3：轻量级网络的极致优化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/25/2021-06-25-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BC%98%E5%8C%96%E5%99%A8%EF%BC%9A%E4%BB%8ESGD%E5%88%B0AdamW/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度学习优化器：从SGD到AdamW</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-number">2.</span> <span class="nav-text">CLIP核心思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">CLIP损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88ResNet%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">图像编码器（ResNet）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88Transformer%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">文本编码器（Transformer）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%B6%E6%A0%B7%E6%9C%AC%E5%88%86%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">零样本分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP%E8%AE%AD%E7%BB%83"><span class="nav-number">7.</span> <span class="nav-text">CLIP训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP%E5%BA%94%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">CLIP应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">9.</span> <span class="nav-text">CLIP局限性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">11.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

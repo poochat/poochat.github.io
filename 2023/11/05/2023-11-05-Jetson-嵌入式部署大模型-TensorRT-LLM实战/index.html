@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>jetson嵌入式部署大模型：tensorrt-llm实战 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言在边缘设备上部署大语言模型是2023年的重要研究方向。NVIDIA Jetson系列平台凭借强大的GPU算力，成为嵌入式AI的理想选择。本文将详细介绍如何在Jetson Nano、Xavier NX等设备上使用TensorRT-LLM部署和优化大模型。 Jetson平台概述1. Jetson系列对比   型号 GPU AI算力 内存 功耗 适用场景    Jetson Nano 128-cor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jetson嵌入式部署大模型：TensorRT-LLM实战">
+<meta property="og:url" content="https://www.coomatrix.com/2023/11/05/2023-11-05-Jetson-%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-TensorRT-LLM%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言在边缘设备上部署大语言模型是2023年的重要研究方向。NVIDIA Jetson系列平台凭借强大的GPU算力，成为嵌入式AI的理想选择。本文将详细介绍如何在Jetson Nano、Xavier NX等设备上使用TensorRT-LLM部署和优化大模型。 Jetson平台概述1. Jetson系列对比   型号 GPU AI算力 内存 功耗 适用场景    Jetson Nano 128-cor">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d">
+<meta property="article:published_time" content="2023-11-05T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:16.205Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="模型部署">
+<meta property="article:tag" content="嵌入式AI">
+<meta property="article:tag" content="Jetson">
+<meta property="article:tag" content="TensorRT-LLM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-11-05-Jetson-嵌入式部署大模型-TensorRT-LLM实战" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d" rel="gallery_cmoopizrp007m9cv6fgkb4gl2 noopener">
+        <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Jetson嵌入式部署大模型：TensorRT-LLM实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/11/05/2023-11-05-Jetson-%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-TensorRT-LLM%E5%AE%9E%E6%88%98/" class="article-date">
+	  <time datetime="2023-11-05T06:00:00.000Z" itemprop="datePublished">十一月 5, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在边缘设备上部署大语言模型是2023年的重要研究方向。NVIDIA Jetson系列平台凭借强大的GPU算力，成为嵌入式AI的理想选择。本文将详细介绍如何在Jetson Nano、Xavier NX等设备上使用TensorRT-LLM部署和优化大模型。</p>
+<h2 id="Jetson平台概述"><a href="#Jetson平台概述" class="headerlink" title="Jetson平台概述"></a>Jetson平台概述</h2><h3 id="1-Jetson系列对比"><a href="#1-Jetson系列对比" class="headerlink" title="1. Jetson系列对比"></a>1. Jetson系列对比</h3><table>
+<thead>
+<tr>
+<th>型号</th>
+<th>GPU</th>
+<th>AI算力</th>
+<th>内存</th>
+<th>功耗</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Jetson Nano</td>
+<td>128-core Maxwell</td>
+<td>0.5 TFLOPS</td>
+<td>4GB</td>
+<td>5-10W</td>
+<td>轻量推理</td>
+</tr>
+<tr>
+<td>Jetson Xavier NX</td>
+<td>384-core Volta</td>
+<td>21 TFLOPS</td>
+<td>8&#x2F;16GB</td>
+<td>10-15W</td>
+<td>中量推理</td>
+</tr>
+<tr>
+<td>Jetson AGX Orin</td>
+<td>2048-core Ampere</td>
+<td>275 TOPS</td>
+<td>32&#x2F;64GB</td>
+<td>15-60W</td>
+<td>大模型部署</td>
+</tr>
+</tbody></table>
+<h3 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 刷写JetPack</span></span><br><span class="line"><span class="comment"># 下载SDK Manager: https://developer.nvidia.com/embedded/jetpack</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 基础环境设置</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y python3-pip</span><br><span class="line">sudo apt-get install -y libopenmpi-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装PyTorch (jetson版本)</span></span><br><span class="line">pip3 install torch torchvision --index-url https://download.pytorch.org/whl/torch-stable.html</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装TensorRT-LLM</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/NVIDIA/TensorRT-LLM.git</span><br><span class="line"><span class="built_in">cd</span> TensorRT-LLM</span><br><span class="line">git checkout tags/v0.5.0</span><br></pre></td></tr></table></figure>
+
+<h2 id="TensorRT-LLM核心概念"><a href="#TensorRT-LLM核心概念" class="headerlink" title="TensorRT-LLM核心概念"></a>TensorRT-LLM核心概念</h2><h3 id="1-模型转换流程"><a href="#1-模型转换流程" class="headerlink" title="1. 模型转换流程"></a>1. 模型转换流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">TensorRT-LLM模型转换</span></span><br><span class="line"><span class="string">将HuggingFace模型转换为TensorRT格式</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> tensorrt_llm.models <span class="keyword">import</span> LLaMAForCausalLM</span><br><span class="line"><span class="keyword">from</span> tensorrt_llm._utils <span class="keyword">import</span> pad_vocab_size</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> LlamaForCausalLM, LlamaTokenizer</span><br><span class="line"><span class="keyword">import</span> tensorrt <span class="keyword">as</span> trt</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ModelConverter</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    模型转换器</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path: <span class="built_in">str</span>, output_dir: <span class="built_in">str</span></span>):</span><br><span class="line">        self.model_path = model_path</span><br><span class="line">        self.output_dir = output_dir</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">convert_llama</span>(<span class="params">self, model_size: <span class="built_in">int</span> = <span class="number">7</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        转换LLaMA模型</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Loading LLaMA-<span class="subst">&#123;model_size&#125;</span>B from <span class="subst">&#123;self.model_path&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载HuggingFace模型</span></span><br><span class="line">        hf_model = LlamaForCausalLM.from_pretrained(</span><br><span class="line">            self.model_path,</span><br><span class="line">            torch_dtype=torch.float16</span><br><span class="line">        )</span><br><span class="line">        tokenizer = LlamaTokenizer.from_pretrained(self.model_path)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 构建TensorRT-LLM模型</span></span><br><span class="line">        <span class="keyword">if</span> model_size == <span class="number">7</span>:</span><br><span class="line">            num_layers = <span class="number">32</span></span><br><span class="line">            hidden_size = <span class="number">4096</span></span><br><span class="line">            num_heads = <span class="number">32</span></span><br><span class="line">            vocab_size = <span class="number">32000</span></span><br><span class="line">        <span class="keyword">elif</span> model_size == <span class="number">13</span>:</span><br><span class="line">            num_layers = <span class="number">40</span></span><br><span class="line">            hidden_size = <span class="number">5120</span></span><br><span class="line">            num_heads = <span class="number">40</span></span><br><span class="line">            vocab_size = <span class="number">32000</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 创建模型配置</span></span><br><span class="line">        trt_llm = LLaMAForCausalLM(</span><br><span class="line">            num_layers=num_layers,</span><br><span class="line">            num_heads=num_heads,</span><br><span class="line">            hidden_size=hidden_size,</span><br><span class="line">            vocab_size=pad_vocab_size(vocab_size, <span class="number">64</span>),</span><br><span class="line">            max_position_embeddings=<span class="number">4096</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 复制权重</span></span><br><span class="line">        trt_llm.load_from_hf_model(hf_model)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 保存</span></span><br><span class="line">        self.save_model(trt_llm, tokenizer)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> trt_llm</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save_model</span>(<span class="params">self, model, tokenizer</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;保存转换后的模型&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> os</span><br><span class="line">        os.makedirs(self.output_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 保存模型</span></span><br><span class="line">        model.save(self.output_dir)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 保存tokenizer</span></span><br><span class="line">        tokenizer.save_pretrained(self.output_dir)</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Model saved to <span class="subst">&#123;self.output_dir&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-TensorRT引擎构建"><a href="#2-TensorRT引擎构建" class="headerlink" title="2. TensorRT引擎构建"></a>2. TensorRT引擎构建</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># build_engine.sh</span></span><br><span class="line"><span class="comment"># 构建TensorRT引擎</span></span><br><span class="line"></span><br><span class="line">MODEL_DIR=<span class="string">&quot;./models/llama-7b&quot;</span></span><br><span class="line">ENGINE_DIR=<span class="string">&quot;./engines/llama-7b&quot;</span></span><br><span class="line">TP_SIZE=1  <span class="comment"># Tensor Parallel size</span></span><br><span class="line">MAX_BATCH_SIZE=8</span><br><span class="line">MAX_INPUT_LEN=4096</span><br><span class="line">MAX_OUTPUT_LEN=512</span><br><span class="line"></span><br><span class="line">python3 tensorrt_llm/examples/llama/build.py \</span><br><span class="line">    --model_dir <span class="variable">$&#123;MODEL_DIR&#125;</span> \</span><br><span class="line">    --tp_size <span class="variable">$&#123;TP_SIZE&#125;</span> \</span><br><span class="line">    --pp_size 1 \</span><br><span class="line">    --dtype float16 \</span><br><span class="line">    --max_batch_size <span class="variable">$&#123;MAX_BATCH_SIZE&#125;</span> \</span><br><span class="line">    --max_input_len <span class="variable">$&#123;MAX_INPUT_LEN&#125;</span> \</span><br><span class="line">    --max_output_len <span class="variable">$&#123;MAX_OUTPUT_LEN&#125;</span> \</span><br><span class="line">    --output_dir <span class="variable">$&#123;ENGINE_DIR&#125;</span> \</span><br><span class="line">    --use_gpt_attention_plugin \</span><br><span class="line">    --use_rms_norm_plugin \</span><br><span class="line">    --use_gemm_plugin \</span><br><span class="line">    --enable_context_fmha</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Python推理接口"><a href="#3-Python推理接口" class="headerlink" title="3. Python推理接口"></a>3. Python推理接口</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorrt <span class="keyword">as</span> trt</span><br><span class="line"><span class="keyword">import</span> tensorrt_llm</span><br><span class="line"><span class="keyword">from</span> tensorrt_llm.runtime <span class="keyword">import</span> ModelRunner</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TensorRTLLMRunner</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    TensorRT-LLM运行时封装</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, engine_dir: <span class="built_in">str</span>, tokenizer_dir: <span class="built_in">str</span></span>):</span><br><span class="line">        self.runtime = trt.Runtime(trt.Logger(trt.WARNING))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载引擎</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">f&quot;<span class="subst">&#123;engine_dir&#125;</span>/rank0.engine&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            self.engine = self.runtime.deserialize_cuda_engine(f.read())</span><br><span class="line">        </span><br><span class="line">        self.runner = ModelRunner.from_engine(self.engine)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载tokenizer</span></span><br><span class="line">        <span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer</span><br><span class="line">        self.tokenizer = AutoTokenizer.from_pretrained(tokenizer_dir)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, prompt: <span class="built_in">str</span>, max_new_tokens: <span class="built_in">int</span> = <span class="number">256</span>, </span></span><br><span class="line"><span class="params">                 temperature: <span class="built_in">float</span> = <span class="number">0.7</span>, top_p: <span class="built_in">float</span> = <span class="number">0.9</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        生成文本</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Tokenize</span></span><br><span class="line">        input_ids = self.tokenizer.encode(prompt, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">        input_len = input_ids.shape[<span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 准备batch</span></span><br><span class="line">        batch_input_ids = input_ids.cuda()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 采样参数</span></span><br><span class="line">        sampling_config = &#123;</span><br><span class="line">            <span class="string">&quot;temperature&quot;</span>: temperature,</span><br><span class="line">            <span class="string">&quot;top_p&quot;</span>: top_p,</span><br><span class="line">            <span class="string">&quot;max_new_tokens&quot;</span>: max_new_tokens</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 运行推理</span></span><br><span class="line">        outputs = self.runner.generate(</span><br><span class="line">            batch_input_ids,</span><br><span class="line">            max_new_tokens=max_new_tokens,</span><br><span class="line">            temperature=temperature,</span><br><span class="line">            top_p=top_p,</span><br><span class="line">            stop_words_list=<span class="literal">None</span>,</span><br><span class="line">            pad_id=<span class="number">0</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 解码</span></span><br><span class="line">        generated_text = self.tokenizer.decode(</span><br><span class="line">            outputs[<span class="number">0</span>][<span class="number">0</span>][input_len:], </span><br><span class="line">            skip_special_tokens=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> generated_text</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_generate</span>(<span class="params">self, prompts: <span class="built_in">list</span>, max_new_tokens: <span class="built_in">int</span> = <span class="number">256</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        批量生成</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Tokenize</span></span><br><span class="line">        input_ids_list = [</span><br><span class="line">            self.tokenizer.encode(p, return_tensors=<span class="string">&quot;pt&quot;</span>) </span><br><span class="line">            <span class="keyword">for</span> p <span class="keyword">in</span> prompts</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Padding</span></span><br><span class="line">        max_len = <span class="built_in">max</span>(ids.shape[<span class="number">1</span>] <span class="keyword">for</span> ids <span class="keyword">in</span> input_ids_list)</span><br><span class="line">        padded = [</span><br><span class="line">            torch.cat([</span><br><span class="line">                ids, </span><br><span class="line">                torch.zeros(<span class="number">1</span>, max_len - ids.shape[<span class="number">1</span>], dtype=torch.long)</span><br><span class="line">            ], dim=<span class="number">1</span>).cuda()</span><br><span class="line">            <span class="keyword">for</span> ids <span class="keyword">in</span> input_ids_list</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        batch_input_ids = torch.cat(padded, dim=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 推理</span></span><br><span class="line">        outputs = self.runner.generate(</span><br><span class="line">            batch_input_ids,</span><br><span class="line">            max_new_tokens=max_new_tokens</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 解码</span></span><br><span class="line">        results = []</span><br><span class="line">        <span class="keyword">for</span> i, ids <span class="keyword">in</span> <span class="built_in">enumerate</span>(input_ids_list):</span><br><span class="line">            input_len = ids.shape[<span class="number">1</span>]</span><br><span class="line">            text = self.tokenizer.decode(</span><br><span class="line">                outputs[i][<span class="number">0</span>][input_len:],</span><br><span class="line">                skip_special_tokens=<span class="literal">True</span></span><br><span class="line">            )</span><br><span class="line">            results.append(text)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
+
+<h2 id="Jetson部署实战"><a href="#Jetson部署实战" class="headerlink" title="Jetson部署实战"></a>Jetson部署实战</h2><h3 id="1-完整部署脚本"><a href="#1-完整部署脚本" class="headerlink" title="1. 完整部署脚本"></a>1. 完整部署脚本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Jetson部署脚本</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">JetsonDeployer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Jetson部署器</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path: <span class="built_in">str</span>, quantize_mode: <span class="built_in">str</span> = <span class="string">&quot;fp16&quot;</span></span>):</span><br><span class="line">        self.model_path = model_path</span><br><span class="line">        self.quantize_mode = quantize_mode</span><br><span class="line">        self.model = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 检查GPU</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;CUDA available: <span class="subst">&#123;torch.cuda.is_available()&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;GPU: <span class="subst">&#123;torch.cuda.get_device_name()&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;GPU Memory: <span class="subst">&#123;torch.cuda.get_device_properties(<span class="number">0</span>).total_memory / <span class="number">1e9</span>:<span class="number">.1</span>f&#125;</span> GB&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载模型&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Loading model from <span class="subst">&#123;self.model_path&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;llama&quot;</span> <span class="keyword">in</span> self.model_path.lower():</span><br><span class="line">            <span class="keyword">from</span> transformers <span class="keyword">import</span> LlamaForCausalLM, LlamaTokenizer</span><br><span class="line">            self.model = LlamaForCausalLM.from_pretrained(</span><br><span class="line">                self.model_path,</span><br><span class="line">                torch_dtype=torch.float16,</span><br><span class="line">                device_map=<span class="string">&quot;auto&quot;</span></span><br><span class="line">            )</span><br><span class="line">            self.tokenizer = LlamaTokenizer.from_pretrained(self.model_path)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">elif</span> <span class="string">&quot;chatglm&quot;</span> <span class="keyword">in</span> self.model_path.lower():</span><br><span class="line">            <span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModel, AutoTokenizer</span><br><span class="line">            self.model = AutoModel.from_pretrained(</span><br><span class="line">                self.model_path,</span><br><span class="line">                torch_dtype=torch.float16,</span><br><span class="line">                trust_remote_code=<span class="literal">True</span></span><br><span class="line">            ).half().cuda()</span><br><span class="line">            self.tokenizer = AutoTokenizer.from_pretrained(</span><br><span class="line">                self.model_path, </span><br><span class="line">                trust_remote_code=<span class="literal">True</span></span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        gc.collect()</span><br><span class="line">        torch.cuda.empty_cache()</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Model loaded successfully&quot;</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize_model</span>(<span class="params">self, mode: <span class="built_in">str</span> = <span class="string">&quot;int8&quot;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;模型量化&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Quantizing model to <span class="subst">&#123;mode&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> mode == <span class="string">&quot;int8&quot;</span>:</span><br><span class="line">            <span class="keyword">from</span> transformers <span class="keyword">import</span> BitsAndBytesConfig</span><br><span class="line">            </span><br><span class="line">            quant_config = BitsAndBytesConfig(</span><br><span class="line">                load_in_8bit=<span class="literal">True</span>,</span><br><span class="line">                llm_int8_threshold=<span class="number">6.0</span>,</span><br><span class="line">                llm_int8_has_fp16_weight=<span class="literal">False</span></span><br><span class="line">            )</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 重新加载量化模型</span></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;llama&quot;</span> <span class="keyword">in</span> self.model_path.lower():</span><br><span class="line">                <span class="keyword">from</span> transformers <span class="keyword">import</span> LlamaForCausalLM</span><br><span class="line">                self.model = LlamaForCausalLM.from_pretrained(</span><br><span class="line">                    self.model_path,</span><br><span class="line">                    quantization_config=quant_config,</span><br><span class="line">                    device_map=<span class="string">&quot;auto&quot;</span></span><br><span class="line">                )</span><br><span class="line">        </span><br><span class="line">        gc.collect()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Quantization completed&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">benchmark</span>(<span class="params">self, prompt: <span class="built_in">str</span> = <span class="string">&quot;介绍自己&quot;</span>, num_runs: <span class="built_in">int</span> = <span class="number">10</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;性能测试&quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n=== Benchmark ===&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Warm up</span></span><br><span class="line">        _ = self.generate(prompt, max_new_tokens=<span class="number">32</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计时</span></span><br><span class="line">        latencies = []</span><br><span class="line">        tokens_per_second = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_runs):</span><br><span class="line">            torch.cuda.synchronize()</span><br><span class="line">            start = time.time()</span><br><span class="line">            </span><br><span class="line">            output = self.generate(prompt, max_new_tokens=<span class="number">128</span>)</span><br><span class="line">            </span><br><span class="line">            torch.cuda.synchronize()</span><br><span class="line">            end = time.time()</span><br><span class="line">            </span><br><span class="line">            latency = end - start</span><br><span class="line">            tokens = <span class="built_in">len</span>(self.tokenizer.encode(output))</span><br><span class="line">            tps = tokens / latency</span><br><span class="line">            </span><br><span class="line">            latencies.append(latency)</span><br><span class="line">            tokens_per_second.append(tps)</span><br><span class="line">            </span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Run <span class="subst">&#123;i+<span class="number">1</span>&#125;</span>: <span class="subst">&#123;latency:<span class="number">.2</span>f&#125;</span>s, <span class="subst">&#123;tps:<span class="number">.2</span>f&#125;</span> tokens/s&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n=== Results ===&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Average latency: <span class="subst">&#123;<span class="built_in">sum</span>(latencies)/<span class="built_in">len</span>(latencies):<span class="number">.2</span>f&#125;</span>s&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Average throughput: <span class="subst">&#123;<span class="built_in">sum</span>(tokens_per_second)/<span class="built_in">len</span>(tokens_per_second):<span class="number">.2</span>f&#125;</span> tokens/s&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, prompt: <span class="built_in">str</span>, max_new_tokens: <span class="built_in">int</span> = <span class="number">256</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;生成文本&quot;&quot;&quot;</span></span><br><span class="line">        inputs = self.tokenizer(prompt, return_tensors=<span class="string">&quot;pt&quot;</span>).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            outputs = self.model.generate(</span><br><span class="line">                **inputs,</span><br><span class="line">                max_new_tokens=max_new_tokens,</span><br><span class="line">                do_sample=<span class="literal">True</span>,</span><br><span class="line">                temperature=<span class="number">0.7</span>,</span><br><span class="line">                top_p=<span class="number">0.9</span></span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.tokenizer.decode(outputs[<span class="number">0</span>], skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--model_path&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, required=<span class="literal">True</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--quantize&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="string">&quot;fp16&quot;</span>, </span><br><span class="line">                        choices=[<span class="string">&quot;fp16&quot;</span>, <span class="string">&quot;int8&quot;</span>, <span class="string">&quot;int4&quot;</span>])</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--benchmark&quot;</span>, action=<span class="string">&quot;store_true&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--prompt&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="string">&quot;介绍人工智能的发展历史&quot;</span>)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 部署</span></span><br><span class="line">    deployer = JetsonDeployer(args.model_path, args.quantize)</span><br><span class="line">    deployer.load_model()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> args.quantize != <span class="string">&quot;fp16&quot;</span>:</span><br><span class="line">        deployer.quantize_model(args.quantize)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 测试</span></span><br><span class="line">    output = deployer.generate(args.prompt)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\nOutput:\n<span class="subst">&#123;output&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> args.benchmark:</span><br><span class="line">        deployer.benchmark(args.prompt)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-TensorRT-LLM推理服务"><a href="#2-TensorRT-LLM推理服务" class="headerlink" title="2. TensorRT-LLM推理服务"></a>2. TensorRT-LLM推理服务</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"></span><br><span class="line">app = FastAPI(title=<span class="string">&quot;LLM Inference API&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">InferenceService</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    推理服务</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, engine_dir: <span class="built_in">str</span></span>):</span><br><span class="line">        self.runner = TensorRTLLMRunner(engine_dir, tokenizer_dir)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">infer</span>(<span class="params">self, prompt: <span class="built_in">str</span>, **kwargs</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="keyword">return</span> self.runner.generate(prompt, **kwargs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GenerateRequest</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    prompt: <span class="built_in">str</span></span><br><span class="line">    max_tokens: <span class="built_in">int</span> = <span class="number">256</span></span><br><span class="line">    temperature: <span class="built_in">float</span> = <span class="number">0.7</span></span><br><span class="line">    top_p: <span class="built_in">float</span> = <span class="number">0.9</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/generate&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">request: GenerateRequest</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成接口&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = inference_service.infer(</span><br><span class="line">            request.prompt,</span><br><span class="line">            max_new_tokens=request.max_tokens,</span><br><span class="line">            temperature=request.temperature,</span><br><span class="line">            top_p=request.top_p</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;generated_text&quot;</span>: result&#125;</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">500</span>, detail=<span class="built_in">str</span>(e))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/health&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">health</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;ok&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    engine_dir = sys.argv[<span class="number">1</span>] <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span> <span class="keyword">else</span> <span class="string">&quot;./engines&quot;</span></span><br><span class="line">    inference_service = InferenceService(engine_dir)</span><br><span class="line">    uvicorn.run(app, host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能优化技巧"><a href="#性能优化技巧" class="headerlink" title="性能优化技巧"></a>性能优化技巧</h2><h3 id="1-内存优化"><a href="#1-内存优化" class="headerlink" title="1. 内存优化"></a>1. 内存优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MemoryOptimizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    内存优化工具</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">enable_gradient_checkpointing</span>(<span class="params">model</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;梯度检查点，减少显存占用&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(model, <span class="string">&#x27;gradient_checkpointing_enable&#x27;</span>):</span><br><span class="line">            model.gradient_checkpointing_enable()</span><br><span class="line">        <span class="keyword">return</span> model</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">clear_cache</span>():</span><br><span class="line">        <span class="string">&quot;&quot;&quot;清理GPU缓存&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> torch</span><br><span class="line">        gc.collect()</span><br><span class="line">        torch.cuda.empty_cache()</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">print_memory_stats</span>():</span><br><span class="line">        <span class="string">&quot;&quot;&quot;打印显存使用情况&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">import</span> torch</span><br><span class="line">        <span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">            allocated = torch.cuda.memory_allocated() / <span class="number">1e9</span></span><br><span class="line">            reserved = torch.cuda.memory_reserved() / <span class="number">1e9</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Memory allocated: <span class="subst">&#123;allocated:<span class="number">.2</span>f&#125;</span> GB&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Memory reserved: <span class="subst">&#123;reserved:<span class="number">.2</span>f&#125;</span> GB&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-批处理优化"><a href="#2-批处理优化" class="headerlink" title="2. 批处理优化"></a>2. 批处理优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DynamicBatching</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    动态批处理</span></span><br><span class="line"><span class="string">    合并多个请求提高吞吐量</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, runner, max_batch_size=<span class="number">8</span>, max_wait_ms=<span class="number">100</span></span>):</span><br><span class="line">        self.runner = runner</span><br><span class="line">        self.max_batch_size = max_batch_size</span><br><span class="line">        self.max_wait_ms = max_wait_ms</span><br><span class="line">        self.pending_requests = []</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">add_request</span>(<span class="params">self, prompt: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加请求&quot;&quot;&quot;</span></span><br><span class="line">        future = asyncio.Future()</span><br><span class="line">        self.pending_requests.append((prompt, future))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 检查是否需要处理</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(self.pending_requests) &gt;= self.max_batch_size:</span><br><span class="line">            <span class="keyword">await</span> self.process_batch()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> future</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">process_batch</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;处理批次&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.pending_requests:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 取出请求</span></span><br><span class="line">        batch_size = <span class="built_in">min</span>(<span class="built_in">len</span>(self.pending_requests), self.max_batch_size)</span><br><span class="line">        batch = self.pending_requests[:batch_size]</span><br><span class="line">        self.pending_requests = self.pending_requests[batch_size:]</span><br><span class="line">        </span><br><span class="line">        prompts = [p <span class="keyword">for</span> p, _ <span class="keyword">in</span> batch]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 批量推理</span></span><br><span class="line">        outputs = self.runner.batch_generate(prompts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 设置结果</span></span><br><span class="line">        <span class="keyword">for</span> (_, future), output <span class="keyword">in</span> <span class="built_in">zip</span>(batch, outputs):</span><br><span class="line">            future.set_result(output)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在Jetson嵌入式平台上部署大模型需要综合考虑模型大小、推理速度和内存限制。通过TensorRT-LLM优化、模型量化和批处理等技术，可以在边缘设备上实现大模型的高效推理。本文介绍了完整的部署流程和优化技巧，为开发者提供了实用的参考方案。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT-LLM">TensorRT-LLM GitHub</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.nvidia.com/jetson/">Jetson官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.nvidia.com/deep-learning-inference">Deep Learning Inference</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/AI%E5%B5%8C%E5%85%A5%E5%BC%8F/">AI嵌入式</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">模型部署</a>
+    
+      <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8FAI/">嵌入式AI</a>
+    
+      <a href="/tags/Jetson/">Jetson</a>
+    
+      <a href="/tags/TensorRT-LLM/">TensorRT-LLM</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/11/05/2023-11-05-Jetson-嵌入式部署大模型-TensorRT-LLM实战/" target="_blank" title="Jetson嵌入式部署大模型：TensorRT-LLM实战">https://www.coomatrix.com/2023/11/05/2023-11-05-Jetson-嵌入式部署大模型-TensorRT-LLM实战/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/12/01/2023-12-01-Mistral-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%B0%E6%98%9F-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Mistral：开源大模型新星技术架构与部署实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/10/12/2023-10-12-Physics-Informed-Neural-Networks-PINN%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%89%A9%E7%90%86%E6%96%B9%E7%A8%8B%E8%9E%8D%E5%90%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Physics-Informed Neural Networks (PINN)：深度学习与物理方程融合</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jetson%E5%B9%B3%E5%8F%B0%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">Jetson平台概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Jetson%E7%B3%BB%E5%88%97%E5%AF%B9%E6%AF%94"><span class="nav-number">2.1.</span> <span class="nav-text">1. Jetson系列对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.2.</span> <span class="nav-text">2. 环境准备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorRT-LLM%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">TensorRT-LLM核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%B5%81%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">1. 模型转换流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TensorRT%E5%BC%95%E6%93%8E%E6%9E%84%E5%BB%BA"><span class="nav-number">3.2.</span> <span class="nav-text">2. TensorRT引擎构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Python%E6%8E%A8%E7%90%86%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.3.</span> <span class="nav-text">3. Python推理接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jetson%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98"><span class="nav-number">4.</span> <span class="nav-text">Jetson部署实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%8C%E6%95%B4%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC"><span class="nav-number">4.1.</span> <span class="nav-text">1. 完整部署脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TensorRT-LLM%E6%8E%A8%E7%90%86%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.2.</span> <span class="nav-text">2. TensorRT-LLM推理服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="nav-number">5.</span> <span class="nav-text">性能优化技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96"><span class="nav-number">5.1.</span> <span class="nav-text">1. 内存优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%89%B9%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96"><span class="nav-number">5.2.</span> <span class="nav-text">2. 批处理优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

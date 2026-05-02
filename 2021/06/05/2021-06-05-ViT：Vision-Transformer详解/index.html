@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>vit：vision transformer详解 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="Vision Transformer原理与PyTorch实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ViT：Vision Transformer详解">
+<meta property="og:url" content="https://www.coomatrix.com/2021/06/05/2021-06-05-ViT%EF%BC%9AVision-Transformer%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="Vision Transformer原理与PyTorch实现">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1633356122544-f60d17f03e20">
+<meta property="article:published_time" content="2021-06-05T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:34:49.558Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="ViT">
+<meta property="article:tag" content="Vision Transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1633356122544-f60d17f03e20">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-06-05-ViT：Vision-Transformer详解" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1633356122544-f60d17f03e20" rel="gallery_cmoopizra004f9cv6f5zzav0f noopener">
+        <img src="https://images.unsplash.com/photo-1633356122544-f60d17f03e20" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ViT：Vision Transformer详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/06/05/2021-06-05-ViT%EF%BC%9AVision-Transformer%E8%AF%A6%E8%A7%A3/" class="article-date">
+	  <time datetime="2021-06-05T02:00:00.000Z" itemprop="datePublished">六月 5, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Vision Transformer（ViT）将NLP领域的Transformer架构成功应用于计算机视觉，在ImageNet上取得了超越CNN的成绩。本文深入解析ViT的原理和实现。</p>
+<h2 id="ViT核心架构"><a href="#ViT核心架构" class="headerlink" title="ViT核心架构"></a>ViT核心架构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mermaid</span><br><span class="line">graph TB</span><br><span class="line">A[输入图像 224x224] --&gt; B[Patch Embedding]</span><br><span class="line">B --&gt; C[线性投影+位置编码]</span><br><span class="line">C --&gt; D[CLS Token]</span><br><span class="line">D --&gt; E[Transformer编码器]</span><br><span class="line">E --&gt; F[分类头]</span><br><span class="line">F --&gt; G[预测类别]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PatchEmbedding</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;图像分块嵌入&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, img_size=<span class="number">224</span>, patch_size=<span class="number">16</span>, in_channels=<span class="number">3</span>, embed_dim=<span class="number">768</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.img_size = img_size</span><br><span class="line">        self.patch_size = patch_size</span><br><span class="line">        self.num_patches = (img_size // patch_size) ** <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 使用卷积实现分块+嵌入</span></span><br><span class="line">        self.proj = nn.Conv2d(</span><br><span class="line">            in_channels, embed_dim,</span><br><span class="line">            kernel_size=patch_size, stride=patch_size</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># flatten后维度</span></span><br><span class="line">        self.flatten_dim = in_channels * patch_size * patch_size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 可选的线性投影</span></span><br><span class="line">        self.linear_proj = nn.Linear(self.flatten_dim, embed_dim)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            x: (B, C, H, W)</span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            (B, num_patches, embed_dim)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 卷积分块</span></span><br><span class="line">        x = self.proj(x)  <span class="comment"># (B, embed_dim, H/P, W/P)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 展平</span></span><br><span class="line">        x = x.flatten(<span class="number">2</span>)  <span class="comment"># (B, embed_dim, num_patches)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 维度变换</span></span><br><span class="line">        x = x.transpose(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># (B, num_patches, embed_dim)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 线性投影（可选）</span></span><br><span class="line">        x = self.linear_proj(x)  <span class="comment"># (B, num_patches, embed_dim)</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadSelfAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;多头自注意力&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_dim=<span class="number">768</span>, num_heads=<span class="number">8</span>, dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.embed_dim = embed_dim</span><br><span class="line">        self.num_heads = num_heads</span><br><span class="line">        self.d_k = embed_dim // num_heads</span><br><span class="line">        </span><br><span class="line">        self.qkv = nn.Linear(embed_dim, embed_dim * <span class="number">3</span>)</span><br><span class="line">        self.attn_drop = nn.Dropout(dropout)</span><br><span class="line">        self.proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.proj_drop = nn.Dropout(dropout)</span><br><span class="line">        </span><br><span class="line">        self.scale = self.d_k ** -<span class="number">0.5</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, mask=<span class="literal">None</span></span>):</span><br><span class="line">        B, N, C = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># QKV投影</span></span><br><span class="line">        qkv = self.qkv(x).reshape(B, N, <span class="number">3</span>, self.num_heads, self.d_k)</span><br><span class="line">        qkv = qkv.permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>)  <span class="comment"># (3, B, num_heads, N, d_k)</span></span><br><span class="line">        q, k, v = qkv[<span class="number">0</span>], qkv[<span class="number">1</span>], qkv[<span class="number">2</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 注意力分数</span></span><br><span class="line">        attn = (q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) * self.scale</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            attn = attn.masked_fill(mask.unsqueeze(<span class="number">1</span>).unsqueeze(<span class="number">2</span>) == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">        </span><br><span class="line">        attn = F.softmax(attn, dim=-<span class="number">1</span>)</span><br><span class="line">        attn = self.attn_drop(attn)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加权</span></span><br><span class="line">        x = (attn @ v).transpose(<span class="number">1</span>, <span class="number">2</span>).reshape(B, N, C)</span><br><span class="line">        x = self.proj(x)</span><br><span class="line">        x = self.proj_drop(x)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> x, attn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TransformerBlock</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Transformer编码器块&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_dim=<span class="number">768</span>, num_heads=<span class="number">8</span>, mlp_ratio=<span class="number">4.0</span>, dropout=<span class="number">0.1</span>, attn_dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># LayerNorm</span></span><br><span class="line">        self.norm1 = nn.LayerNorm(embed_dim)</span><br><span class="line">        self.norm2 = nn.LayerNorm(embed_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 注意力</span></span><br><span class="line">        self.attn = MultiHeadSelfAttention(embed_dim, num_heads, attn_dropout)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># MLP</span></span><br><span class="line">        mlp_hidden_dim = <span class="built_in">int</span>(embed_dim * mlp_ratio)</span><br><span class="line">        self.mlp = nn.Sequential(</span><br><span class="line">            nn.Linear(embed_dim, mlp_hidden_dim),</span><br><span class="line">            nn.GELU(),</span><br><span class="line">            nn.Dropout(dropout),</span><br><span class="line">            nn.Linear(mlp_hidden_dim, embed_dim),</span><br><span class="line">            nn.Dropout(dropout)</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, return_attention=<span class="literal">False</span></span>):</span><br><span class="line">        <span class="comment"># 自注意力 + 残差</span></span><br><span class="line">        attn_out, attn_weights = self.attn(self.norm1(x))</span><br><span class="line">        x = x + attn_out</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># MLP + 残差</span></span><br><span class="line">        x = x + self.mlp(self.norm2(x))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> return_attention:</span><br><span class="line">            <span class="keyword">return</span> x, attn_weights</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<h2 id="完整ViT模型"><a href="#完整ViT模型" class="headerlink" title="完整ViT模型"></a>完整ViT模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VisionTransformer</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;完整的Vision Transformer&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, img_size=<span class="number">224</span>, patch_size=<span class="number">16</span>, in_channels=<span class="number">3</span>,</span></span><br><span class="line"><span class="params">                 num_classes=<span class="number">1000</span>, embed_dim=<span class="number">768</span>, depth=<span class="number">12</span>,</span></span><br><span class="line"><span class="params">                 num_heads=<span class="number">12</span>, mlp_ratio=<span class="number">4.0</span>, dropout=<span class="number">0.1</span>, attn_dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.embed_dim = embed_dim</span><br><span class="line">        self.depth = depth</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分块嵌入</span></span><br><span class="line">        self.patch_embed = PatchEmbedding(</span><br><span class="line">            img_size, patch_size, in_channels, embed_dim</span><br><span class="line">        )</span><br><span class="line">        self.num_patches = self.patch_embed.num_patches</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 可学习类别token</span></span><br><span class="line">        self.cls_token = nn.Parameter(torch.zeros(<span class="number">1</span>, <span class="number">1</span>, embed_dim))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 位置编码</span></span><br><span class="line">        self.pos_embed = nn.Parameter(torch.zeros(<span class="number">1</span>, self.num_patches + <span class="number">1</span>, embed_dim))</span><br><span class="line">        self.pos_drop = nn.Dropout(p=dropout)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Transformer块</span></span><br><span class="line">        self.blocks = nn.ModuleList([</span><br><span class="line">            TransformerBlock(</span><br><span class="line">                embed_dim, num_heads, mlp_ratio, dropout, attn_dropout</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(depth)</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 输出头</span></span><br><span class="line">        self.norm = nn.LayerNorm(embed_dim)</span><br><span class="line">        self.head = nn.Linear(embed_dim, num_classes)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化</span></span><br><span class="line">        nn.init.trunc_normal_(self.cls_token, std=<span class="number">0.02</span>)</span><br><span class="line">        nn.init.trunc_normal_(self.pos_embed, std=<span class="number">0.02</span>)</span><br><span class="line">        self.apply(self._init_weights)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_init_weights</span>(<span class="params">self, m</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(m, nn.Linear):</span><br><span class="line">            nn.init.trunc_normal_(m.weight, std=<span class="number">0.02</span>)</span><br><span class="line">            <span class="keyword">if</span> m.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                nn.init.zeros_(m.bias)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">isinstance</span>(m, nn.LayerNorm):</span><br><span class="line">            nn.init.ones_(m.weight)</span><br><span class="line">            nn.init.zeros_(m.bias)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, return_attention=<span class="literal">False</span></span>):</span><br><span class="line">        B = x.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分块嵌入</span></span><br><span class="line">        x = self.patch_embed(x)  <span class="comment"># (B, num_patches, embed_dim)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加CLS token</span></span><br><span class="line">        cls_tokens = self.cls_token.expand(B, -<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">        x = torch.cat([cls_tokens, x], dim=<span class="number">1</span>)  <span class="comment"># (B, num_patches+1, embed_dim)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加位置编码</span></span><br><span class="line">        x = x + self.pos_embed</span><br><span class="line">        x = self.pos_drop(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 通过Transformer块</span></span><br><span class="line">        attentions = []</span><br><span class="line">        <span class="keyword">for</span> block <span class="keyword">in</span> self.blocks:</span><br><span class="line">            <span class="keyword">if</span> return_attention:</span><br><span class="line">                x, attn = block(x, return_attention=<span class="literal">True</span>)</span><br><span class="line">                attentions.append(attn)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                x = block(x)</span><br><span class="line">        </span><br><span class="line">        x = self.norm(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 使用CLS token做分类</span></span><br><span class="line">        cls_output = x[:, <span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分类</span></span><br><span class="line">        logits = self.head(cls_output)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> return_attention:</span><br><span class="line">            <span class="keyword">return</span> logits, attentions</span><br><span class="line">        <span class="keyword">return</span> logits</span><br></pre></td></tr></table></figure>
+
+<h2 id="ViT变体配置"><a href="#ViT变体配置" class="headerlink" title="ViT变体配置"></a>ViT变体配置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">configs = &#123;</span><br><span class="line">    <span class="string">&#x27;ViT-Base&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;patch_size&#x27;</span>: <span class="number">16</span>,</span><br><span class="line">        <span class="string">&#x27;embed_dim&#x27;</span>: <span class="number">768</span>,</span><br><span class="line">        <span class="string">&#x27;depth&#x27;</span>: <span class="number">12</span>,</span><br><span class="line">        <span class="string">&#x27;num_heads&#x27;</span>: <span class="number">12</span>,</span><br><span class="line">        <span class="string">&#x27;mlp_ratio&#x27;</span>: <span class="number">4.0</span>,</span><br><span class="line">        <span class="string">&#x27;params&#x27;</span>: 86M</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;ViT-Large&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;patch_size&#x27;</span>: <span class="number">16</span>,</span><br><span class="line">        <span class="string">&#x27;embed_dim&#x27;</span>: <span class="number">1024</span>,</span><br><span class="line">        <span class="string">&#x27;depth&#x27;</span>: <span class="number">24</span>,</span><br><span class="line">        <span class="string">&#x27;num_heads&#x27;</span>: <span class="number">16</span>,</span><br><span class="line">        <span class="string">&#x27;mlp_ratio&#x27;</span>: <span class="number">4.0</span>,</span><br><span class="line">        <span class="string">&#x27;params&#x27;</span>: 307M</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;ViT-Huge&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;patch_size&#x27;</span>: <span class="number">14</span>,</span><br><span class="line">        <span class="string">&#x27;embed_dim&#x27;</span>: <span class="number">1280</span>,</span><br><span class="line">        <span class="string">&#x27;depth&#x27;</span>: <span class="number">32</span>,</span><br><span class="line">        <span class="string">&#x27;num_heads&#x27;</span>: <span class="number">16</span>,</span><br><span class="line">        <span class="string">&#x27;mlp_ratio&#x27;</span>: <span class="number">4.0</span>,</span><br><span class="line">        <span class="string">&#x27;params&#x27;</span>: 632M</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;DeiT-Small&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;patch_size&#x27;</span>: <span class="number">16</span>,</span><br><span class="line">        <span class="string">&#x27;embed_dim&#x27;</span>: <span class="number">384</span>,</span><br><span class="line">        <span class="string">&#x27;depth&#x27;</span>: <span class="number">12</span>,</span><br><span class="line">        <span class="string">&#x27;num_heads&#x27;</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="string">&#x27;mlp_ratio&#x27;</span>: <span class="number">4.0</span>,</span><br><span class="line">        <span class="string">&#x27;params&#x27;</span>: 22M</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_vit</span>(<span class="params">variant=<span class="string">&#x27;ViT-Base&#x27;</span>, num_classes=<span class="number">1000</span></span>):</span><br><span class="line">    config = configs[variant]</span><br><span class="line">    <span class="keyword">return</span> VisionTransformer(</span><br><span class="line">        patch_size=config[<span class="string">&#x27;patch_size&#x27;</span>],</span><br><span class="line">        embed_dim=config[<span class="string">&#x27;embed_dim&#x27;</span>],</span><br><span class="line">        depth=config[<span class="string">&#x27;depth&#x27;</span>],</span><br><span class="line">        num_heads=config[<span class="string">&#x27;num_heads&#x27;</span>],</span><br><span class="line">        mlp_ratio=config[<span class="string">&#x27;mlp_ratio&#x27;</span>],</span><br><span class="line">        num_classes=num_classes</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h2 id="ViT训练"><a href="#ViT训练" class="headerlink" title="ViT训练"></a>ViT训练</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ViTTrainer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ViT训练器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, device=<span class="string">&#x27;cuda&#x27;</span></span>):</span><br><span class="line">        self.model = model.to(device)</span><br><span class="line">        self.device = device</span><br><span class="line">        self.criterion = nn.CrossEntropyLoss()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_epoch</span>(<span class="params">self, train_loader, optimizer, scheduler=<span class="literal">None</span></span>):</span><br><span class="line">        self.model.train()</span><br><span class="line">        total_loss = <span class="number">0</span></span><br><span class="line">        correct = <span class="number">0</span></span><br><span class="line">        total = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> batch_idx, (images, labels) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line">            images = images.to(self.device)</span><br><span class="line">            labels = labels.to(self.device)</span><br><span class="line">            </span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            outputs = self.model(images)</span><br><span class="line">            loss = self.criterion(outputs, labels)</span><br><span class="line">            loss.backward()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 梯度裁剪</span></span><br><span class="line">            torch.nn.utils.clip_grad_norm_(self.model.parameters(), <span class="number">1.0</span>)</span><br><span class="line">            </span><br><span class="line">            optimizer.step()</span><br><span class="line">            <span class="keyword">if</span> scheduler:</span><br><span class="line">                scheduler.step()</span><br><span class="line">            </span><br><span class="line">            total_loss += loss.item()</span><br><span class="line">            _, predicted = outputs.<span class="built_in">max</span>(<span class="number">1</span>)</span><br><span class="line">            total += labels.size(<span class="number">0</span>)</span><br><span class="line">            correct += predicted.eq(labels).<span class="built_in">sum</span>().item()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> total_loss / <span class="built_in">len</span>(train_loader), <span class="number">100.</span> * correct / total</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">self, val_loader</span>):</span><br><span class="line">        self.model.<span class="built_in">eval</span>()</span><br><span class="line">        correct = <span class="number">0</span></span><br><span class="line">        total = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="keyword">for</span> images, labels <span class="keyword">in</span> val_loader:</span><br><span class="line">                images, labels = images.to(self.device), labels.to(self.device)</span><br><span class="line">                outputs = self.model(images)</span><br><span class="line">                _, predicted = outputs.<span class="built_in">max</span>(<span class="number">1</span>)</span><br><span class="line">                total += labels.size(<span class="number">0</span>)</span><br><span class="line">                correct += predicted.eq(labels).<span class="built_in">sum</span>().item()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="number">100.</span> * correct / total</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_pretrained_vit</span>(<span class="params">model_name=<span class="string">&#x27;ViT-B_16&#x27;</span>, num_classes=<span class="number">1000</span>, pretrained=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;加载预训练ViT&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">from</span> torchvision.models <span class="keyword">import</span> vit_b_16, ViT_B_16_Weights</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> pretrained:</span><br><span class="line">        weights = ViT_B_16_Weights.IMAGENET1K_V1</span><br><span class="line">        model = vit_b_16(weights=weights)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        model = vit_b_16(weights=<span class="literal">None</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 修改分类头</span></span><br><span class="line">    <span class="keyword">if</span> num_classes != <span class="number">1000</span>:</span><br><span class="line">        model.head = nn.Linear(model.hidden_dim, num_classes)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+
+<h2 id="ViT-vs-CNN"><a href="#ViT-vs-CNN" class="headerlink" title="ViT vs CNN"></a>ViT vs CNN</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>ViT</th>
+<th>CNN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>归纳偏置</td>
+<td>无，需要更多数据</td>
+<td>局部性、平移不变性</td>
+</tr>
+<tr>
+<td>计算复杂度</td>
+<td>O(n²d)</td>
+<td>O(k²dn)</td>
+</tr>
+<tr>
+<td>长距离依赖</td>
+<td>自然建模</td>
+<td>需要更多层</td>
+</tr>
+<tr>
+<td>数据效率</td>
+<td>需大数据集</td>
+<td>高</td>
+</tr>
+<tr>
+<td>可解释性</td>
+<td>Attention可视化</td>
+<td>Filter可视化</td>
+</tr>
+</tbody></table>
+<h2 id="ViT应用场景"><a href="#ViT应用场景" class="headerlink" title="ViT应用场景"></a>ViT应用场景</h2><ul>
+<li><strong>图像分类</strong>：ImageNet、CIFAR</li>
+<li><strong>目标检测</strong>：DETR、Deformable DETR</li>
+<li><strong>语义分割</strong>：SegFormer、SETR</li>
+<li><strong>图像生成</strong>：DiT（DALL-E 2）</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>ViT证明了Transformer可以直接应用于图像任务，其在大规模数据训练下展现出超越CNN的潜力。但在小数据集上，CNN由于其归纳偏置仍然具有优势。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2012.12877">Training data-efficient image transformers</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
+    
+      <a href="/tags/ViT/">ViT</a>
+    
+      <a href="/tags/Vision-Transformer/">Vision Transformer</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/06/05/2021-06-05-ViT：Vision-Transformer详解/" target="_blank" title="ViT：Vision Transformer详解">https://www.coomatrix.com/2021/06/05/2021-06-05-ViT：Vision-Transformer详解/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/06/15/2021-06-15-GPT-3%EF%BC%9A%E5%A4%A7%E8%A7%84%E6%A8%A1%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%AA%81%E7%A0%B4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          GPT-3：大规模语言模型的突破
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/05/25/2021-05-25-Transformer%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3%E5%BA%8F%E5%88%97%E9%A1%BA%E5%BA%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Transformer位置编码：让模型理解序列顺序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViT%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">ViT核心架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4ViT%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">完整ViT模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViT%E5%8F%98%E4%BD%93%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">ViT变体配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViT%E8%AE%AD%E7%BB%83"><span class="nav-number">5.</span> <span class="nav-text">ViT训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViT-vs-CNN"><span class="nav-number">6.</span> <span class="nav-text">ViT vs CNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViT%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">7.</span> <span class="nav-text">ViT应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">9.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

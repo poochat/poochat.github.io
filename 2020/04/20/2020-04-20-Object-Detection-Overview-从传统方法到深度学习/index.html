@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>object detection overview：从传统方法到深度学习 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="概述目标检测是计算机视觉中的核心任务之一，本文系统梳理从传统方法到深度学习的目标检测发展历程。 目标检测发展时间线gantt     title 目标检测发展历程     dateFormat  YYYY     section 传统方法     Viola-Jones        :2001, 2005     HOG + SVM         :2005, 2010     DPM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object Detection Overview：从传统方法到深度学习">
+<meta property="og:url" content="https://www.coomatrix.com/2020/04/20/2020-04-20-Object-Detection-Overview-%E4%BB%8E%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95%E5%88%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="概述目标检测是计算机视觉中的核心任务之一，本文系统梳理从传统方法到深度学习的目标检测发展历程。 目标检测发展时间线gantt     title 目标检测发展历程     dateFormat  YYYY     section 传统方法     Viola-Jones        :2001, 2005     HOG + SVM         :2005, 2010     DPM">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558618666-fcd25c85cd64">
+<meta property="article:published_time" content="2020-04-20T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:33:48.075Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="目标检测">
+<meta property="article:tag" content="YOLO">
+<meta property="article:tag" content="Faster R-CNN">
+<meta property="article:tag" content="SSD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558618666-fcd25c85cd64">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2020-04-20-Object-Detection-Overview-从传统方法到深度学习" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558618666-fcd25c85cd64" rel="gallery_cmoopizqw002p9cv6gfy30s5o noopener">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Object Detection Overview：从传统方法到深度学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2020/04/20/2020-04-20-Object-Detection-Overview-%E4%BB%8E%E4%BC%A0%E7%BB%9F%E6%96%B9%E6%B3%95%E5%88%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="article-date">
+	  <time datetime="2020-04-20T02:00:00.000Z" itemprop="datePublished">四月 20, 2020</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>目标检测是计算机视觉中的核心任务之一，本文系统梳理从传统方法到深度学习的目标检测发展历程。</p>
+<h2 id="目标检测发展时间线"><a href="#目标检测发展时间线" class="headerlink" title="目标检测发展时间线"></a>目标检测发展时间线</h2><pre class="mermaid">gantt
+    title 目标检测发展历程
+    dateFormat  YYYY
+    section 传统方法
+    Viola-Jones        :2001, 2005
+    HOG + SVM         :2005, 2010
+    DPM               :2008, 2016
+    section 深度学习
+    R-CNN             :2014, 2015
+    SPP-Net           :2014, 2015
+    Fast R-CNN        :2015, 2016
+    Faster R-CNN      :2015, 2017
+    YOLOv1            :2015, 2016
+    SSD               :2016, 2017
+    YOLOv2-v3         :2016, 2018
+    RetinaNet          :2017, 2018
+    YOLOv4-v5         :2020, 2021</pre>
+
+<h2 id="传统目标检测方法"><a href="#传统目标检测方法" class="headerlink" title="传统目标检测方法"></a>传统目标检测方法</h2><h3 id="流程框架"><a href="#流程框架" class="headerlink" title="流程框架"></a>流程框架</h3><pre class="mermaid">flowchart TB
+    subgraph 传统检测流程
+        IMG[输入图像] --> REGION[候选区域生成]
+        REGION --> FEATURE[特征提取]
+        FEATURE --> SVM[分类器分类]
+        SVM --> OUT[检测结果]
+    end
+    
+    subgraph 候选区域方法
+        REGION --> SL[滑动窗口]
+        REGION --> SS[选择性搜索]
+        REGION --> EDGE[边缘检测]
+    end
+    
+    subgraph 特征提取
+        FEATURE --> HOG[HOG特征]
+        FEATURE --> SIFT[SIFT/ORB]
+        FEATURE --> HAAR[Haar特征]
+    end</pre>
+
+<h3 id="Viola-Jones检测器"><a href="#Viola-Jones检测器" class="headerlink" title="Viola-Jones检测器"></a>Viola-Jones检测器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ViolaJonesDetector</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Viola-Jones人脸检测器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.classifiers = []  <span class="comment"># 级联分类器</span></span><br><span class="line">        self.integral_image = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_integral_image</span>(<span class="params">self, image</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算积分图&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> np.cumsum(np.cumsum(image, axis=<span class="number">0</span>), axis=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">haar_features</span>(<span class="params">self, image</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算Haar特征&quot;&quot;&quot;</span></span><br><span class="line">        features = []</span><br><span class="line">        <span class="comment"># 边缘特征</span></span><br><span class="line">        features.append(self.edge_feature(image))</span><br><span class="line">        <span class="comment"># 线特征</span></span><br><span class="line">        features.append(self.line_feature(image))</span><br><span class="line">        <span class="comment"># 中心环绕特征</span></span><br><span class="line">        features.append(self.center_feature(image))</span><br><span class="line">        <span class="keyword">return</span> features</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">detect</span>(<span class="params">self, image, scale_factor=<span class="number">1.1</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;多尺度检测&quot;&quot;&quot;</span></span><br><span class="line">        detections = []</span><br><span class="line">        scale = <span class="number">1.0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> scale * image.shape[<span class="number">0</span>] &gt; <span class="number">24</span>:</span><br><span class="line">            <span class="keyword">for</span> y, x <span class="keyword">in</span> self.sliding_window(image, (<span class="number">24</span>, <span class="number">24</span>), step=<span class="number">2</span>):</span><br><span class="line">                window = image[y:y+<span class="number">24</span>, x:x+<span class="number">24</span>]</span><br><span class="line">                features = self.haar_features(window)</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> self.classify(features):</span><br><span class="line">                    detections.append((x, y, scale))</span><br><span class="line">            </span><br><span class="line">            image = self.pyramid_down(image, scale_factor)</span><br><span class="line">            scale *= scale_factor</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.non_max_suppression(detections)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Two-Stage检测器"><a href="#Two-Stage检测器" class="headerlink" title="Two-Stage检测器"></a>Two-Stage检测器</h2><h3 id="R-CNN系列架构"><a href="#R-CNN系列架构" class="headerlink" title="R-CNN系列架构"></a>R-CNN系列架构</h3><pre class="mermaid">flowchart TB
+    subgraph R-CNN
+        IMG1[图像] --> REGION1[选择性搜索<br>~2000区域]
+        REGION1 --> WARP1[区域缩放]
+        WARP1 --> CNN1[CNN特征提取<br>每个区域独立]
+        CNN1 --> SVM1[分类器]
+        SVM1 --> BOX1[边界框回归]
+    end
+    
+    subgraph Fast R-CNN
+        IMG2[图像] --> CNN2[整图CNN<br>共享特征]
+        IMG2 --> REGION2[选择性搜索]
+        CNN2 --> ROIP[ROI Pooling]
+        REGION2 --> ROIP
+        ROIP --> FC2[全连接层]
+        FC2 --> CLS2[分类+回归]
+    end
+    
+    subgraph Faster R-CNN
+        IMG3[图像] --> CNN3[共享CNN]
+        CNN3 --> RPN[RPN区域提议网络]
+        RPN --> PROPOSAL[候选区域]
+        CNN3 --> ROI3[ROI Align]
+        PROPOSAL --> ROI3
+        ROI3 --> HEAD3[检测头]
+    end</pre>
+
+<h3 id="Faster-R-CNN实现"><a href="#Faster-R-CNN实现" class="headerlink" title="Faster R-CNN实现"></a>Faster R-CNN实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FasterRCNN</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Faster R-CNN目标检测器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">80</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 骨干网络</span></span><br><span class="line">        self.backbone = resnet50(pretrained=<span class="literal">True</span>)</span><br><span class="line">        self.backbone_out_channels = <span class="number">2048</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># RPN</span></span><br><span class="line">        self.rpn = RegionProposalNetwork(</span><br><span class="line">            in_channels=self.backbone_out_channels,</span><br><span class="line">            num_anchors=<span class="number">9</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ROI Head</span></span><br><span class="line">        self.roi_head = ROIHead(</span><br><span class="line">            in_channels=self.backbone_out_channels,</span><br><span class="line">            num_classes=num_classes</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, images, targets=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 提取特征</span></span><br><span class="line">        features = self.backbone(images)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># RPN生成候选区域</span></span><br><span class="line">        rpn_logits, rpn_boxes, proposals = self.rpn(features, targets)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># ROI分类和回归</span></span><br><span class="line">        <span class="keyword">if</span> self.training:</span><br><span class="line">            roi_boxes, labels, bbox_targets = self.roi_head(</span><br><span class="line">                features, proposals, targets</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> rpn_logits, rpn_boxes, roi_boxes, labels, bbox_targets</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            class_logits, box_regression = self.roi_head(features, proposals)</span><br><span class="line">            <span class="keyword">return</span> class_logits, box_regression, proposals</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegionProposalNetwork</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;区域提议网络&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, num_anchors=<span class="number">9</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.conv = nn.Conv2d(in_channels, <span class="number">512</span>, <span class="number">3</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.cls_logits = nn.Conv2d(<span class="number">512</span>, num_anchors * <span class="number">2</span>, <span class="number">1</span>)  <span class="comment"># 前景/背景</span></span><br><span class="line">        self.bbox_pred = nn.Conv2d(<span class="number">512</span>, num_anchors * <span class="number">4</span>, <span class="number">1</span>)  <span class="comment"># 边界框偏移</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, features, targets=<span class="literal">None</span></span>):</span><br><span class="line">        x = F.relu(self.conv(features))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分类：是否包含物体</span></span><br><span class="line">        logits = self.cls_logits(x)</span><br><span class="line">        <span class="comment"># 回归：边界框偏移</span></span><br><span class="line">        bbox_reg = self.bbox_pred(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成proposals</span></span><br><span class="line">        proposals = self.generate_proposals(logits, bbox_reg)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> logits, bbox_reg, proposals</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_proposals</span>(<span class="params">self, logits, bbox_reg</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;生成候选区域&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 提取top-k预测</span></span><br><span class="line">        scores = F.softmax(logits, dim=<span class="number">1</span>)[:, <span class="number">1</span>]  <span class="comment"># 前景概率</span></span><br><span class="line">        <span class="comment"># NMS后处理</span></span><br><span class="line">        keep = nms(bbox_reg, scores, threshold=<span class="number">0.7</span>)</span><br><span class="line">        <span class="keyword">return</span> bbox_reg[keep]</span><br></pre></td></tr></table></figure>
+
+<h2 id="One-Stage检测器"><a href="#One-Stage检测器" class="headerlink" title="One-Stage检测器"></a>One-Stage检测器</h2><h3 id="YOLO-vs-SSD架构对比"><a href="#YOLO-vs-SSD架构对比" class="headerlink" title="YOLO vs SSD架构对比"></a>YOLO vs SSD架构对比</h3><pre class="mermaid">flowchart LR
+    subgraph YOLO
+        YIMG[图像] --> YGRID[网格划分<br>S×S]
+        YGRID --> YFEAT[特征提取]
+        YFEAT --> YPRED[直接预测<br>B×(4+1+C)]
+    end
+    
+    subgraph SSD
+        SIMG[图像] --> SFEAT[多尺度特征图]
+        SFEAT --> SCONV[卷积预测]
+        SCONV --> SPRED[每层预测<br>default boxes]
+    end</pre>
+
+<h3 id="YOLOv3实现"><a href="#YOLOv3实现" class="headerlink" title="YOLOv3实现"></a>YOLOv3实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOv3</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLOv3目标检测器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes=<span class="number">80</span>, anchors=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.anchors = anchors <span class="keyword">or</span> self.default_anchors</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 骨干网络 - Darknet53</span></span><br><span class="line">        self.backbone = Darknet53()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 多尺度检测头</span></span><br><span class="line">        self.detect_small = YOLOLayer(self.anchors[<span class="number">0</span>], num_classes)  <span class="comment"># 13×13</span></span><br><span class="line">        self.detect_medium = YOLOLayer(self.anchors[<span class="number">1</span>], num_classes)  <span class="comment"># 26×26</span></span><br><span class="line">        self.detect_large = YOLOLayer(self.anchors[<span class="number">2</span>], num_classes)  <span class="comment"># 52×52</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 特征提取</span></span><br><span class="line">        features = self.backbone(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 多尺度检测</span></span><br><span class="line">        out_small = self.detect_small(features[<span class="number">0</span>])</span><br><span class="line">        out_medium = self.detect_medium(features[<span class="number">1</span>])</span><br><span class="line">        out_large = self.detect_large(features[<span class="number">2</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> self.training:</span><br><span class="line">            <span class="keyword">return</span> out_small, out_medium, out_large</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 合并多尺度预测</span></span><br><span class="line">            <span class="keyword">return</span> self.concat_outputs(out_small, out_medium, out_large)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">YOLOLayer</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;YOLO检测层&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, anchors, num_classes</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.anchors = anchors</span><br><span class="line">        self.num_classes = num_classes</span><br><span class="line">        self.num_anchors = <span class="built_in">len</span>(anchors)</span><br><span class="line">        </span><br><span class="line">        out_channels = self.num_anchors * (<span class="number">5</span> + num_classes)</span><br><span class="line">        self.conv = nn.Conv2d(<span class="number">512</span>, out_channels, <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># x: [B, 512, S, S]</span></span><br><span class="line">        prediction = self.conv(x)</span><br><span class="line">        <span class="comment"># 解析预测: [B, num_anchors, S, S, 5+num_classes]</span></span><br><span class="line">        <span class="comment"># 5 = tx, ty, tw, th, objectness</span></span><br><span class="line">        <span class="keyword">return</span> prediction</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><table>
+<thead>
+<tr>
+<th>检测器</th>
+<th><a href="mailto:&#109;&#65;&#x50;&#64;&#x30;&#x2e;&#53;">&#109;&#65;&#x50;&#64;&#x30;&#x2e;&#53;</a></th>
+<th>FPS</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R-CNN</td>
+<td>66.0%</td>
+<td>0.5</td>
+<td>精度高</td>
+<td>极慢</td>
+</tr>
+<tr>
+<td>Fast R-CNN</td>
+<td>70.0%</td>
+<td>2.0</td>
+<td>共享特征</td>
+<td>候选框慢</td>
+</tr>
+<tr>
+<td>Faster R-CNN</td>
+<td>78.8%</td>
+<td>5.0</td>
+<td>端到端</td>
+<td>较慢</td>
+</tr>
+<tr>
+<td>YOLOv1</td>
+<td>63.4%</td>
+<td>45</td>
+<td>极快</td>
+<td>精度低</td>
+</tr>
+<tr>
+<td>YOLOv3</td>
+<td>78.6%</td>
+<td>50</td>
+<td>快而准</td>
+<td>小物体差</td>
+</tr>
+<tr>
+<td>YOLOv4</td>
+<td>83.0%</td>
+<td>40</td>
+<td>实时高精度</td>
+<td>略复杂</td>
+</tr>
+<tr>
+<td>RetinaNet</td>
+<td>80.5%</td>
+<td>12</td>
+<td>平衡</td>
+<td>较慢</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>76.8%</td>
+<td>25</td>
+<td>多尺度</td>
+<td>小物体差</td>
+</tr>
+</tbody></table>
+<h2 id="检测流程总结"><a href="#检测流程总结" class="headerlink" title="检测流程总结"></a>检测流程总结</h2><pre class="mermaid">flowchart TB
+    START[输入图像] --> RESIZE[图像缩放]
+    RESIZE --> ENCODE[图像编码/归一化]
+    ENCODE --> FEATURE[特征提取]
+    
+    FEATURE --> BRANCH{检测范式}
+    BRANCH --> TWO[Two-Stage]
+    BRANCH --> ONE[One-Stage]
+    
+    TWO --> RPN[区域提议]
+    RPN --> ROI[ROI Pooling]
+    ROI --> CLS[分类+回归]
+    
+    ONE --> GRID[网格/Anchor]
+    GRID --> PRED[直接预测]
+    
+    CLS --> POST1[后处理]
+    PRED --> POST2[后处理]
+    
+    POST1 --> NMS[NMS非极大抑制]
+    POST2 --> NMS
+    NMS --> OUTPUT[检测结果]</pre>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre class="mermaid">mindmap
+  root((目标检测))
+    传统方法
+      Viola-Jones
+      HOG+SVM
+      DPM
+    Two-Stage
+      R-CNN
+      SPP-Net
+      Fast R-CNN
+      Faster R-CNN
+    One-Stage
+      YOLO系列
+      SSD
+      RetinaNet
+    Anchor-Free
+      CenterNet
+      FCOS
+      CornerNet
+    评价指标
+      mAP
+      FPS
+      IoU</pre>
+
+<p>目标检测技术从传统方法发展到深度学习，经历了从两阶段到单阶段、从Anchor-based到Anchor-free的演进过程。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    
+      <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+    
+      <a href="/tags/YOLO/">YOLO</a>
+    
+      <a href="/tags/Faster-R-CNN/">Faster R-CNN</a>
+    
+      <a href="/tags/SSD/">SSD</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2020/04/20/2020-04-20-Object-Detection-Overview-从传统方法到深度学习/" target="_blank" title="Object Detection Overview：从传统方法到深度学习">https://www.coomatrix.com/2020/04/20/2020-04-20-Object-Detection-Overview-从传统方法到深度学习/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/10/2020-05-10-%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-U-Net%E5%8F%8A%E5%85%B6%E5%8F%98%E4%BD%93%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          图像分割深度学习：U-Net及其变体详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/10/2020-04-10-Swin-Transformer%E5%B1%82%E7%BA%A7%E8%A7%86%E8%A7%89Transformer%E8%AF%A6%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Swin Transformer层级视觉Transformer详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%8F%91%E5%B1%95%E6%97%B6%E9%97%B4%E7%BA%BF"><span class="nav-number">2.</span> <span class="nav-text">目标检测发展时间线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">传统目标检测方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E6%A1%86%E6%9E%B6"><span class="nav-number">3.1.</span> <span class="nav-text">流程框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Viola-Jones%E6%A3%80%E6%B5%8B%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">Viola-Jones检测器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Two-Stage%E6%A3%80%E6%B5%8B%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">Two-Stage检测器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#R-CNN%E7%B3%BB%E5%88%97%E6%9E%B6%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">R-CNN系列架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Faster-R-CNN%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">Faster R-CNN实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#One-Stage%E6%A3%80%E6%B5%8B%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">One-Stage检测器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLO-vs-SSD%E6%9E%B6%E6%9E%84%E5%AF%B9%E6%AF%94"><span class="nav-number">5.1.</span> <span class="nav-text">YOLO vs SSD架构对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YOLOv3%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.2.</span> <span class="nav-text">YOLOv3实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">6.</span> <span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">检测流程总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

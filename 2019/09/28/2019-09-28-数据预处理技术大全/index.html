@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>数据预处理技术大全 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="数据预处理技术大全数据预处理是机器学习 pipeline 中最关键的环节，好的预处理能显著提升模型性能。 缺失值处理1234567891011121314151617181920212223242526import numpy as npimport pandas as pdfrom sklearn.impute import SimpleImputer, KNNImputer# 创建含缺失值的数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据预处理技术大全">
+<meta property="og:url" content="https://www.coomatrix.com/2019/09/28/2019-09-28-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%85%A8/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="数据预处理技术大全数据预处理是机器学习 pipeline 中最关键的环节，好的预处理能显著提升模型性能。 缺失值处理1234567891011121314151617181920212223242526import numpy as npimport pandas as pdfrom sklearn.impute import SimpleImputer, KNNImputer# 创建含缺失值的数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d">
+<meta property="article:published_time" content="2019-09-28T07:30:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:33:10.124Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="特征工程">
+<meta property="article:tag" content="数据预处理">
+<meta property="article:tag" content="sklearn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2019-09-28-数据预处理技术大全" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d" rel="gallery_cmoopizqq001i9cv660df8m9o noopener">
+        <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      数据预处理技术大全
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2019/09/28/2019-09-28-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%85%A8/" class="article-date">
+	  <time datetime="2019-09-28T07:30:00.000Z" itemprop="datePublished">九月 28, 2019</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="数据预处理技术大全"><a href="#数据预处理技术大全" class="headerlink" title="数据预处理技术大全"></a>数据预处理技术大全</h2><p>数据预处理是机器学习 pipeline 中最关键的环节，好的预处理能显著提升模型性能。</p>
+<h3 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.impute <span class="keyword">import</span> SimpleImputer, KNNImputer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建含缺失值的数据</span></span><br><span class="line">df = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&#x27;age&#x27;</span>: [<span class="number">25</span>, <span class="number">30</span>, np.nan, <span class="number">35</span>, <span class="number">28</span>, np.nan, <span class="number">40</span>],</span><br><span class="line">    <span class="string">&#x27;income&#x27;</span>: [<span class="number">5000</span>, <span class="number">8000</span>, <span class="number">6000</span>, np.nan, <span class="number">5500</span>, <span class="number">7000</span>, np.nan],</span><br><span class="line">    <span class="string">&#x27;score&#x27;</span>: [<span class="number">85</span>, <span class="number">90</span>, <span class="number">78</span>, <span class="number">92</span>, np.nan, <span class="number">88</span>, <span class="number">95</span>]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 均值填充</span></span><br><span class="line">imputer_mean = SimpleImputer(strategy=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">df_mean = pd.DataFrame(imputer_mean.fit_transform(df), columns=df.columns)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 中位数填充</span></span><br><span class="line">imputer_median = SimpleImputer(strategy=<span class="string">&#x27;median&#x27;</span>)</span><br><span class="line">df_median = pd.DataFrame(imputer_median.fit_transform(df), columns=df.columns)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 众数填充</span></span><br><span class="line">imputer_mode = SimpleImputer(strategy=<span class="string">&#x27;most_frequent&#x27;</span>)</span><br><span class="line">df_mode = pd.DataFrame(imputer_mode.fit_transform(df), columns=df.columns)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. KNN填充</span></span><br><span class="line">imputer_knn = KNNImputer(n_neighbors=<span class="number">3</span>)</span><br><span class="line">df_knn = pd.DataFrame(imputer_knn.fit_transform(df), columns=df.columns)</span><br></pre></td></tr></table></figure>
+
+<h3 id="特征缩放"><a href="#特征缩放" class="headerlink" title="特征缩放"></a>特征缩放</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, MinMaxScaler, RobustScaler</span><br><span class="line"></span><br><span class="line">data = np.array([[<span class="number">1</span>, <span class="number">100</span>], [<span class="number">2</span>, <span class="number">200</span>], [<span class="number">3</span>, <span class="number">300</span>], [<span class="number">4</span>, <span class="number">400</span>], [<span class="number">5</span>, <span class="number">500</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化（Z-score）</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">data_standard = scaler.fit_transform(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;标准化 - 均值: <span class="subst">&#123;data_standard.mean(axis=<span class="number">0</span>)&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;标准化 - 标准差: <span class="subst">&#123;data_standard.std(axis=<span class="number">0</span>)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 归一化（Min-Max）</span></span><br><span class="line">scaler_mm = MinMaxScaler()</span><br><span class="line">data_minmax = scaler_mm.fit_transform(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;归一化 - 范围: [<span class="subst">&#123;data_minmax.<span class="built_in">min</span>()&#125;</span>, <span class="subst">&#123;data_minmax.<span class="built_in">max</span>()&#125;</span>]&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 鲁棒缩放（对异常值鲁棒）</span></span><br><span class="line">scaler_robust = RobustScaler()</span><br><span class="line">data_robust = scaler_robust.fit_transform(data)</span><br></pre></td></tr></table></figure>
+
+<p><strong>选择建议</strong>：</p>
+<ul>
+<li>大多数算法：StandardScaler</li>
+<li>需要有界特征（如神经网络输入）：MinMaxScaler</li>
+<li>存在异常值：RobustScaler</li>
+</ul>
+<h3 id="类别特征编码"><a href="#类别特征编码" class="headerlink" title="类别特征编码"></a>类别特征编码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder, OneHotEncoder, OrdinalEncoder</span><br><span class="line"></span><br><span class="line">df_cat = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&#x27;color&#x27;</span>: [<span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>, <span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;size&#x27;</span>: [<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;S&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;price&#x27;</span>: [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">25</span>, <span class="number">15</span>]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Label Encoding</span></span><br><span class="line">le = LabelEncoder()</span><br><span class="line">df_cat[<span class="string">&#x27;color_encoded&#x27;</span>] = le.fit_transform(df_cat[<span class="string">&#x27;color&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># One-Hot Encoding</span></span><br><span class="line">df_onehot = pd.get_dummies(df_cat, columns=[<span class="string">&#x27;color&#x27;</span>], drop_first=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ordinal Encoding（有序类别）</span></span><br><span class="line">oe = OrdinalEncoder(categories=[[<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;L&#x27;</span>]])</span><br><span class="line">df_cat[<span class="string">&#x27;size_encoded&#x27;</span>] = oe.fit_transform(df_cat[[<span class="string">&#x27;size&#x27;</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Target Encoding（目标编码）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">target_encode</span>(<span class="params">df, column, target</span>):</span><br><span class="line">    means = df.groupby(column)[target].mean()</span><br><span class="line">    <span class="keyword">return</span> df[column].<span class="built_in">map</span>(means)</span><br><span class="line"></span><br><span class="line">df_cat[<span class="string">&#x27;color_target&#x27;</span>] = target_encode(df_cat, <span class="string">&#x27;color&#x27;</span>, <span class="string">&#x27;price&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="特征变换"><a href="#特征变换" class="headerlink" title="特征变换"></a>特征变换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PowerTransformer, QuantileTransformer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对数变换（处理右偏分布）</span></span><br><span class="line">df[<span class="string">&#x27;log_income&#x27;</span>] = np.log1p(df[<span class="string">&#x27;income&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Box-Cox变换</span></span><br><span class="line">pt = PowerTransformer(method=<span class="string">&#x27;box-cox&#x27;</span>)</span><br><span class="line">df[<span class="string">&#x27;boxcox_income&#x27;</span>] = pt.fit_transform(df[[<span class="string">&#x27;income&#x27;</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Yeo-Johnson变换（支持负值）</span></span><br><span class="line">pt_yj = PowerTransformer(method=<span class="string">&#x27;yeo-johnson&#x27;</span>)</span><br><span class="line">df[<span class="string">&#x27;yeojohnson_income&#x27;</span>] = pt_yj.fit_transform(df[[<span class="string">&#x27;income&#x27;</span>]])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分位数变换</span></span><br><span class="line">qt = QuantileTransformer(output_distribution=<span class="string">&#x27;normal&#x27;</span>)</span><br><span class="line">df[<span class="string">&#x27;quantile_income&#x27;</span>] = qt.fit_transform(df[[<span class="string">&#x27;income&#x27;</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常值检测与处理"><a href="#异常值检测与处理" class="headerlink" title="异常值检测与处理"></a>异常值检测与处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IQR方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">detect_outliers_iqr</span>(<span class="params">df, column</span>):</span><br><span class="line">    Q1 = df[column].quantile(<span class="number">0.25</span>)</span><br><span class="line">    Q3 = df[column].quantile(<span class="number">0.75</span>)</span><br><span class="line">    IQR = Q3 - Q1</span><br><span class="line">    lower = Q1 - <span class="number">1.5</span> * IQR</span><br><span class="line">    upper = Q3 + <span class="number">1.5</span> * IQR</span><br><span class="line">    <span class="keyword">return</span> df[(df[column] &lt; lower) | (df[column] &gt; upper)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Z-score方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">detect_outliers_zscore</span>(<span class="params">df, column, threshold=<span class="number">3</span></span>):</span><br><span class="line">    z_scores = np.<span class="built_in">abs</span>((df[column] - df[column].mean()) / df[column].std())</span><br><span class="line">    <span class="keyword">return</span> df[z_scores &gt; threshold]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理异常值</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handle_outliers</span>(<span class="params">df, column, method=<span class="string">&#x27;clip&#x27;</span></span>):</span><br><span class="line">    Q1 = df[column].quantile(<span class="number">0.25</span>)</span><br><span class="line">    Q3 = df[column].quantile(<span class="number">0.75</span>)</span><br><span class="line">    IQR = Q3 - Q1</span><br><span class="line">    lower = Q1 - <span class="number">1.5</span> * IQR</span><br><span class="line">    upper = Q3 + <span class="number">1.5</span> * IQR</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> method == <span class="string">&#x27;clip&#x27;</span>:</span><br><span class="line">        df[column] = df[column].clip(lower, upper)</span><br><span class="line">    <span class="keyword">elif</span> method == <span class="string">&#x27;remove&#x27;</span>:</span><br><span class="line">        df = df[(df[column] &gt;= lower) &amp; (df[column] &lt;= upper)]</span><br><span class="line">    <span class="keyword">return</span> df</span><br></pre></td></tr></table></figure>
+
+<h3 id="特征构造"><a href="#特征构造" class="headerlink" title="特征构造"></a>特征构造</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数值特征组合</span></span><br><span class="line">df[<span class="string">&#x27;income_per_age&#x27;</span>] = df[<span class="string">&#x27;income&#x27;</span>] / df[<span class="string">&#x27;age&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间特征提取</span></span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>])</span><br><span class="line">df[<span class="string">&#x27;year&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.year</span><br><span class="line">df[<span class="string">&#x27;month&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.month</span><br><span class="line">df[<span class="string">&#x27;day&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.day</span><br><span class="line">df[<span class="string">&#x27;day_of_week&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.dayofweek</span><br><span class="line">df[<span class="string">&#x27;is_weekend&#x27;</span>] = df[<span class="string">&#x27;day_of_week&#x27;</span>].isin([<span class="number">5</span>, <span class="number">6</span>]).astype(<span class="built_in">int</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互特征</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PolynomialFeatures</span><br><span class="line">poly = PolynomialFeatures(degree=<span class="number">2</span>, interaction_only=<span class="literal">True</span>, include_bias=<span class="literal">False</span>)</span><br><span class="line">X_poly = poly.fit_transform(df[[<span class="string">&#x27;age&#x27;</span>, <span class="string">&#x27;income&#x27;</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据-pipeline"><a href="#数据-pipeline" class="headerlink" title="数据 pipeline"></a>数据 pipeline</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.compose <span class="keyword">import</span> ColumnTransformer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义数值和类别特征</span></span><br><span class="line">numeric_features = [<span class="string">&#x27;age&#x27;</span>, <span class="string">&#x27;income&#x27;</span>, <span class="string">&#x27;score&#x27;</span>]</span><br><span class="line">categorical_features = [<span class="string">&#x27;color&#x27;</span>, <span class="string">&#x27;size&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建预处理 pipeline</span></span><br><span class="line">numeric_transformer = Pipeline(steps=[</span><br><span class="line">    (<span class="string">&#x27;imputer&#x27;</span>, SimpleImputer(strategy=<span class="string">&#x27;median&#x27;</span>)),</span><br><span class="line">    (<span class="string">&#x27;scaler&#x27;</span>, StandardScaler())</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">categorical_transformer = Pipeline(steps=[</span><br><span class="line">    (<span class="string">&#x27;imputer&#x27;</span>, SimpleImputer(strategy=<span class="string">&#x27;most_frequent&#x27;</span>)),</span><br><span class="line">    (<span class="string">&#x27;onehot&#x27;</span>, OneHotEncoder(drop=<span class="string">&#x27;first&#x27;</span>, handle_unknown=<span class="string">&#x27;ignore&#x27;</span>))</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">preprocessor = ColumnTransformer(transformers=[</span><br><span class="line">    (<span class="string">&#x27;num&#x27;</span>, numeric_transformer, numeric_features),</span><br><span class="line">    (<span class="string">&#x27;cat&#x27;</span>, categorical_transformer, categorical_features)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 完整 pipeline</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">clf = Pipeline(steps=[</span><br><span class="line">    (<span class="string">&#x27;preprocessor&#x27;</span>, preprocessor),</span><br><span class="line">    (<span class="string">&#x27;classifier&#x27;</span>, LogisticRegression())</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">clf.fit(X_train, y_train)</span><br><span class="line">y_pred = clf.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>数据预处理是机器学习中不可忽视的环节。缺失值处理、特征缩放、类别编码、异常值处理和特征构造是最常用的预处理技术。使用sklearn的Pipeline和ColumnTransformer可以构建可复用的预处理流程，避免数据泄露，提高代码质量。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/Python%E7%BC%96%E7%A8%8B/">Python编程</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">特征工程</a>
+    
+      <a href="/tags/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/">数据预处理</a>
+    
+      <a href="/tags/sklearn/">sklearn</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2019/09/28/2019-09-28-数据预处理技术大全/" target="_blank" title="数据预处理技术大全">https://www.coomatrix.com/2019/09/28/2019-09-28-数据预处理技术大全/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/15/2019-10-15-TensorFlow%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          TensorFlow入门教程：从张量到模型训练
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/10/2019-09-10-Matplotlib%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Matplotlib数据可视化从入门到精通</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">数据预处理技术大全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">缺失值处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BE"><span class="nav-number">1.2.</span> <span class="nav-text">特征缩放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%88%AB%E7%89%B9%E5%BE%81%E7%BC%96%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">类别特征编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%8F%98%E6%8D%A2"><span class="nav-number">1.4.</span> <span class="nav-text">特征变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%80%BC%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%A4%84%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">异常值检测与处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E6%9E%84%E9%80%A0"><span class="nav-number">1.6.</span> <span class="nav-text">特征构造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE-pipeline"><span class="nav-number">1.7.</span> <span class="nav-text">数据 pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.8.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>physics-informed neural networks (pinn)：深度学习与物理方程融合 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言Physics-Informed Neural Networks (PINN) 是近年来科学计算与深度学习交叉领域的重要突破。PINN通过将物理定律（偏微分方程）嵌入到神经网络的损失函数中，实现了数据驱动与物理约束的有机结合。本文将深入解析PINN的理论基础、架构设计以及在流体力学、热传导等领域的应用实践。 PINN理论基础1. 问题定义PINN的核心思想是用神经网络近似偏微分方程的解，同时满">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Physics-Informed Neural Networks (PINN)：深度学习与物理方程融合">
+<meta property="og:url" content="https://www.coomatrix.com/2023/10/12/2023-10-12-Physics-Informed-Neural-Networks-PINN%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%89%A9%E7%90%86%E6%96%B9%E7%A8%8B%E8%9E%8D%E5%90%88/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言Physics-Informed Neural Networks (PINN) 是近年来科学计算与深度学习交叉领域的重要突破。PINN通过将物理定律（偏微分方程）嵌入到神经网络的损失函数中，实现了数据驱动与物理约束的有机结合。本文将深入解析PINN的理论基础、架构设计以及在流体力学、热传导等领域的应用实践。 PINN理论基础1. 问题定义PINN的核心思想是用神经网络近似偏微分方程的解，同时满">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<meta property="article:published_time" content="2023-10-12T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:02.547Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="PINN">
+<meta property="article:tag" content="物理信息神经网络">
+<meta property="article:tag" content="科学计算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-10-12-Physics-Informed-Neural-Networks-PINN深度学习与物理方程融合" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1551288049-bebda4e38f71" rel="gallery_cmoopizro007l9cv65pv747te noopener">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Physics-Informed Neural Networks (PINN)：深度学习与物理方程融合
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/10/12/2023-10-12-Physics-Informed-Neural-Networks-PINN%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%89%A9%E7%90%86%E6%96%B9%E7%A8%8B%E8%9E%8D%E5%90%88/" class="article-date">
+	  <time datetime="2023-10-12T02:00:00.000Z" itemprop="datePublished">十月 12, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Physics-Informed Neural Networks (PINN) 是近年来科学计算与深度学习交叉领域的重要突破。PINN通过将物理定律（偏微分方程）嵌入到神经网络的损失函数中，实现了数据驱动与物理约束的有机结合。本文将深入解析PINN的理论基础、架构设计以及在流体力学、热传导等领域的应用实践。</p>
+<h2 id="PINN理论基础"><a href="#PINN理论基础" class="headerlink" title="PINN理论基础"></a>PINN理论基础</h2><h3 id="1-问题定义"><a href="#1-问题定义" class="headerlink" title="1. 问题定义"></a>1. 问题定义</h3><p>PINN的核心思想是用神经网络近似偏微分方程的解，同时满足物理方程的约束。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Callable</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PINN</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Physics-Informed Neural Network</span></span><br><span class="line"><span class="string">    物理信息神经网络</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_dim: <span class="built_in">int</span>, output_dim: <span class="built_in">int</span>, </span></span><br><span class="line"><span class="params">                 hidden_layers: <span class="built_in">list</span> = [<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>]</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 神经网络架构</span></span><br><span class="line">        layers = []</span><br><span class="line">        prev_dim = input_dim</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> hidden_dim <span class="keyword">in</span> hidden_layers:</span><br><span class="line">            layers.append(nn.Linear(prev_dim, hidden_dim))</span><br><span class="line">            layers.append(nn.Tanh())</span><br><span class="line">            prev_dim = hidden_dim</span><br><span class="line">        </span><br><span class="line">        layers.append(nn.Linear(prev_dim, output_dim))</span><br><span class="line">        </span><br><span class="line">        self.network = nn.Sequential(*layers)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 自动微分计算</span></span><br><span class="line">        self.d = &#123;&#125;  <span class="comment"># 存储导数</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;前向传播&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.network(x)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_derivatives</span>(<span class="params">self, x, u</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用自动微分计算导数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 一阶导数 du/dx</span></span><br><span class="line">        du_dx = torch.autograd.grad(</span><br><span class="line">            u, x, grad_outputs=torch.ones_like(u),</span><br><span class="line">            create_graph=<span class="literal">True</span>, retain_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 二阶导数 d²u/dx²</span></span><br><span class="line">        d2u_dx2 = torch.autograd.grad(</span><br><span class="line">            du_dx, x, grad_outputs=torch.ones_like(du_dx),</span><br><span class="line">            create_graph=<span class="literal">True</span>, retain_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> du_dx, d2u_dx2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-损失函数设计"><a href="#2-损失函数设计" class="headerlink" title="2. 损失函数设计"></a>2. 损失函数设计</h3><p>PINN的损失函数由三部分组成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PINNLoss</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    PINN损失函数</span></span><br><span class="line"><span class="string">    L = L_data + L_physics + L_boundary</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, pde_fn: <span class="type">Callable</span>, bc_fn: <span class="type">Callable</span>, ic_fn: <span class="type">Callable</span> = <span class="literal">None</span></span>):</span><br><span class="line">        self.pde_fn = pde_fn      <span class="comment"># PDE残差</span></span><br><span class="line">        self.bc_fn = bc_fn         <span class="comment"># 边界条件</span></span><br><span class="line">        self.ic_fn = ic_fn         <span class="comment"># 初始条件</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">self, model, collocation_points, </span></span><br><span class="line"><span class="params">                     boundary_points, data_points=<span class="literal">None</span>, ic_points=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        计算总损失</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 1. PDE残差损失</span></span><br><span class="line">        loss_physics = self.compute_pde_loss(model, collocation_points)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 边界条件损失</span></span><br><span class="line">        loss_bc = self.compute_boundary_loss(model, boundary_points)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 数据损失（可选）</span></span><br><span class="line">        loss_data = torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">        <span class="keyword">if</span> data_points <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            loss_data = self.compute_data_loss(model, data_points)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 4. 初始条件损失（可选）</span></span><br><span class="line">        loss_ic = torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">        <span class="keyword">if</span> ic_points <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> self.ic_fn <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            loss_ic = self.compute_ic_loss(model, ic_points)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 总损失（可加权）</span></span><br><span class="line">        total_loss = (</span><br><span class="line">            <span class="number">1.0</span> * loss_physics + </span><br><span class="line">            <span class="number">1.0</span> * loss_bc + </span><br><span class="line">            <span class="number">1.0</span> * loss_data + </span><br><span class="line">            <span class="number">1.0</span> * loss_ic</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> total_loss, &#123;</span><br><span class="line">            <span class="string">&#x27;physics&#x27;</span>: loss_physics.item(),</span><br><span class="line">            <span class="string">&#x27;boundary&#x27;</span>: loss_bc.item(),</span><br><span class="line">            <span class="string">&#x27;data&#x27;</span>: loss_data.item(),</span><br><span class="line">            <span class="string">&#x27;ic&#x27;</span>: loss_ic.item()</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_pde_loss</span>(<span class="params">self, model, points</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算PDE残差&quot;&quot;&quot;</span></span><br><span class="line">        points.requires_grad = <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">        u_pred = model(points)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算导数</span></span><br><span class="line">        <span class="keyword">if</span> points.shape[<span class="number">1</span>] == <span class="number">1</span>:  <span class="comment"># 一维</span></span><br><span class="line">            u_x = torch.autograd.grad(</span><br><span class="line">                u_pred, points, </span><br><span class="line">                grad_outputs=torch.ones_like(u_pred),</span><br><span class="line">                create_graph=<span class="literal">True</span></span><br><span class="line">            )[<span class="number">0</span>]</span><br><span class="line">            u_xx = torch.autograd.grad(</span><br><span class="line">                u_x, points,</span><br><span class="line">                grad_outputs=torch.ones_like(u_x),</span><br><span class="line">                create_graph=<span class="literal">True</span></span><br><span class="line">            )[<span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># Burgers方程: u_t + u*u_x - ν*u_xx = 0</span></span><br><span class="line">            residual = u_x + model(points) * u_x - <span class="number">0.01</span> * u_xx</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># 二维</span></span><br><span class="line">            <span class="comment"># 计算偏导数</span></span><br><span class="line">            u = u_pred</span><br><span class="line">            x = points[:, <span class="number">0</span>:<span class="number">1</span>]</span><br><span class="line">            y = points[:, <span class="number">1</span>:<span class="number">2</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 简化处理</span></span><br><span class="line">            residual = self.pde_fn(model, points)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> torch.mean(residual ** <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_boundary_loss</span>(<span class="params">self, model, boundary_points</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;边界条件损失&quot;&quot;&quot;</span></span><br><span class="line">        u_pred = model(boundary_points)</span><br><span class="line">        u_bc = self.bc_fn(boundary_points)</span><br><span class="line">        <span class="keyword">return</span> torch.mean((u_pred - u_bc) ** <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_data_loss</span>(<span class="params">self, model, data_points</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;数据损失&quot;&quot;&quot;</span></span><br><span class="line">        u_pred = model(data_points[:, :-<span class="number">1</span>])  <span class="comment"># 输入特征</span></span><br><span class="line">        u_true = data_points[:, -<span class="number">1</span>:]          <span class="comment"># 真实值</span></span><br><span class="line">        <span class="keyword">return</span> torch.mean((u_pred - u_true) ** <span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_ic_loss</span>(<span class="params">self, model, ic_points</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;初始条件损失&quot;&quot;&quot;</span></span><br><span class="line">        u_pred = model(ic_points)</span><br><span class="line">        u_ic = self.ic_fn(ic_points)</span><br><span class="line">        <span class="keyword">return</span> torch.mean((u_pred - u_ic) ** <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="PINN应用案例"><a href="#PINN应用案例" class="headerlink" title="PINN应用案例"></a>PINN应用案例</h2><h3 id="1-一维热传导方程"><a href="#1-一维热传导方程" class="headerlink" title="1. 一维热传导方程"></a>1. 一维热传导方程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">HeatEquationPINN</span>(<span class="title class_ inherited__">PINN</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    一维热传导方程：</span></span><br><span class="line"><span class="string">    ∂u/∂t = α * ∂²u/∂x²</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    边界条件：u(0,t) = u(1,t) = 0</span></span><br><span class="line"><span class="string">    初始条件：u(x,0) = sin(πx)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, alpha=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(input_dim=<span class="number">2</span>, output_dim=<span class="number">1</span>)  <span class="comment"># (x, t) -&gt; u</span></span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">pde_residual</span>(<span class="params">self, x, t, u</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        PDE残差: ∂u/∂t - α * ∂²u/∂x² = 0</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        u_t = torch.autograd.grad(</span><br><span class="line">            u, t, grad_outputs=torch.ones_like(u),</span><br><span class="line">            create_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        u_x = torch.autograd.grad(</span><br><span class="line">            u, x, grad_outputs=torch.ones_like(u),</span><br><span class="line">            create_graph=<span class="literal">True</span>, retain_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        u_xx = torch.autograd.grad(</span><br><span class="line">            u_x, x, grad_outputs=torch.ones_like(u_x),</span><br><span class="line">            create_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> u_t - self.alpha * u_xx</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self, num_epochs=<span class="number">10000</span>, lr=<span class="number">1e-3</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;训练PINN&quot;&quot;&quot;</span></span><br><span class="line">        optimizer = torch.optim.Adam(self.parameters(), lr=lr)</span><br><span class="line">        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(</span><br><span class="line">            optimizer, patience=<span class="number">500</span>, factor=<span class="number">0.5</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成训练点</span></span><br><span class="line">        x_coll = torch.rand(<span class="number">1000</span>, <span class="number">1</span>) * <span class="number">1.0</span>  <span class="comment"># 空间点 [0, 1]</span></span><br><span class="line">        t_coll = torch.rand(<span class="number">1000</span>, <span class="number">1</span>) * <span class="number">1.0</span>  <span class="comment"># 时间点 [0, 1]</span></span><br><span class="line">        </span><br><span class="line">        x_bc = torch.tensor([[<span class="number">0.0</span>], [<span class="number">1.0</span>]]).repeat(<span class="number">100</span>, <span class="number">1</span>)</span><br><span class="line">        t_bc = torch.rand(<span class="number">200</span>, <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        x_ic = torch.rand(<span class="number">100</span>, <span class="number">1</span>)</span><br><span class="line">        t_ic = torch.zeros(<span class="number">100</span>, <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 合并点</span></span><br><span class="line">            x = torch.cat([x_coll, x_bc, x_ic])</span><br><span class="line">            t = torch.cat([t_coll, t_bc, t_ic])</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 创建输入</span></span><br><span class="line">            inputs = torch.cat([x, t], dim=<span class="number">1</span>)</span><br><span class="line">            inputs.requires_grad = <span class="literal">True</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 预测</span></span><br><span class="line">            u = self.forward(inputs)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算PDE残差</span></span><br><span class="line">            residual = self.pde_residual(x, t, u)</span><br><span class="line">            loss_pde = torch.mean(residual ** <span class="number">2</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 边界条件</span></span><br><span class="line">            u_bc_pred = self.forward(torch.cat([x_bc, t_bc], dim=<span class="number">1</span>))</span><br><span class="line">            loss_bc = torch.mean(u_bc_pred ** <span class="number">2</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 初始条件 u(x,0) = sin(πx)</span></span><br><span class="line">            u_ic_pred = self.forward(torch.cat([x_ic, t_ic], dim=<span class="number">1</span>))</span><br><span class="line">            u_ic_true = torch.sin(np.pi * x_ic)</span><br><span class="line">            loss_ic = torch.mean((u_ic_pred - u_ic_true) ** <span class="number">2</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 总损失</span></span><br><span class="line">            loss = loss_pde + loss_bc + loss_ic</span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">            </span><br><span class="line">            scheduler.step(loss)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> epoch % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span>, Loss: <span class="subst">&#123;loss.item():<span class="number">.6</span>f&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-流体力学：Navier-Stokes方程"><a href="#2-流体力学：Navier-Stokes方程" class="headerlink" title="2. 流体力学：Navier-Stokes方程"></a>2. 流体力学：Navier-Stokes方程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NavierStokesPINN</span>(<span class="title class_ inherited__">PINN</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    2D Navier-Stokes方程（不可压缩流体）</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    连续性方程: ∂u/∂x + ∂v/∂y = 0</span></span><br><span class="line"><span class="string">    动量方程: </span></span><br><span class="line"><span class="string">        ∂u/∂t + u*∂u/∂x + v*∂u/∂y = -1/ρ * ∂p/∂x + ν * ∇²u</span></span><br><span class="line"><span class="string">        ∂v/∂t + u*∂v/∂x + v*∂v/∂y = -1/ρ * ∂p/∂y + ν * ∇²v</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, Re=<span class="number">100</span>, nu=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(input_dim=<span class="number">3</span>, output_dim=<span class="number">3</span>)  <span class="comment"># (x, y, t) -&gt; (u, v, p)</span></span><br><span class="line">        self.Re = Re</span><br><span class="line">        self.nu = nu</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">continuity_residual</span>(<span class="params">self, u_x, v_y</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;连续性方程残差&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> u_x + v_y</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">momentum_residual</span>(<span class="params">self, x, y, t, u, v, p</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        动量方程残差</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 计算导数</span></span><br><span class="line">        u_t = self.jacobian(u, t)</span><br><span class="line">        u_x = self.jacobian(u, x)</span><br><span class="line">        u_y = self.jacobian(u, y)</span><br><span class="line">        u_xx = self.hessian(u, x)</span><br><span class="line">        u_yy = self.hessian(u, y)</span><br><span class="line">        </span><br><span class="line">        v_t = self.jacobian(v, t)</span><br><span class="line">        v_x = self.jacobian(v, x)</span><br><span class="line">        v_y = self.jacobian(v, y)</span><br><span class="line">        v_xx = self.hessian(v, x)</span><br><span class="line">        v_yy = self.hessian(v, y)</span><br><span class="line">        </span><br><span class="line">        p_x = self.jacobian(p, x)</span><br><span class="line">        p_y = self.jacobian(p, y)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># x方向动量</span></span><br><span class="line">        residual_x = u_t + u*u_x + v*u_y + p_x - (u_xx + u_yy)/self.Re</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># y方向动量</span></span><br><span class="line">        residual_y = v_t + u*v_x + v*v_y + p_y - (v_xx + v_yy)/self.Re</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> residual_x, residual_y</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">jacobian</span>(<span class="params">self, y, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算一阶导数&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> torch.autograd.grad(</span><br><span class="line">            y, x, grad_outputs=torch.ones_like(y),</span><br><span class="line">            create_graph=<span class="literal">True</span>, retain_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">hessian</span>(<span class="params">self, y, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算二阶导数&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> torch.autograd.grad(</span><br><span class="line">            self.jacobian(y, x), x,</span><br><span class="line">            grad_outputs=torch.ones_like(y),</span><br><span class="line">            create_graph=<span class="literal">True</span>, retain_graph=<span class="literal">True</span></span><br><span class="line">        )[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="PINN训练技巧"><a href="#PINN训练技巧" class="headerlink" title="PINN训练技巧"></a>PINN训练技巧</h2><h3 id="1-自适应采样"><a href="#1-自适应采样" class="headerlink" title="1. 自适应采样"></a>1. 自适应采样</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AdaptiveSampling</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    自适应采样策略</span></span><br><span class="line"><span class="string">    重点关注残差较大的区域</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, residual_threshold=<span class="number">0.1</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.residual_threshold = residual_threshold</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sample_adaptive</span>(<span class="params">self, domain, num_points=<span class="number">1000</span>, num_iterations=<span class="number">5</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        自适应采样</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        all_points = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_iterations):</span><br><span class="line">            <span class="comment"># 均匀采样</span></span><br><span class="line">            x_rand = torch.rand(num_points, <span class="number">1</span>) * (domain[<span class="number">0</span>][<span class="number">1</span>] - domain[<span class="number">0</span>][<span class="number">0</span>]) + domain[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">            t_rand = torch.rand(num_points, <span class="number">1</span>) * (domain[<span class="number">1</span>][<span class="number">1</span>] - domain[<span class="number">1</span>][<span class="number">0</span>]) + domain[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            points = torch.cat([x_rand, t_rand], dim=<span class="number">1</span>)</span><br><span class="line">            points.requires_grad = <span class="literal">True</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算残差</span></span><br><span class="line">            u = self.model(points)</span><br><span class="line">            residual = self.compute_residual(points, u)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 选择残差大的点</span></span><br><span class="line">            mask = residual &gt; self.residual_threshold * residual.mean()</span><br><span class="line">            high_residual_points = points[mask.flatten()]</span><br><span class="line">            </span><br><span class="line">            all_points.append(high_residual_points)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 减少均匀采样点</span></span><br><span class="line">            num_points = num_points // <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> torch.cat(all_points)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_residual</span>(<span class="params">self, points, u</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算残差&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 具体实现根据问题而定</span></span><br><span class="line">        <span class="keyword">return</span> torch.ones(<span class="built_in">len</span>(points))</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-课程学习"><a href="#2-课程学习" class="headerlink" title="2. 课程学习"></a>2. 课程学习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CurriculumLearning</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    课程学习训练策略</span></span><br><span class="line"><span class="string">    从简单到复杂逐渐增加难度</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model</span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_with_curriculum</span>(<span class="params">self, epochs=<span class="number">10000</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        分阶段训练</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        stages = [</span><br><span class="line">            &#123;<span class="string">&quot;t_max&quot;</span>: <span class="number">0.1</span>, <span class="string">&quot;lr&quot;</span>: <span class="number">1e-3</span>, <span class="string">&quot;epochs&quot;</span>: <span class="number">3000</span>&#125;,   <span class="comment"># 短期</span></span><br><span class="line">            &#123;<span class="string">&quot;t_max&quot;</span>: <span class="number">0.5</span>, <span class="string">&quot;lr&quot;</span>: <span class="number">5e-4</span>, <span class="string">&quot;epochs&quot;</span>: <span class="number">3000</span>&#125;,   <span class="comment"># 中期</span></span><br><span class="line">            &#123;<span class="string">&quot;t_max&quot;</span>: <span class="number">1.0</span>, <span class="string">&quot;lr&quot;</span>: <span class="number">1e-4</span>, <span class="string">&quot;epochs&quot;</span>: <span class="number">4000</span>&#125;    <span class="comment"># 完整时域</span></span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i, stage <span class="keyword">in</span> <span class="built_in">enumerate</span>(stages):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Stage <span class="subst">&#123;i+<span class="number">1</span>&#125;</span>: t_max=<span class="subst">&#123;stage[<span class="string">&#x27;t_max&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            optimizer = torch.optim.Adam(self.model.parameters(), lr=stage[<span class="string">&#x27;lr&#x27;</span>])</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(stage[<span class="string">&#x27;epochs&#x27;</span>]):</span><br><span class="line">                <span class="comment"># 生成当前阶段的训练点</span></span><br><span class="line">                x = torch.rand(<span class="number">1000</span>, <span class="number">1</span>)</span><br><span class="line">                t = torch.rand(<span class="number">1000</span>, <span class="number">1</span>) * stage[<span class="string">&#x27;t_max&#x27;</span>]</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 训练...</span></span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> epoch % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">                    loss = self.compute_loss(x, t)</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;  Epoch <span class="subst">&#123;epoch&#125;</span>, Loss: <span class="subst">&#123;loss:<span class="number">.6</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="DeepXDE框架"><a href="#DeepXDE框架" class="headerlink" title="DeepXDE框架"></a>DeepXDE框架</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用DeepXDE简化PINN实现</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">安装: pip install deepxde</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> deepxde <span class="keyword">as</span> dde</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">solve_heat_equation</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用DeepXDE求解热传导方程</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 定义几何域</span></span><br><span class="line">    geom = dde.geometry.TimeGeometry1D(xmin=<span class="number">0</span>, xmax=<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 定义PDE</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">pde</span>(<span class="params">x, y</span>):</span><br><span class="line">        dy_dt = dde.grad.jacobian(y, x, i=<span class="number">0</span>, j=<span class="number">1</span>)</span><br><span class="line">        dy_xx = dde.grad.hessian(y, x, i=<span class="number">0</span>, j=<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> dy_dt - <span class="number">0.01</span> * dy_xx</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 边界条件</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">boundary</span>(<span class="params">x, on_boundary</span>):</span><br><span class="line">        <span class="keyword">return</span> on_boundary</span><br><span class="line">    </span><br><span class="line">    bc = dde.icbc.DirichletBC(geom, <span class="keyword">lambda</span> x: <span class="number">0</span>, boundary)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始条件</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">initial_condition</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">return</span> np.sin(np.pi * x[:, <span class="number">0</span>:<span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line">    ic = dde.icbc.IC(geom, initial_condition, <span class="keyword">lambda</span> _, on_initial: on_initial)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据点</span></span><br><span class="line">    data = dde.data.TimePDE(</span><br><span class="line">        geom,</span><br><span class="line">        pde,</span><br><span class="line">        [bc, ic],</span><br><span class="line">        num_domain=<span class="number">1000</span>,</span><br><span class="line">        num_boundary=<span class="number">100</span>,</span><br><span class="line">        num_initial=<span class="number">100</span></span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 神经网络</span></span><br><span class="line">    net = dde.nn.FNN([<span class="number">2</span>] + [<span class="number">64</span>] * <span class="number">4</span> + [<span class="number">1</span>], <span class="string">&quot;tanh&quot;</span>, <span class="string">&quot;Glorot uniform&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 模型</span></span><br><span class="line">    model = dde.Model(data, net)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 训练</span></span><br><span class="line">    model.<span class="built_in">compile</span>(<span class="string">&quot;adam&quot;</span>, lr=<span class="number">1e-3</span>)</span><br><span class="line">    model.train(iterations=<span class="number">10000</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>PINN将深度学习的表达力与物理方程的先验知识相结合，为科学计算提供了新的范式。通过将物理约束嵌入损失函数，PINN可以在稀疏数据条件下学习偏微分方程的解。本文介绍了PINN的理论基础、损失函数设计、训练技巧以及在热传导和流体力学中的应用。随着技术的不断发展，PINN将在更多科学领域发挥重要作用。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1711.10561">PINN原始论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lululxvi/deepxde">DeepXDE库</a></li>
+<li><a target="_blank" rel="noopener" href="https://sciml.ai/">SciML开源项目</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/AI-%E7%A7%91%E7%A0%94/">AI+科研</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    
+      <a href="/tags/PINN/">PINN</a>
+    
+      <a href="/tags/%E7%89%A9%E7%90%86%E4%BF%A1%E6%81%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">物理信息神经网络</a>
+    
+      <a href="/tags/%E7%A7%91%E5%AD%A6%E8%AE%A1%E7%AE%97/">科学计算</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/10/12/2023-10-12-Physics-Informed-Neural-Networks-PINN深度学习与物理方程融合/" target="_blank" title="Physics-Informed Neural Networks (PINN)：深度学习与物理方程融合">https://www.coomatrix.com/2023/10/12/2023-10-12-Physics-Informed-Neural-Networks-PINN深度学习与物理方程融合/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/11/05/2023-11-05-Jetson-%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-TensorRT-LLM%E5%AE%9E%E6%88%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Jetson嵌入式部署大模型：TensorRT-LLM实战
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/09/08/2023-09-08-LangChain%E8%BF%9B%E9%98%B6-%E6%9E%84%E5%BB%BA%E4%BC%81%E4%B8%9A%E7%BA%A7RAG%E5%BA%94%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">LangChain进阶：构建企业级RAG应用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PINN%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">PINN理论基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%97%AE%E9%A2%98%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">1. 问题定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.2.</span> <span class="nav-text">2. 损失函数设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PINN%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">PINN应用案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%80%E7%BB%B4%E7%83%AD%E4%BC%A0%E5%AF%BC%E6%96%B9%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">1. 一维热传导方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%EF%BC%9ANavier-Stokes%E6%96%B9%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">2. 流体力学：Navier-Stokes方程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PINN%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7"><span class="nav-number">4.</span> <span class="nav-text">PINN训练技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%87%AA%E9%80%82%E5%BA%94%E9%87%87%E6%A0%B7"><span class="nav-number">4.1.</span> <span class="nav-text">1. 自适应采样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0"><span class="nav-number">4.2.</span> <span class="nav-text">2. 课程学习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DeepXDE%E6%A1%86%E6%9E%B6"><span class="nav-number">5.</span> <span class="nav-text">DeepXDE框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

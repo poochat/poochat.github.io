@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>自注意力机制详解：从数学原理到pytorch实现 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="概述自注意力机制（Self-Attention）是Transformer架构的核心组件，它允许序列中的每个位置关注序列中的所有其他位置。本文将深入解析自注意力的数学原理，并通过PyTorch实现来加深理解。 自注意力机制原理核心思想自注意力机制的核心思想是：通过Query、Key、Value三个向量来计算序列内部元素之间的关联程度。 flowchart LR     subgraph 输入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自注意力机制详解：从数学原理到PyTorch实现">
+<meta property="og:url" content="https://www.coomatrix.com/2020/01/05/2020-01-05-%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%88%B0PyTorch%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="概述自注意力机制（Self-Attention）是Transformer架构的核心组件，它允许序列中的每个位置关注序列中的所有其他位置。本文将深入解析自注意力的数学原理，并通过PyTorch实现来加深理解。 自注意力机制原理核心思想自注意力机制的核心思想是：通过Query、Key、Value三个向量来计算序列内部元素之间的关联程度。 flowchart LR     subgraph 输入">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1633356122544-f60d17f03e20">
+<meta property="article:published_time" content="2020-01-05T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:16.234Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="PyTorch">
+<meta property="article:tag" content="自注意力">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="注意力机制">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1633356122544-f60d17f03e20">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2020-01-05-自注意力机制详解-从数学原理到PyTorch实现" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1633356122544-f60d17f03e20" rel="gallery_cmoopizqs00209cv6aeqh7uom noopener">
+        <img src="https://images.unsplash.com/photo-1633356122544-f60d17f03e20" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      自注意力机制详解：从数学原理到PyTorch实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2020/01/05/2020-01-05-%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3-%E4%BB%8E%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%88%B0PyTorch%E5%AE%9E%E7%8E%B0/" class="article-date">
+	  <time datetime="2020-01-05T01:00:00.000Z" itemprop="datePublished">一月 5, 2020</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>自注意力机制（Self-Attention）是Transformer架构的核心组件，它允许序列中的每个位置关注序列中的所有其他位置。本文将深入解析自注意力的数学原理，并通过PyTorch实现来加深理解。</p>
+<h2 id="自注意力机制原理"><a href="#自注意力机制原理" class="headerlink" title="自注意力机制原理"></a>自注意力机制原理</h2><h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>自注意力机制的核心思想是：<strong>通过Query、Key、Value三个向量来计算序列内部元素之间的关联程度</strong>。</p>
+<pre class="mermaid">flowchart LR
+    subgraph 输入
+        X[输入序列]
+    end
+    subgraph QKV生成
+        X --> WQ[WQ权重矩阵]
+        X --> WK[WK权重矩阵]
+        X --> WV[WV权重矩阵]
+        WQ --> Q[Query向量]
+        WK --> K[Key向量]
+        WV --> V[Value向量]
+    end
+    subgraph 注意力计算
+        Q --> Dot[点积]
+        K --> Dot
+        Dot --> Soft[Softmax]
+        Soft --> Attn[注意力权重]
+        Attn --> Out[输出]
+        V --> Mul[加权求和]
+        Attn --> Mul
+        Mul --> Out
+    end</pre>
+
+<h3 id="数学公式"><a href="#数学公式" class="headerlink" title="数学公式"></a>数学公式</h3><p>自注意力的计算过程：</p>
+<p>$$<br>\text{Attention}(Q, K, V) &#x3D; \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V<br>$$</p>
+<p>其中 $\sqrt{d_k}$ 是缩放因子，用于防止点积过大导致梯度消失。</p>
+<h3 id="缩放点积注意力详解"><a href="#缩放点积注意力详解" class="headerlink" title="缩放点积注意力详解"></a>缩放点积注意力详解</h3><pre class="mermaid">sequenceDiagram
+    participant Q as Query
+    participant K as Key
+    participant V as Value
+    participant Out as Output
+    
+    Note over Q,K,V: 1. 计算点积
+    Q->>K: Q · K^T
+    Note over Q,K: 缩放因子: ÷ √d_k
+    
+    Note over K: 2. Softmax归一化
+    K->>K: softmax(QK^T/√d_k)
+    
+    Note over K: 3. 加权求和
+    K->>Out: Attention × V</pre>
+
+<h2 id="PyTorch实现"><a href="#PyTorch实现" class="headerlink" title="PyTorch实现"></a>PyTorch实现</h2><h3 id="基础自注意力层"><a href="#基础自注意力层" class="headerlink" title="基础自注意力层"></a>基础自注意力层</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SelfAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;缩放点积注意力实现&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_dim, dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.embed_dim = embed_dim</span><br><span class="line">        self.dropout = nn.Dropout(dropout)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># QKV投影矩阵</span></span><br><span class="line">        self.q_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.k_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.v_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.out_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            x: [batch_size, seq_len, embed_dim]</span></span><br><span class="line"><span class="string">            mask: [batch_size, 1, seq_len, seq_len] 可选掩码</span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            output: [batch_size, seq_len, embed_dim]</span></span><br><span class="line"><span class="string">            attention_weights: [batch_size, num_heads, seq_len, seq_len]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        batch_size, seq_len, _ = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成QKV</span></span><br><span class="line">        Q = self.q_proj(x)  <span class="comment"># [B, L, D]</span></span><br><span class="line">        K = self.k_proj(x)</span><br><span class="line">        V = self.v_proj(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算注意力分数</span></span><br><span class="line">        scores = torch.matmul(Q, K.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) / math.sqrt(self.embed_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 应用掩码（如果提供）</span></span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            scores = scores.masked_fill(mask == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Softmax归一化</span></span><br><span class="line">        attention_weights = F.softmax(scores, dim=-<span class="number">1</span>)</span><br><span class="line">        attention_weights = self.dropout(attention_weights)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加权求和</span></span><br><span class="line">        output = torch.matmul(attention_weights, V)</span><br><span class="line">        output = self.out_proj(output)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output, attention_weights</span><br></pre></td></tr></table></figure>
+
+<h3 id="多头注意力机制"><a href="#多头注意力机制" class="headerlink" title="多头注意力机制"></a>多头注意力机制</h3><pre class="mermaid">flowchart TB
+    subgraph 多头注意力
+        subgraph 头1
+            X1[输入] --> Q1[Q₁]
+            X1 --> K1[K₁]
+            X1 --> V1[V₁]
+            Q1 --> Attn1[Attention]
+            K1 --> Attn1
+            V1 --> Attn1
+            Attn1 --> O1[O₁]
+        end
+        subgraph 头2
+            X2[输入] --> Q2[Q₂]
+            X2 --> K2[K₂]
+            X2 --> V2[V₂]
+            Q2 --> Attn2[Attention]
+            K2 --> Attn2
+            V2 --> Attn2
+            Attn2 --> O2[O₂]
+        end
+        subgraph 头h
+            Xh[输入] --> Qh[Qₕ]
+            Xh --> Kh[Kₕ]
+            Xh --> Vh[Vₕ]
+            Qh --> Attnh[Attention]
+            Kh --> Attnh
+            Vh --> Attnh
+            Attnh --> Oh[Oₕ]
+        end
+    end
+    
+    O1 --> Concat[拼接]
+    O2 --> Concat
+    Oh --> Concat
+    Concat --> W[WO权重矩阵]
+    W --> Output[最终输出]</pre>
+
+<h3 id="多头注意力实现"><a href="#多头注意力实现" class="headerlink" title="多头注意力实现"></a>多头注意力实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;多头注意力机制&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embed_dim, num_heads, dropout=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="keyword">assert</span> embed_dim % num_heads == <span class="number">0</span>, <span class="string">&quot;embed_dim必须能被num_heads整除&quot;</span></span><br><span class="line">        </span><br><span class="line">        self.embed_dim = embed_dim</span><br><span class="line">        self.num_heads = num_heads</span><br><span class="line">        self.head_dim = embed_dim // num_heads</span><br><span class="line">        </span><br><span class="line">        self.q_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.k_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.v_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.out_proj = nn.Linear(embed_dim, embed_dim)</span><br><span class="line">        self.dropout = nn.Dropout(dropout)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, mask=<span class="literal">None</span></span>):</span><br><span class="line">        batch_size, seq_len, _ = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># QKV投影</span></span><br><span class="line">        Q = self.q_proj(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        K = self.k_proj(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        V = self.v_proj(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 缩放点积注意力</span></span><br><span class="line">        scores = torch.matmul(Q, K.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) / math.sqrt(self.head_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            scores = scores.masked_fill(mask == <span class="number">0</span>, <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>))</span><br><span class="line">        </span><br><span class="line">        attention_weights = F.softmax(scores, dim=-<span class="number">1</span>)</span><br><span class="line">        attention_weights = self.dropout(attention_weights)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加权求和并拼接</span></span><br><span class="line">        context = torch.matmul(attention_weights, V)</span><br><span class="line">        context = context.transpose(<span class="number">1</span>, <span class="number">2</span>).contiguous().view(batch_size, seq_len, self.embed_dim)</span><br><span class="line">        </span><br><span class="line">        output = self.out_proj(context)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output, attention_weights</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><table>
+<thead>
+<tr>
+<th>实现方式</th>
+<th>参数量</th>
+<th>计算复杂度</th>
+<th>序列长度限制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标准注意力</td>
+<td>O(d²)</td>
+<td>O(n²·d)</td>
+<td>较长序列受限</td>
+</tr>
+<tr>
+<td>线性注意力</td>
+<td>O(d)</td>
+<td>O(n·d²)</td>
+<td>可处理超长序列</td>
+</tr>
+<tr>
+<td>Flash Attention</td>
+<td>O(d²)</td>
+<td>O(n²·d)</td>
+<td>显存优化版本</td>
+</tr>
+</tbody></table>
+<h2 id="实际应用示例"><a href="#实际应用示例" class="headerlink" title="实际应用示例"></a>实际应用示例</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">embed_dim = <span class="number">512</span></span><br><span class="line">num_heads = <span class="number">8</span></span><br><span class="line">batch_size = <span class="number">16</span></span><br><span class="line">seq_len = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">model = MultiHeadAttention(embed_dim, num_heads)</span><br><span class="line">x = torch.randn(batch_size, seq_len, embed_dim)</span><br><span class="line"></span><br><span class="line">output, attn_weights = model(x)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;输出形状: <span class="subst">&#123;output.shape&#125;</span>&quot;</span>)  <span class="comment"># [16, 100, 512]</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;注意力权重形状: <span class="subst">&#123;attn_weights.shape&#125;</span>&quot;</span>)  <span class="comment"># [16, 8, 100, 100]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre class="mermaid">mindmap
+  root((自注意力))
+    核心原理
+      Query-Key-Value
+      点积注意力
+      缩放因子
+    多头注意力
+      并行计算
+      注意力头
+      拼接输出
+    应用场景
+      Transformer
+      BERT
+      GPT
+      Vision Transformer
+    优化技术
+      掩码机制
+      稀疏注意力
+      Flash Attention</pre>
+
+<p>自注意力机制是现代深度学习的基石之一，理解其原理对于掌握Transformer架构至关重要。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/PyTorch/">PyTorch</a>
+    
+      <a href="/tags/%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B/">自注意力</a>
+    
+      <a href="/tags/Transformer/">Transformer</a>
+    
+      <a href="/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/">注意力机制</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2020/01/05/2020-01-05-自注意力机制详解-从数学原理到PyTorch实现/" target="_blank" title="自注意力机制详解：从数学原理到PyTorch实现">https://www.coomatrix.com/2020/01/05/2020-01-05-自注意力机制详解-从数学原理到PyTorch实现/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/05/hello-world3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          解决安装AI算法库TensorFlow 2.0的最新入坑指南以及详细的安装教程【分别在linux和windows系统下安装】
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/10/2019-12-10-%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E4%BB%8EVGG%E5%88%B0ResNet/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">图像分类：从VGG到ResNet的演进</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">自注意力机制原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-number">2.1.</span> <span class="nav-text">核心思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">数学公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%82%B9%E7%A7%AF%E6%B3%A8%E6%84%8F%E5%8A%9B%E8%AF%A6%E8%A7%A3"><span class="nav-number">2.3.</span> <span class="nav-text">缩放点积注意力详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyTorch%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">PyTorch实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E5%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">基础自注意力层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text">多头注意力机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.3.</span> <span class="nav-text">多头注意力实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">4.</span> <span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">实际应用示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>instructgpt与人类对齐技术 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="InstructGPT与人类对齐技术在ChatGPT发布之前，OpenAI于2022年初发表了InstructGPT论文，系统性地提出了通过人类反馈来对齐语言模型的方法。这篇论文是理解现代大模型训练范式的关键。 1. 研究背景与动机GPT-3虽然展现了强大的语言能力，但存在严重的”对齐问题”：  用户期望模型遵循指令，但模型倾向于”续写”而非”回答” 模型可能输出有毒、偏见或不真实的内容 在安全关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="InstructGPT与人类对齐技术">
+<meta property="og:url" content="https://www.coomatrix.com/2022/02/20/2022-02-20-InstructGPT%E4%B8%8E%E4%BA%BA%E7%B1%BB%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="InstructGPT与人类对齐技术在ChatGPT发布之前，OpenAI于2022年初发表了InstructGPT论文，系统性地提出了通过人类反馈来对齐语言模型的方法。这篇论文是理解现代大模型训练范式的关键。 1. 研究背景与动机GPT-3虽然展现了强大的语言能力，但存在严重的”对齐问题”：  用户期望模型遵循指令，但模型倾向于”续写”而非”回答” 模型可能输出有毒、偏见或不真实的内容 在安全关">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1485827404703-89b55fcc595e">
+<meta property="article:published_time" content="2022-02-20T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:16.197Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="InstructGPT">
+<meta property="article:tag" content="RLHF">
+<meta property="article:tag" content="人类对齐">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1485827404703-89b55fcc595e">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-02-20-InstructGPT与人类对齐技术" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1485827404703-89b55fcc595e" rel="gallery_cmoopizrd00559cv6eutf6zh7 noopener">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      InstructGPT与人类对齐技术
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/02/20/2022-02-20-InstructGPT%E4%B8%8E%E4%BA%BA%E7%B1%BB%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF/" class="article-date">
+	  <time datetime="2022-02-20T06:00:00.000Z" itemprop="datePublished">二月 20, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="InstructGPT与人类对齐技术"><a href="#InstructGPT与人类对齐技术" class="headerlink" title="InstructGPT与人类对齐技术"></a>InstructGPT与人类对齐技术</h1><p>在ChatGPT发布之前，OpenAI于2022年初发表了InstructGPT论文，系统性地提出了通过人类反馈来对齐语言模型的方法。这篇论文是理解现代大模型训练范式的关键。</p>
+<h2 id="1-研究背景与动机"><a href="#1-研究背景与动机" class="headerlink" title="1. 研究背景与动机"></a>1. 研究背景与动机</h2><p>GPT-3虽然展现了强大的语言能力，但存在严重的”对齐问题”：</p>
+<ul>
+<li>用户期望模型遵循指令，但模型倾向于”续写”而非”回答”</li>
+<li>模型可能输出有毒、偏见或不真实的内容</li>
+<li>在安全关键场景下，模型行为不可预测</li>
+</ul>
+<p>InstructGPT的核心洞察：<strong>问题不在于模型能力不足，而在于模型目标与人类期望不一致</strong>。</p>
+<h2 id="2-数据收集流程"><a href="#2-数据收集流程" class="headerlink" title="2. 数据收集流程"></a>2. 数据收集流程</h2><h3 id="2-1-演示数据（Demonstration-Data）"><a href="#2-1-演示数据（Demonstration-Data）" class="headerlink" title="2.1 演示数据（Demonstration Data）"></a>2.1 演示数据（Demonstration Data）</h3><p>用于SFT阶段，标注员编写高质量的prompt-response对：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Prompt: 请用简单的语言解释量子纠缠</span><br><span class="line">Response: 量子纠缠是量子力学中的一种现象。当两个粒子&quot;纠缠&quot;在一起时，</span><br><span class="line">无论它们相隔多远，测量其中一个粒子的状态会立即影响另一个粒子的状态。</span><br><span class="line">这就像是有一对魔法骰子，无论相隔多远，它们总是显示相同的数字。</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-比较数据（Comparison-Data）"><a href="#2-2-比较数据（Comparison-Data）" class="headerlink" title="2.2 比较数据（Comparison Data）"></a>2.2 比较数据（Comparison Data）</h3><p>用于RM训练阶段，标注员对多个模型输出进行排序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Prompt: 写一首关于春天的诗</span><br><span class="line"></span><br><span class="line">Output A: 春风拂面花自开...  → 排名: 1</span><br><span class="line">Output B: 春天来了天气好...  → 排名: 3  </span><br><span class="line">Output C: 桃花流水春风暖... → 排名: 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-奖励模型设计"><a href="#3-奖励模型设计" class="headerlink" title="3. 奖励模型设计"></a>3. 奖励模型设计</h2><p>奖励模型是RLHF的核心组件，其训练目标是将人类的偏好量化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">InstructRMRewardModel</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    基于GPT-3的奖励模型</span></span><br><span class="line"><span class="string">    输入: prompt + response</span></span><br><span class="line"><span class="string">    输出: 标量奖励值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.transformer = GPT3Model(config)</span><br><span class="line">        <span class="comment"># 移除语言模型头，添加奖励头</span></span><br><span class="line">        self.reward_head = nn.Sequential(</span><br><span class="line">            nn.Linear(config.hidden_size, config.hidden_size),</span><br><span class="line">            nn.GELU(),</span><br><span class="line">            nn.Linear(config.hidden_size, <span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, input_ids, attention_mask</span>):</span><br><span class="line">        <span class="comment"># 获取transformer输出</span></span><br><span class="line">        outputs = self.transformer(input_ids, attention_mask)</span><br><span class="line">        <span class="comment"># 取最后一个token的表示</span></span><br><span class="line">        last_hidden = outputs.last_hidden_state[:, -<span class="number">1</span>, :]</span><br><span class="line">        <span class="comment"># 映射到奖励值</span></span><br><span class="line">        reward = self.reward_head(last_hidden)</span><br><span class="line">        <span class="keyword">return</span> reward.squeeze(-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="比较损失函数"><a href="#比较损失函数" class="headerlink" title="比较损失函数"></a>比较损失函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">bradley_terry_loss</span>(<span class="params">rewards, rankings</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Bradley-Terry模型用于学习偏好排序</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    loss = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(rankings)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, <span class="built_in">len</span>(rankings)):</span><br><span class="line">            <span class="comment"># 排名靠前的应该有更高的奖励</span></span><br><span class="line">            preferred = rankings[i]</span><br><span class="line">            rejected = rankings[j]</span><br><span class="line">            loss -= torch.log(</span><br><span class="line">                torch.sigmoid(rewards[preferred] - rewards[rejected])</span><br><span class="line">            )</span><br><span class="line">    <span class="keyword">return</span> loss / <span class="built_in">len</span>(rankings)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-PPO优化细节"><a href="#4-PPO优化细节" class="headerlink" title="4. PPO优化细节"></a>4. PPO优化细节</h2><p>InstructGPT使用PPO算法进行策略优化，以下是关键实现细节：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PPOTrainer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, policy, ref_policy, reward_model, </span></span><br><span class="line"><span class="params">                 value_fn, kl_coef=<span class="number">0.2</span></span>):</span><br><span class="line">        self.policy = policy          <span class="comment"># 待优化的策略模型</span></span><br><span class="line">        self.ref_policy = ref_policy  <span class="comment"># 参考模型（SFT模型）</span></span><br><span class="line">        self.reward_model = reward_model</span><br><span class="line">        self.value_fn = value_fn</span><br><span class="line">        self.kl_coef = kl_coef       <span class="comment"># KL惩罚系数</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_reward</span>(<span class="params">self, query, response</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算实际奖励 = RM奖励 - KL惩罚&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            rm_reward = self.reward_model(query, response)</span><br><span class="line">            kl_div = self.compute_kl(query, response)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># KL惩罚防止策略偏离参考模型太远</span></span><br><span class="line">        actual_reward = rm_reward - self.kl_coef * kl_div</span><br><span class="line">        <span class="keyword">return</span> actual_reward</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_kl</span>(<span class="params">self, query, response</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算策略模型与参考模型的KL散度&quot;&quot;&quot;</span></span><br><span class="line">        policy_logprobs = self.policy.logprob(query, response)</span><br><span class="line">        ref_logprobs = self.ref_policy.logprob(query, response)</span><br><span class="line">        kl = (policy_logprobs - ref_logprobs).mean()</span><br><span class="line">        <span class="keyword">return</span> kl</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">self, batch</span>):</span><br><span class="line">        queries = batch[<span class="string">&quot;query&quot;</span>]</span><br><span class="line">        responses = self.policy.generate(queries)</span><br><span class="line">        rewards = self.compute_reward(queries, responses)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算GAE优势估计</span></span><br><span class="line">        values = self.value_fn(queries, responses)</span><br><span class="line">        advantages = self.compute_gae(rewards, values)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># PPO裁剪目标</span></span><br><span class="line">        old_logprobs = self.policy.logprob(queries, responses).detach()</span><br><span class="line">        new_logprobs = self.policy.logprob(queries, responses)</span><br><span class="line">        </span><br><span class="line">        ratio = torch.exp(new_logprobs - old_logprobs)</span><br><span class="line">        surr1 = ratio * advantages</span><br><span class="line">        surr2 = torch.clamp(ratio, <span class="number">0.8</span>, <span class="number">1.2</span>) * advantages</span><br><span class="line">        </span><br><span class="line">        policy_loss = -torch.<span class="built_in">min</span>(surr1, surr2).mean()</span><br><span class="line">        value_loss = F.mse_loss(values, rewards)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> policy_loss + <span class="number">0.5</span> * value_loss</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-实验结果"><a href="#5-实验结果" class="headerlink" title="5. 实验结果"></a>5. 实验结果</h2><p>InstructGPT在多个维度上显著优于GPT-3：</p>
+<table>
+<thead>
+<tr>
+<th>评估维度</th>
+<th>GPT-3</th>
+<th>InstructGPT (1.3B)</th>
+<th>InstructGPT (175B)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指令遵循</td>
+<td>28%</td>
+<td>73%</td>
+<td>85%</td>
+</tr>
+<tr>
+<td>真实性</td>
+<td>21%</td>
+<td>52%</td>
+<td>67%</td>
+</tr>
+<tr>
+<td>无毒性</td>
+<td>83%</td>
+<td>93%</td>
+<td>97%</td>
+</tr>
+<tr>
+<td>有用性</td>
+<td>35%</td>
+<td>68%</td>
+<td>81%</td>
+</tr>
+</tbody></table>
+<p>值得注意的是，1.3B参数的InstructGPT在人类评估中甚至优于175B的GPT-3，说明<strong>对齐比规模更重要</strong>。</p>
+<h2 id="6-对后续工作的影响"><a href="#6-对后续工作的影响" class="headerlink" title="6. 对后续工作的影响"></a>6. 对后续工作的影响</h2><p>InstructGPT确立的RLHF范式对整个AI行业产生了深远影响：</p>
+<ol>
+<li><strong>Anthropic</strong>：提出了Constitutional AI（CAI），用AI反馈替代部分人类反馈</li>
+<li><strong>Google</strong>：在Sparrow和LaMDA中采用了类似的RLHF方法</li>
+<li><strong>开源社区</strong>：OpenAssistant、Alpaca等项目将RLHF引入开源模型训练</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>InstructGPT的核心贡献在于证明了：<strong>通过相对少量的人类反馈数据，可以将大规模语言模型有效对齐到人类偏好</strong>。这一发现彻底改变了大模型的训练范式，RLHF已成为行业标准。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/NLP/">NLP</a>
+    
+      <a href="/tags/InstructGPT/">InstructGPT</a>
+    
+      <a href="/tags/RLHF/">RLHF</a>
+    
+      <a href="/tags/%E4%BA%BA%E7%B1%BB%E5%AF%B9%E9%BD%90/">人类对齐</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/02/20/2022-02-20-InstructGPT与人类对齐技术/" target="_blank" title="InstructGPT与人类对齐技术">https://www.coomatrix.com/2022/02/20/2022-02-20-InstructGPT与人类对齐技术/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/10/2022-03-10-RLHF%E4%BA%BA%E7%B1%BB%E5%8F%8D%E9%A6%88%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          RLHF人类反馈强化学习详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/20/2022-01-20-%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E4%B8%8E%E9%87%8F%E5%8C%96-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">模型压缩与量化：从理论到部署实践</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#InstructGPT%E4%B8%8E%E4%BA%BA%E7%B1%BB%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">InstructGPT与人类对齐技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF%E4%B8%8E%E5%8A%A8%E6%9C%BA"><span class="nav-number">1.1.</span> <span class="nav-text">1. 研究背景与动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">2. 数据收集流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%BC%94%E7%A4%BA%E6%95%B0%E6%8D%AE%EF%BC%88Demonstration-Data%EF%BC%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 演示数据（Demonstration Data）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%AF%94%E8%BE%83%E6%95%B0%E6%8D%AE%EF%BC%88Comparison-Data%EF%BC%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 比较数据（Comparison Data）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%A5%96%E5%8A%B1%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">3. 奖励模型设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">比较损失函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-PPO%E4%BC%98%E5%8C%96%E7%BB%86%E8%8A%82"><span class="nav-number">1.4.</span> <span class="nav-text">4. PPO优化细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.5.</span> <span class="nav-text">5. 实验结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%AF%B9%E5%90%8E%E7%BB%AD%E5%B7%A5%E4%BD%9C%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.6.</span> <span class="nav-text">6. 对后续工作的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

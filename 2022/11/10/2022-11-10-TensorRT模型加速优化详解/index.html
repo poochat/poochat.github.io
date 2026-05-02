@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>tensorrt模型加速优化详解 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="TensorRT模型加速优化详解TensorRT是NVIDIA推出的高性能深度学习推理优化器，通过层融合、精度校准、内核自动调优等技术，可将模型推理速度提升2-10倍。2022年，TensorRT已成为工业界模型部署的事实标准。 1. TensorRT优化原理1.1 核心优化技术graph TB     A[原始模型] --&gt; B[TensorRT优化]          B --&gt; C[层融合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorRT模型加速优化详解">
+<meta property="og:url" content="https://www.coomatrix.com/2022/11/10/2022-11-10-TensorRT%E6%A8%A1%E5%9E%8B%E5%8A%A0%E9%80%9F%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="TensorRT模型加速优化详解TensorRT是NVIDIA推出的高性能深度学习推理优化器，通过层融合、精度校准、内核自动调优等技术，可将模型推理速度提升2-10倍。2022年，TensorRT已成为工业界模型部署的事实标准。 1. TensorRT优化原理1.1 核心优化技术graph TB     A[原始模型] --&gt; B[TensorRT优化]          B --&gt; C[层融合">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb">
+<meta property="article:published_time" content="2022-11-10T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:01.727Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="TensorRT">
+<meta property="article:tag" content="模型加速">
+<meta property="article:tag" content="INT8量化">
+<meta property="article:tag" content="ONNX">
+<meta property="article:tag" content="推理优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-11-10-TensorRT模型加速优化详解" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb" rel="gallery_cmoopizrh00659cv6g33dbhwy noopener">
+        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      TensorRT模型加速优化详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/11/10/2022-11-10-TensorRT%E6%A8%A1%E5%9E%8B%E5%8A%A0%E9%80%9F%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/" class="article-date">
+	  <time datetime="2022-11-10T02:00:00.000Z" itemprop="datePublished">十一月 10, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="TensorRT模型加速优化详解"><a href="#TensorRT模型加速优化详解" class="headerlink" title="TensorRT模型加速优化详解"></a>TensorRT模型加速优化详解</h1><p>TensorRT是NVIDIA推出的高性能深度学习推理优化器，通过层融合、精度校准、内核自动调优等技术，可将模型推理速度提升2-10倍。2022年，TensorRT已成为工业界模型部署的事实标准。</p>
+<h2 id="1-TensorRT优化原理"><a href="#1-TensorRT优化原理" class="headerlink" title="1. TensorRT优化原理"></a>1. TensorRT优化原理</h2><h3 id="1-1-核心优化技术"><a href="#1-1-核心优化技术" class="headerlink" title="1.1 核心优化技术"></a>1.1 核心优化技术</h3><pre class="mermaid">graph TB
+    A[原始模型] --> B[TensorRT优化]
+    
+    B --> C[层融合 Layer Fusion]
+    B --> D[精度校准 Precision Calibration]
+    B --> E[内核调优 Kernel Auto-Tuning]
+    B --> F[动态内存 Dynamic Memory]
+    B --> G[多流执行 Multi-Stream]
+    
+    C --> C1["Conv+BN+ReLU → 单层"]
+    C --> C2["减少GPU内核调用开销"]
+    
+    D --> D1["FP32 → FP16 → INT8"]
+    D --> D2["速度翻倍，精度损失小"]
+    
+    E --> E1["针对GPU架构选择最优算法"]
+    E --> E2["运行时自动选择最快的实现"]</pre>
+
+<h3 id="1-2-优化前后对比"><a href="#1-2-优化前后对比" class="headerlink" title="1.2 优化前后对比"></a>1.2 优化前后对比</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">优化前 (PyTorch FP32):</span><br><span class="line">  Conv2d → BatchNorm → ReLU → Conv2d → BatchNorm → ReLU</span><br><span class="line">  (6次kernel launch, 6次显存读写)</span><br><span class="line"></span><br><span class="line">优化后 (TensorRT FP16):</span><br><span class="line">  [Conv+BN+ReLU 融合层] → [Conv+BN+ReLU 融合层]</span><br><span class="line">  (2次kernel launch, 2次显存读写)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-模型转换流程"><a href="#2-模型转换流程" class="headerlink" title="2. 模型转换流程"></a>2. 模型转换流程</h2><h3 id="2-1-PyTorch-→-ONNX-→-TensorRT"><a href="#2-1-PyTorch-→-ONNX-→-TensorRT" class="headerlink" title="2.1 PyTorch → ONNX → TensorRT"></a>2.1 PyTorch → ONNX → TensorRT</h3><pre class="mermaid">graph LR
+    A[PyTorch .pt] -->|torch.onnx.export| B[ONNX .onnx]
+    B -->|trtexec| C[TensorRT .engine]
+    B -->|Python API| C
+    
+    subgraph "可选优化"
+        D[ONNX Simplifier]
+        E[ONNX Graph Surgeon]
+    end
+    
+    B --> D
+    D --> E
+    E --> C</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.onnx</span><br><span class="line"><span class="keyword">import</span> onnx</span><br><span class="line"><span class="keyword">from</span> onnxsim <span class="keyword">import</span> simplify</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">export_to_onnx</span>(<span class="params">model, output_path, input_shape=(<span class="params"><span class="number">1</span>, <span class="number">3</span>, <span class="number">640</span>, <span class="number">640</span></span>)</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;导出PyTorch模型为ONNX&quot;&quot;&quot;</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    dummy_input = torch.randn(*input_shape)</span><br><span class="line">    </span><br><span class="line">    torch.onnx.export(</span><br><span class="line">        model,</span><br><span class="line">        dummy_input,</span><br><span class="line">        output_path,</span><br><span class="line">        opset_version=<span class="number">11</span>,</span><br><span class="line">        do_constant_folding=<span class="literal">True</span>,</span><br><span class="line">        input_names=[<span class="string">&#x27;input&#x27;</span>],</span><br><span class="line">        output_names=[<span class="string">&#x27;output&#x27;</span>],</span><br><span class="line">        dynamic_axes=&#123;</span><br><span class="line">            <span class="string">&#x27;input&#x27;</span>: &#123;<span class="number">0</span>: <span class="string">&#x27;batch_size&#x27;</span>&#125;,</span><br><span class="line">            <span class="string">&#x27;output&#x27;</span>: &#123;<span class="number">0</span>: <span class="string">&#x27;batch_size&#x27;</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 验证ONNX模型</span></span><br><span class="line">    onnx_model = onnx.load(output_path)</span><br><span class="line">    onnx.checker.check_model(onnx_model)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 简化ONNX模型</span></span><br><span class="line">    model_simplified, check = simplify(onnx_model)</span><br><span class="line">    <span class="keyword">if</span> check:</span><br><span class="line">        onnx.save(model_simplified, output_path)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;ONNX模型已简化并保存到 <span class="subst">&#123;output_path&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> output_path</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-使用trtexec转换"><a href="#2-2-使用trtexec转换" class="headerlink" title="2.2 使用trtexec转换"></a>2.2 使用trtexec转换</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># FP16精度（推荐，速度翻倍，精度损失极小）</span></span><br><span class="line">trtexec \</span><br><span class="line">    --onnx=model.onnx \</span><br><span class="line">    --saveEngine=model_fp16.engine \</span><br><span class="line">    --fp16 \</span><br><span class="line">    --workspace=2048 \</span><br><span class="line">    --minShapes=input:1x3x640x640 \</span><br><span class="line">    --optShapes=input:4x3x640x640 \</span><br><span class="line">    --maxShapes=input:8x3x640x640</span><br><span class="line"></span><br><span class="line"><span class="comment"># INT8精度（需要校准数据，速度最快）</span></span><br><span class="line">trtexec \</span><br><span class="line">    --onnx=model.onnx \</span><br><span class="line">    --saveEngine=model_int8.engine \</span><br><span class="line">    --int8 \</span><br><span class="line">    --calib=calibration_cache.bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能测试</span></span><br><span class="line">trtexec \</span><br><span class="line">    --loadEngine=model_fp16.engine \</span><br><span class="line">    --batch=1 \</span><br><span class="line">    --iterations=100 \</span><br><span class="line">    --warmUp=10</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-Python-API转换"><a href="#2-3-Python-API转换" class="headerlink" title="2.3 Python API转换"></a>2.3 Python API转换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorrt <span class="keyword">as</span> trt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">build_engine</span>(<span class="params">onnx_path, fp16=<span class="literal">True</span>, int8=<span class="literal">False</span>, </span></span><br><span class="line"><span class="params">                 max_batch=<span class="number">1</span>, workspace_size=<span class="number">1</span>&lt;&lt;<span class="number">30</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用Python API构建TensorRT引擎&quot;&quot;&quot;</span></span><br><span class="line">    logger = trt.Logger(trt.Logger.WARNING)</span><br><span class="line">    builder = trt.Builder(logger)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建网络</span></span><br><span class="line">    network = builder.create_network(<span class="number">1</span> &lt;&lt; <span class="built_in">int</span>(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))</span><br><span class="line">    parser = trt.OnnxParser(network, logger)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 解析ONNX模型</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(onnx_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> parser.parse(f.read()):</span><br><span class="line">            <span class="keyword">for</span> error <span class="keyword">in</span> <span class="built_in">range</span>(parser.num_errors):</span><br><span class="line">                <span class="built_in">print</span>(parser.get_error(error))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 配置builder</span></span><br><span class="line">    config = builder.create_builder_config()</span><br><span class="line">    config.max_workspace_size = workspace_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> fp16:</span><br><span class="line">        <span class="keyword">if</span> builder.platform_has_fast_fp16:</span><br><span class="line">            config.set_flag(trt.BuilderFlag.FP16)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;已启用FP16精度&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> int8:</span><br><span class="line">        <span class="keyword">if</span> builder.platform_has_fast_int8:</span><br><span class="line">            config.set_flag(trt.BuilderFlag.INT8)</span><br><span class="line">            config.int8_calibrator = Int8Calibrator()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;已启用INT8精度&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 构建引擎</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;正在构建TensorRT引擎（可能需要几分钟）...&quot;</span>)</span><br><span class="line">    engine = builder.build_engine(network, config)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 保存引擎</span></span><br><span class="line">    <span class="keyword">if</span> engine:</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(onnx_path.replace(<span class="string">&#x27;.onnx&#x27;</span>, <span class="string">&#x27;.engine&#x27;</span>), <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(engine.serialize())</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;引擎构建完成&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> engine</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-INT8量化校准"><a href="#3-INT8量化校准" class="headerlink" title="3. INT8量化校准"></a>3. INT8量化校准</h2><h3 id="3-1-校准原理"><a href="#3-1-校准原理" class="headerlink" title="3.1 校准原理"></a>3.1 校准原理</h3><pre class="mermaid">graph TB
+    A[FP32模型] --> B[收集激活值分布]
+    B --> C[计算最优量化参数]
+    C --> D[生成INT8引擎]
+    
+    subgraph "校准过程"
+        E[校准数据集] --> F[前向推理]
+        F --> G[记录每层激活值范围]
+        G --> H[选择最小化KL散度的阈值]
+    end
+    
+    E --> B</pre>
+
+<h3 id="3-2-自定义校准器"><a href="#3-2-自定义校准器" class="headerlink" title="3.2 自定义校准器"></a>3.2 自定义校准器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> tensorrt <span class="keyword">import</span> IInt8EntropyCalibrator2</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Int8Calibrator</span>(<span class="title class_ inherited__">IInt8EntropyCalibrator2</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;INT8校准器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, calibration_images_dir, batch_size=<span class="number">1</span>, </span></span><br><span class="line"><span class="params">                 input_shape=(<span class="params"><span class="number">3</span>, <span class="number">640</span>, <span class="number">640</span></span>), cache_file=<span class="string">&#x27;calibration.cache&#x27;</span></span>):</span><br><span class="line">        self.batch_size = batch_size</span><br><span class="line">        self.input_shape = input_shape</span><br><span class="line">        self.cache_file = cache_file</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 收集校准图片路径</span></span><br><span class="line">        self.image_paths = []</span><br><span class="line">        <span class="keyword">for</span> ext <span class="keyword">in</span> [<span class="string">&#x27;*.jpg&#x27;</span>, <span class="string">&#x27;*.png&#x27;</span>, <span class="string">&#x27;*.bmp&#x27;</span>]:</span><br><span class="line">            self.image_paths.extend(</span><br><span class="line">                glob.glob(os.path.join(calibration_images_dir, ext))</span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        self.current_idx = <span class="number">0</span></span><br><span class="line">        self.batch_count = <span class="built_in">len</span>(self.image_paths) // batch_size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分配GPU内存</span></span><br><span class="line">        self.device_input = cuda.mem_alloc(</span><br><span class="line">            batch_size * np.prod(input_shape) * <span class="number">4</span>  <span class="comment"># float32</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">preprocess</span>(<span class="params">self, img_path</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;图像预处理&quot;&quot;&quot;</span></span><br><span class="line">        img = cv2.imread(img_path)</span><br><span class="line">        img = cv2.resize(img, (self.input_shape[<span class="number">2</span>], self.input_shape[<span class="number">1</span>]))</span><br><span class="line">        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line">        img = img.astype(np.float32) / <span class="number">255.0</span></span><br><span class="line">        img = img.transpose(<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>)  <span class="comment"># HWC → CHW</span></span><br><span class="line">        <span class="keyword">return</span> img</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_batch_size</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.batch_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_batch</span>(<span class="params">self, names</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取一批校准数据&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> self.current_idx &gt;= <span class="built_in">len</span>(self.image_paths):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        batch_images = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.batch_size):</span><br><span class="line">            idx = self.current_idx + i</span><br><span class="line">            <span class="keyword">if</span> idx &gt;= <span class="built_in">len</span>(self.image_paths):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            img = self.preprocess(self.image_paths[idx])</span><br><span class="line">            batch_images.append(img)</span><br><span class="line">        </span><br><span class="line">        batch = np.ascontiguousarray(np.array(batch_images))</span><br><span class="line">        cuda.memcpy_htod(self.device_input, batch)</span><br><span class="line">        </span><br><span class="line">        self.current_idx += self.batch_size</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">int</span>(self.device_input)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">read_calibration_cache</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;读取校准缓存&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> os.path.exists(self.cache_file):</span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(self.cache_file, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                <span class="keyword">return</span> f.read()</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">write_calibration_cache</span>(<span class="params">self, cache</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;写入校准缓存&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(self.cache_file, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(cache)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用校准器构建INT8引擎</span></span><br><span class="line">calibrator = Int8Calibrator(</span><br><span class="line">    calibration_images_dir=<span class="string">&#x27;./calibration_images&#x27;</span>,</span><br><span class="line">    batch_size=<span class="number">8</span>,</span><br><span class="line">    input_shape=(<span class="number">3</span>, <span class="number">640</span>, <span class="number">640</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">engine = build_engine(</span><br><span class="line">    <span class="string">&#x27;model.onnx&#x27;</span>,</span><br><span class="line">    fp16=<span class="literal">False</span>,</span><br><span class="line">    int8=<span class="literal">True</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-高级推理封装"><a href="#4-高级推理封装" class="headerlink" title="4. 高级推理封装"></a>4. 高级推理封装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorrt <span class="keyword">as</span> trt</span><br><span class="line"><span class="keyword">import</span> pycuda.driver <span class="keyword">as</span> cuda</span><br><span class="line"><span class="keyword">import</span> pycuda.autoinit</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"></span><br><span class="line">Binding = namedtuple(<span class="string">&#x27;Binding&#x27;</span>, (<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;dtype&#x27;</span>, <span class="string">&#x27;shape&#x27;</span>, <span class="string">&#x27;data&#x27;</span>, <span class="string">&#x27;ptr&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TRTInference</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;高性能TensorRT推理封装&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, engine_path, device_id=<span class="number">0</span></span>):</span><br><span class="line">        self.logger = trt.Logger(trt.Logger.INFO)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载引擎</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(engine_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            runtime = trt.Runtime(self.logger)</span><br><span class="line">            self.engine = runtime.deserialize_cuda_engine(f.read())</span><br><span class="line">        </span><br><span class="line">        self.context = self.engine.create_execution_context()</span><br><span class="line">        self.stream = cuda.Stream()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 准备绑定</span></span><br><span class="line">        self.bindings = []</span><br><span class="line">        self.inputs = &#123;&#125;</span><br><span class="line">        self.outputs = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.engine.num_bindings):</span><br><span class="line">            name = self.engine.get_binding_name(i)</span><br><span class="line">            dtype = trt.nptype(self.engine.get_binding_dtype(i))</span><br><span class="line">            shape = self.engine.get_binding_shape(i)</span><br><span class="line">            </span><br><span class="line">            data = cuda.pagelocked_empty(</span><br><span class="line">                trt.volume(shape), dtype</span><br><span class="line">            )</span><br><span class="line">            ptr = cuda.mem_alloc(data.nbytes)</span><br><span class="line">            </span><br><span class="line">            binding = Binding(name, dtype, shape, data, ptr)</span><br><span class="line">            self.bindings.append(binding)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> self.engine.binding_is_input(i):</span><br><span class="line">                self.inputs[name] = binding</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self.outputs[name] = binding</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">infer</span>(<span class="params">self, input_data: <span class="built_in">dict</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;执行推理&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 拷贝输入数据到GPU</span></span><br><span class="line">        <span class="keyword">for</span> name, data <span class="keyword">in</span> input_data.items():</span><br><span class="line">            binding = self.inputs[name]</span><br><span class="line">            np.copyto(binding.data, data.ravel())</span><br><span class="line">            cuda.memcpy_htod_async(binding.ptr, binding.data, self.stream)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 设置绑定地址</span></span><br><span class="line">        binding_addrs = [b.ptr <span class="keyword">for</span> b <span class="keyword">in</span> self.bindings]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 执行推理</span></span><br><span class="line">        self.context.execute_async_v2(</span><br><span class="line">            bindings=binding_addrs,</span><br><span class="line">            stream_handle=self.stream.handle</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 拷贝输出回CPU</span></span><br><span class="line">        results = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> name, binding <span class="keyword">in</span> self.outputs.items():</span><br><span class="line">            cuda.memcpy_dtoh_async(binding.data, binding.ptr, self.stream)</span><br><span class="line">            results[name] = binding.data.reshape(binding.shape)</span><br><span class="line">        </span><br><span class="line">        self.stream.synchronize()</span><br><span class="line">        <span class="keyword">return</span> results</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">benchmark</span>(<span class="params">self, input_data, warmup=<span class="number">10</span>, iterations=<span class="number">100</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;性能基准测试&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 预热</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(warmup):</span><br><span class="line">            self.infer(input_data)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 测试</span></span><br><span class="line">        latencies = []</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(iterations):</span><br><span class="line">            start = time.perf_counter()</span><br><span class="line">            self.infer(input_data)</span><br><span class="line">            latencies.append((time.perf_counter() - start) * <span class="number">1000</span>)</span><br><span class="line">        </span><br><span class="line">        stats = &#123;</span><br><span class="line">            <span class="string">&#x27;mean_ms&#x27;</span>: np.mean(latencies),</span><br><span class="line">            <span class="string">&#x27;std_ms&#x27;</span>: np.std(latencies),</span><br><span class="line">            <span class="string">&#x27;p50_ms&#x27;</span>: np.percentile(latencies, <span class="number">50</span>),</span><br><span class="line">            <span class="string">&#x27;p95_ms&#x27;</span>: np.percentile(latencies, <span class="number">95</span>),</span><br><span class="line">            <span class="string">&#x27;p99_ms&#x27;</span>: np.percentile(latencies, <span class="number">99</span>),</span><br><span class="line">            <span class="string">&#x27;fps&#x27;</span>: <span class="number">1000</span> / np.mean(latencies)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;推理性能:&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  平均延迟: <span class="subst">&#123;stats[<span class="string">&#x27;mean_ms&#x27;</span>]:<span class="number">.2</span>f&#125;</span> ± <span class="subst">&#123;stats[<span class="string">&#x27;std_ms&#x27;</span>]:<span class="number">.2</span>f&#125;</span> ms&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  P50: <span class="subst">&#123;stats[<span class="string">&#x27;p50_ms&#x27;</span>]:<span class="number">.2</span>f&#125;</span> ms&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  P95: <span class="subst">&#123;stats[<span class="string">&#x27;p95_ms&#x27;</span>]:<span class="number">.2</span>f&#125;</span> ms&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  P99: <span class="subst">&#123;stats[<span class="string">&#x27;p99_ms&#x27;</span>]:<span class="number">.2</span>f&#125;</span> ms&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  FPS: <span class="subst">&#123;stats[<span class="string">&#x27;fps&#x27;</span>]:<span class="number">.1</span>f&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> stats</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-ONNX模型转换与优化"><a href="#5-ONNX模型转换与优化" class="headerlink" title="5. ONNX模型转换与优化"></a>5. ONNX模型转换与优化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> onnx</span><br><span class="line"><span class="keyword">from</span> onnx <span class="keyword">import</span> optimizer, numpy_helper</span><br><span class="line"><span class="keyword">import</span> onnx_graphsurgeon <span class="keyword">as</span> og</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">optimize_onnx</span>(<span class="params">input_path, output_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ONNX模型优化&quot;&quot;&quot;</span></span><br><span class="line">    model = onnx.load(input_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 1. 基本优化</span></span><br><span class="line">    passes = [</span><br><span class="line">        <span class="string">&#x27;eliminate_unused_initializer&#x27;</span>,  <span class="comment"># 删除未使用的初始化器</span></span><br><span class="line">        <span class="string">&#x27;eliminate_nop_transpose&#x27;</span>,        <span class="comment"># 删除无用的转置</span></span><br><span class="line">        <span class="string">&#x27;eliminate_nop_pad&#x27;</span>,              <span class="comment"># 删除无用的填充</span></span><br><span class="line">        <span class="string">&#x27;eliminate_identity&#x27;</span>,             <span class="comment"># 删除恒等操作</span></span><br><span class="line">        <span class="string">&#x27;fuse_consecutive_concats&#x27;</span>,       <span class="comment"># 融合连续concat</span></span><br><span class="line">        <span class="string">&#x27;fuse_consecutive_reduce_unsqueeze&#x27;</span>, <span class="comment"># 融合连续reduce</span></span><br><span class="line">        <span class="string">&#x27;fuse_consecutive_squeezes&#x27;</span>,      <span class="comment"># 融合连续squeeze</span></span><br><span class="line">        <span class="string">&#x27;fuse_consecutive_transposes&#x27;</span>,    <span class="comment"># 融合连续转置</span></span><br><span class="line">        <span class="string">&#x27;fuse_pad_into_conv&#x27;</span>,             <span class="comment"># 融合pad到conv</span></span><br><span class="line">        <span class="string">&#x27;fuse_transpose_into_gemm&#x27;</span>,       <span class="comment"># 融合转置到GEMM</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    model = optimizer.optimize(model, passes)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 使用Graph Surgeon进行高级修改</span></span><br><span class="line">    graph = og.import_onnx(model)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 示例：替换NMS操作为TensorRT高效实现</span></span><br><span class="line">    <span class="comment"># 找到原始NMS节点</span></span><br><span class="line">    nms_nodes = [n <span class="keyword">for</span> n <span class="keyword">in</span> graph.nodes <span class="keyword">if</span> n.op_type == <span class="string">&#x27;NonMaxSuppression&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> nms_node <span class="keyword">in</span> nms_nodes:</span><br><span class="line">        <span class="comment"># 创建TensorRT插件节点</span></span><br><span class="line">        new_node = og.Node(</span><br><span class="line">            op=<span class="string">&#x27;EfficientNMS_TRT&#x27;</span>,</span><br><span class="line">            name=<span class="string">&#x27;efficient_nms&#x27;</span>,</span><br><span class="line">            attrs=&#123;</span><br><span class="line">                <span class="string">&#x27;backgroundClass&#x27;</span>: -<span class="number">1</span>,</span><br><span class="line">                <span class="string">&#x27;iouThreshold&#x27;</span>: <span class="number">0.45</span>,</span><br><span class="line">                <span class="string">&#x27;scoreThreshold&#x27;</span>: <span class="number">0.25</span>,</span><br><span class="line">                <span class="string">&#x27;maxOutputBoxes&#x27;</span>: <span class="number">100</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line">        <span class="comment"># 替换连接</span></span><br><span class="line">        new_node.inputs = nms_node.inputs</span><br><span class="line">        new_node.outputs = nms_node.outputs</span><br><span class="line">        graph.nodes.append(new_node)</span><br><span class="line">        graph.nodes.remove(nms_node)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 保存优化后的模型</span></span><br><span class="line">    model = og.export_onnx(graph)</span><br><span class="line">    onnx.save(model, output_path)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;优化后的ONNX模型已保存到 <span class="subst">&#123;output_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ONNX形状推断</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">shape_inference</span>(<span class="params">onnx_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ONNX形状推断&quot;&quot;&quot;</span></span><br><span class="line">    model = onnx.load(onnx_path)</span><br><span class="line">    inferred_model = onnx.shape_inference.infer_shapes(model)</span><br><span class="line">    onnx.save(inferred_model, onnx_path)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;形状推断完成&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-性能对比"><a href="#6-性能对比" class="headerlink" title="6. 性能对比"></a>6. 性能对比</h2><table>
+<thead>
+<tr>
+<th>优化手段</th>
+<th>相对加速</th>
+<th>精度损失</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FP32基线</td>
+<td>1.0x</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>FP16</td>
+<td>1.8-2.5x</td>
+<td>&lt;0.1%</td>
+</tr>
+<tr>
+<td>INT8</td>
+<td>2.5-4.0x</td>
+<td>0.5-2%</td>
+</tr>
+<tr>
+<td>层融合</td>
+<td>1.2-1.5x</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>ONNX优化</td>
+<td>1.1-1.3x</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>FP16+融合+优化</td>
+<td>2.5-3.5x</td>
+<td>&lt;0.1%</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>TensorRT通过层融合、精度量化和内核调优三大核心优化技术，为NVIDIA GPU上的深度学习推理提供了极致性能。INT8量化配合KL散度校准，可以在保持精度的同时获得最大加速。掌握PyTorch→ONNX→TensorRT的完整转换流程，是AI工程师部署生产级模型的基本功。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/TensorRT/">TensorRT</a>
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8A%A0%E9%80%9F/">模型加速</a>
+    
+      <a href="/tags/INT8%E9%87%8F%E5%8C%96/">INT8量化</a>
+    
+      <a href="/tags/ONNX/">ONNX</a>
+    
+      <a href="/tags/%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/">推理优化</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/11/10/2022-11-10-TensorRT模型加速优化详解/" target="_blank" title="TensorRT模型加速优化详解">https://www.coomatrix.com/2022/11/10/2022-11-10-TensorRT模型加速优化详解/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/11/25/2022-11-25-ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E4%B8%8E%E8%B7%A8%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ONNX模型转换与跨平台部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/10/25/2022-10-25-NVIDIA-Jetson-Nano%E8%BE%B9%E7%BC%98AI%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">NVIDIA Jetson Nano边缘AI部署实战</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorRT%E6%A8%A1%E5%9E%8B%E5%8A%A0%E9%80%9F%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">TensorRT模型加速优化详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-TensorRT%E4%BC%98%E5%8C%96%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">1. TensorRT优化原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 核心优化技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E4%BC%98%E5%8C%96%E5%89%8D%E5%90%8E%E5%AF%B9%E6%AF%94"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 优化前后对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">2. 模型转换流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-PyTorch-%E2%86%92-ONNX-%E2%86%92-TensorRT"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 PyTorch → ONNX → TensorRT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E4%BD%BF%E7%94%A8trtexec%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 使用trtexec转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Python-API%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 Python API转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-INT8%E9%87%8F%E5%8C%96%E6%A0%A1%E5%87%86"><span class="nav-number">1.3.</span> <span class="nav-text">3. INT8量化校准</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E6%A0%A1%E5%87%86%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 校准原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%A1%E5%87%86%E5%99%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 自定义校准器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%AB%98%E7%BA%A7%E6%8E%A8%E7%90%86%E5%B0%81%E8%A3%85"><span class="nav-number">1.4.</span> <span class="nav-text">4. 高级推理封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-number">1.5.</span> <span class="nav-text">5. ONNX模型转换与优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">1.6.</span> <span class="nav-text">6. 性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

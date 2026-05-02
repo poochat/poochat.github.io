@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>sora视频生成技术深度解析：从文本到视频的跨越 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言2024年2月，OpenAI发布了Sora，这是一个能够根据文本描述生成视频的AI模型。尽管发布时间在2024年，但其背后的技术基础和研发理念在2023年就已经奠定。本文将深入分析Sora的技术原理、架构设计以及其对未来内容创作领域的深远影响。 Sora的核心技术架构1. 扩散模型与Transformer融合Sora采用了扩散概率模型（Diffusion Probabilistic Model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sora视频生成技术深度解析：从文本到视频的跨越">
+<meta property="og:url" content="https://www.coomatrix.com/2023/02/16/2023-02-16-Sora%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E4%BB%8E%E6%96%87%E6%9C%AC%E5%88%B0%E8%A7%86%E9%A2%91%E7%9A%84%E8%B7%A8%E8%B6%8A/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言2024年2月，OpenAI发布了Sora，这是一个能够根据文本描述生成视频的AI模型。尽管发布时间在2024年，但其背后的技术基础和研发理念在2023年就已经奠定。本文将深入分析Sora的技术原理、架构设计以及其对未来内容创作领域的深远影响。 Sora的核心技术架构1. 扩散模型与Transformer融合Sora采用了扩散概率模型（Diffusion Probabilistic Model">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1633356122544-f60d17f03e20">
+<meta property="article:published_time" content="2023-02-16T06:20:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:16.190Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="Sora">
+<meta property="article:tag" content="视频生成">
+<meta property="article:tag" content="Diffusion">
+<meta property="article:tag" content="AI生成内容">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1633356122544-f60d17f03e20">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-02-16-Sora视频生成技术深度解析-从文本到视频的跨越" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1633356122544-f60d17f03e20" rel="gallery_cmoopizri006a9cv6frwt1vd1 noopener">
+        <img src="https://images.unsplash.com/photo-1633356122544-f60d17f03e20" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Sora视频生成技术深度解析：从文本到视频的跨越
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/02/16/2023-02-16-Sora%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E4%BB%8E%E6%96%87%E6%9C%AC%E5%88%B0%E8%A7%86%E9%A2%91%E7%9A%84%E8%B7%A8%E8%B6%8A/" class="article-date">
+	  <time datetime="2023-02-16T06:20:00.000Z" itemprop="datePublished">二月 16, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>2024年2月，OpenAI发布了Sora，这是一个能够根据文本描述生成视频的AI模型。尽管发布时间在2024年，但其背后的技术基础和研发理念在2023年就已经奠定。本文将深入分析Sora的技术原理、架构设计以及其对未来内容创作领域的深远影响。</p>
+<h2 id="Sora的核心技术架构"><a href="#Sora的核心技术架构" class="headerlink" title="Sora的核心技术架构"></a>Sora的核心技术架构</h2><h3 id="1-扩散模型与Transformer融合"><a href="#1-扩散模型与Transformer融合" class="headerlink" title="1. 扩散模型与Transformer融合"></a>1. 扩散模型与Transformer融合</h3><p>Sora采用了扩散概率模型（Diffusion Probabilistic Model）与Transformer架构的融合方案，这是其能够生成高质量视频的关键。</p>
+<h4 id="扩散模型基础"><a href="#扩散模型基础" class="headerlink" title="扩散模型基础"></a>扩散模型基础</h4><p>扩散模型的核心思想是通过逐步添加噪声来破坏数据，然后学习逆向去噪过程来生成数据。在视频生成中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">VideoDiffusionModel</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    视频扩散模型核心组件</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, video_channels=<span class="number">3</span>, time_dim=<span class="number">8</span>, hidden_dim=<span class="number">256</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.time_embedding = nn.Sequential(</span><br><span class="line">            nn.Linear(time_dim, hidden_dim),</span><br><span class="line">            nn.SiLU(),</span><br><span class="line">            nn.Linear(hidden_dim, hidden_dim)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3D U-Net风格的编码器</span></span><br><span class="line">        self.encoder = nn.ModuleList([</span><br><span class="line">            self._make_encoder_block(video_channels, hidden_dim),</span><br><span class="line">            self._make_encoder_block(hidden_dim, hidden_dim * <span class="number">2</span>),</span><br><span class="line">            self._make_encoder_block(hidden_dim * <span class="number">2</span>, hidden_dim * <span class="number">4</span>),</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 时间空间注意力</span></span><br><span class="line">        self.spatial_attention = SpatialTemporalAttention(hidden_dim * <span class="number">4</span>)</span><br><span class="line">        self.temporal_attention = TemporalAttention(hidden_dim * <span class="number">4</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_make_encoder_block</span>(<span class="params">self, in_ch, out_ch</span>):</span><br><span class="line">        <span class="keyword">return</span> nn.Sequential(</span><br><span class="line">            nn.Conv3d(in_ch, out_ch, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.GroupNorm(<span class="number">32</span>, out_ch),</span><br><span class="line">            nn.SiLU(),</span><br><span class="line">            nn.Conv3d(out_ch, out_ch, kernel_size=<span class="number">3</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.GroupNorm(<span class="number">32</span>, out_ch),</span><br><span class="line">            nn.SiLU()</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<h4 id="Transformer用于时空建模"><a href="#Transformer用于时空建模" class="headerlink" title="Transformer用于时空建模"></a>Transformer用于时空建模</h4><p>Sora使用Transformer来处理视频的时空信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VideoTransformer</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, d_model=<span class="number">768</span>, nhead=<span class="number">12</span>, num_layers=<span class="number">12</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.d_model = d_model</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 位置编码（包含空间和时间维度）</span></span><br><span class="line">        self.pos_encoding = PositionalEncoding3D(d_model)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Transformer编码器层</span></span><br><span class="line">        encoder_layer = nn.TransformerEncoderLayer(</span><br><span class="line">            d_model=d_model,</span><br><span class="line">            nhead=nhead,</span><br><span class="line">            dim_feedforward=d_model * <span class="number">4</span>,</span><br><span class="line">            dropout=<span class="number">0.1</span>,</span><br><span class="line">            activation=<span class="string">&#x27;gelu&#x27;</span>,</span><br><span class="line">            batch_first=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># x shape: [B, T, H, W, C] -&gt; [B, T*H*W, C]</span></span><br><span class="line">        B, T, H, W, C = x.shape</span><br><span class="line">        x = x.reshape(B, T * H * W, C)</span><br><span class="line">        x = self.pos_encoding(x)</span><br><span class="line">        x = self.transformer(x)</span><br><span class="line">        x = x.reshape(B, T, H, W, C)</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-视频压缩与潜空间表示"><a href="#2-视频压缩与潜空间表示" class="headerlink" title="2. 视频压缩与潜空间表示"></a>2. 视频压缩与潜空间表示</h3><p>Sora使用视频压缩网络将原始视频映射到低维潜空间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VideoCompressor</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将视频压缩到潜空间，便于Transformer处理</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels=<span class="number">3</span>, latent_channels=<span class="number">16</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># encoder</span></span><br><span class="line">        self.encoder = nn.Sequential(</span><br><span class="line">            nn.Conv3d(in_channels, <span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Conv3d(<span class="number">64</span>, <span class="number">128</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Conv3d(<span class="number">128</span>, <span class="number">256</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.Conv3d(<span class="number">256</span>, latent_channels, kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># decoder</span></span><br><span class="line">        self.decoder = nn.Sequential(</span><br><span class="line">            nn.ConvTranspose3d(latent_channels, <span class="number">256</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.ConvTranspose3d(<span class="number">256</span>, <span class="number">128</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.ConvTranspose3d(<span class="number">128</span>, <span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.ConvTranspose3d(<span class="number">64</span>, in_channels, kernel_size=<span class="number">4</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        z = self.encoder(x)  <span class="comment"># 压缩</span></span><br><span class="line">        x_recon = self.decoder(z)  <span class="comment"># 重构</span></span><br><span class="line">        <span class="keyword">return</span> z, x_recon</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sora的视频生成能力"><a href="#Sora的视频生成能力" class="headerlink" title="Sora的视频生成能力"></a>Sora的视频生成能力</h2><h3 id="1-文本到视频生成"><a href="#1-文本到视频生成" class="headerlink" title="1. 文本到视频生成"></a>1. 文本到视频生成</h3><p>Sora能够根据文本描述生成连贯的视频内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_video_from_text</span>(<span class="params">model, text_prompt, num_frames=<span class="number">60</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    根据文本提示生成视频</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 将文本编码为模型可理解的表示</span></span><br><span class="line">    text_embedding = model.text_encoder(text_prompt)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 生成初始噪声</span></span><br><span class="line">    latent = torch.randn(<span class="number">1</span>, model.latent_channels, </span><br><span class="line">                         num_frames // <span class="number">8</span>, </span><br><span class="line">                         <span class="number">256</span> // <span class="number">8</span>, </span><br><span class="line">                         <span class="number">256</span> // <span class="number">8</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 扩散去噪过程</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(model.num_timesteps)):</span><br><span class="line">        noise_level = t / model.num_timesteps</span><br><span class="line">        timestep_embedding = model.get_timestep_embedding(t)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 预测噪声</span></span><br><span class="line">        noise_pred = model.unet(</span><br><span class="line">            latent, </span><br><span class="line">            timestep_embedding, </span><br><span class="line">            text_embedding</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 逐步去噪</span></span><br><span class="line">        latent = model.step_denoise(latent, noise_pred, t)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 解码为视频</span></span><br><span class="line">    video = model.decoder(latent)</span><br><span class="line">    <span class="keyword">return</span> video</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-视频编辑与扩展"><a href="#2-视频编辑与扩展" class="headerlink" title="2. 视频编辑与扩展"></a>2. 视频编辑与扩展</h3><p>Sora还支持视频编辑和时长扩展：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VideoEditor</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model</span>):</span><br><span class="line">        self.model = model</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">extend_video</span>(<span class="params">self, video_path, extension_prompt, num_additional_frames=<span class="number">60</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        基于原视频内容，添加新的视频片段</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 提取原视频特征</span></span><br><span class="line">        video_features = self.model.extract_features(video_path)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成扩展内容</span></span><br><span class="line">        extended_latent = self.model.generate(</span><br><span class="line">            prompt=extension_prompt,</span><br><span class="line">            initial_features=video_features,</span><br><span class="line">            num_frames=num_additional_frames</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.model.decode(extended_latent)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">style_transfer</span>(<span class="params">self, video_path, style_description</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        视频风格转换</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        video_features = self.model.extract_features(video_path)</span><br><span class="line">        styled_features = self.model.apply_style(</span><br><span class="line">            video_features, </span><br><span class="line">            style_description</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> self.model.decode(styled_features)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sora的应用场景"><a href="#Sora的应用场景" class="headerlink" title="Sora的应用场景"></a>Sora的应用场景</h2><h3 id="电影与视频制作"><a href="#电影与视频制作" class="headerlink" title="电影与视频制作"></a>电影与视频制作</h3><p>Sora可以快速生成概念视频和特效预览：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 电影预可视化示例</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">movie_previsualization</span>(<span class="params">scene_description, duration=<span class="number">10</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    电影场景预可视化</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    scenes = [</span><br><span class="line">        <span class="string">&quot;英雄站在废墟之上&quot;</span>,</span><br><span class="line">        <span class="string">&quot;反派现身于阴影中&quot;</span>,</span><br><span class="line">        <span class="string">&quot;史诗般的对决开始&quot;</span></span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i, scene <span class="keyword">in</span> <span class="built_in">enumerate</span>(scenes):</span><br><span class="line">        video = generate_video_from_text(</span><br><span class="line">            sora_model, </span><br><span class="line">            <span class="string">f&quot;<span class="subst">&#123;scene_description&#125;</span> - <span class="subst">&#123;scene&#125;</span>&quot;</span>, </span><br><span class="line">            num_frames=duration * <span class="number">30</span></span><br><span class="line">        )</span><br><span class="line">        save_video(video, <span class="string">f&quot;scene_<span class="subst">&#123;i&#125;</span>.mp4&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="游戏与虚拟世界"><a href="#游戏与虚拟世界" class="headerlink" title="游戏与虚拟世界"></a>游戏与虚拟世界</h3><p>生成游戏过场动画和虚拟环境：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_game_assets</span>(<span class="params">prompt, asset_type=<span class="string">&quot;animation&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    游戏资产自动生成</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> asset_type == <span class="string">&quot;animation&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> generate_video_from_text(sora_model, prompt)</span><br><span class="line">    <span class="keyword">elif</span> asset_type == <span class="string">&quot;background&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> generate_video_from_text(sora_model, <span class="string">f&quot;<span class="subst">&#123;prompt&#125;</span>, static scene&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="技术挑战与未来发展"><a href="#技术挑战与未来发展" class="headerlink" title="技术挑战与未来发展"></a>技术挑战与未来发展</h2><h3 id="当前局限性"><a href="#当前局限性" class="headerlink" title="当前局限性"></a>当前局限性</h3><ol>
+<li><strong>物理规则理解</strong>：生成的视频在复杂物理交互上仍有瑕疵</li>
+<li><strong>长视频一致性</strong>：保持长视频的时间连贯性仍是挑战</li>
+<li><strong>计算资源</strong>：高质量视频生成需要大量算力支持</li>
+</ol>
+<h3 id="未来发展方向"><a href="#未来发展方向" class="headerlink" title="未来发展方向"></a>未来发展方向</h3><ol>
+<li><strong>更高分辨率</strong>：支持4K甚至8K视频生成</li>
+<li><strong>实时生成</strong>：优化推理速度实现实时视频生成</li>
+<li><strong>交互式生成</strong>：支持用户实时控制视频内容</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Sora代表了AI视频生成技术的重大突破。虽然2023年我们还在探索相关技术的基础，但Sora已经展示了从文本到视频的可行路径。随着技术的不断发展，AI视频生成将在影视制作、游戏开发、广告创意等领域发挥越来越重要的作用。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://openai.com/sora">OpenAI Sora技术报告</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">Diffusion Models综述</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.15691">Video Transformers</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/">AI大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/Sora/">Sora</a>
+    
+      <a href="/tags/%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90/">视频生成</a>
+    
+      <a href="/tags/Diffusion/">Diffusion</a>
+    
+      <a href="/tags/AI%E7%94%9F%E6%88%90%E5%86%85%E5%AE%B9/">AI生成内容</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/02/16/2023-02-16-Sora视频生成技术深度解析-从文本到视频的跨越/" target="_blank" title="Sora视频生成技术深度解析：从文本到视频的跨越">https://www.coomatrix.com/2023/02/16/2023-02-16-Sora视频生成技术深度解析-从文本到视频的跨越/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/03/15/2023-03-15-GPT-4-API%E8%AF%A6%E8%A7%A3-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%83%BD%E5%8A%9B%E4%B8%8E%E5%BA%94%E7%94%A8%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          GPT-4 API详解：多模态大模型能力与应用实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/01/10/2023-01-10-LLaMA%E7%B3%BB%E5%88%97%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8ELLaMA%E5%88%B0LLaMA2%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">LLaMA系列开源大模型：从LLaMA到LLaMA2的技术演进</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sora%E7%9A%84%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">Sora的核心技术架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E4%B8%8ETransformer%E8%9E%8D%E5%90%88"><span class="nav-number">2.1.</span> <span class="nav-text">1. 扩散模型与Transformer融合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">2.1.1.</span> <span class="nav-text">扩散模型基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Transformer%E7%94%A8%E4%BA%8E%E6%97%B6%E7%A9%BA%E5%BB%BA%E6%A8%A1"><span class="nav-number">2.1.2.</span> <span class="nav-text">Transformer用于时空建模</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%A7%86%E9%A2%91%E5%8E%8B%E7%BC%A9%E4%B8%8E%E6%BD%9C%E7%A9%BA%E9%97%B4%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.2.</span> <span class="nav-text">2. 视频压缩与潜空间表示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sora%E7%9A%84%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E8%83%BD%E5%8A%9B"><span class="nav-number">3.</span> <span class="nav-text">Sora的视频生成能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E6%9C%AC%E5%88%B0%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90"><span class="nav-number">3.1.</span> <span class="nav-text">1. 文本到视频生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%A7%86%E9%A2%91%E7%BC%96%E8%BE%91%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="nav-number">3.2.</span> <span class="nav-text">2. 视频编辑与扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sora%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">Sora的应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E5%BD%B1%E4%B8%8E%E8%A7%86%E9%A2%91%E5%88%B6%E4%BD%9C"><span class="nav-number">4.1.</span> <span class="nav-text">电影与视频制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E4%B8%8E%E8%99%9A%E6%8B%9F%E4%B8%96%E7%95%8C"><span class="nav-number">4.2.</span> <span class="nav-text">游戏与虚拟世界</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E6%8C%91%E6%88%98%E4%B8%8E%E6%9C%AA%E6%9D%A5%E5%8F%91%E5%B1%95"><span class="nav-number">5.</span> <span class="nav-text">技术挑战与未来发展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">5.1.</span> <span class="nav-text">当前局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E5%8F%91%E5%B1%95%E6%96%B9%E5%90%91"><span class="nav-number">5.2.</span> <span class="nav-text">未来发展方向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

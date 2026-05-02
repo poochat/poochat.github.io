@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>langchain进阶：构建企业级rag应用 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言LangChain是构建LLM应用的主流框架，提供了丰富的组件和工具链。本文将深入探讨如何使用LangChain构建生产级别的RAG应用，包括文档处理、检索优化、结果重排序等高级特性。 LangChain核心组件1. 文档加载与分割1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LangChain进阶：构建企业级RAG应用">
+<meta property="og:url" content="https://www.coomatrix.com/2023/09/08/2023-09-08-LangChain%E8%BF%9B%E9%98%B6-%E6%9E%84%E5%BB%BA%E4%BC%81%E4%B8%9A%E7%BA%A7RAG%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言LangChain是构建LLM应用的主流框架，提供了丰富的组件和工具链。本文将深入探讨如何使用LangChain构建生产级别的RAG应用，包括文档处理、检索优化、结果重排序等高级特性。 LangChain核心组件1. 文档加载与分割1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+<meta property="article:published_time" content="2023-09-08T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:02.533Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="LangChain">
+<meta property="article:tag" content="RAG">
+<meta property="article:tag" content="LLM应用">
+<meta property="article:tag" content="向量检索">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-09-08-LangChain进阶-构建企业级RAG应用" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" rel="gallery_cmoopizro007h9cv64zu2ei86 noopener">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      LangChain进阶：构建企业级RAG应用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/09/08/2023-09-08-LangChain%E8%BF%9B%E9%98%B6-%E6%9E%84%E5%BB%BA%E4%BC%81%E4%B8%9A%E7%BA%A7RAG%E5%BA%94%E7%94%A8/" class="article-date">
+	  <time datetime="2023-09-08T03:00:00.000Z" itemprop="datePublished">九月 8, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>LangChain是构建LLM应用的主流框架，提供了丰富的组件和工具链。本文将深入探讨如何使用LangChain构建生产级别的RAG应用，包括文档处理、检索优化、结果重排序等高级特性。</p>
+<h2 id="LangChain核心组件"><a href="#LangChain核心组件" class="headerlink" title="LangChain核心组件"></a>LangChain核心组件</h2><h3 id="1-文档加载与分割"><a href="#1-文档加载与分割" class="headerlink" title="1. 文档加载与分割"></a>1. 文档加载与分割</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.document_loaders <span class="keyword">import</span> (</span><br><span class="line">    PyPDFLoader, UnstructuredHTMLLoader, </span><br><span class="line">    CSVLoader, JSONLoader, Docx2txtLoader</span><br><span class="line">)</span><br><span class="line"><span class="keyword">from</span> langchain.text_splitter <span class="keyword">import</span> (</span><br><span class="line">    RecursiveCharacterTextSplitter,</span><br><span class="line">    MarkdownTextSplitter,</span><br><span class="line">    PythonCodeTextSplitter</span><br><span class="line">)</span><br><span class="line"><span class="keyword">from</span> langchain.schema <span class="keyword">import</span> Document</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DocumentPipeline</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    文档处理流水线</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, chunk_size=<span class="number">500</span>, chunk_overlap=<span class="number">50</span></span>):</span><br><span class="line">        self.chunk_size = chunk_size</span><br><span class="line">        self.chunk_overlap = chunk_overlap</span><br><span class="line">        </span><br><span class="line">        self.text_splitters = &#123;</span><br><span class="line">            <span class="string">&quot;recursive&quot;</span>: RecursiveCharacterTextSplitter(</span><br><span class="line">                chunk_size=chunk_size,</span><br><span class="line">                chunk_overlap=chunk_overlap,</span><br><span class="line">                length_function=<span class="built_in">len</span>,</span><br><span class="line">                separators=[<span class="string">&quot;\n\n&quot;</span>, <span class="string">&quot;\n&quot;</span>, <span class="string">&quot;。&quot;</span>, <span class="string">&quot;！&quot;</span>, <span class="string">&quot;？&quot;</span>, <span class="string">&quot; &quot;</span>, <span class="string">&quot;&quot;</span>]</span><br><span class="line">            ),</span><br><span class="line">            <span class="string">&quot;markdown&quot;</span>: MarkdownTextSplitter(</span><br><span class="line">                chunk_size=chunk_size,</span><br><span class="line">                chunk_overlap=chunk_overlap</span><br><span class="line">            ),</span><br><span class="line">            <span class="string">&quot;code&quot;</span>: PythonCodeTextSplitter(</span><br><span class="line">                chunk_size=chunk_size,</span><br><span class="line">                chunk_overlap=chunk_overlap</span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_pdf</span>(<span class="params">self, file_path: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载PDF&quot;&quot;&quot;</span></span><br><span class="line">        loader = PyPDFLoader(file_path)</span><br><span class="line">        pages = loader.load_and_split()</span><br><span class="line">        <span class="keyword">return</span> pages</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_html</span>(<span class="params">self, file_path: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载HTML&quot;&quot;&quot;</span></span><br><span class="line">        loader = UnstructuredHTMLLoader(file_path)</span><br><span class="line">        docs = loader.load()</span><br><span class="line">        <span class="keyword">return</span> docs</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_docx</span>(<span class="params">self, file_path: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载Word文档&quot;&quot;&quot;</span></span><br><span class="line">        loader = Docx2txtLoader(file_path)</span><br><span class="line">        docs = loader.load()</span><br><span class="line">        <span class="keyword">return</span> docs</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">load_json</span>(<span class="params">self, file_path: <span class="built_in">str</span>, jq_schema: <span class="built_in">str</span> = <span class="string">&quot;.[]&quot;</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;加载JSON&quot;&quot;&quot;</span></span><br><span class="line">        loader = JSONLoader(file_path, jq_schema=jq_schema)</span><br><span class="line">        docs = loader.load()</span><br><span class="line">        <span class="keyword">return</span> docs</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">split_documents</span>(<span class="params">self, documents: <span class="built_in">list</span>[Document], </span></span><br><span class="line"><span class="params">                        splitter_type: <span class="built_in">str</span> = <span class="string">&quot;recursive&quot;</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        分割文档</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        splitter = self.text_splitters.get(splitter_type, self.text_splitters[<span class="string">&quot;recursive&quot;</span>])</span><br><span class="line">        <span class="keyword">return</span> splitter.split_documents(documents)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_url</span>(<span class="params">self, url: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;从URL加载内容&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">from</span> langchain.document_loaders <span class="keyword">import</span> WebBaseLoader</span><br><span class="line">        </span><br><span class="line">        loader = WebBaseLoader(url)</span><br><span class="line">        docs = loader.load()</span><br><span class="line">        <span class="keyword">return</span> self.split_documents(docs)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Embedding与向量化"><a href="#2-Embedding与向量化" class="headerlink" title="2. Embedding与向量化"></a>2. Embedding与向量化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.embeddings <span class="keyword">import</span> OpenAIEmbeddings, HuggingFaceEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain.vectorstores <span class="keyword">import</span> Chroma, FAISS, Milvus</span><br><span class="line"><span class="keyword">from</span> langchain.embeddings <span class="keyword">import</span> CacheBackedEmbeddings</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModel</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingManager</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Embedding管理器</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, provider: <span class="built_in">str</span> = <span class="string">&quot;openai&quot;</span></span>):</span><br><span class="line">        self.provider = provider</span><br><span class="line">        self.embeddings = self._init_embeddings()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_init_embeddings</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> self.provider == <span class="string">&quot;openai&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> OpenAIEmbeddings(</span><br><span class="line">                model=<span class="string">&quot;text-embedding-ada-002&quot;</span>,</span><br><span class="line">                openai_api_key=<span class="string">&quot;your-api-key&quot;</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> self.provider == <span class="string">&quot;huggingface&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> HuggingFaceEmbeddings(</span><br><span class="line">                model_name=<span class="string">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span>,</span><br><span class="line">                model_kwargs=&#123;<span class="string">&#x27;device&#x27;</span>: <span class="string">&#x27;cuda&#x27;</span>&#125;,</span><br><span class="line">                encode_kwargs=&#123;<span class="string">&#x27;normalize_embeddings&#x27;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> self.provider == <span class="string">&quot;m3e&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> HuggingFaceEmbeddings(</span><br><span class="line">                model_name=<span class="string">&quot;moka-ai/m3e-base&quot;</span>,</span><br><span class="line">                model_kwargs=&#123;<span class="string">&#x27;device&#x27;</span>: <span class="string">&#x27;cuda&#x27;</span>&#125;,</span><br><span class="line">                encode_kwargs=&#123;<span class="string">&#x27;normalize_embeddings&#x27;</span>: <span class="literal">True</span>&#125;</span><br><span class="line">            )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create_vectorstore</span>(<span class="params">self, documents: <span class="built_in">list</span>[Document], </span></span><br><span class="line"><span class="params">                          db_type: <span class="built_in">str</span> = <span class="string">&quot;chroma&quot;</span>,</span></span><br><span class="line"><span class="params">                          persist_directory: <span class="built_in">str</span> = <span class="literal">None</span></span>) -&gt; <span class="built_in">any</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        创建向量数据库</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> db_type == <span class="string">&quot;chroma&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> Chroma.from_documents(</span><br><span class="line">                documents=documents,</span><br><span class="line">                embedding=self.embeddings,</span><br><span class="line">                persist_directory=persist_directory</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> db_type == <span class="string">&quot;faiss&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> FAISS.from_documents(</span><br><span class="line">                documents=documents,</span><br><span class="line">                embedding=self.embeddings</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> db_type == <span class="string">&quot;milvus&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> Milvus.from_documents(</span><br><span class="line">                documents=documents,</span><br><span class="line">                embedding=self.embeddings,</span><br><span class="line">                connection_args=&#123;<span class="string">&quot;host&quot;</span>: <span class="string">&quot;localhost&quot;</span>, <span class="string">&quot;port&quot;</span>: <span class="string">&quot;19530&quot;</span>&#125;</span><br><span class="line">            )</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级RAG模式"><a href="#高级RAG模式" class="headerlink" title="高级RAG模式"></a>高级RAG模式</h2><h3 id="1-父子文档检索"><a href="#1-父子文档检索" class="headerlink" title="1. 父子文档检索"></a>1. 父子文档检索</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> ParentDocumentRetriever</span><br><span class="line"><span class="keyword">from</span> langchain.storage <span class="keyword">import</span> InMemoryStore</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ParentDocumentSearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    父子文档检索器</span></span><br><span class="line"><span class="string">    父文档提供完整上下文，子文档用于精确匹配</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vectorstore, embeddings</span>):</span><br><span class="line">        <span class="comment"># 存储父文档</span></span><br><span class="line">        self.store = InMemoryStore()</span><br><span class="line">        </span><br><span class="line">        self.retriever = ParentDocumentRetriever(</span><br><span class="line">            vectorstore=vectorstore,</span><br><span class="line">            docstore=self.store,</span><br><span class="line">            child_splitter=RecursiveCharacterTextSplitter(</span><br><span class="line">                chunk_size=<span class="number">400</span>,</span><br><span class="line">                chunk_overlap=<span class="number">40</span></span><br><span class="line">            ),</span><br><span class="line">            parent_splitter=RecursiveCharacterTextSplitter(</span><br><span class="line">                chunk_size=<span class="number">2000</span>,</span><br><span class="line">                chunk_overlap=<span class="number">200</span></span><br><span class="line">            ),</span><br><span class="line">            child_metadata=&#123;<span class="string">&quot;source&quot;</span>: <span class="string">&quot;child&quot;</span>&#125;,</span><br><span class="line">            parent_metadata=&#123;<span class="string">&quot;source&quot;</span>: <span class="string">&quot;parent&quot;</span>&#125;</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_documents</span>(<span class="params">self, documents: <span class="built_in">list</span>[Document]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加文档&quot;&quot;&quot;</span></span><br><span class="line">        self.retriever.add_documents(documents)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_relevant_documents</span>(<span class="params">self, query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取相关文档&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.retriever.get_relevant_documents(query)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-自查询检索器"><a href="#2-自查询检索器" class="headerlink" title="2. 自查询检索器"></a>2. 自查询检索器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> SelfQueryRetriever</span><br><span class="line"><span class="keyword">from</span> langchain.chains.query_constructor.base <span class="keyword">import</span> AttributeInfo</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SelfQuerySearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    自查询检索器</span></span><br><span class="line"><span class="string">    自动从自然语言中提取过滤条件</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vectorstore, llm, document_contents: <span class="built_in">str</span>, metadata_field_info: <span class="built_in">list</span></span>):</span><br><span class="line">        self.metadata_field_info = [</span><br><span class="line">            AttributeInfo(</span><br><span class="line">                name=<span class="string">&quot;source&quot;</span>,</span><br><span class="line">                description=<span class="string">&quot;The source of the document&quot;</span>,</span><br><span class="line">                <span class="built_in">type</span>=<span class="string">&quot;string&quot;</span></span><br><span class="line">            ),</span><br><span class="line">            AttributeInfo(</span><br><span class="line">                name=<span class="string">&quot;date&quot;</span>,</span><br><span class="line">                description=<span class="string">&quot;The date of the document&quot;</span>,</span><br><span class="line">                <span class="built_in">type</span>=<span class="string">&quot;datetime&quot;</span></span><br><span class="line">            ),</span><br><span class="line">            AttributeInfo(</span><br><span class="line">                name=<span class="string">&quot;category&quot;</span>,</span><br><span class="line">                description=<span class="string">&quot;The category of the document&quot;</span>,</span><br><span class="line">                <span class="built_in">type</span>=<span class="string">&quot;string&quot;</span></span><br><span class="line">            )</span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        self.retriever = SelfQueryRetriever.from_llm(</span><br><span class="line">            llm=llm,</span><br><span class="line">            vectorstore=vectorstore,</span><br><span class="line">            document_contents=document_contents,</span><br><span class="line">            metadata_field_info=self.metadata_field_info</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        支持自然语言过滤的检索</span></span><br><span class="line"><span class="string">        例如: &quot;查找2023年3月关于AI的技术文档&quot;</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.retriever.get_relevant_documents(query)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-集成检索器"><a href="#3-集成检索器" class="headerlink" title="3. 集成检索器"></a>3. 集成检索器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> EnsembleRetriever</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EnsembleSearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    集成检索器</span></span><br><span class="line"><span class="string">    结合多种检索方法</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vectorstore, bm25_retriever, keyword_weights: <span class="built_in">list</span> = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 向量检索</span></span><br><span class="line">        vector_retriever = vectorstore.as_retriever(</span><br><span class="line">            search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">10</span>&#125;</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># BM25检索</span></span><br><span class="line">        self.retriever = EnsembleRetriever(</span><br><span class="line">            retrievers=[vector_retriever, bm25_retriever],</span><br><span class="line">            weights=keyword_weights <span class="keyword">or</span> [<span class="number">0.5</span>, <span class="number">0.5</span>]  <span class="comment"># 默认各50%</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;集成检索&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.retriever.get_relevant_documents(query)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-上下文压缩检索"><a href="#4-上下文压缩检索" class="headerlink" title="4. 上下文压缩检索"></a>4. 上下文压缩检索</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.retrievers <span class="keyword">import</span> ContextualCompressionRetriever</span><br><span class="line"><span class="keyword">from</span> langchain.retrievers.document_compressors <span class="keyword">import</span> LLMChainExtractor, LLMChainFilter</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ContextualCompressionSearch</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    上下文压缩检索</span></span><br><span class="line"><span class="string">    压缩检索结果，提取最相关的部分</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, base_retriever, llm</span>):</span><br><span class="line">        <span class="comment"># 使用LLM提取相关内容</span></span><br><span class="line">        compressor = LLMChainExtractor.from_llm(llm)</span><br><span class="line">        </span><br><span class="line">        self.retriever = ContextualCompressionRetriever(</span><br><span class="line">            base_compressor=compressor,</span><br><span class="line">            base_retriever=base_retriever</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">self, query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>[Document]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        返回压缩后的相关文档</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.retriever.get_relevant_documents(query)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Chain构建"><a href="#Chain构建" class="headerlink" title="Chain构建"></a>Chain构建</h2><h3 id="1-基础QA-Chain"><a href="#1-基础QA-Chain" class="headerlink" title="1. 基础QA Chain"></a>1. 基础QA Chain</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA</span><br><span class="line"><span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line"><span class="keyword">from</span> langchain.chat_models <span class="keyword">import</span> ChatOpenAI</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QABot</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    问答机器人</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vectorstore, llm_model=<span class="string">&quot;gpt-3.5-turbo&quot;</span></span>):</span><br><span class="line">        self.llm = ChatOpenAI(model=llm_model, temperature=<span class="number">0</span>)</span><br><span class="line">        self.vectorstore = vectorstore</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build_chain</span>(<span class="params">self, prompt_template: <span class="built_in">str</span> = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        构建问答链</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> prompt_template <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            prompt_template = <span class="string">&quot;&quot;&quot;使用以下背景信息回答问题。如果你不知道答案，请明确说明，不要编造答案。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">背景信息：</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答：&quot;&quot;&quot;</span></span><br><span class="line">        </span><br><span class="line">        PROMPT = PromptTemplate(</span><br><span class="line">            template=prompt_template,</span><br><span class="line">            input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>]</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> RetrievalQA.from_chain_type(</span><br><span class="line">            llm=self.llm,</span><br><span class="line">            chain_type=<span class="string">&quot;stuff&quot;</span>,</span><br><span class="line">            retriever=self.vectorstore.as_retriever(</span><br><span class="line">                search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">5</span>&#125;</span><br><span class="line">            ),</span><br><span class="line">            chain_type_kwargs=&#123;</span><br><span class="line">                <span class="string">&quot;prompt&quot;</span>: PROMPT,</span><br><span class="line">                <span class="string">&quot;document_variable_name&quot;</span>: <span class="string">&quot;context&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            return_source_documents=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ask</span>(<span class="params">self, question: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        提问</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        chain = self.build_chain()</span><br><span class="line">        result = chain(&#123;<span class="string">&quot;query&quot;</span>: question&#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;answer&quot;</span>: result[<span class="string">&quot;result&quot;</span>],</span><br><span class="line">            <span class="string">&quot;sources&quot;</span>: result.get(<span class="string">&quot;source_documents&quot;</span>, [])</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-对话检索链"><a href="#2-对话检索链" class="headerlink" title="2. 对话检索链"></a>2. 对话检索链</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> ConversationalRetrievalChain</span><br><span class="line"><span class="keyword">from</span> langchain.memory <span class="keyword">import</span> ConversationBufferMemory</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ConversationalBot</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对话式问答机器人</span></span><br><span class="line"><span class="string">    支持多轮对话</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vectorstore, llm_model=<span class="string">&quot;gpt-3.5-turbo&quot;</span></span>):</span><br><span class="line">        self.llm = ChatOpenAI(model=llm_model, temperature=<span class="number">0</span>)</span><br><span class="line">        self.vectorstore = vectorstore</span><br><span class="line">        self.memory = ConversationBufferMemory(</span><br><span class="line">            memory_key=<span class="string">&quot;chat_history&quot;</span>,</span><br><span class="line">            return_messages=<span class="literal">True</span>,</span><br><span class="line">            output_key=<span class="string">&quot;answer&quot;</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build_chain</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        构建对话链</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> ConversationalRetrievalChain.from_llm(</span><br><span class="line">            llm=self.llm,</span><br><span class="line">            retriever=self.vectorstore.as_retriever(</span><br><span class="line">                search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">5</span>&#125;</span><br><span class="line">            ),</span><br><span class="line">            memory=self.memory,</span><br><span class="line">            condense_question_prompt=self._get_condense_prompt(),</span><br><span class="line">            combine_docs_chain_kwargs=&#123;<span class="string">&quot;prompt&quot;</span>: self._get_doc_prompt()&#125;</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_get_condense_prompt</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        问题改写prompt</span></span><br><span class="line"><span class="string">        将对话历史+新问题改写为独立问题</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        template = <span class="string">&quot;&quot;&quot;给定以下对话历史和一个后续问题，将后续问题重新表述为一个独立的问题。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">对话历史：</span></span><br><span class="line"><span class="string">&#123;chat_history&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">后续问题：&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">独立问题：&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> PromptTemplate(</span><br><span class="line">            template=template,</span><br><span class="line">            input_variables=[<span class="string">&quot;chat_history&quot;</span>, <span class="string">&quot;question&quot;</span>]</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_get_doc_prompt</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        文档问答prompt</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        template = <span class="string">&quot;&quot;&quot;使用以下文档回答问题。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">文档：</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答：&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> PromptTemplate(</span><br><span class="line">            template=template,</span><br><span class="line">            input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>]</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, question: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        对话</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        chain = self.build_chain()</span><br><span class="line">        result = chain(&#123;<span class="string">&quot;question&quot;</span>: question&#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;answer&quot;</span>: result[<span class="string">&quot;answer&quot;</span>],</span><br><span class="line">            <span class="string">&quot;chat_history&quot;</span>: result.get(<span class="string">&quot;chat_history&quot;</span>, [])</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-带来源引用的RAG"><a href="#3-带来源引用的RAG" class="headerlink" title="3. 带来源引用的RAG"></a>3. 带来源引用的RAG</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SourceCitationChain</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    带来源引用的RAG链</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vectorstore, llm</span>):</span><br><span class="line">        self.vectorstore = vectorstore</span><br><span class="line">        self.llm = llm</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build_chain</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        构建带引用的chain</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">from</span> langchain.chains <span class="keyword">import</span> LLMChain</span><br><span class="line">        <span class="keyword">from</span> langchain.prompts <span class="keyword">import</span> PromptTemplate</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 检索+生成链</span></span><br><span class="line">        prompt = PromptTemplate(</span><br><span class="line">            template=<span class="string">&quot;&quot;&quot;根据以下文档回答问题，并在回答中引用文档来源。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">文档：</span></span><br><span class="line"><span class="string">&#123;context&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">问题：&#123;question&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请在回答中用[1]、[2]等形式标注引用来源。</span></span><br><span class="line"><span class="string">回答：&quot;&quot;&quot;</span>,</span><br><span class="line">            input_variables=[<span class="string">&quot;context&quot;</span>, <span class="string">&quot;question&quot;</span>]</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        llm_chain = LLMChain(llm=self.llm, prompt=prompt)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQAWithSourcesChain</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> RetrievalQAWithSourcesChain(</span><br><span class="line">            combine_documents_chain=llm_chain,</span><br><span class="line">            retriever=self.vectorstore.as_retriever()</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ask_with_sources</span>(<span class="params">self, question: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        提问并返回来源</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        chain = self.build_chain()</span><br><span class="line">        result = chain(&#123;<span class="string">&quot;question&quot;</span>: question&#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;answer&quot;</span>: result[<span class="string">&quot;answer&quot;</span>],</span><br><span class="line">            <span class="string">&quot;sources&quot;</span>: result.get(<span class="string">&quot;sources&quot;</span>, <span class="string">&quot;&quot;</span>),</span><br><span class="line">            <span class="string">&quot;source_documents&quot;</span>: result.get(<span class="string">&quot;source_documents&quot;</span>, [])</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="生产级部署"><a href="#生产级部署" class="headerlink" title="生产级部署"></a>生产级部署</h2><h3 id="1-完整RAG服务"><a href="#1-完整RAG服务" class="headerlink" title="1. 完整RAG服务"></a>1. 完整RAG服务</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Optional</span></span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"></span><br><span class="line">app = FastAPI(title=<span class="string">&quot;RAG API&quot;</span>, version=<span class="string">&quot;1.0&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RAGService</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    RAG服务</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path: <span class="built_in">str</span>, vectorstore_path: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="keyword">from</span> langchain.vectorstores <span class="keyword">import</span> Chroma</span><br><span class="line">        <span class="keyword">from</span> langchain.embeddings <span class="keyword">import</span> HuggingFaceEmbeddings</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加载向量数据库</span></span><br><span class="line">        embeddings = HuggingFaceEmbeddings(</span><br><span class="line">            model_name=<span class="string">&quot;moka-ai/m3e-base&quot;</span></span><br><span class="line">        )</span><br><span class="line">        self.vectorstore = Chroma(</span><br><span class="line">            persist_directory=vectorstore_path,</span><br><span class="line">            embedding_function=embeddings</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化LLM</span></span><br><span class="line">        self.llm = ChatOpenAI(model=<span class="string">&quot;gpt-3.5-turbo&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 构建chain</span></span><br><span class="line">        self.qa_chain = self._build_qa_chain()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_qa_chain</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">from</span> langchain.chains <span class="keyword">import</span> RetrievalQA</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> RetrievalQA.from_llm(</span><br><span class="line">            llm=self.llm,</span><br><span class="line">            retriever=self.vectorstore.as_retriever(</span><br><span class="line">                search_kwargs=&#123;<span class="string">&quot;k&quot;</span>: <span class="number">5</span>&#125;</span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">self, question: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;查询&quot;&quot;&quot;</span></span><br><span class="line">        result = self.qa_chain(&#123;<span class="string">&quot;query&quot;</span>: question&#125;)</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;answer&quot;</span>: result[<span class="string">&quot;result&quot;</span>],</span><br><span class="line">            <span class="string">&quot;sources&quot;</span>: result.get(<span class="string">&quot;source_documents&quot;</span>, [])</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_documents</span>(<span class="params">self, documents: <span class="type">List</span>[<span class="built_in">str</span>], metadatas: <span class="type">List</span>[<span class="built_in">dict</span>]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加文档&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">from</span> langchain.schema <span class="keyword">import</span> Document</span><br><span class="line">        </span><br><span class="line">        docs = [</span><br><span class="line">            Document(page_content=doc, metadata=meta)</span><br><span class="line">            <span class="keyword">for</span> doc, meta <span class="keyword">in</span> <span class="built_in">zip</span>(documents, metadatas)</span><br><span class="line">        ]</span><br><span class="line">        self.vectorstore.add_documents(docs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># API端点</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QueryRequest</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    question: <span class="built_in">str</span></span><br><span class="line">    use_citation: <span class="built_in">bool</span> = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QueryResponse</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    answer: <span class="built_in">str</span></span><br><span class="line">    sources: <span class="type">List</span>[<span class="built_in">dict</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局RAG服务实例</span></span><br><span class="line">rag_service = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.on_event(<span class="params"><span class="string">&quot;startup&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">startup</span>():</span><br><span class="line">    <span class="keyword">global</span> rag_service</span><br><span class="line">    rag_service = RAGService(</span><br><span class="line">        model_path=<span class="string">&quot;gpt-3.5-turbo&quot;</span>,</span><br><span class="line">        vectorstore_path=<span class="string">&quot;./vectorstore&quot;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/query&quot;</span>, response_model=QueryResponse</span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">request: QueryRequest</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;查询接口&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> rag_service <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">500</span>, detail=<span class="string">&quot;Service not initialized&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    result = rag_service.query(request.question)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> QueryResponse(</span><br><span class="line">        answer=result[<span class="string">&quot;answer&quot;</span>],</span><br><span class="line">        sources=[</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;content&quot;</span>: doc.page_content[:<span class="number">200</span>],</span><br><span class="line">                <span class="string">&quot;metadata&quot;</span>: doc.metadata</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> doc <span class="keyword">in</span> result.get(<span class="string">&quot;sources&quot;</span>, [])</span><br><span class="line">        ]</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/documents&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">add_documents</span>(<span class="params">documents: <span class="type">List</span>[<span class="built_in">str</span>], metadatas: <span class="type">List</span>[<span class="built_in">dict</span>]</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;添加文档&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> rag_service <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> HTTPException(status_code=<span class="number">500</span>, detail=<span class="string">&quot;Service not initialized&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    rag_service.add_documents(documents, metadatas)</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;success&quot;</span>, <span class="string">&quot;count&quot;</span>: <span class="built_in">len</span>(documents)&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    uvicorn.run(app, host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8000</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><h3 id="1-缓存Embedding"><a href="#1-缓存Embedding" class="headerlink" title="1. 缓存Embedding"></a>1. 缓存Embedding</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.embeddings <span class="keyword">import</span> CacheBackedEmbeddings</span><br><span class="line"><span class="keyword">from</span> langchain.storage <span class="keyword">import</span> LocalFileStore</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CachedEmbedding</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    带缓存的Embedding</span></span><br><span class="line"><span class="string">    避免重复计算</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, underlying_embeddings</span>):</span><br><span class="line">        <span class="comment"># 本地文件系统缓存</span></span><br><span class="line">        store = LocalFileStore(<span class="string">&quot;./cache/embeddings&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        self.embeddings = CacheBackedEmbeddings(</span><br><span class="line">            underlying_embeddings=underlying_embeddings,</span><br><span class="line">            document_embedding_cache=store</span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">embed_documents</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">float</span>]]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;缓存的文档嵌入&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.embeddings.embed_documents(texts)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">embed_query</span>(<span class="params">self, query: <span class="built_in">str</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">float</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;缓存的查询嵌入&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.embeddings.embed_query(query)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-批量处理"><a href="#2-批量处理" class="headerlink" title="2. 批量处理"></a>2. 批量处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BatchProcessor</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    批量文档处理</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, embedding_manager, vectorstore</span>):</span><br><span class="line">        self.embedding_manager = embedding_manager</span><br><span class="line">        self.vectorstore = vectorstore</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_large_dataset</span>(<span class="params">self, documents: <span class="type">List</span>[Document], </span></span><br><span class="line"><span class="params">                              batch_size: <span class="built_in">int</span> = <span class="number">100</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        分批处理大量文档</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(documents), batch_size):</span><br><span class="line">            batch = documents[i:i + batch_size]</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Processing batch <span class="subst">&#123;i // batch_size + <span class="number">1</span>&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 添加到向量数据库</span></span><br><span class="line">            self.vectorstore.add_documents(batch)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">incremental_indexing</span>(<span class="params">self, new_documents: <span class="type">List</span>[Document]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        增量索引</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 只索引新文档</span></span><br><span class="line">        self.vectorstore.add_documents(new_documents)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>LangChain为构建RAG应用提供了完整的基础设施。通过合理使用文档加载器、分割器、检索器和Chain组件，可以构建功能强大的企业级问答系统。本文介绍的高级特性如父子文档检索、自查询检索、上下文压缩等，可以进一步提升系统的准确性和用户体验。在实际生产环境中，还需要考虑性能优化、监控告警、多租户隔离等问题，以确保系统的稳定运行。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://python.langchain.com/">LangChain官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://python.langchain.com/docs/tutorials/rag/">RAG教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://smith.langchain.com/hub">LangChain Hub</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/RAG%E7%B3%BB%E7%BB%9F/">RAG系统</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/LangChain/">LangChain</a>
+    
+      <a href="/tags/RAG/">RAG</a>
+    
+      <a href="/tags/LLM%E5%BA%94%E7%94%A8/">LLM应用</a>
+    
+      <a href="/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/">向量检索</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/09/08/2023-09-08-LangChain进阶-构建企业级RAG应用/" target="_blank" title="LangChain进阶：构建企业级RAG应用">https://www.coomatrix.com/2023/09/08/2023-09-08-LangChain进阶-构建企业级RAG应用/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/10/12/2023-10-12-Physics-Informed-Neural-Networks-PINN%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%89%A9%E7%90%86%E6%96%B9%E7%A8%8B%E8%9E%8D%E5%90%88/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Physics-Informed Neural Networks (PINN)：深度学习与物理方程融合
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/20/2023-08-20-vLLM%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E-%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">vLLM高性能推理引擎：原理与实践</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LangChain%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">LangChain核心组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E6%A1%A3%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%88%86%E5%89%B2"><span class="nav-number">2.1.</span> <span class="nav-text">1. 文档加载与分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Embedding%E4%B8%8E%E5%90%91%E9%87%8F%E5%8C%96"><span class="nav-number">2.2.</span> <span class="nav-text">2. Embedding与向量化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7RAG%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">高级RAG模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%88%B6%E5%AD%90%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2"><span class="nav-number">3.1.</span> <span class="nav-text">1. 父子文档检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%87%AA%E6%9F%A5%E8%AF%A2%E6%A3%80%E7%B4%A2%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">2. 自查询检索器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%9B%86%E6%88%90%E6%A3%80%E7%B4%A2%E5%99%A8"><span class="nav-number">3.3.</span> <span class="nav-text">3. 集成检索器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8E%8B%E7%BC%A9%E6%A3%80%E7%B4%A2"><span class="nav-number">3.4.</span> <span class="nav-text">4. 上下文压缩检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chain%E6%9E%84%E5%BB%BA"><span class="nav-number">4.</span> <span class="nav-text">Chain构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80QA-Chain"><span class="nav-number">4.1.</span> <span class="nav-text">1. 基础QA Chain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AF%B9%E8%AF%9D%E6%A3%80%E7%B4%A2%E9%93%BE"><span class="nav-number">4.2.</span> <span class="nav-text">2. 对话检索链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%B8%A6%E6%9D%A5%E6%BA%90%E5%BC%95%E7%94%A8%E7%9A%84RAG"><span class="nav-number">4.3.</span> <span class="nav-text">3. 带来源引用的RAG</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E7%BA%A7%E9%83%A8%E7%BD%B2"><span class="nav-number">5.</span> <span class="nav-text">生产级部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%8C%E6%95%B4RAG%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.1.</span> <span class="nav-text">1. 完整RAG服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%93%E5%AD%98Embedding"><span class="nav-number">6.1.</span> <span class="nav-text">1. 缓存Embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86"><span class="nav-number">6.2.</span> <span class="nav-text">2. 批量处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

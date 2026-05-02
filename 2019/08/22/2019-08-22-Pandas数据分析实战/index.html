@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>pandas数据分析实战指南 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="Pandas数据分析实战指南Pandas是Python最强大的数据分析库，提供了高效的数据结构和分析工具。 核心数据结构Series123456789import pandas as pdimport numpy as np# 创建Seriess &#x3D; pd.Series([1, 3, 5, np.nan, 6, 8], index&#x3D;[&amp;#x27;a&amp;#x27;, &amp;#x27;b&amp;#x27;, &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pandas数据分析实战指南">
+<meta property="og:url" content="https://www.coomatrix.com/2019/08/22/2019-08-22-Pandas%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="Pandas数据分析实战指南Pandas是Python最强大的数据分析库，提供了高效的数据结构和分析工具。 核心数据结构Series123456789import pandas as pdimport numpy as np# 创建Seriess &#x3D; pd.Series([1, 3, 5, np.nan, 6, 8], index&#x3D;[&amp;#x27;a&amp;#x27;, &amp;#x27;b&amp;#x27;, &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+<meta property="article:published_time" content="2019-08-22T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:33:10.102Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="Pandas">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="DataFrame">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2019-08-22-Pandas数据分析实战" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1544256718-3bcf237f3974" rel="gallery_cmoopizqp001f9cv636ojbvmh noopener">
+        <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Pandas数据分析实战指南
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2019/08/22/2019-08-22-Pandas%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98/" class="article-date">
+	  <time datetime="2019-08-22T06:00:00.000Z" itemprop="datePublished">八月 22, 2019</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="Pandas数据分析实战指南"><a href="#Pandas数据分析实战指南" class="headerlink" title="Pandas数据分析实战指南"></a>Pandas数据分析实战指南</h2><p>Pandas是Python最强大的数据分析库，提供了高效的数据结构和分析工具。</p>
+<h3 id="核心数据结构"><a href="#核心数据结构" class="headerlink" title="核心数据结构"></a>核心数据结构</h3><h4 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建Series</span></span><br><span class="line">s = pd.Series([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, np.nan, <span class="number">6</span>, <span class="number">8</span>], index=[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(s)</span><br><span class="line"><span class="built_in">print</span>(s[<span class="string">&#x27;a&#x27;</span>])        <span class="comment"># 按索引访问</span></span><br><span class="line"><span class="built_in">print</span>(s[<span class="number">1</span>:<span class="number">4</span>])        <span class="comment"># 切片</span></span><br><span class="line"><span class="built_in">print</span>(s[s &gt; <span class="number">3</span>])      <span class="comment"># 布尔索引</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建DataFrame</span></span><br><span class="line">df = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>: [<span class="string">&#x27;Alice&#x27;</span>, <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Charlie&#x27;</span>, <span class="string">&#x27;David&#x27;</span>, <span class="string">&#x27;Eve&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;age&#x27;</span>: [<span class="number">25</span>, <span class="number">30</span>, <span class="number">35</span>, <span class="number">28</span>, <span class="number">32</span>],</span><br><span class="line">    <span class="string">&#x27;city&#x27;</span>: [<span class="string">&#x27;Beijing&#x27;</span>, <span class="string">&#x27;Shanghai&#x27;</span>, <span class="string">&#x27;Guangzhou&#x27;</span>, <span class="string">&#x27;Shenzhen&#x27;</span>, <span class="string">&#x27;Hangzhou&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;salary&#x27;</span>: [<span class="number">15000</span>, <span class="number">20000</span>, <span class="number">25000</span>, <span class="number">18000</span>, <span class="number">22000</span>]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(df.head())</span><br><span class="line"><span class="built_in">print</span>(df.info())</span><br><span class="line"><span class="built_in">print</span>(df.describe())</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据读取与写入"><a href="#数据读取与写入" class="headerlink" title="数据读取与写入"></a>数据读取与写入</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取CSV</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取Excel</span></span><br><span class="line">df_excel = pd.read_excel(<span class="string">&#x27;data.xlsx&#x27;</span>, sheet_name=<span class="string">&#x27;Sheet1&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取JSON</span></span><br><span class="line">df_json = pd.read_json(<span class="string">&#x27;data.json&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入文件</span></span><br><span class="line">df.to_csv(<span class="string">&#x27;output.csv&#x27;</span>, index=<span class="literal">False</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">df.to_excel(<span class="string">&#x27;output.xlsx&#x27;</span>, sheet_name=<span class="string">&#x27;Sheet1&#x27;</span>, index=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取数据库</span></span><br><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line">conn = sqlite3.connect(<span class="string">&#x27;database.db&#x27;</span>)</span><br><span class="line">df_sql = pd.read_sql(<span class="string">&#x27;SELECT * FROM users&#x27;</span>, conn)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据选择与过滤"><a href="#数据选择与过滤" class="headerlink" title="数据选择与过滤"></a>数据选择与过滤</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 选择列</span></span><br><span class="line">df[<span class="string">&#x27;name&#x27;</span>]              <span class="comment"># 单列</span></span><br><span class="line">df[[<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;age&#x27;</span>]]     <span class="comment"># 多列</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># loc：基于标签</span></span><br><span class="line">df.loc[<span class="number">0</span>:<span class="number">2</span>, <span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;city&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># iloc：基于位置</span></span><br><span class="line">df.iloc[<span class="number">0</span>:<span class="number">3</span>, <span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 条件过滤</span></span><br><span class="line">df[df[<span class="string">&#x27;age&#x27;</span>] &gt; <span class="number">30</span>]</span><br><span class="line">df[(df[<span class="string">&#x27;age&#x27;</span>] &gt; <span class="number">25</span>) &amp; (df[<span class="string">&#x27;salary&#x27;</span>] &gt; <span class="number">18000</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># isin过滤</span></span><br><span class="line">df[df[<span class="string">&#x27;city&#x27;</span>].isin([<span class="string">&#x27;Beijing&#x27;</span>, <span class="string">&#x27;Shanghai&#x27;</span>])]</span><br><span class="line"></span><br><span class="line"><span class="comment"># query方法</span></span><br><span class="line">df.query(<span class="string">&#x27;age &gt; 30 and salary &gt; 20000&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 处理缺失值</span></span><br><span class="line">df_with_nan = pd.DataFrame(&#123;</span><br><span class="line">    <span class="string">&#x27;A&#x27;</span>: [<span class="number">1</span>, np.nan, <span class="number">3</span>, np.nan, <span class="number">5</span>],</span><br><span class="line">    <span class="string">&#x27;B&#x27;</span>: [<span class="number">10</span>, <span class="number">20</span>, np.nan, <span class="number">40</span>, <span class="number">50</span>],</span><br><span class="line">    <span class="string">&#x27;C&#x27;</span>: [<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, np.nan, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;w&#x27;</span>]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查缺失值</span></span><br><span class="line"><span class="built_in">print</span>(df_with_nan.isnull().<span class="built_in">sum</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除缺失值</span></span><br><span class="line">df_drop = df_with_nan.dropna()              <span class="comment"># 删除含缺失值的行</span></span><br><span class="line">df_drop_col = df_with_nan.dropna(axis=<span class="number">1</span>)    <span class="comment"># 删除含缺失值的列</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充缺失值</span></span><br><span class="line">df_fill = df_with_nan.fillna(&#123;</span><br><span class="line">    <span class="string">&#x27;A&#x27;</span>: df_with_nan[<span class="string">&#x27;A&#x27;</span>].mean(),</span><br><span class="line">    <span class="string">&#x27;B&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;C&#x27;</span>: <span class="string">&#x27;unknown&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 前向/后向填充</span></span><br><span class="line">df_ffill = df_with_nan.fillna(method=<span class="string">&#x27;ffill&#x27;</span>)</span><br><span class="line">df_bfill = df_with_nan.fillna(method=<span class="string">&#x27;bfill&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理重复值</span></span><br><span class="line">df_dedup = df.drop_duplicates()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据类型转换</span></span><br><span class="line">df[<span class="string">&#x27;age&#x27;</span>] = df[<span class="string">&#x27;age&#x27;</span>].astype(<span class="built_in">float</span>)</span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date_column&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="分组聚合"><a href="#分组聚合" class="headerlink" title="分组聚合"></a>分组聚合</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基本分组</span></span><br><span class="line">grouped = df.groupby(<span class="string">&#x27;city&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 聚合运算</span></span><br><span class="line"><span class="built_in">print</span>(df.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;salary&#x27;</span>].mean())</span><br><span class="line"><span class="built_in">print</span>(df.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;salary&#x27;</span>].agg([<span class="string">&#x27;mean&#x27;</span>, <span class="string">&#x27;median&#x27;</span>, <span class="string">&#x27;std&#x27;</span>, <span class="string">&#x27;count&#x27;</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多列分组</span></span><br><span class="line"><span class="built_in">print</span>(df.groupby([<span class="string">&#x27;city&#x27;</span>, <span class="string">&#x27;age&#x27;</span>])[<span class="string">&#x27;salary&#x27;</span>].mean())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义聚合</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">salary_range</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x.<span class="built_in">max</span>() - x.<span class="built_in">min</span>()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(df.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;salary&#x27;</span>].agg([salary_range]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># transform：保持原始形状</span></span><br><span class="line">df[<span class="string">&#x27;city_avg&#x27;</span>] = df.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;salary&#x27;</span>].transform(<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># apply：自定义函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">normalize</span>(<span class="params">group</span>):</span><br><span class="line">    <span class="keyword">return</span> (group - group.mean()) / group.std()</span><br><span class="line"></span><br><span class="line">df[<span class="string">&#x27;salary_normalized&#x27;</span>] = df.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;salary&#x27;</span>].transform(normalize)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据合并"><a href="#数据合并" class="headerlink" title="数据合并"></a>数据合并</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df1 = pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>: [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>], <span class="string">&#x27;value1&#x27;</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]&#125;)</span><br><span class="line">df2 = pd.DataFrame(&#123;<span class="string">&#x27;key&#x27;</span>: [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;D&#x27;</span>], <span class="string">&#x27;value2&#x27;</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并（类似SQL JOIN）</span></span><br><span class="line">pd.merge(df1, df2, on=<span class="string">&#x27;key&#x27;</span>, how=<span class="string">&#x27;inner&#x27;</span>)   <span class="comment"># 内连接</span></span><br><span class="line">pd.merge(df1, df2, on=<span class="string">&#x27;key&#x27;</span>, how=<span class="string">&#x27;outer&#x27;</span>)   <span class="comment"># 外连接</span></span><br><span class="line">pd.merge(df1, df2, on=<span class="string">&#x27;key&#x27;</span>, how=<span class="string">&#x27;left&#x27;</span>)    <span class="comment"># 左连接</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 拼接</span></span><br><span class="line">pd.concat([df1, df2], axis=<span class="number">0</span>)   <span class="comment"># 垂直拼接</span></span><br><span class="line">pd.concat([df1, df2], axis=<span class="number">1</span>)   <span class="comment"># 水平拼接</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据透视表"><a href="#数据透视表" class="headerlink" title="数据透视表"></a>数据透视表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 透视表</span></span><br><span class="line">pivot = df.pivot_table(values=<span class="string">&#x27;salary&#x27;</span>, index=<span class="string">&#x27;city&#x27;</span>,</span><br><span class="line">                        columns=<span class="string">&#x27;age&#x27;</span>, aggfunc=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交叉表</span></span><br><span class="line">cross = pd.crosstab(df[<span class="string">&#x27;city&#x27;</span>], df[<span class="string">&#x27;age&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># melt：宽表转长表</span></span><br><span class="line">df_long = pd.melt(df, id_vars=[<span class="string">&#x27;name&#x27;</span>], value_vars=[<span class="string">&#x27;age&#x27;</span>, <span class="string">&#x27;salary&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="时间序列处理"><a href="#时间序列处理" class="headerlink" title="时间序列处理"></a>时间序列处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建时间序列</span></span><br><span class="line">dates = pd.date_range(<span class="string">&#x27;2019-01-01&#x27;</span>, periods=<span class="number">100</span>, freq=<span class="string">&#x27;D&#x27;</span>)</span><br><span class="line">ts = pd.Series(np.random.randn(<span class="number">100</span>), index=dates)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重采样</span></span><br><span class="line">monthly = ts.resample(<span class="string">&#x27;M&#x27;</span>).mean()</span><br><span class="line">weekly = ts.resample(<span class="string">&#x27;W&#x27;</span>).<span class="built_in">sum</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 滚动窗口</span></span><br><span class="line">rolling_mean = ts.rolling(window=<span class="number">7</span>).mean()</span><br><span class="line">rolling_std = ts.rolling(window=<span class="number">7</span>).std()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间特征提取</span></span><br><span class="line">df[<span class="string">&#x27;year&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.year</span><br><span class="line">df[<span class="string">&#x27;month&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.month</span><br><span class="line">df[<span class="string">&#x27;day_of_week&#x27;</span>] = df[<span class="string">&#x27;date&#x27;</span>].dt.dayofweek</span><br></pre></td></tr></table></figure>
+
+<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 使用category类型减少内存</span></span><br><span class="line">df[<span class="string">&#x27;city&#x27;</span>] = df[<span class="string">&#x27;city&#x27;</span>].astype(<span class="string">&#x27;category&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 使用dtypes指定数据类型</span></span><br><span class="line">df = pd.read_csv(<span class="string">&#x27;data.csv&#x27;</span>, dtype=&#123;<span class="string">&#x27;age&#x27;</span>: <span class="string">&#x27;int8&#x27;</span>, <span class="string">&#x27;salary&#x27;</span>: <span class="string">&#x27;float32&#x27;</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 避免逐行操作，使用向量化</span></span><br><span class="line"><span class="comment"># 差: df.apply(lambda row: row[&#x27;salary&#x27;] * 1.1, axis=1)</span></span><br><span class="line"><span class="comment"># 好: df[&#x27;salary&#x27;] * 1.1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 使用eval进行大数据运算</span></span><br><span class="line">result = df.<span class="built_in">eval</span>(<span class="string">&#x27;salary_bonus = salary * 1.1&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Pandas提供了从数据读取、清洗、转换到分析的完整工具链。熟练掌握DataFrame操作、分组聚合、数据合并和时间序列处理，是数据分析工作的核心技能。在实际项目中，合理使用向量化操作和优化数据类型，可以显著提升处理效率。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/Python%E7%BC%96%E7%A8%8B/">Python编程</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/Pandas/">Pandas</a>
+    
+      <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a>
+    
+      <a href="/tags/DataFrame/">DataFrame</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2019/08/22/2019-08-22-Pandas数据分析实战/" target="_blank" title="Pandas数据分析实战指南">https://www.coomatrix.com/2019/08/22/2019-08-22-Pandas数据分析实战/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/10/2019-09-10-Matplotlib%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Matplotlib数据可视化从入门到精通
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/05/2019-08-05-NumPy%E9%AB%98%E6%95%88%E6%95%B0%E5%80%BC%E8%AE%A1%E7%AE%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">NumPy高效数值计算指南</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pandas%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">Pandas数据分析实战指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">核心数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Series"><span class="nav-number">1.1.1.</span> <span class="nav-text">Series</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataFrame"><span class="nav-number">1.1.2.</span> <span class="nav-text">DataFrame</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E5%86%99%E5%85%A5"><span class="nav-number">1.2.</span> <span class="nav-text">数据读取与写入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%89%E6%8B%A9%E4%B8%8E%E8%BF%87%E6%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">数据选择与过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-number">1.4.</span> <span class="nav-text">数据清洗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E8%81%9A%E5%90%88"><span class="nav-number">1.5.</span> <span class="nav-text">分组聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%90%88%E5%B9%B6"><span class="nav-number">1.6.</span> <span class="nav-text">数据合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%80%8F%E8%A7%86%E8%A1%A8"><span class="nav-number">1.7.</span> <span class="nav-text">数据透视表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97%E5%A4%84%E7%90%86"><span class="nav-number">1.8.</span> <span class="nav-text">时间序列处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">1.9.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.10.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

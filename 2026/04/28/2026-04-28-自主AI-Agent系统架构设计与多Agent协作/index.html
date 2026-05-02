@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>自主ai agent系统架构设计与多agent协作 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="概述AI Agent（智能体）是2025-2026年最热门的技术方向之一。本文深入探讨单Agent架构设计、多Agent协作机制，以及主流协作框架的对比。 AI Agent核心架构单Agent系统flowchart TB     subgraph Agent核心组件         OBS[观察模块]         THINK[推理引擎]         PLAN[规划模块]         A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自主AI Agent系统架构设计与多Agent协作">
+<meta property="og:url" content="https://www.coomatrix.com/2026/04/28/2026-04-28-%E8%87%AA%E4%B8%BBAI-Agent%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="概述AI Agent（智能体）是2025-2026年最热门的技术方向之一。本文深入探讨单Agent架构设计、多Agent协作机制，以及主流协作框架的对比。 AI Agent核心架构单Agent系统flowchart TB     subgraph Agent核心组件         OBS[观察模块]         THINK[推理引擎]         PLAN[规划模块]         A">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+<meta property="article:published_time" content="2026-04-28T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:54:37.166Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="Agent架构">
+<meta property="article:tag" content="Multi-Agent">
+<meta property="article:tag" content="自主系统">
+<meta property="article:tag" content="协作框架">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2026-04-28-自主AI-Agent系统架构设计与多Agent协作" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" rel="gallery_cmoopizsq00at9cv6eeqb9vaf noopener">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      自主AI Agent系统架构设计与多Agent协作
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2026/04/28/2026-04-28-%E8%87%AA%E4%B8%BBAI-Agent%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C/" class="article-date">
+	  <time datetime="2026-04-28T02:00:00.000Z" itemprop="datePublished">四月 28, 2026</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>AI Agent（智能体）是2025-2026年最热门的技术方向之一。本文深入探讨单Agent架构设计、多Agent协作机制，以及主流协作框架的对比。</p>
+<h2 id="AI-Agent核心架构"><a href="#AI-Agent核心架构" class="headerlink" title="AI Agent核心架构"></a>AI Agent核心架构</h2><h3 id="单Agent系统"><a href="#单Agent系统" class="headerlink" title="单Agent系统"></a>单Agent系统</h3><pre class="mermaid">flowchart TB
+    subgraph Agent核心组件
+        OBS[观察模块]
+        THINK[推理引擎]
+        PLAN[规划模块]
+        ACT[执行模块]
+        MEM[记忆系统]
+    end
+    
+    OBS --> THINK
+    THINK --> PLAN
+    PLAN --> ACT
+    ACT --> OBS
+    MEM --> THINK
+    THINK --> MEM</pre>
+
+<h3 id="Agent决策流程"><a href="#Agent决策流程" class="headerlink" title="Agent决策流程"></a>Agent决策流程</h3><pre class="mermaid">sequenceDiagram
+    participant User as 用户
+    participant Obs as 观察模块
+    participant Think as 推理引擎
+    participant Plan as 规划模块
+    participant Act as 执行模块
+    participant Mem as 记忆系统
+    
+    User->>Obs: 用户请求
+    Obs->>Think: 环境状态
+    Think->>Mem: 查询相关记忆
+    Mem-->>Think: 返回历史经验
+    Think->>Plan: 制定行动计划
+    Plan->>Act: 执行动作
+    Act->>User: 返回结果
+    Act->>Mem: 存储执行经验</pre>
+
+<h2 id="ReAct范式"><a href="#ReAct范式" class="headerlink" title="ReAct范式"></a>ReAct范式</h2><h3 id="思考-行动-观察循环"><a href="#思考-行动-观察循环" class="headerlink" title="思考-行动-观察循环"></a>思考-行动-观察循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ReActAgent</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;ReAct推理Agent&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, llm, tools</span>):</span><br><span class="line">        self.llm = llm</span><br><span class="line">        self.tools = tools</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">think</span>(<span class="params">self, observation, thought_history</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;思考：生成下一步推理&quot;&quot;&quot;</span></span><br><span class="line">        prompt = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">当前状态: <span class="subst">&#123;observation&#125;</span></span></span><br><span class="line"><span class="string">历史推理: <span class="subst">&#123;thought_history&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请思考下一步应该做什么？</span></span><br><span class="line"><span class="string">格式: 思考: [你的推理]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">        response = self.llm.generate(prompt)</span><br><span class="line">        <span class="keyword">return</span> response</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">act</span>(<span class="params">self, thought</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;行动：执行工具或回答&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;使用工具&quot;</span> <span class="keyword">in</span> thought:</span><br><span class="line">            tool_name = extract_tool(thought)</span><br><span class="line">            tool_args = extract_args(thought)</span><br><span class="line">            <span class="keyword">return</span> self.tools.execute(tool_name, tool_args)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> thought</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self, initial_obs, max_steps=<span class="number">10</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;运行Agent&quot;&quot;&quot;</span></span><br><span class="line">        thought_history = []</span><br><span class="line">        observation = initial_obs</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(max_steps):</span><br><span class="line">            thought = self.think(observation, thought_history)</span><br><span class="line">            thought_history.append(thought)</span><br><span class="line">            </span><br><span class="line">            result = self.act(thought)</span><br><span class="line">            observation = <span class="string">f&quot;观察结果: <span class="subst">&#123;result&#125;</span>&quot;</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;最终答案&quot;</span> <span class="keyword">in</span> thought:</span><br><span class="line">                <span class="keyword">return</span> extract_answer(thought)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;任务未完成&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="多Agent协作框架"><a href="#多Agent协作框架" class="headerlink" title="多Agent协作框架"></a>多Agent协作框架</h2><h3 id="CrewAI架构"><a href="#CrewAI架构" class="headerlink" title="CrewAI架构"></a>CrewAI架构</h3><pre class="mermaid">flowchart TB
+    subgraph CrewAI框架
+        CREW[Crew]
+        CREW --> AGENT1[Agent 1<br>研究员]
+        CREW --> AGENT2[Agent 2<br>分析师]
+        CREW --> AGENT3[Agent 3<br>作家]
+        
+        AGENT1 --> TASK1[任务1<br>信息收集]
+        AGENT2 --> TASK2[任务2<br>数据分析]
+        AGENT3 --> TASK3[任务3<br>报告撰写]
+        
+        TASK1 --> KICKOFF[Crew执行]
+        TASK2 --> KICKOFF
+        TASK3 --> KICKOFF
+    end</pre>
+
+<h3 id="CrewAI实现"><a href="#CrewAI实现" class="headerlink" title="CrewAI实现"></a>CrewAI实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> crewai <span class="keyword">import</span> Agent, Task, Crew</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义Agent</span></span><br><span class="line">researcher = Agent(</span><br><span class="line">    role=<span class="string">&quot;高级研究员&quot;</span>,</span><br><span class="line">    goal=<span class="string">&quot;收集并分析最新的AI技术动态&quot;</span>,</span><br><span class="line">    backstory=<span class="string">&quot;你是一位资深的AI研究员，擅长从多个来源收集信息&quot;</span>,</span><br><span class="line">    verbose=<span class="literal">True</span>,</span><br><span class="line">    allow_delegation=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">analyst = Agent(</span><br><span class="line">    role=<span class="string">&quot;数据分析师&quot;</span>,</span><br><span class="line">    goal=<span class="string">&quot;对收集的信息进行深度分析&quot;</span>,</span><br><span class="line">    backstory=<span class="string">&quot;你是一位数据分析专家，擅长发现数据中的洞察&quot;</span>,</span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">writer = Agent(</span><br><span class="line">    role=<span class="string">&quot;技术作家&quot;</span>,</span><br><span class="line">    goal=<span class="string">&quot;将复杂的技术内容转化为易懂的报告&quot;</span>,</span><br><span class="line">    backstory=<span class="string">&quot;你是一位专业的技术写作者&quot;</span>,</span><br><span class="line">    verbose=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义任务</span></span><br><span class="line">task1 = Task(</span><br><span class="line">    description=<span class="string">&quot;搜索并整理2024年AI领域的最新进展&quot;</span>,</span><br><span class="line">    agent=researcher</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">task2 = Task(</span><br><span class="line">    description=<span class="string">&quot;分析这些进展对行业的影响&quot;</span>,</span><br><span class="line">    agent=analyst,</span><br><span class="line">    context=[task1]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">task3 = Task(</span><br><span class="line">    description=<span class="string">&quot;撰写一份完整的技术报告&quot;</span>,</span><br><span class="line">    agent=writer,</span><br><span class="line">    context=[task1, task2]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建Crew</span></span><br><span class="line">crew = Crew(</span><br><span class="line">    agents=[researcher, analyst, writer],</span><br><span class="line">    tasks=[task1, task2, task3],</span><br><span class="line">    verbose=<span class="literal">True</span>,</span><br><span class="line">    memory=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行</span></span><br><span class="line">result = crew.kickoff()</span><br></pre></td></tr></table></figure>
+
+<h2 id="AutoGen多Agent系统"><a href="#AutoGen多Agent系统" class="headerlink" title="AutoGen多Agent系统"></a>AutoGen多Agent系统</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> autogen</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义Agent</span></span><br><span class="line">assistant = autogen.AssistantAgent(</span><br><span class="line">    name=<span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">    system_message=<span class="string">&quot;你是一位有帮助的AI助手&quot;</span>,</span><br><span class="line">    llm_config=&#123;<span class="string">&quot;model&quot;</span>: <span class="string">&quot;gpt-4o&quot;</span>&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">user_proxy = autogen.UserProxyAgent(</span><br><span class="line">    name=<span class="string">&quot;user_proxy&quot;</span>,</span><br><span class="line">    human_input_mode=<span class="string">&quot;NEVER&quot;</span>,</span><br><span class="line">    max_consecutive_auto_reply=<span class="number">10</span>,</span><br><span class="line">    code_execution_config=&#123;<span class="string">&quot;work_dir&quot;</span>: <span class="string">&quot;coding&quot;</span>&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Agent间对话</span></span><br><span class="line">chat_result = user_proxy.initiate_chat(</span><br><span class="line">    assistant,</span><br><span class="line">    message=<span class="string">&quot;帮我写一个排序算法&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Multi-Agent协作模式"><a href="#Multi-Agent协作模式" class="headerlink" title="Multi-Agent协作模式"></a>Multi-Agent协作模式</h2><h3 id="层级协作"><a href="#层级协作" class="headerlink" title="层级协作"></a>层级协作</h3><pre class="mermaid">flowchart TB
+    subgraph 管理层
+        MGR[Manager Agent]
+    end
+    
+    subgraph 执行层
+        WORK1[Worker 1]
+        WORK2[Worker 2]
+        WORK3[Worker 3]
+    end
+    
+    subgraph 工具层
+        TOOL1[搜索工具]
+        TOOL2[代码执行]
+        TOOL3[文件读写]
+    end
+    
+    MGR --> WORK1
+    MGR --> WORK2
+    MGR --> WORK3
+    
+    WORK1 --> TOOL1
+    WORK2 --> TOOL2
+    WORK3 --> TOOL3</pre>
+
+<h3 id="对等协作"><a href="#对等协作" class="headerlink" title="对等协作"></a>对等协作</h3><pre class="mermaid">flowchart LR
+    A1[Agent 1] <--> A2[Agent 2]
+    A2 <--> A3[Agent 3]
+    A3 <--> A1
+    
+    A1 --> SHARED[共享知识库]
+    A2 --> SHARED
+    A3 --> SHARED</--></--></--></pre>
+
+<h2 id="框架对比"><a href="#框架对比" class="headerlink" title="框架对比"></a>框架对比</h2><table>
+<thead>
+<tr>
+<th>框架</th>
+<th>开发者</th>
+<th>Agent类型</th>
+<th>协作模式</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LangChain Agents</td>
+<td>LangChain</td>
+<td>ReAct&#x2F;Plan</td>
+<td>单Agent</td>
+<td>通用</td>
+</tr>
+<tr>
+<td>CrewAI</td>
+<td>CrewAI</td>
+<td>Role-based</td>
+<td>层级</td>
+<td>团队协作</td>
+</tr>
+<tr>
+<td>AutoGen</td>
+<td>Microsoft</td>
+<td>对话式</td>
+<td>多Agent</td>
+<td>对话协作</td>
+</tr>
+<tr>
+<td>MetaGPT</td>
+<td>HKUST</td>
+<td>SOP</td>
+<td>层级</td>
+<td>软件开发</td>
+</tr>
+<tr>
+<td>CAMEL</td>
+<td>CAMEL</td>
+<td>角色扮演</td>
+<td>对等</td>
+<td>复杂任务</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre class="mermaid">mindmap
+  root((AI Agent系统))
+    核心能力
+      观察感知
+      推理规划
+      工具使用
+      记忆管理
+    多Agent协作
+      层级模式
+      对等模式
+      混合模式
+    主流框架
+      LangChain
+      CrewAI
+      AutoGen
+      MetaGPT</pre>
+
+<p>AI Agent代表了AI从被动响应到主动执行的重要转变，多Agent协作是解决复杂任务的有效途径。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/AI-Agent/">AI Agent</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/AI-Agent/">AI Agent</a>
+    
+      <a href="/tags/Agent%E6%9E%B6%E6%9E%84/">Agent架构</a>
+    
+      <a href="/tags/Multi-Agent/">Multi-Agent</a>
+    
+      <a href="/tags/%E8%87%AA%E4%B8%BB%E7%B3%BB%E7%BB%9F/">自主系统</a>
+    
+      <a href="/tags/%E5%8D%8F%E4%BD%9C%E6%A1%86%E6%9E%B6/">协作框架</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2026/04/28/2026-04-28-自主AI-Agent系统架构设计与多Agent协作/" target="_blank" title="自主AI Agent系统架构设计与多Agent协作">https://www.coomatrix.com/2026/04/28/2026-04-28-自主AI-Agent系统架构设计与多Agent协作/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/05/02/2026-05-02-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%80%81%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          开源大模型生态全面对比：2026年最新进展
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/04/25/2026-04-25-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95-%E4%BB%8EGPT-4V%E5%88%B0GPT-4o/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">多模态大模型最新进展：从GPT-4V到GPT-4o的演进</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI-Agent%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">AI Agent核心架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95Agent%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.1.</span> <span class="nav-text">单Agent系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Agent%E5%86%B3%E7%AD%96%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">Agent决策流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReAct%E8%8C%83%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">ReAct范式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%80%83-%E8%A1%8C%E5%8A%A8-%E8%A7%82%E5%AF%9F%E5%BE%AA%E7%8E%AF"><span class="nav-number">3.1.</span> <span class="nav-text">思考-行动-观察循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C%E6%A1%86%E6%9E%B6"><span class="nav-number">4.</span> <span class="nav-text">多Agent协作框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CrewAI%E6%9E%B6%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">CrewAI架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CrewAI%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">CrewAI实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AutoGen%E5%A4%9AAgent%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.</span> <span class="nav-text">AutoGen多Agent系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-Agent%E5%8D%8F%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">Multi-Agent协作模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%8D%8F%E4%BD%9C"><span class="nav-number">6.1.</span> <span class="nav-text">层级协作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E7%AD%89%E5%8D%8F%E4%BD%9C"><span class="nav-number">6.2.</span> <span class="nav-text">对等协作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E5%AF%B9%E6%AF%94"><span class="nav-number">7.</span> <span class="nav-text">框架对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

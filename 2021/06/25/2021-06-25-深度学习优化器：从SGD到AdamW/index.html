@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>深度学习优化器：从sgd到adamw | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="深度学习优化器发展与实践">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习优化器：从SGD到AdamW">
+<meta property="og:url" content="https://www.coomatrix.com/2021/06/25/2021-06-25-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BC%98%E5%8C%96%E5%99%A8%EF%BC%9A%E4%BB%8ESGD%E5%88%B0AdamW/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="深度学习优化器发展与实践">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1460925895917-afdab827c52f">
+<meta property="article:published_time" content="2021-06-25T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:02.713Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="优化器">
+<meta property="article:tag" content="训练技巧">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1460925895917-afdab827c52f">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-06-25-深度学习优化器：从SGD到AdamW" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1460925895917-afdab827c52f" rel="gallery_cmoopizra004m9cv60fkt8k5l noopener">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习优化器：从SGD到AdamW
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/06/25/2021-06-25-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BC%98%E5%8C%96%E5%99%A8%EF%BC%9A%E4%BB%8ESGD%E5%88%B0AdamW/" class="article-date">
+	  <time datetime="2021-06-25T02:00:00.000Z" itemprop="datePublished">六月 25, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>优化器是深度学习训练的核心组件，从经典的SGD到现代的AdamW，优化器技术经历了快速发展。本文系统介绍各类优化器的原理、实现和使用场景。</p>
+<h2 id="经典SGD"><a href="#经典SGD" class="headerlink" title="经典SGD"></a>经典SGD</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SGD</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;随机梯度下降&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, params, lr=<span class="number">0.01</span>, momentum=<span class="number">0.0</span>, dampening=<span class="number">0</span>, weight_decay=<span class="number">0</span></span>):</span><br><span class="line">        self.params = <span class="built_in">list</span>(params)</span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.momentum = momentum</span><br><span class="line">        self.dampening = dampening</span><br><span class="line">        self.weight_decay = weight_decay</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            </span><br><span class="line">            grad = p.grad.data</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 权重衰减</span></span><br><span class="line">            <span class="keyword">if</span> self.weight_decay != <span class="number">0</span>:</span><br><span class="line">                grad = grad + self.weight_decay * p.data</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 动量</span></span><br><span class="line">            <span class="keyword">if</span> self.momentum != <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&#x27;momentum_buffer&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> self.state[p]:</span><br><span class="line">                    self.state[p][<span class="string">&#x27;momentum_buffer&#x27;</span>] = grad.clone()</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    buf = self.state[p][<span class="string">&#x27;momentum_buffer&#x27;</span>]</span><br><span class="line">                    buf = self.momentum * buf + (<span class="number">1</span> - self.dampening) * grad</span><br><span class="line">                    self.state[p][<span class="string">&#x27;momentum_buffer&#x27;</span>] = buf</span><br><span class="line">                    grad = buf</span><br><span class="line">            </span><br><span class="line">            p.data = p.data - self.lr * grad</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">zero_grad</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                p.grad.detach_()</span><br><span class="line">                p.grad.zero_()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line">model = nn.Linear(<span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">optimizer = SGD(model.parameters(), lr=<span class="number">0.01</span>, momentum=<span class="number">0.9</span>, weight_decay=<span class="number">1e-4</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> inputs, targets <span class="keyword">in</span> dataloader:</span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    outputs = model(inputs)</span><br><span class="line">    loss = F.cross_entropy(outputs, targets)</span><br><span class="line">    loss.backward()</span><br><span class="line">    optimizer.step()</span><br></pre></td></tr></table></figure>
+
+<p>##带动量的SGD</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SGDMomentum</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;带动量的SGD (Nesterov)&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, params, lr=<span class="number">0.01</span>, momentum=<span class="number">0.9</span>, </span></span><br><span class="line"><span class="params">                 weight_decay=<span class="number">1e-4</span>, nesterov=<span class="literal">True</span></span>):</span><br><span class="line">        self.params = <span class="built_in">list</span>(params)</span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.momentum = momentum</span><br><span class="line">        self.weight_decay = weight_decay</span><br><span class="line">        self.nesterov = nesterov</span><br><span class="line">        self.state = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            </span><br><span class="line">            grad = p.grad.data</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 权重衰减（独立于动量）</span></span><br><span class="line">            <span class="keyword">if</span> self.weight_decay != <span class="number">0</span>:</span><br><span class="line">                grad = grad.add(p.data, alpha=self.weight_decay)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 初始化动量缓冲区</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> self.state:</span><br><span class="line">                self.state[<span class="built_in">id</span>(p)] = torch.zeros_like(p.data)</span><br><span class="line">            </span><br><span class="line">            buf = self.state[<span class="built_in">id</span>(p)]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># Nesterov动量</span></span><br><span class="line">            <span class="keyword">if</span> self.nesterov:</span><br><span class="line">                buf.mul_(self.momentum).add_(grad)</span><br><span class="line">                grad = grad.add(buf, alpha=self.momentum)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                buf.mul_(self.momentum).add_(grad)</span><br><span class="line">                grad = buf</span><br><span class="line">            </span><br><span class="line">            p.data.add_(grad, alpha=-self.lr)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adam优化器"><a href="#Adam优化器" class="headerlink" title="Adam优化器"></a>Adam优化器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Adam</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Adam优化器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, params, lr=<span class="number">1e-3</span>, betas=(<span class="params"><span class="number">0.9</span>, <span class="number">0.999</span></span>), </span></span><br><span class="line"><span class="params">                 eps=<span class="number">1e-8</span>, weight_decay=<span class="number">0</span>, amsgrad=<span class="literal">False</span></span>):</span><br><span class="line">        self.params = <span class="built_in">list</span>(params)</span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.beta1, self.beta2 = betas</span><br><span class="line">        self.eps = eps</span><br><span class="line">        self.weight_decay = weight_decay</span><br><span class="line">        self.amsgrad = amsgrad</span><br><span class="line">        </span><br><span class="line">        self.state = &#123;&#125;</span><br><span class="line">        self.step_count = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self</span>):</span><br><span class="line">        self.step_count += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            </span><br><span class="line">            grad = p.grad.data</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 获取状态</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> self.state:</span><br><span class="line">                self.state[<span class="built_in">id</span>(p)] = &#123;</span><br><span class="line">                    <span class="string">&#x27;exp_avg&#x27;</span>: torch.zeros_like(p.data),</span><br><span class="line">                    <span class="string">&#x27;exp_avg_sq&#x27;</span>: torch.zeros_like(p.data),</span><br><span class="line">                    <span class="string">&#x27;max_exp_avg_sq&#x27;</span>: torch.zeros_like(p.data) <span class="keyword">if</span> self.amsgrad <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line">                &#125;</span><br><span class="line">            </span><br><span class="line">            state = self.state[<span class="built_in">id</span>(p)]</span><br><span class="line">            exp_avg, exp_avg_sq = state[<span class="string">&#x27;exp_avg&#x27;</span>], state[<span class="string">&#x27;exp_avg_sq&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 权重衰减（L2正则化）</span></span><br><span class="line">            <span class="keyword">if</span> self.weight_decay != <span class="number">0</span>:</span><br><span class="line">                p.data.add_(p.data, alpha=-self.lr * self.weight_decay)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 更新一阶矩估计</span></span><br><span class="line">            exp_avg.mul_(self.beta1).add_(grad, alpha=<span class="number">1</span> - self.beta1)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 更新二阶矩估计</span></span><br><span class="line">            exp_avg_sq.mul_(self.beta2).addcmul_(grad, grad, value=<span class="number">1</span> - self.beta2)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># bias correction</span></span><br><span class="line">            bias_correction1 = <span class="number">1</span> - self.beta1 ** self.step_count</span><br><span class="line">            bias_correction2 = <span class="number">1</span> - self.beta2 ** self.step_count</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># AMSGrad</span></span><br><span class="line">            <span class="keyword">if</span> self.amsgrad:</span><br><span class="line">                max_exp_avg_sq = state[<span class="string">&#x27;max_exp_avg_sq&#x27;</span>]</span><br><span class="line">                torch.<span class="built_in">max</span>(max_exp_avg_sq, exp_avg_sq, out=max_exp_avg_sq)</span><br><span class="line">                denom = (max_exp_avg_sq.sqrt() / math.sqrt(bias_correction2)).add_(self.eps)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                denom = (exp_avg_sq.sqrt() / math.sqrt(bias_correction2)).add_(self.eps)</span><br><span class="line">            </span><br><span class="line">            step_size = self.lr / bias_correction1</span><br><span class="line">            p.data.addcdiv_(exp_avg, denom, value=-step_size)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">zero_grad</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                p.grad.detach_()</span><br><span class="line">                p.grad.zero_()</span><br></pre></td></tr></table></figure>
+
+<h2 id="AdamW优化器"><a href="#AdamW优化器" class="headerlink" title="AdamW优化器"></a>AdamW优化器</h2><p>AdamW是Adam的改进版本，正确处理权重衰减：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AdamW</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;AdamW优化器（解耦权重衰减）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, params, lr=<span class="number">1e-3</span>, betas=(<span class="params"><span class="number">0.9</span>, <span class="number">0.999</span></span>), </span></span><br><span class="line"><span class="params">                 eps=<span class="number">1e-8</span>, weight_decay=<span class="number">0.01</span></span>):</span><br><span class="line">        self.params = <span class="built_in">list</span>(params)</span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.beta1, self.beta2 = betas</span><br><span class="line">        self.eps = eps</span><br><span class="line">        self.weight_decay = weight_decay</span><br><span class="line">        </span><br><span class="line">        self.state = &#123;&#125;</span><br><span class="line">        self.step_count = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self</span>):</span><br><span class="line">        self.step_count += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            </span><br><span class="line">            grad = p.grad.data.clone()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 获取状态</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">id</span>(p) <span class="keyword">not</span> <span class="keyword">in</span> self.state:</span><br><span class="line">                self.state[<span class="built_in">id</span>(p)] = &#123;</span><br><span class="line">                    <span class="string">&#x27;exp_avg&#x27;</span>: torch.zeros_like(p.data),</span><br><span class="line">                    <span class="string">&#x27;exp_avg_sq&#x27;</span>: torch.zeros_like(p.data)</span><br><span class="line">                &#125;</span><br><span class="line">            </span><br><span class="line">            state = self.state[<span class="built_in">id</span>(p)]</span><br><span class="line">            exp_avg, exp_avg_sq = state[<span class="string">&#x27;exp_avg&#x27;</span>], state[<span class="string">&#x27;exp_avg_sq&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 更新一阶矩估计</span></span><br><span class="line">            exp_avg.mul_(self.beta1).add_(grad, alpha=<span class="number">1</span> - self.beta1)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 更新二阶矩估计</span></span><br><span class="line">            exp_avg_sq.mul_(self.beta2).addcmul_(grad, grad, value=<span class="number">1</span> - self.beta2)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># bias correction</span></span><br><span class="line">            bias_correction1 = <span class="number">1</span> - self.beta1 ** self.step_count</span><br><span class="line">            bias_correction2 = <span class="number">1</span> - self.beta2 ** self.step_count</span><br><span class="line">            </span><br><span class="line">            denom = (exp_avg_sq.sqrt() / math.sqrt(bias_correction2)).add_(self.eps)</span><br><span class="line">            step_size = self.lr / bias_correction1</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 解耦权重衰减</span></span><br><span class="line">            p.data.add_(p.data, alpha=-self.lr * self.weight_decay)</span><br><span class="line">            p.data.addcdiv_(exp_avg, denom, value=-step_size)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">zero_grad</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.params:</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                p.grad.detach_()</span><br><span class="line">                p.grad.zero_()</span><br></pre></td></tr></table></figure>
+
+<h2 id="学习率调度"><a href="#学习率调度" class="headerlink" title="学习率调度"></a>学习率调度</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CosineAnnealingWarmRestarts</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;余弦退火热重启&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, optimizer, T_0, T_mult=<span class="number">1</span>, eta_min=<span class="number">0</span></span>):</span><br><span class="line">        self.optimizer = optimizer</span><br><span class="line">        self.T_0 = T_0</span><br><span class="line">        self.T_i = T_0</span><br><span class="line">        self.T_mult = T_mult</span><br><span class="line">        self.eta_min = eta_min</span><br><span class="line">        self.T_cur = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">for</span> param_group <span class="keyword">in</span> self.optimizer.params:</span><br><span class="line">            lr = self.eta_min + (param_group[<span class="string">&#x27;lr&#x27;</span>] - self.eta_min) * \</span><br><span class="line">                 (<span class="number">1</span> + math.cos(math.pi * self.T_cur / self.T_i)) / <span class="number">2</span></span><br><span class="line">            param_group[<span class="string">&#x27;lr&#x27;</span>] = lr</span><br><span class="line">        </span><br><span class="line">        self.T_cur += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> self.T_cur &gt;= self.T_i:</span><br><span class="line">            self.T_cur = <span class="number">0</span></span><br><span class="line">            self.T_i *= self.T_mult</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OneCycleLR</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;单周期学习率&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, optimizer, max_lr, pct_start=<span class="number">0.3</span>, div_factor=<span class="number">25</span>, final_div_factor=<span class="number">1e4</span></span>):</span><br><span class="line">        self.optimizer = optimizer</span><br><span class="line">        self.max_lr = max_lr</span><br><span class="line">        self.pct_start = pct_start</span><br><span class="line">        self.div_factor = div_factor</span><br><span class="line">        self.final_div_factor = final_div_factor</span><br><span class="line">        self.step_count = <span class="number">0</span></span><br><span class="line">        self.total_steps = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self, batch_idx, total_batches</span>):</span><br><span class="line">        <span class="keyword">if</span> self.total_steps <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self.total_steps = total_batches</span><br><span class="line">        </span><br><span class="line">        step_pct = self.step_count / self.total_steps</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> step_pct &lt;= self.pct_start:</span><br><span class="line">            <span class="comment"># 上升阶段</span></span><br><span class="line">            lr_mult = step_pct / self.pct_start</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 下降阶段</span></span><br><span class="line">            lr_mult = <span class="number">1</span> - (step_pct - self.pct_start) / (<span class="number">1</span> - self.pct_start)</span><br><span class="line">        </span><br><span class="line">        min_lr = self.max_lr / self.div_factor</span><br><span class="line">        final_lr = self.max_lr / self.final_div_factor</span><br><span class="line">        </span><br><span class="line">        lr = (self.max_lr - min_lr) * lr_mult + min_lr</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> param_group <span class="keyword">in</span> self.optimizer.params:</span><br><span class="line">            param_group[<span class="string">&#x27;lr&#x27;</span>] = lr</span><br><span class="line">        </span><br><span class="line">        self.step_count += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="优化器对比与选择"><a href="#优化器对比与选择" class="headerlink" title="优化器对比与选择"></a>优化器对比与选择</h2><table>
+<thead>
+<tr>
+<th>优化器</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SGD</td>
+<td>泛化好、稳定</td>
+<td>收敛慢</td>
+<td>图像分类</td>
+</tr>
+<tr>
+<td>SGD+Momentum</td>
+<td>加速收敛</td>
+<td>需要调参</td>
+<td>CNN训练</td>
+</tr>
+<tr>
+<td>Adam</td>
+<td>收敛快</td>
+<td>可能泛化差</td>
+<td>NLP、小数据</td>
+</tr>
+<tr>
+<td>AdamW</td>
+<td>正则化效果好</td>
+<td>需调参</td>
+<td>Transformer</td>
+</tr>
+<tr>
+<td>LAMB</td>
+<td>大batch友好</td>
+<td>实现复杂</td>
+<td>大规模训练</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 实际训练示例</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_with_optimizer</span>(<span class="params">model, train_loader, optimizer_type=<span class="string">&#x27;adamw&#x27;</span>, lr=<span class="number">1e-4</span></span>):</span><br><span class="line">    <span class="keyword">if</span> optimizer_type == <span class="string">&#x27;sgd&#x27;</span>:</span><br><span class="line">        optimizer = torch.optim.SGD(</span><br><span class="line">            model.parameters(), lr=lr, momentum=<span class="number">0.9</span>, weight_decay=<span class="number">1e-4</span></span><br><span class="line">        )</span><br><span class="line">        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(</span><br><span class="line">            optimizer, T_max=<span class="built_in">len</span>(train_loader) * <span class="number">90</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">elif</span> optimizer_type == <span class="string">&#x27;adam&#x27;</span>:</span><br><span class="line">        optimizer = torch.optim.Adam(</span><br><span class="line">            model.parameters(), lr=lr, betas=(<span class="number">0.9</span>, <span class="number">0.999</span>)</span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">elif</span> optimizer_type == <span class="string">&#x27;adamw&#x27;</span>:</span><br><span class="line">        optimizer = torch.optim.AdamW(</span><br><span class="line">            model.parameters(), lr=lr, weight_decay=<span class="number">0.01</span></span><br><span class="line">        )</span><br><span class="line">        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(</span><br><span class="line">            optimizer, T_max=<span class="built_in">len</span>(train_loader) * <span class="number">10</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">elif</span> optimizer_type == <span class="string">&#x27;lamb&#x27;</span>:</span><br><span class="line">        optimizer = torch.optim.Lamb(</span><br><span class="line">            model.parameters(), lr=lr, weight_decay=<span class="number">0.01</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">        model.train()</span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> train_loader:</span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            loss = compute_loss(model, batch)</span><br><span class="line">            loss.backward()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 梯度裁剪</span></span><br><span class="line">            torch.nn.utils.clip_grad_norm_(model.parameters(), <span class="number">1.0</span>)</span><br><span class="line">            </span><br><span class="line">            optimizer.step()</span><br><span class="line">            scheduler.step()</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>选择合适的优化器和学习率调度策略对模型训练至关重要。SGD在小数据集和图像任务上泛化性好，Adam系列在NLP任务上收敛更快，AdamW通过解耦权重衰减在Transformer训练中表现优异。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1412.6980">Adam: A Method for Stochastic Optimization</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1711.05101">Decoupled Weight Decay Regularization</a></li>
+<li><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/optim.html">PyTorch Optimizers</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    
+      <a href="/tags/%E4%BC%98%E5%8C%96%E5%99%A8/">优化器</a>
+    
+      <a href="/tags/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/">训练技巧</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/06/25/2021-06-25-深度学习优化器：从SGD到AdamW/" target="_blank" title="深度学习优化器：从SGD到AdamW">https://www.coomatrix.com/2021/06/25/2021-06-25-深度学习优化器：从SGD到AdamW/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/05/2021-07-05-CLIP%EF%BC%9A%E5%AF%B9%E6%AF%94%E8%AF%AD%E8%A8%80%E5%9B%BE%E5%83%8F%E9%A2%84%E8%AE%AD%E7%BB%83/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          CLIP：对比语言图像预训练
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/15/2021-06-15-GPT-3%EF%BC%9A%E5%A4%A7%E8%A7%84%E6%A8%A1%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%AA%81%E7%A0%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">GPT-3：大规模语言模型的突破</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8SGD"><span class="nav-number">2.</span> <span class="nav-text">经典SGD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adam%E4%BC%98%E5%8C%96%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">Adam优化器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdamW%E4%BC%98%E5%8C%96%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">AdamW优化器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%B0%83%E5%BA%A6"><span class="nav-number">5.</span> <span class="nav-text">学习率调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E5%99%A8%E5%AF%B9%E6%AF%94%E4%B8%8E%E9%80%89%E6%8B%A9"><span class="nav-number">6.</span> <span class="nav-text">优化器对比与选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>tensorflow入门教程：从张量到模型训练 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="TensorFlow入门教程：从张量到模型训练TensorFlow是Google开源的深度学习框架，以其强大的计算能力和灵活的架构被广泛应用。 张量（Tensor）张量是TensorFlow的核心数据结构： 1234567891011121314151617181920212223import tensorflow as tf# 创建张量a &#x3D; tf.constant([1, 2, 3])">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow入门教程：从张量到模型训练">
+<meta property="og:url" content="https://www.coomatrix.com/2019/10/15/2019-10-15-TensorFlow%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="TensorFlow入门教程：从张量到模型训练TensorFlow是Google开源的深度学习框架，以其强大的计算能力和灵活的架构被广泛应用。 张量（Tensor）张量是TensorFlow的核心数据结构： 1234567891011121314151617181920212223import tensorflow as tf# 创建张量a &#x3D; tf.constant([1, 2, 3])">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475">
+<meta property="article:published_time" content="2019-10-15T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:33:22.493Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="TensorFlow">
+<meta property="article:tag" content="Keras">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2019-10-15-TensorFlow入门教程" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1518770660439-4636190af475" rel="gallery_cmoopizqq001l9cv60itt8047 noopener">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      TensorFlow入门教程：从张量到模型训练
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2019/10/15/2019-10-15-TensorFlow%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" class="article-date">
+	  <time datetime="2019-10-15T02:00:00.000Z" itemprop="datePublished">十月 15, 2019</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="TensorFlow入门教程：从张量到模型训练"><a href="#TensorFlow入门教程：从张量到模型训练" class="headerlink" title="TensorFlow入门教程：从张量到模型训练"></a>TensorFlow入门教程：从张量到模型训练</h2><p>TensorFlow是Google开源的深度学习框架，以其强大的计算能力和灵活的架构被广泛应用。</p>
+<h3 id="张量（Tensor）"><a href="#张量（Tensor）" class="headerlink" title="张量（Tensor）"></a>张量（Tensor）</h3><p>张量是TensorFlow的核心数据结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建张量</span></span><br><span class="line">a = tf.constant([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])                    <span class="comment"># 一维张量</span></span><br><span class="line">b = tf.constant([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]])             <span class="comment"># 二维张量</span></span><br><span class="line">c = tf.zeros((<span class="number">3</span>, <span class="number">4</span>))                          <span class="comment"># 全零张量</span></span><br><span class="line">d = tf.ones((<span class="number">2</span>, <span class="number">3</span>))                           <span class="comment"># 全一张量</span></span><br><span class="line">e = tf.random.normal((<span class="number">3</span>, <span class="number">3</span>), mean=<span class="number">0</span>, stddev=<span class="number">1</span>) <span class="comment"># 正态分布</span></span><br><span class="line">f = tf.<span class="built_in">range</span>(<span class="number">0</span>, <span class="number">10</span>, delta=<span class="number">2</span>)                  <span class="comment"># 等差数列</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;张量形状: <span class="subst">&#123;b.shape&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;数据类型: <span class="subst">&#123;b.dtype&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;设备位置: <span class="subst">&#123;b.device&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 张量运算</span></span><br><span class="line">x = tf.constant([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>])</span><br><span class="line">y = tf.constant([<span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(tf.add(x, y))        <span class="comment"># 加法</span></span><br><span class="line"><span class="built_in">print</span>(tf.multiply(x, y))   <span class="comment"># 逐元素乘法</span></span><br><span class="line"><span class="built_in">print</span>(tf.matmul(x[:<span class="number">2</span>, tf.newaxis], y[tf.newaxis, :<span class="number">2</span>]))  <span class="comment"># 矩阵乘法</span></span><br><span class="line"><span class="built_in">print</span>(tf.reduce_mean(x))   <span class="comment"># 均值</span></span><br><span class="line"><span class="built_in">print</span>(tf.reduce_sum(x))    <span class="comment"># 求和</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="自动微分（Autograd）"><a href="#自动微分（Autograd）" class="headerlink" title="自动微分（Autograd）"></a>自动微分（Autograd）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自动求导</span></span><br><span class="line">x = tf.Variable(<span class="number">3.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    y = x ** <span class="number">2</span> + <span class="number">2</span> * x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">grad = tape.gradient(y, x)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;dy/dx at x=3: <span class="subst">&#123;grad&#125;</span>&quot;</span>)  <span class="comment"># 2*3 + 2 = 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 多变量梯度</span></span><br><span class="line">w = tf.Variable(tf.random.normal((<span class="number">3</span>, <span class="number">2</span>)))</span><br><span class="line">b = tf.Variable(tf.zeros(<span class="number">2</span>))</span><br><span class="line">x = tf.random.normal((<span class="number">1</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    y = tf.matmul(x, w) + b</span><br><span class="line">    loss = tf.reduce_mean(y ** <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">grads = tape.gradient(loss, [w, b])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;w梯度形状: <span class="subst">&#123;grads[<span class="number">0</span>].shape&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;b梯度形状: <span class="subst">&#123;grads[<span class="number">1</span>].shape&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Keras-Sequential-API"><a href="#Keras-Sequential-API" class="headerlink" title="Keras Sequential API"></a>Keras Sequential API</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建顺序模型</span></span><br><span class="line">model = keras.Sequential([</span><br><span class="line">    layers.Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>, input_shape=(<span class="number">784</span>,)),</span><br><span class="line">    layers.Dropout(<span class="number">0.3</span>),</span><br><span class="line">    layers.Dense(<span class="number">64</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    layers.Dropout(<span class="number">0.2</span>),</span><br><span class="line">    layers.Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">model.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译模型</span></span><br><span class="line">model.<span class="built_in">compile</span>(</span><br><span class="line">    optimizer=<span class="string">&#x27;adam&#x27;</span>,</span><br><span class="line">    loss=<span class="string">&#x27;sparse_categorical_crossentropy&#x27;</span>,</span><br><span class="line">    metrics=[<span class="string">&#x27;accuracy&#x27;</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Keras-Functional-API"><a href="#Keras-Functional-API" class="headerlink" title="Keras Functional API"></a>Keras Functional API</h3><p>对于更复杂的模型结构，使用Functional API：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数式API</span></span><br><span class="line">inputs = keras.Input(shape=(<span class="number">784</span>,))</span><br><span class="line">x = layers.Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>)(inputs)</span><br><span class="line">x = layers.Dropout(<span class="number">0.3</span>)(x)</span><br><span class="line">x = layers.Dense(<span class="number">64</span>, activation=<span class="string">&#x27;relu&#x27;</span>)(x)</span><br><span class="line">x = layers.Dropout(<span class="number">0.2</span>)(x)</span><br><span class="line">outputs = layers.Dense(<span class="number">10</span>, activation=<span class="string">&#x27;softmax&#x27;</span>)(x)</span><br><span class="line"></span><br><span class="line">model = keras.Model(inputs=inputs, outputs=outputs)</span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&#x27;adam&#x27;</span>,</span><br><span class="line">              loss=<span class="string">&#x27;sparse_categorical_crossentropy&#x27;</span>,</span><br><span class="line">              metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="训练MNIST分类器"><a href="#训练MNIST分类器" class="headerlink" title="训练MNIST分类器"></a>训练MNIST分类器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 预处理</span></span><br><span class="line">x_train = x_train.reshape(-<span class="number">1</span>, <span class="number">784</span>).astype(<span class="string">&#x27;float32&#x27;</span>) / <span class="number">255.0</span></span><br><span class="line">x_test = x_test.reshape(-<span class="number">1</span>, <span class="number">784</span>).astype(<span class="string">&#x27;float32&#x27;</span>) / <span class="number">255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练</span></span><br><span class="line">history = model.fit(</span><br><span class="line">    x_train, y_train,</span><br><span class="line">    batch_size=<span class="number">128</span>,</span><br><span class="line">    epochs=<span class="number">20</span>,</span><br><span class="line">    validation_split=<span class="number">0.1</span>,</span><br><span class="line">    callbacks=[</span><br><span class="line">        keras.callbacks.EarlyStopping(patience=<span class="number">3</span>, restore_best_weights=<span class="literal">True</span>),</span><br><span class="line">        keras.callbacks.ReduceLROnPlateau(factor=<span class="number">0.5</span>, patience=<span class="number">2</span>)</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 评估</span></span><br><span class="line">test_loss, test_acc = model.evaluate(x_test, y_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Test accuracy: <span class="subst">&#123;test_acc:<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="训练可视化"><a href="#训练可视化" class="headerlink" title="训练可视化"></a>训练可视化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">1</span>, <span class="number">2</span>, figsize=(<span class="number">12</span>, <span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">axes[<span class="number">0</span>].plot(history.history[<span class="string">&#x27;loss&#x27;</span>], label=<span class="string">&#x27;Train Loss&#x27;</span>)</span><br><span class="line">axes[<span class="number">0</span>].plot(history.history[<span class="string">&#x27;val_loss&#x27;</span>], label=<span class="string">&#x27;Val Loss&#x27;</span>)</span><br><span class="line">axes[<span class="number">0</span>].set_xlabel(<span class="string">&#x27;Epoch&#x27;</span>)</span><br><span class="line">axes[<span class="number">0</span>].set_ylabel(<span class="string">&#x27;Loss&#x27;</span>)</span><br><span class="line">axes[<span class="number">0</span>].set_title(<span class="string">&#x27;Training and Validation Loss&#x27;</span>)</span><br><span class="line">axes[<span class="number">0</span>].legend()</span><br><span class="line"></span><br><span class="line">axes[<span class="number">1</span>].plot(history.history[<span class="string">&#x27;accuracy&#x27;</span>], label=<span class="string">&#x27;Train Acc&#x27;</span>)</span><br><span class="line">axes[<span class="number">1</span>].plot(history.history[<span class="string">&#x27;val_accuracy&#x27;</span>], label=<span class="string">&#x27;Val Acc&#x27;</span>)</span><br><span class="line">axes[<span class="number">1</span>].set_xlabel(<span class="string">&#x27;Epoch&#x27;</span>)</span><br><span class="line">axes[<span class="number">1</span>].set_ylabel(<span class="string">&#x27;Accuracy&#x27;</span>)</span><br><span class="line">axes[<span class="number">1</span>].set_title(<span class="string">&#x27;Training and Validation Accuracy&#x27;</span>)</span><br><span class="line">axes[<span class="number">1</span>].legend()</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义训练循环"><a href="#自定义训练循环" class="headerlink" title="自定义训练循环"></a>自定义训练循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义训练步骤</span></span><br><span class="line">optimizer = keras.optimizers.Adam(learning_rate=<span class="number">0.001</span>)</span><br><span class="line">loss_fn = keras.losses.SparseCategoricalCrossentropy()</span><br><span class="line">train_acc_metric = keras.metrics.SparseCategoricalAccuracy()</span><br><span class="line"></span><br><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        logits = model(x, training=<span class="literal">True</span>)</span><br><span class="line">        loss_value = loss_fn(y, logits)</span><br><span class="line"></span><br><span class="line">    grads = tape.gradient(loss_value, model.trainable_variables)</span><br><span class="line">    optimizer.apply_gradients(<span class="built_in">zip</span>(grads, model.trainable_variables))</span><br><span class="line">    train_acc_metric.update_state(y, logits)</span><br><span class="line">    <span class="keyword">return</span> loss_value</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练循环</span></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))</span><br><span class="line">train_dataset = train_dataset.shuffle(<span class="number">10000</span>).batch(<span class="number">128</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">20</span>):</span><br><span class="line">    <span class="keyword">for</span> step, (x_batch, y_batch) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_dataset):</span><br><span class="line">        loss = train_step(x_batch, y_batch)</span><br><span class="line"></span><br><span class="line">    acc = train_acc_metric.result()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>: Loss=<span class="subst">&#123;loss:<span class="number">.4</span>f&#125;</span>, Accuracy=<span class="subst">&#123;acc:<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br><span class="line">    train_acc_metric.reset_states()</span><br></pre></td></tr></table></figure>
+
+<h3 id="模型保存与加载"><a href="#模型保存与加载" class="headerlink" title="模型保存与加载"></a>模型保存与加载</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存完整模型</span></span><br><span class="line">model.save(<span class="string">&#x27;my_model.h5&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载模型</span></span><br><span class="line">loaded_model = keras.models.load_model(<span class="string">&#x27;my_model.h5&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存权重</span></span><br><span class="line">model.save_weights(<span class="string">&#x27;my_weights.h5&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># SavedModel格式</span></span><br><span class="line">model.save(<span class="string">&#x27;my_saved_model&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 仅保存架构</span></span><br><span class="line">model_json = model.to_json()</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;model_architecture.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(model_json)</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>TensorFlow 2.x通过Keras高级API大大降低了使用门槛。Sequential API适合简单的线性模型，Functional API适合复杂的网络结构。自动微分、回调机制和自定义训练循环提供了灵活性和控制力。掌握TensorFlow是从实践角度理解深度学习的最佳途径之一。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6/">深度学习框架</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    
+      <a href="/tags/TensorFlow/">TensorFlow</a>
+    
+      <a href="/tags/Keras/">Keras</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2019/10/15/2019-10-15-TensorFlow入门教程/" target="_blank" title="TensorFlow入门教程：从张量到模型训练">https://www.coomatrix.com/2019/10/15/2019-10-15-TensorFlow入门教程/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/05/2019-11-05-PyTorch%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          PyTorch入门实战：动态图与自动求导
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/28/2019-09-28-%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%85%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">数据预处理技术大全</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorFlow%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%EF%BC%9A%E4%BB%8E%E5%BC%A0%E9%87%8F%E5%88%B0%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">1.</span> <span class="nav-text">TensorFlow入门教程：从张量到模型训练</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%EF%BC%88Tensor%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">张量（Tensor）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86%EF%BC%88Autograd%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">自动微分（Autograd）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras-Sequential-API"><span class="nav-number">1.3.</span> <span class="nav-text">Keras Sequential API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keras-Functional-API"><span class="nav-number">1.4.</span> <span class="nav-text">Keras Functional API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83MNIST%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">训练MNIST分类器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.6.</span> <span class="nav-text">训练可视化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%AD%E7%BB%83%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.7.</span> <span class="nav-text">自定义训练循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E4%B8%8E%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.8.</span> <span class="nav-text">模型保存与加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.9.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

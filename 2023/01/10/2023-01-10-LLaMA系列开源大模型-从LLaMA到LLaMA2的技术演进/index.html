@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>llama系列开源大模型：从llama到llama2的技术演进 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言2023年2月，Meta（原Facebook）发布了LLaMA（Large Language Model Meta AI），这是开源大语言模型领域的重要里程碑。LLaMA系列不仅为研究者提供了强大的工具，更推动了开源AI生态的快速发展。本文将深入分析LLaMA的技术架构、训练方法和实际部署方案。 LLaMA的技术架构1. 基础架构设计LLaMA采用了标准的Transformer解码器架构，但在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLaMA系列开源大模型：从LLaMA到LLaMA2的技术演进">
+<meta property="og:url" content="https://www.coomatrix.com/2023/01/10/2023-01-10-LLaMA%E7%B3%BB%E5%88%97%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8ELLaMA%E5%88%B0LLaMA2%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言2023年2月，Meta（原Facebook）发布了LLaMA（Large Language Model Meta AI），这是开源大语言模型领域的重要里程碑。LLaMA系列不仅为研究者提供了强大的工具，更推动了开源AI生态的快速发展。本文将深入分析LLaMA的技术架构、训练方法和实际部署方案。 LLaMA的技术架构1. 基础架构设计LLaMA采用了标准的Transformer解码器架构，但在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+<meta property="article:published_time" content="2023-01-10T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:16.216Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="大语言模型">
+<meta property="article:tag" content="LLaMA">
+<meta property="article:tag" content="Meta">
+<meta property="article:tag" content="开源">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1558494949-ef010cbdcc31">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-01-10-LLaMA系列开源大模型-从LLaMA到LLaMA2的技术演进" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" rel="gallery_cmoopizrj006e9cv63ejaerp4 noopener">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      LLaMA系列开源大模型：从LLaMA到LLaMA2的技术演进
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/01/10/2023-01-10-LLaMA%E7%B3%BB%E5%88%97%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8ELLaMA%E5%88%B0LLaMA2%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/" class="article-date">
+	  <time datetime="2023-01-10T01:00:00.000Z" itemprop="datePublished">一月 10, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>2023年2月，Meta（原Facebook）发布了LLaMA（Large Language Model Meta AI），这是开源大语言模型领域的重要里程碑。LLaMA系列不仅为研究者提供了强大的工具，更推动了开源AI生态的快速发展。本文将深入分析LLaMA的技术架构、训练方法和实际部署方案。</p>
+<h2 id="LLaMA的技术架构"><a href="#LLaMA的技术架构" class="headerlink" title="LLaMA的技术架构"></a>LLaMA的技术架构</h2><h3 id="1-基础架构设计"><a href="#1-基础架构设计" class="headerlink" title="1. 基础架构设计"></a>1. 基础架构设计</h3><p>LLaMA采用了标准的Transformer解码器架构，但在多个方面进行了优化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RMSNorm</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    RMSNorm：更高效的正则化方法</span></span><br><span class="line"><span class="string">    LLaMA使用RMSNorm替代LayerNorm，提升训练稳定性</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_size, eps=<span class="number">1e-6</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.weight = nn.Parameter(torch.ones(hidden_size))</span><br><span class="line">        self.variance_epsilon = eps</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states</span>):</span><br><span class="line">        input_dtype = hidden_states.dtype</span><br><span class="line">        hidden_states = hidden_states.to(torch.float32)</span><br><span class="line">        variance = hidden_states.<span class="built_in">pow</span>(<span class="number">2</span>).mean(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)</span><br><span class="line">        <span class="keyword">return</span> self.weight * hidden_states.to(input_dtype)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LLaMAAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    LLaMA的自注意力机制，使用RoPE位置编码</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.n_heads = config.n_heads</span><br><span class="line">        self.head_dim = config.hidden_size // config.n_heads</span><br><span class="line">        self.max_position_embeddings = config.max_position_embeddings</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Query, Key, Value投影</span></span><br><span class="line">        self.q_proj = nn.Linear(config.hidden_size, config.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.k_proj = nn.Linear(config.hidden_size, config.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.v_proj = nn.Linear(config.hidden_size, config.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.o_proj = nn.Linear(config.hidden_size, config.hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># RoPE (Rotary Position Embedding)</span></span><br><span class="line">        self.rotary_emb = RotaryEmbedding(self.head_dim)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, attention_mask=<span class="literal">None</span></span>):</span><br><span class="line">        B, T, C = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 投影得到QKV</span></span><br><span class="line">        q = self.q_proj(x).view(B, T, self.n_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        k = self.k_proj(x).view(B, T, self.n_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        v = self.v_proj(x).view(B, T, self.n_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 应用RoPE</span></span><br><span class="line">        q, k = self.rotary_emb(q, k)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算注意力分数</span></span><br><span class="line">        attn_weights = torch.matmul(q, k.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) / math.sqrt(self.head_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> attention_mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            attn_weights = attn_weights + attention_mask</span><br><span class="line">            </span><br><span class="line">        attn_weights = nn.functional.softmax(attn_weights, dim=-<span class="number">1</span>)</span><br><span class="line">        attn_output = torch.matmul(attn_weights, v)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.o_proj(attn_output.transpose(<span class="number">1</span>, <span class="number">2</span>).contiguous().view(B, T, C))</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RotaryEmbedding</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Rotary Position Embedding (RoPE)</span></span><br><span class="line"><span class="string">    旋转位置编码，有效处理位置信息</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, max_position_embeddings=<span class="number">2048</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        inv_freq = <span class="number">1.0</span> / (<span class="number">10000</span> ** (torch.arange(<span class="number">0</span>, dim, <span class="number">2</span>).<span class="built_in">float</span>() / dim))</span><br><span class="line">        self.register_buffer(<span class="string">&quot;inv_freq&quot;</span>, inv_freq)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, q, k</span>):</span><br><span class="line">        B, n_heads, T, head_dim = q.shape</span><br><span class="line">        t = torch.arange(T, device=q.device).type_as(self.inv_freq)</span><br><span class="line">        freqs = torch.einsum(<span class="string">&quot;i,j-&gt;ij&quot;</span>, t, self.inv_freq)</span><br><span class="line">        emb = torch.cat((freqs, freqs), dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 旋转操作</span></span><br><span class="line">        q_embed = self._rotate_half(q, emb)</span><br><span class="line">        k_embed = self._rotate_half(k, emb)</span><br><span class="line">        <span class="keyword">return</span> q_embed, k_embed</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_rotate_half</span>(<span class="params">self, x, emb</span>):</span><br><span class="line">        x1, x2 = x[..., :x.shape[-<span class="number">1</span>]//<span class="number">2</span>], x[..., x.shape[-<span class="number">1</span>]//<span class="number">2</span>:]</span><br><span class="line">        <span class="keyword">return</span> torch.cat((-x2, x1), dim=-<span class="number">1</span>) * self._get_cos_sin(emb)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_get_cos_sin</span>(<span class="params">self, emb</span>):</span><br><span class="line">        <span class="keyword">return</span> torch.cos(emb), torch.sin(emb)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SwiGLU激活函数"><a href="#2-SwiGLU激活函数" class="headerlink" title="2. SwiGLU激活函数"></a>2. SwiGLU激活函数</h3><p>LLaMA使用SwiGLU替代ReLU，显著提升了模型性能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SwiGLU</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    SwiGLU激活函数</span></span><br><span class="line"><span class="string">    Swish(x) * Gate(x) 的变体，提升非线性表达能力</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_size, intermediate_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.w1 = nn.Linear(hidden_size, intermediate_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.w2 = nn.Linear(hidden_size, intermediate_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.w3 = nn.Linear(intermediate_size, hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.act_fn = nn.SiLU()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">return</span> self.w3(self.act_fn(self.w1(x)) * self.w2(x))</span><br></pre></td></tr></table></figure>
+
+<h2 id="LLaMA模型变体"><a href="#LLaMA模型变体" class="headerlink" title="LLaMA模型变体"></a>LLaMA模型变体</h2><p>LLaMA提供多个参数规模的模型版本：</p>
+<table>
+<thead>
+<tr>
+<th>模型规模</th>
+<th>参数量</th>
+<th>隐藏层维度</th>
+<th>注意力头数</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LLaMA-7B</td>
+<td>7B</td>
+<td>4096</td>
+<td>32</td>
+<td>研究实验</td>
+</tr>
+<tr>
+<td>LLaMA-13B</td>
+<td>13B</td>
+<td>5120</td>
+<td>40</td>
+<td>日常应用</td>
+</tr>
+<tr>
+<td>LLaMA-33B</td>
+<td>33B</td>
+<td>6656</td>
+<td>52</td>
+<td>专业部署</td>
+</tr>
+<tr>
+<td>LLaMA-65B</td>
+<td>65B</td>
+<td>8192</td>
+<td>64</td>
+<td>大规模推理</td>
+</tr>
+</tbody></table>
+<h2 id="LLaMA2：新一代开源大模型"><a href="#LLaMA2：新一代开源大模型" class="headerlink" title="LLaMA2：新一代开源大模型"></a>LLaMA2：新一代开源大模型</h2><p>2023年7月，Meta发布了LLaMA2，带来了多项重大改进：</p>
+<h3 id="1-训练数据扩展"><a href="#1-训练数据扩展" class="headerlink" title="1. 训练数据扩展"></a>1. 训练数据扩展</h3><p>LLaMA2使用了约2万亿tokens的训练数据，比LLaMA1增加了40%。</p>
+<h3 id="2-更长的上下文窗口"><a href="#2-更长的上下文窗口" class="headerlink" title="2. 更长的上下文窗口"></a>2. 更长的上下文窗口</h3><p>LLaMA2将上下文窗口扩展到4096 tokens，支持更长的对话和文档处理。</p>
+<h3 id="3-RLHF对齐训练"><a href="#3-RLHF对齐训练" class="headerlink" title="3. RLHF对齐训练"></a>3. RLHF对齐训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RLHFTrainer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    人类反馈强化学习训练器</span></span><br><span class="line"><span class="string">    用于LLaMA2的对齐训练</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, reward_model, ref_model</span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.reward_model = reward_model  <span class="comment"># 奖励模型</span></span><br><span class="line">        self.ref_model = ref_model          <span class="comment"># 参考模型（原始模型）</span></span><br><span class="line">        self.ppo_config = PPOConfig(</span><br><span class="line">            steps=<span class="number">20000</span>,</span><br><span class="line">            lr=<span class="number">1.4e-5</span>,</span><br><span class="line">            batch_size=<span class="number">512</span>,</span><br><span class="line">            mini_batch_size=<span class="number">4</span>,</span><br><span class="line">            gradient_accumulation_steps=<span class="number">8</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_rewards</span>(<span class="params">self, responses, prompts</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        计算 responses 的奖励分数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 使用奖励模型评估</span></span><br><span class="line">        full_texts = [p + r <span class="keyword">for</span> p, r <span class="keyword">in</span> <span class="built_in">zip</span>(prompts, responses)]</span><br><span class="line">        reward_scores = self.reward_model(full_texts)</span><br><span class="line">        <span class="keyword">return</span> reward_scores</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_kl_divergence</span>(<span class="params">self, responses, prompts</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        计算与参考模型的KL散度，防止过度优化</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            ref_log_probs = self.ref_model(prompts + responses)</span><br><span class="line">        new_log_probs = self.model(prompts + responses)</span><br><span class="line">        <span class="keyword">return</span> ref_log_probs - new_log_probs</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ppo_update</span>(<span class="params">self, batch</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        PPO算法更新</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        prompts = batch[<span class="string">&#x27;prompts&#x27;</span>]</span><br><span class="line">        responses = batch[<span class="string">&#x27;responses&#x27;</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取奖励和KL散度</span></span><br><span class="line">        rewards = self.compute_rewards(responses, prompts)</span><br><span class="line">        kl_divs = self.compute_kl_divergence(responses, prompts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算 advantage</span></span><br><span class="line">        advantages = rewards - <span class="number">0.1</span> * kl_divs  <span class="comment"># KL惩罚</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 策略更新</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(self.ppo_config.ppo_epochs):</span><br><span class="line">            logits = self.model(prompts + responses)</span><br><span class="line">            <span class="comment"># PPO裁剪更新...</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self, training_data</span>):</span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> DataLoader(training_data, batch_size=self.ppo_config.batch_size):</span><br><span class="line">            self.ppo_update(batch)</span><br></pre></td></tr></table></figure>
+
+<h2 id="LLaMA部署实战"><a href="#LLaMA部署实战" class="headerlink" title="LLaMA部署实战"></a>LLaMA部署实战</h2><h3 id="1-使用llama-cpp量化部署"><a href="#1-使用llama-cpp量化部署" class="headerlink" title="1. 使用llama.cpp量化部署"></a>1. 使用llama.cpp量化部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装llama.cpp</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/ggerganov/llama.cpp.git</span><br><span class="line"><span class="built_in">cd</span> llama.cpp</span><br><span class="line"><span class="built_in">mkdir</span> build &amp;&amp; <span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">make -j4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 量化模型</span></span><br><span class="line">./quantize ../models/llama-7b/ggml-model-f16.bin ../models/llama-7b/ggml-model-q4_0.bin q4_0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行推理</span></span><br><span class="line">./main -m ../models/llama-7b/ggml-model-q4_0.bin -n 256 -t 8 -p <span class="string">&quot;The meaning of life is&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Python推理接口"><a href="#2-Python推理接口" class="headerlink" title="2. Python推理接口"></a>2. Python推理接口</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> llama_cpp <span class="keyword">import</span> Llama</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LLaMAInference</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path, n_ctx=<span class="number">2048</span>, n_threads=<span class="number">4</span></span>):</span><br><span class="line">        self.llm = Llama(</span><br><span class="line">            model_path=model_path,</span><br><span class="line">            n_ctx=n_ctx,</span><br><span class="line">            n_threads=n_threads,</span><br><span class="line">            n_gpu_layers=<span class="number">0</span>  <span class="comment"># CPU推理</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, prompt, max_tokens=<span class="number">256</span>, temperature=<span class="number">0.7</span>, top_p=<span class="number">0.95</span></span>):</span><br><span class="line">        output = self.llm(</span><br><span class="line">            prompt,</span><br><span class="line">            max_tokens=max_tokens,</span><br><span class="line">            temperature=temperature,</span><br><span class="line">            top_p=top_p,</span><br><span class="line">            echo=<span class="literal">False</span>,</span><br><span class="line">            stop=[<span class="string">&quot;&lt;/s&gt;&quot;</span>, <span class="string">&quot;User:&quot;</span>, <span class="string">&quot;\n\n&quot;</span>]</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> output[<span class="string">&#x27;choices&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, messages, system_prompt=<span class="string">&quot;You are a helpful assistant&quot;</span></span>):</span><br><span class="line">        <span class="comment"># 构建对话 prompt</span></span><br><span class="line">        prompt = <span class="string">f&quot;<span class="subst">&#123;system_prompt&#125;</span>\n\n&quot;</span></span><br><span class="line">        <span class="keyword">for</span> msg <span class="keyword">in</span> messages:</span><br><span class="line">            role = msg[<span class="string">&#x27;role&#x27;</span>]</span><br><span class="line">            content = msg[<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line">            <span class="keyword">if</span> role == <span class="string">&#x27;user&#x27;</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;User: <span class="subst">&#123;content&#125;</span>\n&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;Assistant: <span class="subst">&#123;content&#125;</span>\n&quot;</span></span><br><span class="line">        prompt += <span class="string">&quot;Assistant: &quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.generate(prompt)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_generate</span>(<span class="params">self, prompts, max_tokens=<span class="number">256</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        批量生成，提高吞吐量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        outputs = self.llm.create_batch(prompts, max_tokens=max_tokens)</span><br><span class="line">        <span class="keyword">return</span> [out[<span class="string">&#x27;choices&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;text&#x27;</span>] <span class="keyword">for</span> out <span class="keyword">in</span> outputs]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用transformers部署"><a href="#3-使用transformers部署" class="headerlink" title="3. 使用transformers部署"></a>3. 使用transformers部署</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM, AutoTokenizer</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LLaMAWithTransformers</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name=<span class="string">&quot;meta-llama/Llama-2-7b-hf&quot;</span></span>):</span><br><span class="line">        self.tokenizer = AutoTokenizer.from_pretrained(model_name)</span><br><span class="line">        self.model = AutoModelForCausalLM.from_pretrained(</span><br><span class="line">            model_name,</span><br><span class="line">            torch_dtype=torch.float16,</span><br><span class="line">            device_map=<span class="string">&quot;auto&quot;</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, prompt, max_new_tokens=<span class="number">256</span></span>):</span><br><span class="line">        inputs = self.tokenizer(prompt, return_tensors=<span class="string">&quot;pt&quot;</span>).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            outputs = self.model.generate(</span><br><span class="line">                **inputs,</span><br><span class="line">                max_new_tokens=max_new_tokens,</span><br><span class="line">                do_sample=<span class="literal">True</span>,</span><br><span class="line">                temperature=<span class="number">0.7</span>,</span><br><span class="line">                top_p=<span class="number">0.9</span></span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.tokenizer.decode(outputs[<span class="number">0</span>], skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fine_tune</span>(<span class="params">self, train_data, output_dir=<span class="string">&quot;./llama-finetuned&quot;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用LoRA进行轻量级微调</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">from</span> peft <span class="keyword">import</span> LoraConfig, get_peft_model, TaskType</span><br><span class="line">        </span><br><span class="line">        lora_config = LoraConfig(</span><br><span class="line">            r=<span class="number">8</span>,</span><br><span class="line">            lora_alpha=<span class="number">16</span>,</span><br><span class="line">            target_modules=[<span class="string">&quot;q_proj&quot;</span>, <span class="string">&quot;v_proj&quot;</span>],</span><br><span class="line">            lora_dropout=<span class="number">0.05</span>,</span><br><span class="line">            bias=<span class="string">&quot;none&quot;</span>,</span><br><span class="line">            task_type=TaskType.CAUSAL_LM</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.model = get_peft_model(self.model, lora_config)</span><br><span class="line">        self.model.print_trainable_parameters()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 训练代码...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="LLaMA生态工具链"><a href="#LLaMA生态工具链" class="headerlink" title="LLaMA生态工具链"></a>LLaMA生态工具链</h2><h3 id="1-LangChain集成"><a href="#1-LangChain集成" class="headerlink" title="1. LangChain集成"></a>1. LangChain集成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.llms <span class="keyword">import</span> LlamaCpp</span><br><span class="line"><span class="keyword">from</span> langchain.chains <span class="keyword">import</span> ConversationalChain</span><br><span class="line"><span class="keyword">from</span> langchain.memory <span class="keyword">import</span> ConversationBufferMemory</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_llama_chain</span>(<span class="params">model_path</span>):</span><br><span class="line">    llm = LlamaCpp(model_path=model_path, verbose=<span class="literal">False</span>)</span><br><span class="line">    </span><br><span class="line">    chain = ConversationalChain.from_llm(</span><br><span class="line">        llm=llm,</span><br><span class="line">        memory=ConversationBufferMemory(),</span><br><span class="line">        prompt_template=<span class="string">&quot;&#123;history&#125;\nUser: &#123;input&#125;\nAI:&quot;</span></span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> chain</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>LLaMA系列代表了开源大语言模型的重要成就。从LLaMA到LLaMA2，Meta不断推动开源AI技术的边界。通过合理的量化压缩和部署策略，LLaMA可以在消费级硬件上运行，为开发者和研究者提供了强大的工具。随着开源社区的持续贡献，LLaMA生态系统将变得更加丰富和完善。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2302.13971">LLaMA论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.09288">LLaMA2论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ggerganov/llama.cpp">llama.cpp GitHub</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/meta-llama">Hugging Face LLaMA</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/">开源大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">大语言模型</a>
+    
+      <a href="/tags/LLaMA/">LLaMA</a>
+    
+      <a href="/tags/Meta/">Meta</a>
+    
+      <a href="/tags/%E5%BC%80%E6%BA%90/">开源</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/01/10/2023-01-10-LLaMA系列开源大模型-从LLaMA到LLaMA2的技术演进/" target="_blank" title="LLaMA系列开源大模型：从LLaMA到LLaMA2的技术演进">https://www.coomatrix.com/2023/01/10/2023-01-10-LLaMA系列开源大模型-从LLaMA到LLaMA2的技术演进/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/02/16/2023-02-16-Sora%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E4%BB%8E%E6%96%87%E6%9C%AC%E5%88%B0%E8%A7%86%E9%A2%91%E7%9A%84%E8%B7%A8%E8%B6%8A/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Sora视频生成技术深度解析：从文本到视频的跨越
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/11/25/2022-11-25-ONNX%E6%A8%A1%E5%9E%8B%E8%BD%AC%E6%8D%A2%E4%B8%8E%E8%B7%A8%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">ONNX模型转换与跨平台部署</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLaMA%E7%9A%84%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">LLaMA的技术架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.1.</span> <span class="nav-text">1. 基础架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SwiGLU%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2. SwiGLU激活函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLaMA%E6%A8%A1%E5%9E%8B%E5%8F%98%E4%BD%93"><span class="nav-number">3.</span> <span class="nav-text">LLaMA模型变体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLaMA2%EF%BC%9A%E6%96%B0%E4%B8%80%E4%BB%A3%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">LLaMA2：新一代开源大模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%AE%AD%E7%BB%83%E6%95%B0%E6%8D%AE%E6%89%A9%E5%B1%95"><span class="nav-number">4.1.</span> <span class="nav-text">1. 训练数据扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%9B%B4%E9%95%BF%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AA%97%E5%8F%A3"><span class="nav-number">4.2.</span> <span class="nav-text">2. 更长的上下文窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-RLHF%E5%AF%B9%E9%BD%90%E8%AE%AD%E7%BB%83"><span class="nav-number">4.3.</span> <span class="nav-text">3. RLHF对齐训练</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLaMA%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98"><span class="nav-number">5.</span> <span class="nav-text">LLaMA部署实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BD%BF%E7%94%A8llama-cpp%E9%87%8F%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="nav-number">5.1.</span> <span class="nav-text">1. 使用llama.cpp量化部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Python%E6%8E%A8%E7%90%86%E6%8E%A5%E5%8F%A3"><span class="nav-number">5.2.</span> <span class="nav-text">2. Python推理接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8transformers%E9%83%A8%E7%BD%B2"><span class="nav-number">5.3.</span> <span class="nav-text">3. 使用transformers部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LLaMA%E7%94%9F%E6%80%81%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="nav-number">6.</span> <span class="nav-text">LLaMA生态工具链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-LangChain%E9%9B%86%E6%88%90"><span class="nav-number">6.1.</span> <span class="nav-text">1. LangChain集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

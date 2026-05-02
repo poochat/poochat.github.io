@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>mistral：开源大模型新星技术架构与部署实践 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言Mistral AI是一家成立于2023年的法国AI公司，其发布的Mistral 7B和Mixtral 8x7B模型在开源社区引起了巨大反响。本文将深入分析Mistral系列模型的技术架构，包括其采用的滑动窗口注意力、滚动缓存等创新技术。 Mistral 7B技术解析1. 模型架构123456789101112131415161718192021222324252627282930313233">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mistral：开源大模型新星技术架构与部署实践">
+<meta property="og:url" content="https://www.coomatrix.com/2023/12/01/2023-12-01-Mistral-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%B0%E6%98%9F-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言Mistral AI是一家成立于2023年的法国AI公司，其发布的Mistral 7B和Mixtral 8x7B模型在开源社区引起了巨大反响。本文将深入分析Mistral系列模型的技术架构，包括其采用的滑动窗口注意力、滚动缓存等创新技术。 Mistral 7B技术解析1. 模型架构123456789101112131415161718192021222324252627282930313233">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1563207153-f403bf289096">
+<meta property="article:published_time" content="2023-12-01T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:16.213Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="开源大模型">
+<meta property="article:tag" content="Mistral">
+<meta property="article:tag" content="MoE">
+<meta property="article:tag" content="混合专家">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1563207153-f403bf289096">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-12-01-Mistral-开源大模型新星-技术架构与部署实践" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1563207153-f403bf289096" rel="gallery_cmoopizrp007r9cv67s7newti noopener">
+        <img src="https://images.unsplash.com/photo-1563207153-f403bf289096" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Mistral：开源大模型新星技术架构与部署实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/12/01/2023-12-01-Mistral-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%96%B0%E6%98%9F-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E4%B8%8E%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2023-12-01T02:00:00.000Z" itemprop="datePublished">十二月 1, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Mistral AI是一家成立于2023年的法国AI公司，其发布的Mistral 7B和Mixtral 8x7B模型在开源社区引起了巨大反响。本文将深入分析Mistral系列模型的技术架构，包括其采用的滑动窗口注意力、滚动缓存等创新技术。</p>
+<h2 id="Mistral-7B技术解析"><a href="#Mistral-7B技术解析" class="headerlink" title="Mistral 7B技术解析"></a>Mistral 7B技术解析</h2><h3 id="1-模型架构"><a href="#1-模型架构" class="headerlink" title="1. 模型架构"></a>1. 模型架构</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MistralConfig</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Mistral 7B配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.vocab_size = <span class="number">32000</span></span><br><span class="line">        self.hidden_size = <span class="number">4096</span></span><br><span class="line">        self.intermediate_size = <span class="number">14336</span></span><br><span class="line">        self.num_hidden_layers = <span class="number">32</span></span><br><span class="line">        self.num_attention_heads = <span class="number">32</span></span><br><span class="line">        self.num_key_value_heads = <span class="number">8</span>  <span class="comment"># GQA</span></span><br><span class="line">        self.hidden_act = <span class="string">&quot;silu&quot;</span></span><br><span class="line">        self.max_position_embeddings = <span class="number">32768</span></span><br><span class="line">        self.rope_theta = <span class="number">10000.0</span></span><br><span class="line">        self.sliding_window = <span class="number">4096</span>  <span class="comment"># 滑动窗口注意力</span></span><br><span class="line">        self.rope_scaling = &#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;linear&quot;</span>, <span class="string">&quot;factor&quot;</span>: <span class="number">2.0</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MistralAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Mistral注意力机制</span></span><br><span class="line"><span class="string">    支持滑动窗口和Grouped Query Attention</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.hidden_size = config.hidden_size</span><br><span class="line">        self.num_heads = config.num_attention_heads</span><br><span class="line">        self.head_dim = config.hidden_size // config.num_heads</span><br><span class="line">        self.num_key_value_heads = config.num_key_value_heads</span><br><span class="line">        self.sliding_window = config.sliding_window</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># GQA: K/V头数少于Q头数</span></span><br><span class="line">        self.q_proj = nn.Linear(config.hidden_size, config.num_attention_heads * self.head_dim)</span><br><span class="line">        self.k_proj = nn.Linear(config.hidden_size, config.num_key_value_heads * self.head_dim)</span><br><span class="line">        self.v_proj = nn.Linear(config.hidden_size, config.num_key_value_heads * self.head_dim)</span><br><span class="line">        self.o_proj = nn.Linear(config.num_attention_heads * self.head_dim, config.hidden_size)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># RoPE</span></span><br><span class="line">        self.rotary_emb = MistralRotaryEmbedding(self.head_dim, config.max_position_embeddings)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, attention_mask=<span class="literal">None</span>, position_ids=<span class="literal">None</span></span>):</span><br><span class="line">        B, T, C = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># QKV投影</span></span><br><span class="line">        q = self.q_proj(x).reshape(B, T, self.num_heads, self.head_dim)</span><br><span class="line">        k = self.k_proj(x).reshape(B, T, self.num_key_value_heads, self.head_dim)</span><br><span class="line">        v = self.v_proj(x).reshape(B, T, self.num_key_value_heads, self.head_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 应用RoPE</span></span><br><span class="line">        q, k = self.rotary_emb(q, k, position_ids)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Grouped Query Attention</span></span><br><span class="line">        q = q.reshape(B, T, self.num_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        k = k.reshape(B, T, self.num_key_value_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        v = v.reshape(B, T, self.num_key_value_heads, self.head_dim).transpose(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 扩展K/V到Q头数</span></span><br><span class="line">        k = self._repeat_kv(k, self.num_heads // self.num_key_value_heads)</span><br><span class="line">        v = self._repeat_kv(v, self.num_heads // self.num_key_value_heads)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 滑动窗口掩码</span></span><br><span class="line">        <span class="keyword">if</span> self.sliding_window <span class="keyword">and</span> T &gt; self.sliding_window:</span><br><span class="line">            <span class="comment"># 创建因果掩码</span></span><br><span class="line">            mask = torch.triu(torch.ones(T, T, device=x.device), <span class="number">1</span>).<span class="built_in">bool</span>()</span><br><span class="line">            <span class="comment"># 滑动窗口掩码：只关注最近sliding_window个token</span></span><br><span class="line">            mask = mask | (torch.arange(T, device=x.device).unsqueeze(<span class="number">0</span>) &lt; T - self.sliding_window)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> attention_mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                mask = mask &amp; attention_mask</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            mask = attention_mask</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 注意力计算</span></span><br><span class="line">        attn = torch.nn.functional.scaled_dot_product_attention(</span><br><span class="line">            q, k, v, attn_mask=mask</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.o_proj(attn.transpose(<span class="number">1</span>, <span class="number">2</span>).reshape(B, T, C))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_repeat_kv</span>(<span class="params">self, x, n_rep</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;重复K/V以匹配Q头数&quot;&quot;&quot;</span></span><br><span class="line">        B, n_kv_heads, T, head_dim = x.shape</span><br><span class="line">        <span class="keyword">if</span> n_rep == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">return</span> x[:, :, <span class="literal">None</span>, :, :].expand(B, n_kv_heads, n_rep, T, head_dim).reshape(B, n_kv_heads * n_rep, T, head_dim)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MistralRotaryEmbedding</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    旋转位置编码</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, max_position=<span class="number">32768</span>, base=<span class="number">10000</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        inv_freq = <span class="number">1.0</span> / (base ** (torch.arange(<span class="number">0</span>, dim, <span class="number">2</span>).<span class="built_in">float</span>() / dim))</span><br><span class="line">        self.register_buffer(<span class="string">&quot;inv_freq&quot;</span>, inv_freq)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, q, k, position_ids</span>):</span><br><span class="line">        T = position_ids.shape[<span class="number">1</span>]</span><br><span class="line">        freqs = torch.einsum(<span class="string">&quot;i,j-&gt;ij&quot;</span>, position_ids[<span class="number">0</span>].<span class="built_in">float</span>(), self.inv_freq)</span><br><span class="line">        emb = torch.cat((freqs, freqs), dim=-<span class="number">1</span>)</span><br><span class="line">        cos = emb.cos()</span><br><span class="line">        sin = emb.sin()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self._rotate(q, cos, sin), self._rotate(k, cos, sin)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_rotate</span>(<span class="params">self, x, cos, sin</span>):</span><br><span class="line">        x1, x2 = x[..., :x.shape[-<span class="number">1</span>]//<span class="number">2</span>], x[..., x.shape[-<span class="number">1</span>]//<span class="number">2</span>:]</span><br><span class="line">        <span class="keyword">return</span> torch.cat((-x2, x1), dim=-<span class="number">1</span>) * cos + x1 * (-sin) + x2 * cos</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-滑动窗口注意力"><a href="#2-滑动窗口注意力" class="headerlink" title="2. 滑动窗口注意力"></a>2. 滑动窗口注意力</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SlidingWindowAttention</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    滑动窗口注意力机制</span></span><br><span class="line"><span class="string">    时间复杂度从O(T²)降低到O(T*W)</span></span><br><span class="line"><span class="string">    W为窗口大小</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, window_size=<span class="number">4096</span></span>):</span><br><span class="line">        self.window_size = window_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_attention</span>(<span class="params">self, q, k, v</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        计算滑动窗口注意力</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        B, num_heads, T, head_dim = q.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 准备输出</span></span><br><span class="line">        output = torch.zeros_like(q)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分块处理</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, T, self.window_size):</span><br><span class="line">            <span class="comment"># 获取当前窗口</span></span><br><span class="line">            end = <span class="built_in">min</span>(i + self.window_size, T)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 窗口内的K, V</span></span><br><span class="line">            k_window = k[:, :, i:end, :]</span><br><span class="line">            v_window = v[:, :, i:end, :]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 当前窗口的Q</span></span><br><span class="line">            q_window = q[:, :, i:end, :]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算注意力</span></span><br><span class="line">            attn = torch.matmul(q_window, k_window.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) / math.sqrt(head_dim)</span><br><span class="line">            attn = torch.softmax(attn, dim=-<span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 应用注意力</span></span><br><span class="line">            output[:, :, i:end, :] = torch.matmul(attn, v_window)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+<h2 id="Mixtral-8x7B：混合专家模型"><a href="#Mixtral-8x7B：混合专家模型" class="headerlink" title="Mixtral 8x7B：混合专家模型"></a>Mixtral 8x7B：混合专家模型</h2><h3 id="1-MoE架构"><a href="#1-MoE架构" class="headerlink" title="1. MoE架构"></a>1. MoE架构</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MixtralMoE</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Mixtral 8x7B 混合专家架构</span></span><br><span class="line"><span class="string">    8个专家，每次激活2个</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_experts = <span class="number">8</span></span><br><span class="line">        self.top_k = <span class="number">2</span>  <span class="comment"># 激活的专家数</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 专家路由器</span></span><br><span class="line">        self.gate = nn.Linear(config.hidden_size, self.num_experts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 专家网络</span></span><br><span class="line">        self.experts = nn.ModuleList([</span><br><span class="line">            MistralMoEBlock(config) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(self.num_experts)</span><br><span class="line">        ])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        MoE前向传播</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        B, T, C = x.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算每个专家的门控值</span></span><br><span class="line">        gate_logits = self.gate(x)</span><br><span class="line">        gate_probs = torch.softmax(gate_logits, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 选择top-k专家</span></span><br><span class="line">        top_k_probs, top_k_indices = torch.topk(gate_probs, self.top_k, dim=-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 归一化</span></span><br><span class="line">        top_k_probs = top_k_probs / top_k_probs.<span class="built_in">sum</span>(dim=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化输出</span></span><br><span class="line">        output = torch.zeros_like(x)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 累加每个专家的贡献</span></span><br><span class="line">        <span class="keyword">for</span> expert_idx <span class="keyword">in</span> <span class="built_in">range</span>(self.num_experts):</span><br><span class="line">            <span class="comment"># 找出选择该专家的token</span></span><br><span class="line">            mask = (top_k_indices == expert_idx)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算该专家的权重</span></span><br><span class="line">            weights = torch.zeros(B, T, device=x.device)</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(self.top_k):</span><br><span class="line">                expert_mask = (top_k_indices[:, :, k] == expert_idx)</span><br><span class="line">                weights += top_k_probs[:, :, k] * expert_mask.<span class="built_in">float</span>()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 通过专家处理</span></span><br><span class="line">            expert_output = self.experts[expert_idx](x)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 加权累加</span></span><br><span class="line">            output += expert_output * weights.unsqueeze(-<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MistralMoEBlock</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    MoE专家块</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.block = nn.ModuleDict(&#123;</span><br><span class="line">            <span class="string">&quot;w1&quot;</span>: nn.Linear(config.hidden_size, config.intermediate_size, bias=<span class="literal">False</span>),</span><br><span class="line">            <span class="string">&quot;w2&quot;</span>: nn.Linear(config.intermediate_size, config.hidden_size, bias=<span class="literal">False</span>),</span><br><span class="line">            <span class="string">&quot;w3&quot;</span>: nn.Linear(config.hidden_size, config.intermediate_size, bias=<span class="literal">False</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        SwiGLU激活</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.block[<span class="string">&quot;w2&quot;</span>](</span><br><span class="line">            torch.nn.functional.silu(self.block[<span class="string">&quot;w1&quot;</span>](x)) * self.block[<span class="string">&quot;w3&quot;</span>](x)</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<h2 id="Mistral模型部署"><a href="#Mistral模型部署" class="headerlink" title="Mistral模型部署"></a>Mistral模型部署</h2><h3 id="1-HuggingFace-Transformers部署"><a href="#1-HuggingFace-Transformers部署" class="headerlink" title="1. HuggingFace Transformers部署"></a>1. HuggingFace Transformers部署</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM, AutoTokenizer</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MistralDeployer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path: <span class="built_in">str</span></span>):</span><br><span class="line">        self.tokenizer = AutoTokenizer.from_pretrained(model_path)</span><br><span class="line">        self.model = AutoModelForCausalLM.from_pretrained(</span><br><span class="line">            model_path,</span><br><span class="line">            torch_dtype=torch.float16,</span><br><span class="line">            device_map=<span class="string">&quot;auto&quot;</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, prompt: <span class="built_in">str</span>, max_tokens: <span class="built_in">int</span> = <span class="number">256</span>, </span></span><br><span class="line"><span class="params">                 temperature: <span class="built_in">float</span> = <span class="number">0.7</span>, top_p: <span class="built_in">float</span> = <span class="number">0.9</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;生成文本&quot;&quot;&quot;</span></span><br><span class="line">        inputs = self.tokenizer(prompt, return_tensors=<span class="string">&quot;pt&quot;</span>).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        outputs = self.model.generate(</span><br><span class="line">            **inputs,</span><br><span class="line">            max_new_tokens=max_tokens,</span><br><span class="line">            do_sample=<span class="literal">True</span>,</span><br><span class="line">            temperature=temperature,</span><br><span class="line">            top_p=top_p,</span><br><span class="line">            pad_token_id=self.tokenizer.eos_token_id</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.tokenizer.decode(outputs[<span class="number">0</span>], skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, messages: <span class="built_in">list</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;对话接口&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 构建prompt</span></span><br><span class="line">        prompt = self._build_chat_prompt(messages)</span><br><span class="line">        <span class="keyword">return</span> self.generate(prompt)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_chat_prompt</span>(<span class="params">self, messages: <span class="built_in">list</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;构建对话prompt&quot;&quot;&quot;</span></span><br><span class="line">        prompt = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> msg <span class="keyword">in</span> messages:</span><br><span class="line">            <span class="keyword">if</span> msg[<span class="string">&#x27;role&#x27;</span>] == <span class="string">&#x27;system&#x27;</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;[INST] &lt;&lt;SYS&gt;&gt;\n<span class="subst">&#123;msg[<span class="string">&#x27;content&#x27;</span>]&#125;</span>\n&lt;&lt;/SYS&gt;&gt;\n[/INST]\n&quot;</span></span><br><span class="line">            <span class="keyword">elif</span> msg[<span class="string">&#x27;role&#x27;</span>] == <span class="string">&#x27;user&#x27;</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;[INST] <span class="subst">&#123;msg[<span class="string">&#x27;content&#x27;</span>]&#125;</span> [/INST]&quot;</span></span><br><span class="line">            <span class="keyword">elif</span> msg[<span class="string">&#x27;role&#x27;</span>] == <span class="string">&#x27;assistant&#x27;</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;<span class="subst">&#123;msg[<span class="string">&#x27;content&#x27;</span>]&#125;</span>\n&quot;</span></span><br><span class="line">        <span class="keyword">return</span> prompt</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-vLLM高性能部署"><a href="#2-vLLM高性能部署" class="headerlink" title="2. vLLM高性能部署"></a>2. vLLM高性能部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用vLLM部署Mistral</span></span><br><span class="line">pip install vllm</span><br><span class="line"></span><br><span class="line">python -m vllm.entrypoints.openai.api_server \</span><br><span class="line">    --model mistralai/Mistral-7B-Instruct-v0.1 \</span><br><span class="line">    --served-model-name mistral \</span><br><span class="line">    --port 8000 \</span><br><span class="line">    --tensor-parallel-size 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-ollama本地部署"><a href="#3-ollama本地部署" class="headerlink" title="3. ollama本地部署"></a>3. ollama本地部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用ollama部署</span></span><br><span class="line">ollama run mistral</span><br><span class="line"></span><br><span class="line"><span class="comment"># API调用</span></span><br><span class="line">curl http://localhost:11434/api/generate -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">  &quot;model&quot;: &quot;mistral&quot;,</span></span><br><span class="line"><span class="string">  &quot;prompt&quot;: &quot;解释量子计算的基本原理&quot;,</span></span><br><span class="line"><span class="string">  &quot;stream&quot;: false</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Mistral性能对比"><a href="#Mistral性能对比" class="headerlink" title="Mistral性能对比"></a>Mistral性能对比</h2><h3 id="Benchmark结果"><a href="#Benchmark结果" class="headerlink" title="Benchmark结果"></a>Benchmark结果</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>MMLU</th>
+<th>HellaSwag</th>
+<th>TruthfulQA</th>
+<th>Winogrande</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mistral 7B</td>
+<td>60.1%</td>
+<td>83.0%</td>
+<td>42.9%</td>
+<td>74.8%</td>
+</tr>
+<tr>
+<td>Llama 2 7B</td>
+<td>54.8%</td>
+<td>79.4%</td>
+<td>39.4%</td>
+<td>72.3%</td>
+</tr>
+<tr>
+<td>Llama 2 13B</td>
+<td>59.2%</td>
+<td>81.8%</td>
+<td>43.6%</td>
+<td>74.8%</td>
+</tr>
+<tr>
+<td>Mixtral 8x7B</td>
+<td>68.4%</td>
+<td>85.7%</td>
+<td>48.1%</td>
+<td>76.8%</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Mistral AI凭借创新的滑动窗口注意力、GQA和MoE等技术，在保持高性能的同时大幅降低了计算成本。Mistral 7B和Mixtral 8x7B的开源，为开发者和企业提供了强大的本地部署选择。随着Mistral生态的持续发展，我们期待看到更多基于Mistral的创新应用。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mistral.ai/">Mistral AI官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.06825">Mistral 7B论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2401.04088">Mixtral论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/mistralai">HuggingFace Mistral</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/">开源大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/">开源大模型</a>
+    
+      <a href="/tags/Mistral/">Mistral</a>
+    
+      <a href="/tags/MoE/">MoE</a>
+    
+      <a href="/tags/%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6/">混合专家</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/12/01/2023-12-01-Mistral-开源大模型新星-技术架构与部署实践/" target="_blank" title="Mistral：开源大模型新星技术架构与部署实践">https://www.coomatrix.com/2023/12/01/2023-12-01-Mistral-开源大模型新星-技术架构与部署实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/01/05/2024-01-05-GPT-4o%E4%B8%8EGemini%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          GPT-4o与Gemini：多模态大模型最新进展
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/11/05/2023-11-05-Jetson-%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-TensorRT-LLM%E5%AE%9E%E6%88%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Jetson嵌入式部署大模型：TensorRT-LLM实战</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mistral-7B%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">Mistral 7B技术解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">1. 模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%B3%A8%E6%84%8F%E5%8A%9B"><span class="nav-number">2.2.</span> <span class="nav-text">2. 滑动窗口注意力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mixtral-8x7B%EF%BC%9A%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">Mixtral 8x7B：混合专家模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-MoE%E6%9E%B6%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">1. MoE架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mistral%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2"><span class="nav-number">4.</span> <span class="nav-text">Mistral模型部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-HuggingFace-Transformers%E9%83%A8%E7%BD%B2"><span class="nav-number">4.1.</span> <span class="nav-text">1. HuggingFace Transformers部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-vLLM%E9%AB%98%E6%80%A7%E8%83%BD%E9%83%A8%E7%BD%B2"><span class="nav-number">4.2.</span> <span class="nav-text">2. vLLM高性能部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-ollama%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2"><span class="nav-number">4.3.</span> <span class="nav-text">3. ollama本地部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mistral%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">5.</span> <span class="nav-text">Mistral性能对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Benchmark%E7%BB%93%E6%9E%9C"><span class="nav-number">5.1.</span> <span class="nav-text">Benchmark结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

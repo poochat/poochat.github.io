@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>chatglm中文大模型：技术原理与产业应用 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言ChatGLM是由清华大学KEG实验室和智谱AI联合开发的中英双语大语言模型。作为国产开源大模型的代表，ChatGLM在中文理解与生成方面表现出色，并已广泛应用于工业界。本文将深入分析ChatGLM的技术架构、训练方法和部署实践。 ChatGLM技术架构1. GLM核心设计ChatGLM基于通用语言模型（General Language Model, GLM）架构，这是一种结合了自编码和自回归">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ChatGLM中文大模型：技术原理与产业应用">
+<meta property="og:url" content="https://www.coomatrix.com/2023/04/20/2023-04-20-ChatGLM%E4%B8%AD%E6%96%87%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言ChatGLM是由清华大学KEG实验室和智谱AI联合开发的中英双语大语言模型。作为国产开源大模型的代表，ChatGLM在中文理解与生成方面表现出色，并已广泛应用于工业界。本文将深入分析ChatGLM的技术架构、训练方法和部署实践。 ChatGLM技术架构1. GLM核心设计ChatGLM基于通用语言模型（General Language Model, GLM）架构，这是一种结合了自编码和自回归">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1620712943543-bcc4688e7485">
+<meta property="article:published_time" content="2023-04-20T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:32.635Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="ChatGLM">
+<meta property="article:tag" content="清华">
+<meta property="article:tag" content="GLM">
+<meta property="article:tag" content="中文大模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1620712943543-bcc4688e7485">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-04-20-ChatGLM中文大模型-技术原理与产业应用" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1620712943543-bcc4688e7485" rel="gallery_cmoopizrm00719cv6f3ue2h3u noopener">
+        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ChatGLM中文大模型：技术原理与产业应用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/04/20/2023-04-20-ChatGLM%E4%B8%AD%E6%96%87%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BA%94%E7%94%A8/" class="article-date">
+	  <time datetime="2023-04-20T03:00:00.000Z" itemprop="datePublished">四月 20, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>ChatGLM是由清华大学KEG实验室和智谱AI联合开发的中英双语大语言模型。作为国产开源大模型的代表，ChatGLM在中文理解与生成方面表现出色，并已广泛应用于工业界。本文将深入分析ChatGLM的技术架构、训练方法和部署实践。</p>
+<h2 id="ChatGLM技术架构"><a href="#ChatGLM技术架构" class="headerlink" title="ChatGLM技术架构"></a>ChatGLM技术架构</h2><h3 id="1-GLM核心设计"><a href="#1-GLM核心设计" class="headerlink" title="1. GLM核心设计"></a>1. GLM核心设计</h3><p>ChatGLM基于通用语言模型（General Language Model, GLM）架构，这是一种结合了自编码和自回归优势的混合目标函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> PretrainedConfig</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GLMAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    GLM的自注意力机制</span></span><br><span class="line"><span class="string">    支持长短混合注意力模式</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.hidden_size = config.hidden_size</span><br><span class="line">        self.num_heads = config.num_attention_heads</span><br><span class="line">        self.head_dim = self.hidden_size // self.num_heads</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 旋转位置编码</span></span><br><span class="line">        self.rotary_emb = RotaryEmbedding(self.head_dim)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 注意力投影</span></span><br><span class="line">        self.query_key_value = nn.Linear(</span><br><span class="line">            config.hidden_size, </span><br><span class="line">            <span class="number">3</span> * config.hidden_size</span><br><span class="line">        )</span><br><span class="line">        self.dense = nn.Linear(config.hidden_size, config.hidden_size)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states, position_ids, attention_mask=<span class="literal">None</span></span>):</span><br><span class="line">        B, L, _ = hidden_states.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># QKV投影</span></span><br><span class="line">        qkv = self.query_key_value(hidden_states)</span><br><span class="line">        qkv = qkv.reshape(B, L, <span class="number">3</span>, self.num_heads, self.head_dim)</span><br><span class="line">        q, k, v = qkv.unbind(<span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 应用RoPE</span></span><br><span class="line">        q, k = self.rotary_emb(q, k, position_ids)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算注意力</span></span><br><span class="line">        attn_output = self._attn(q, k, v, attention_mask)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.dense(attn_output)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_attn</span>(<span class="params">self, q, k, v, attention_mask</span>):</span><br><span class="line">        scale = <span class="number">1.0</span> / (self.head_dim ** <span class="number">0.5</span>)</span><br><span class="line">        attn_weights = torch.matmul(q, k.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) * scale</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> attention_mask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            attn_weights = attn_weights + attention_mask</span><br><span class="line">            </span><br><span class="line">        attn_weights = nn.functional.softmax(attn_weights, dim=-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> torch.matmul(attn_weights, v)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GLMBlock</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    GLM Transformer Block</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.attention = GLMAttention(config)</span><br><span class="line">        self.mlp = nn.Sequential(</span><br><span class="line">            nn.Linear(config.hidden_size, config.intermediate_size * <span class="number">4</span>),</span><br><span class="line">            nn.GELU(),</span><br><span class="line">            nn.Linear(config.intermediate_size * <span class="number">4</span>, config.hidden_size)</span><br><span class="line">        )</span><br><span class="line">        self.post_attention_layernorm = nn.LayerNorm(config.hidden_size)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, hidden_states, position_ids, attention_mask=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 自注意力 + 残差</span></span><br><span class="line">        residual = hidden_states</span><br><span class="line">        hidden_states = self.attention(hidden_states, position_ids, attention_mask)</span><br><span class="line">        hidden_states = residual + hidden_states</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 前馈网络 + 残差</span></span><br><span class="line">        residual = hidden_states</span><br><span class="line">        hidden_states = self.post_attention_layernorm(hidden_states)</span><br><span class="line">        hidden_states = self.mlp(hidden_states)</span><br><span class="line">        hidden_states = residual + hidden_states</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> hidden_states</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Prefix-LM训练范式"><a href="#2-Prefix-LM训练范式" class="headerlink" title="2. Prefix LM训练范式"></a>2. Prefix LM训练范式</h3><p>ChatGLM采用Prefix LM训练范式，支持不同注意力模式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixLMConfig</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.num_layers = <span class="number">28</span></span><br><span class="line">        self.hidden_size = <span class="number">4096</span></span><br><span class="line">        self.num_attention_heads = <span class="number">32</span></span><br><span class="line">        self.pre_seq_len = <span class="number">128</span>  <span class="comment"># Prefix序列长度</span></span><br><span class="line">        self.virtual_pipeline_parallel_size = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PrefixLMModel</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Prefix LM支持双向注意力和单向注意力的混合</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.num_layers = config.num_layers</span><br><span class="line">        self.prefix_tokens = config.pre_seq_len</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 词嵌入</span></span><br><span class="line">        self.embedding = nn.Embedding(config.vocab_size, config.hidden_size)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Prefix编码器</span></span><br><span class="line">        self.prefix_encoder = nn.Sequential(</span><br><span class="line">            nn.Linear(config.hidden_size, config.hidden_size),</span><br><span class="line">            nn.Tanh(),</span><br><span class="line">            nn.Linear(config.hidden_size, config.num_layers * <span class="number">2</span> * config.hidden_size)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Transformer层</span></span><br><span class="line">        self.layers = nn.ModuleList([</span><br><span class="line">            GLMBlock(config) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(config.num_layers)</span><br><span class="line">        ])</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_position_ids</span>(<span class="params">self, input_ids, seq_len, past_key_values_length=<span class="number">0</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        生成位置编码</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        mask = input_ids == <span class="number">150_004</span>  <span class="comment"># [MASK] token</span></span><br><span class="line">        positions = torch.cumsum(mask, dim=<span class="number">1</span>).type_as(mask) + past_key_values_length - <span class="number">1</span></span><br><span class="line">        positions = positions - positions.where(~mask).<span class="built_in">max</span>(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)[<span class="number">0</span>] + past_key_values_length</span><br><span class="line">        <span class="keyword">return</span> positions</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, input_ids, attention_mask=<span class="literal">None</span></span>):</span><br><span class="line">        B, L = input_ids.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取embedding</span></span><br><span class="line">        hidden_states = self.embedding(input_ids)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成prefix注意力</span></span><br><span class="line">        prefix_attention = self.get_prefix_attention(input_ids)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成位置编码</span></span><br><span class="line">        position_ids = self.get_position_ids(input_ids, L)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 通过Transformer层</span></span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers:</span><br><span class="line">            hidden_states = layer(</span><br><span class="line">                hidden_states, </span><br><span class="line">                position_ids, </span><br><span class="line">                attention_mask=prefix_attention</span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> hidden_states</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_prefix_attention</span>(<span class="params">self, input_ids</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        为prefix tokens生成特殊注意力掩码</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        B, L = input_ids.shape</span><br><span class="line">        <span class="comment"># Prefix tokens之间双向注意，其他单向</span></span><br><span class="line">        prefix_mask = (input_ids == <span class="number">150_004</span>).unsqueeze(<span class="number">1</span>).unsqueeze(<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> prefix_mask</span><br></pre></td></tr></table></figure>
+
+<h2 id="ChatGLM训练流程"><a href="#ChatGLM训练流程" class="headerlink" title="ChatGLM训练流程"></a>ChatGLM训练流程</h2><h3 id="1-预训练阶段"><a href="#1-预训练阶段" class="headerlink" title="1. 预训练阶段"></a>1. 预训练阶段</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ChatGLMPretraining</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    ChatGLM预训练配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.optimizer_config = &#123;</span><br><span class="line">            <span class="string">&quot;learning_rate&quot;</span>: <span class="number">1e-4</span>,</span><br><span class="line">            <span class="string">&quot;weight_decay&quot;</span>: <span class="number">0.1</span>,</span><br><span class="line">            <span class="string">&quot;beta1&quot;</span>: <span class="number">0.9</span>,</span><br><span class="line">            <span class="string">&quot;beta2&quot;</span>: <span class="number">0.999</span>,</span><br><span class="line">            <span class="string">&quot;warmup_steps&quot;</span>: <span class="number">2000</span></span><br><span class="line">        &#125;</span><br><span class="line">        self.training_config = &#123;</span><br><span class="line">            <span class="string">&quot;batch_size&quot;</span>: <span class="number">8</span>,</span><br><span class="line">            <span class="string">&quot;sequence_length&quot;</span>: <span class="number">2048</span>,</span><br><span class="line">            <span class="string">&quot;gradient_accumulation_steps&quot;</span>: <span class="number">16</span>,</span><br><span class="line">            <span class="string">&quot;max_steps&quot;</span>: <span class="number">100_000</span></span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_loss</span>(<span class="params">self, model, batch</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        GLM的预训练损失</span></span><br><span class="line"><span class="string">        Token级别的语言建模损失</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        input_ids = batch[<span class="string">&#x27;input_ids&#x27;</span>]</span><br><span class="line">        labels = batch[<span class="string">&#x27;labels&#x27;</span>]</span><br><span class="line">        </span><br><span class="line">        outputs = model(input_ids)</span><br><span class="line">        logits = outputs.logits</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Shift logits and labels for causal LM</span></span><br><span class="line">        shift_logits = logits[..., :-<span class="number">1</span>, :].contiguous()</span><br><span class="line">        shift_labels = labels[..., <span class="number">1</span>:].contiguous()</span><br><span class="line">        </span><br><span class="line">        loss_fct = nn.CrossEntropyLoss()</span><br><span class="line">        loss = loss_fct(</span><br><span class="line">            shift_logits.view(-<span class="number">1</span>, shift_logits.size(-<span class="number">1</span>)),</span><br><span class="line">            shift_labels.view(-<span class="number">1</span>)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> loss</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SFT监督微调"><a href="#2-SFT监督微调" class="headerlink" title="2. SFT监督微调"></a>2. SFT监督微调</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ChatGLMSFT</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    ChatGLM监督微调</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, tokenizer</span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.tokenizer = tokenizer</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">format_prompt</span>(<span class="params">self, conversation</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        格式化对话prompt</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        prompt = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> turn <span class="keyword">in</span> conversation:</span><br><span class="line">            role = turn[<span class="string">&#x27;role&#x27;</span>]</span><br><span class="line">            content = turn[<span class="string">&#x27;content&#x27;</span>]</span><br><span class="line">            <span class="keyword">if</span> role == <span class="string">&#x27;user&#x27;</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;[Round <span class="subst">&#123;turn[<span class="string">&#x27;round&#x27;</span>]&#125;</span>]\n问：<span class="subst">&#123;content&#125;</span>\n&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                prompt += <span class="string">f&quot;答：<span class="subst">&#123;content&#125;</span>\n&quot;</span></span><br><span class="line">        prompt += <span class="string">&quot;答：&quot;</span></span><br><span class="line">        <span class="keyword">return</span> prompt</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sft_collate_fn</span>(<span class="params">self, batch</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        SFT数据整理</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        prompts = [self.format_prompt(conv) <span class="keyword">for</span> conv <span class="keyword">in</span> batch[<span class="string">&#x27;conversation&#x27;</span>]]</span><br><span class="line">        </span><br><span class="line">        encoded = self.tokenizer(</span><br><span class="line">            prompts,</span><br><span class="line">            padding=<span class="literal">True</span>,</span><br><span class="line">            truncation=<span class="literal">True</span>,</span><br><span class="line">            max_length=<span class="number">2048</span>,</span><br><span class="line">            return_tensors=<span class="string">&#x27;pt&#x27;</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&#x27;input_ids&#x27;</span>: encoded[<span class="string">&#x27;input_ids&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;attention_mask&#x27;</span>: encoded[<span class="string">&#x27;attention_mask&#x27;</span>],</span><br><span class="line">            <span class="string">&#x27;labels&#x27;</span>: encoded[<span class="string">&#x27;input_ids&#x27;</span>].clone()</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self, train_dataset, output_dir</span>):</span><br><span class="line">        <span class="keyword">from</span> transformers <span class="keyword">import</span> Trainer, TrainingArguments</span><br><span class="line">        </span><br><span class="line">        training_args = TrainingArguments(</span><br><span class="line">            output_dir=output_dir,</span><br><span class="line">            per_device_train_batch_size=<span class="number">4</span>,</span><br><span class="line">            gradient_accumulation_steps=<span class="number">4</span>,</span><br><span class="line">            learning_rate=<span class="number">1e-5</span>,</span><br><span class="line">            num_train_epochs=<span class="number">3</span>,</span><br><span class="line">            logging_steps=<span class="number">10</span>,</span><br><span class="line">            save_steps=<span class="number">1000</span>,</span><br><span class="line">            save_total_limit=<span class="number">3</span>,</span><br><span class="line">            fp16=<span class="literal">True</span>,</span><br><span class="line">            dataloader_num_workers=<span class="number">4</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        trainer = Trainer(</span><br><span class="line">            model=self.model,</span><br><span class="line">            args=training_args,</span><br><span class="line">            train_dataset=train_dataset,</span><br><span class="line">            data_collator=self.sft_collate_fn</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        trainer.train()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-PPO强化学习训练"><a href="#3-PPO强化学习训练" class="headerlink" title="3. PPO强化学习训练"></a>3. PPO强化学习训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ChatGLMPPOTrainer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    ChatGLM的RLHF训练</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, ref_model, reward_model, ppo_config</span>):</span><br><span class="line">        self.ref_model = ref_model</span><br><span class="line">        self.reward_model = reward_model</span><br><span class="line">        self.ppo_config = ppo_config</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_reward</span>(<span class="params">self, response, prompt</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用奖励模型计算reward</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        full_text = prompt + response</span><br><span class="line">        reward_score = self.reward_model(full_text)</span><br><span class="line">        <span class="keyword">return</span> reward_score</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_kl_penalty</span>(<span class="params">self, response, prompt</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        KL散度惩罚，防止过度优化</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            ref_log_probs = self.ref_model(prompt + response).log_probs</span><br><span class="line">        new_log_probs = self.model(prompt + response).log_probs</span><br><span class="line">        <span class="keyword">return</span> ref_log_probs - new_log_probs</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ppo_step</span>(<span class="params">self, prompts, responses</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        PPO更新步骤</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        rewards = []</span><br><span class="line">        kl_penalties = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> prompt, response <span class="keyword">in</span> <span class="built_in">zip</span>(prompts, responses):</span><br><span class="line">            reward = self.compute_reward(response, prompt)</span><br><span class="line">            kl = self.compute_kl_penalty(response, prompt)</span><br><span class="line">            rewards.append(reward - self.ppo_config.kl_coef * kl)</span><br><span class="line">            kl_penalties.append(kl)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># PPO策略更新...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ChatGLM6B部署实践"><a href="#ChatGLM6B部署实践" class="headerlink" title="ChatGLM6B部署实践"></a>ChatGLM6B部署实践</h2><h3 id="1-量化部署"><a href="#1-量化部署" class="headerlink" title="1. 量化部署"></a>1. 量化部署</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModel, AutoTokenizer</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatGLMDeployer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path, quantize_mode=<span class="string">&#x27;int4&#x27;</span></span>):</span><br><span class="line">        self.tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        load_kwargs = &#123;</span><br><span class="line">            <span class="string">&quot;trust_remote_code&quot;</span>: <span class="literal">True</span>,</span><br><span class="line">            <span class="string">&quot;device_map&quot;</span>: <span class="string">&quot;auto&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> quantize_mode == <span class="string">&#x27;int4&#x27;</span>:</span><br><span class="line">            <span class="comment"># INT4量化，大幅降低显存占用</span></span><br><span class="line">            self.model = AutoModel.from_pretrained(</span><br><span class="line">                model_path,</span><br><span class="line">                quantization_config=BitsAndBytesConfig(</span><br><span class="line">                    load_in_4bit=<span class="literal">True</span>,</span><br><span class="line">                    bnb_4bit_compute_dtype=torch.float16</span><br><span class="line">                ),</span><br><span class="line">                **load_kwargs</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">elif</span> quantize_mode == <span class="string">&#x27;int8&#x27;</span>:</span><br><span class="line">            self.model = AutoModel.from_pretrained(</span><br><span class="line">                model_path,</span><br><span class="line">                quantization_config=BitsAndBytesConfig(</span><br><span class="line">                    load_in_8bit=<span class="literal">True</span></span><br><span class="line">                ),</span><br><span class="line">                **load_kwargs</span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.model = AutoModel.from_pretrained(model_path, **load_kwargs)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">self, query, history=<span class="literal">None</span>, max_length=<span class="number">2048</span></span>):</span><br><span class="line">        response, history = self.model.chat(</span><br><span class="line">            self.tokenizer,</span><br><span class="line">            query,</span><br><span class="line">            history=history <span class="keyword">or</span> [],</span><br><span class="line">            max_length=max_length</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> response, history</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">stream_chat</span>(<span class="params">self, query, history=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        流式输出</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> response, history <span class="keyword">in</span> self.model.stream_chat(</span><br><span class="line">            self.tokenizer,</span><br><span class="line">            query,</span><br><span class="line">            history=history <span class="keyword">or</span> []</span><br><span class="line">        ):</span><br><span class="line">            <span class="keyword">yield</span> response</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-OpenAI兼容API"><a href="#2-OpenAI兼容API" class="headerlink" title="2. OpenAI兼容API"></a>2. OpenAI兼容API</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"></span><br><span class="line">app = FastAPI(title=<span class="string">&quot;ChatGLM API&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatRequest</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    prompt: <span class="built_in">str</span></span><br><span class="line">    history: <span class="built_in">list</span> = []</span><br><span class="line">    max_length: <span class="built_in">int</span> = <span class="number">2048</span></span><br><span class="line">    temperature: <span class="built_in">float</span> = <span class="number">0.7</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/v1/chat/completions&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">chat_completions</span>(<span class="params">request: ChatRequest</span>):</span><br><span class="line">    response, _ = chatglm.chat(</span><br><span class="line">        request.prompt,</span><br><span class="line">        request.history,</span><br><span class="line">        request.max_length</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&quot;choices&quot;</span>: [&#123;</span><br><span class="line">            <span class="string">&quot;message&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">                <span class="string">&quot;content&quot;</span>: response</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;finish_reason&quot;</span>: <span class="string">&quot;stop&quot;</span>,</span><br><span class="line">            <span class="string">&quot;index&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;],</span><br><span class="line">        <span class="string">&quot;usage&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;prompt_tokens&quot;</span>: <span class="built_in">len</span>(request.prompt),</span><br><span class="line">            <span class="string">&quot;completion_tokens&quot;</span>: <span class="built_in">len</span>(response),</span><br><span class="line">            <span class="string">&quot;total_tokens&quot;</span>: <span class="built_in">len</span>(request.prompt) + <span class="built_in">len</span>(response)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/health&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">health</span>():</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;ok&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    uvicorn.run(app, host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8000</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="ChatGLM产业应用"><a href="#ChatGLM产业应用" class="headerlink" title="ChatGLM产业应用"></a>ChatGLM产业应用</h2><h3 id="智能客服系统"><a href="#智能客服系统" class="headerlink" title="智能客服系统"></a>智能客服系统</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ChatGLMCustomerService</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path</span>):</span><br><span class="line">        self.llm = ChatGLMDeployer(model_path)</span><br><span class="line">        self.context_db = vector_db  <span class="comment"># 知识库</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">retrieve_context</span>(<span class="params">self, query</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        检索相关知识</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        relevant_docs = self.context_db.similarity_search(query, k=<span class="number">3</span>)</span><br><span class="line">        context = <span class="string">&quot;\n&quot;</span>.join([doc.page_content <span class="keyword">for</span> doc <span class="keyword">in</span> relevant_docs])</span><br><span class="line">        <span class="keyword">return</span> context</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_response</span>(<span class="params">self, query, user_id</span>):</span><br><span class="line">        <span class="comment"># 检索相关知识</span></span><br><span class="line">        context = self.retrieve_context(query)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 构建prompt</span></span><br><span class="line">        prompt = <span class="string">f&quot;&quot;&quot;基于以下知识回答用户问题：</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">知识库内容：</span></span><br><span class="line"><span class="string"><span class="subst">&#123;context&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">用户问题：<span class="subst">&#123;query&#125;</span></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">回答：&quot;&quot;&quot;</span></span><br><span class="line">        </span><br><span class="line">        response, _ = self.llm.chat(prompt)</span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>ChatGLM作为国产大模型的优秀代表，在中文理解与生成方面展现了强大的能力。通过GLM架构创新、Prefix LM训练范式和完整的RLHF流程，ChatGLM实现了卓越的性能。开源的ChatGLM-6B更是降低了中文大模型的应用门槛，推动了国内AI生态的快速发展。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://chatglm.cn/">ChatGLM项目主页</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2103.10360">GLM论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/THUDM">Hugging Face ChatGLM</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/">开源大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/ChatGLM/">ChatGLM</a>
+    
+      <a href="/tags/%E6%B8%85%E5%8D%8E/">清华</a>
+    
+      <a href="/tags/GLM/">GLM</a>
+    
+      <a href="/tags/%E4%B8%AD%E6%96%87%E5%A4%A7%E6%A8%A1%E5%9E%8B/">中文大模型</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/04/20/2023-04-20-ChatGLM中文大模型-技术原理与产业应用/" target="_blank" title="ChatGLM中文大模型：技术原理与产业应用">https://www.coomatrix.com/2023/04/20/2023-04-20-ChatGLM中文大模型-技术原理与产业应用/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/05/10/2023-05-10-RAG%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90-%E8%AE%A9%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8B%A5%E6%9C%89%E6%9C%80%E6%96%B0%E7%9F%A5%E8%AF%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          RAG检索增强生成：让大模型拥有最新知识
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/04/12/2023-04-12-Embedding%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B%E4%B8%8E%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Embedding模型选型与实战指南</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGLM%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">ChatGLM技术架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-GLM%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.1.</span> <span class="nav-text">1. GLM核心设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Prefix-LM%E8%AE%AD%E7%BB%83%E8%8C%83%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">2. Prefix LM训练范式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGLM%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">ChatGLM训练流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A2%84%E8%AE%AD%E7%BB%83%E9%98%B6%E6%AE%B5"><span class="nav-number">3.1.</span> <span class="nav-text">1. 预训练阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SFT%E7%9B%91%E7%9D%A3%E5%BE%AE%E8%B0%83"><span class="nav-number">3.2.</span> <span class="nav-text">2. SFT监督微调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-PPO%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AE%AD%E7%BB%83"><span class="nav-number">3.3.</span> <span class="nav-text">3. PPO强化学习训练</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGLM6B%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5"><span class="nav-number">4.</span> <span class="nav-text">ChatGLM6B部署实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%87%8F%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="nav-number">4.1.</span> <span class="nav-text">1. 量化部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-OpenAI%E5%85%BC%E5%AE%B9API"><span class="nav-number">4.2.</span> <span class="nav-text">2. OpenAI兼容API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChatGLM%E4%BA%A7%E4%B8%9A%E5%BA%94%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">ChatGLM产业应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E5%AE%A2%E6%9C%8D%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.1.</span> <span class="nav-text">智能客服系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

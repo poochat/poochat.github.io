@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>大模型推理优化技术：从理论到实践 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="概述大模型推理优化是降低成本、提升用户体验的关键技术。本文系统介绍vLLM、TensorRT-LLM等主流推理框架的原理与实践。 推理优化技术全景flowchart TB     subgraph 模型层优化         QUANT[量化]         PRUNE[剪枝]         KVCACHE[KV Cache]     end          subgraph 计算优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型推理优化技术：从理论到实践">
+<meta property="og:url" content="https://www.coomatrix.com/2025/03/15/2025-03-15-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="概述大模型推理优化是降低成本、提升用户体验的关键技术。本文系统介绍vLLM、TensorRT-LLM等主流推理框架的原理与实践。 推理优化技术全景flowchart TB     subgraph 模型层优化         QUANT[量化]         PRUNE[剪枝]         KVCACHE[KV Cache]     end          subgraph 计算优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+<meta property="article:published_time" content="2025-03-15T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:51:41.040Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="推理优化">
+<meta property="article:tag" content="vLLM">
+<meta property="article:tag" content="TensorRT-LLM">
+<meta property="article:tag" content="KV Cache">
+<meta property="article:tag" content="批处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2025-03-15-大模型推理优化技术-从理论到实践" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1551288049-bebda4e38f71" rel="gallery_cmoopizsj009s9cv63j5b9bti noopener">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      大模型推理优化技术：从理论到实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2025/03/15/2025-03-15-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2025-03-15T02:00:00.000Z" itemprop="datePublished">三月 15, 2025</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>大模型推理优化是降低成本、提升用户体验的关键技术。本文系统介绍vLLM、TensorRT-LLM等主流推理框架的原理与实践。</p>
+<h2 id="推理优化技术全景"><a href="#推理优化技术全景" class="headerlink" title="推理优化技术全景"></a>推理优化技术全景</h2><pre class="mermaid">flowchart TB
+    subgraph 模型层优化
+        QUANT[量化]
+        PRUNE[剪枝]
+        KVCACHE[KV Cache]
+    end
+    
+    subgraph 计算优化
+        FUSION[算子融合]
+        CONTEXT[连续批处理]
+        SPEC[投机解码]
+    end
+    
+    subgraph 系统优化
+        DIST[分布式推理]
+        CACHE[缓存]
+        OFFLOAD[卸载]
+    end</pre>
+
+<h2 id="KV-Cache优化"><a href="#KV-Cache优化" class="headerlink" title="KV Cache优化"></a>KV Cache优化</h2><h3 id="传统vs-KV-Cache"><a href="#传统vs-KV-Cache" class="headerlink" title="传统vs KV Cache"></a>传统vs KV Cache</h3><pre class="mermaid">flowchart LR
+    subgraph 传统推理
+        T1[Token 1] --> L1[LLM层]
+        L1 --> T2[Token 2]
+        T2 --> L2[LLM层]
+        L2 --> T3[Token 3]
+        T3 --> L3[LLM层]
+        T1 --> T3: 重复计算
+        T2 --> T3: 重复计算
+    end
+    
+    subgraph KV Cache
+        K1[Cache K1, V1] --> L1'[LLM层]
+        T1' --> L1'
+        L1' --> K2[Cache K2, V2]
+        K1 --> L2'[LLM层]
+        T2' --> L2'
+        L2' --> K3[Cache K3, V3]
+    end</pre>
+
+<h3 id="KV-Cache实现"><a href="#KV-Cache实现" class="headerlink" title="KV Cache实现"></a>KV Cache实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;KV Cache管理器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, max_batch_size, max_seq_len, num_heads, head_dim</span>):</span><br><span class="line">        self.k_cache = torch.zeros(</span><br><span class="line">            max_batch_size, max_seq_len, num_heads, head_dim</span><br><span class="line">        )</span><br><span class="line">        self.v_cache = torch.zeros(</span><br><span class="line">            max_batch_size, max_seq_len, num_heads, head_dim</span><br><span class="line">        )</span><br><span class="line">        self.seq_lens = [<span class="number">0</span>] * max_batch_size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, batch_idx, seq_len, k, v</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;更新KV Cache&quot;&quot;&quot;</span></span><br><span class="line">        self.k_cache[batch_idx, seq_len] = k</span><br><span class="line">        self.v_cache[batch_idx, seq_len] = v</span><br><span class="line">        self.seq_lens[batch_idx] = seq_len + <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get</span>(<span class="params">self, batch_idx, start, end</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取KV序列&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            self.k_cache[batch_idx, start:end],</span><br><span class="line">            self.v_cache[batch_idx, start:end]</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<h2 id="连续批处理"><a href="#连续批处理" class="headerlink" title="连续批处理"></a>连续批处理</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><pre class="mermaid">flowchart TB
+    subgraph 静态批处理
+        REQ1[请求1: 100ms]
+        REQ2[请求2: 80ms]
+        REQ3[请求3: 60ms]
+        REQ4[请求4: 90ms]
+        
+        BATCH1[批1] --> WAIT1[等待所有完成]
+        BATCH2[批2] --> WAIT2[等待所有完成]
+        BATCH3[批3] --> WAIT3[等待所有完成]
+    end
+    
+    subgraph 连续批处理
+        S1[Step 1] --> REQ1'[请求1生成]
+        S1 --> REQ2'[请求2生成]
+        S1 --> REQ3'[请求3开始]
+        S1 --> REQ4'[请求4开始]
+        
+        S2[Step 2] --> REQ1''[完成!]
+        S2 --> REQ5'[请求5加入]
+    end</pre>
+
+<h3 id="vLLM实现"><a href="#vLLM实现" class="headerlink" title="vLLM实现"></a>vLLM实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> vllm <span class="keyword">import</span> LLM, SamplingParams</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">VLLMInference</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;vLLM推理引擎&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name=<span class="string">&quot;meta-llama/Llama-2-70b-chat-hf&quot;</span></span>):</span><br><span class="line">        self.llm = LLM(</span><br><span class="line">            model=model_name,</span><br><span class="line">            tensor_parallel_size=<span class="number">4</span>,  <span class="comment"># 4卡并行</span></span><br><span class="line">            gpu_memory_utilization=<span class="number">0.9</span>,</span><br><span class="line">            max_num_seqs=<span class="number">256</span>,  <span class="comment"># 最大并发数</span></span><br><span class="line">            max_num_batched_tokens=<span class="number">32768</span></span><br><span class="line">        )</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_inference</span>(<span class="params">self, prompts, max_tokens=<span class="number">512</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;批量推理&quot;&quot;&quot;</span></span><br><span class="line">        sampling_params = SamplingParams(</span><br><span class="line">            temperature=<span class="number">0.7</span>,</span><br><span class="line">            top_p=<span class="number">0.95</span>,</span><br><span class="line">            max_tokens=max_tokens</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        outputs = self.llm.generate(prompts, sampling_params)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> [output.outputs[<span class="number">0</span>].text <span class="keyword">for</span> output <span class="keyword">in</span> outputs]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">streaming_inference</span>(<span class="params">self, prompt, max_tokens=<span class="number">512</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;流式推理&quot;&quot;&quot;</span></span><br><span class="line">        sampling_params = SamplingParams(</span><br><span class="line">            temperature=<span class="number">0.7</span>,</span><br><span class="line">            max_tokens=max_tokens,</span><br><span class="line">            stream=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        outputs = self.llm.generate([prompt], sampling_params)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> output <span class="keyword">in</span> outputs:</span><br><span class="line">            <span class="keyword">for</span> token <span class="keyword">in</span> output.outputs:</span><br><span class="line">                <span class="keyword">yield</span> token.text</span><br></pre></td></tr></table></figure>
+
+<h2 id="TensorRT-LLM优化"><a href="#TensorRT-LLM优化" class="headerlink" title="TensorRT-LLM优化"></a>TensorRT-LLM优化</h2><h3 id="TensorRT-LLM架构"><a href="#TensorRT-LLM架构" class="headerlink" title="TensorRT-LLM架构"></a>TensorRT-LLM架构</h3><pre class="mermaid">flowchart TB
+    subgraph TensorRT-LLM
+        HF[HF模型] --> EXPORT[导出]
+        EXPORT --> BUILD[TRT Builder]
+        BUILD --> ENGINE[TensorRT引擎]
+        ENGINE --> INFER[推理引擎]
+    end
+    
+    subgraph 优化技术
+        INFER --> FUSION[算子融合]
+        INFER --> QUANT[INT8/FP8]
+        INFER --> KVCACHE[KV Cache]
+        INFER --> CONTEXT[连续批处理]
+    end</pre>
+
+<h3 id="TensorRT-LLM使用"><a href="#TensorRT-LLM使用" class="headerlink" title="TensorRT-LLM使用"></a>TensorRT-LLM使用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorrt_llm <span class="keyword">import</span> LLM, BuildConfig</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TensorRTLLMInference</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;TensorRT-LLM推理&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_path</span>):</span><br><span class="line">        build_config = BuildConfig(</span><br><span class="line">            max_batch_size=<span class="number">128</span>,</span><br><span class="line">            max_input_len=<span class="number">4096</span>,</span><br><span class="line">            max_output_len=<span class="number">2048</span>,</span><br><span class="line">            max_num_tokens=<span class="number">32768</span>,</span><br><span class="line">            enable_chunked_context=<span class="literal">True</span>,</span><br><span class="line">            enable_air=<span class="literal">False</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        self.llm = LLM(model=model_path, build_config=build_config)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">self, prompts</span>):</span><br><span class="line">        <span class="keyword">from</span> tensorrt_llm <span class="keyword">import</span> SamplingParams</span><br><span class="line">        </span><br><span class="line">        sampling_params = SamplingParams(</span><br><span class="line">            max_new_tokens=<span class="number">512</span>,</span><br><span class="line">            temperature=<span class="number">0.8</span>,</span><br><span class="line">            top_p=<span class="number">0.95</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        outputs = self.llm.generate(prompts, sampling_params)</span><br><span class="line">        <span class="keyword">return</span> [output.outputs[<span class="number">0</span>].text <span class="keyword">for</span> output <span class="keyword">in</span> outputs]</span><br></pre></td></tr></table></figure>
+
+<h2 id="推理性能对比"><a href="#推理性能对比" class="headerlink" title="推理性能对比"></a>推理性能对比</h2><table>
+<thead>
+<tr>
+<th>框架</th>
+<th>吞吐量(token&#x2F;s)</th>
+<th>延迟(P99)</th>
+<th>显存占用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HuggingFace</td>
+<td>50</td>
+<td>2000ms</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>vLLM</td>
+<td>280</td>
+<td>300ms</td>
+<td>90%</td>
+</tr>
+<tr>
+<td>TensorRT-LLM</td>
+<td>450</td>
+<td>150ms</td>
+<td>85%</td>
+</tr>
+<tr>
+<td>SGLang</td>
+<td>320</td>
+<td>250ms</td>
+<td>88%</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre class="mermaid">mindmap
+  root((推理优化))
+    量化技术
+      INT8量化
+      FP8量化
+      GPTQ/AWQ
+    批处理优化
+      连续批处理
+      动态批处理
+    内存优化
+      KV Cache
+      PagedAttention
+      显存管理
+    系统优化
+      算子融合
+      CUDA优化
+      分布式推理</pre>
+
+<p>推理优化是大模型落地的关键技术，需要根据实际场景选择合适的优化方案。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/AI%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/">AI推理优化</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/">推理优化</a>
+    
+      <a href="/tags/vLLM/">vLLM</a>
+    
+      <a href="/tags/TensorRT-LLM/">TensorRT-LLM</a>
+    
+      <a href="/tags/KV-Cache/">KV Cache</a>
+    
+      <a href="/tags/%E6%89%B9%E5%A4%84%E7%90%86/">批处理</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2025/03/15/2025-03-15-大模型推理优化技术-从理论到实践/" target="_blank" title="大模型推理优化技术：从理论到实践">https://www.coomatrix.com/2025/03/15/2025-03-15-大模型推理优化技术-从理论到实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/04/20/2025-04-20-%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6%E4%B9%A0-%E4%BB%8E%E6%A8%A1%E4%BB%BF%E5%88%B0%E8%87%AA%E4%B8%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          具身智能与机器人学习：从模仿到自主
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/02/20/2025-02-20-GPT-4o%E4%B8%8EClaude-3-7-2025%E5%B9%B4%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">GPT-4o与Claude 3.7：2025年大模型对比分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF%E5%85%A8%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">推理优化技术全景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KV-Cache%E4%BC%98%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">KV Cache优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9Fvs-KV-Cache"><span class="nav-number">3.1.</span> <span class="nav-text">传统vs KV Cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KV-Cache%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">KV Cache实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">连续批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vLLM%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">vLLM实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorRT-LLM%E4%BC%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">TensorRT-LLM优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorRT-LLM%E6%9E%B6%E6%9E%84"><span class="nav-number">5.1.</span> <span class="nav-text">TensorRT-LLM架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TensorRT-LLM%E4%BD%BF%E7%94%A8"><span class="nav-number">5.2.</span> <span class="nav-text">TensorRT-LLM使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E7%90%86%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-number">6.</span> <span class="nav-text">推理性能对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

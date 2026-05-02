@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>rlhf人类反馈强化学习详解 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="RLHF人类反馈强化学习详解RLHF（Reinforcement Learning from Human Feedback）是2022年最热门的AI技术之一，它让大模型从”语言续写器”进化为”智能助手”。本文将深入剖析RLHF的每个技术环节。 1. 为什么需要RLHF传统语言模型的训练目标是预测下一个token： $$\mathcal{L}{LM} &#x3D; -\sum{t&#x3D;1}^{">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RLHF人类反馈强化学习详解">
+<meta property="og:url" content="https://www.coomatrix.com/2022/03/10/2022-03-10-RLHF%E4%BA%BA%E7%B1%BB%E5%8F%8D%E9%A6%88%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="RLHF人类反馈强化学习详解RLHF（Reinforcement Learning from Human Feedback）是2022年最热门的AI技术之一，它让大模型从”语言续写器”进化为”智能助手”。本文将深入剖析RLHF的每个技术环节。 1. 为什么需要RLHF传统语言模型的训练目标是预测下一个token： $$\mathcal{L}{LM} &#x3D; -\sum{t&#x3D;1}^{">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1518186285589-2f7649de83e0">
+<meta property="article:published_time" content="2022-03-10T01:15:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:30.591Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="RLHF">
+<meta property="article:tag" content="强化学习">
+<meta property="article:tag" content="PPO">
+<meta property="article:tag" content="大模型训练">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1518186285589-2f7649de83e0">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-03-10-RLHF人类反馈强化学习详解" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1518186285589-2f7649de83e0" rel="gallery_cmoopizrd00599cv6gd3280ni noopener">
+        <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      RLHF人类反馈强化学习详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/03/10/2022-03-10-RLHF%E4%BA%BA%E7%B1%BB%E5%8F%8D%E9%A6%88%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3/" class="article-date">
+	  <time datetime="2022-03-10T01:15:00.000Z" itemprop="datePublished">三月 10, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="RLHF人类反馈强化学习详解"><a href="#RLHF人类反馈强化学习详解" class="headerlink" title="RLHF人类反馈强化学习详解"></a>RLHF人类反馈强化学习详解</h1><p>RLHF（Reinforcement Learning from Human Feedback）是2022年最热门的AI技术之一，它让大模型从”语言续写器”进化为”智能助手”。本文将深入剖析RLHF的每个技术环节。</p>
+<h2 id="1-为什么需要RLHF"><a href="#1-为什么需要RLHF" class="headerlink" title="1. 为什么需要RLHF"></a>1. 为什么需要RLHF</h2><p>传统语言模型的训练目标是预测下一个token：</p>
+<p>$$\mathcal{L}<em>{LM} &#x3D; -\sum</em>{t&#x3D;1}^{T} \log P(x_t | x_{&lt;t})$$</p>
+<p>这个目标函数只关心”文本是否像人类写的”，而不关心”是否有用、安全、准确”。RLHF的核心思想是引入人类偏好作为额外的优化信号。</p>
+<h2 id="2-RLHF三阶段架构"><a href="#2-RLHF三阶段架构" class="headerlink" title="2. RLHF三阶段架构"></a>2. RLHF三阶段架构</h2><h3 id="阶段一：监督微调（SFT）"><a href="#阶段一：监督微调（SFT）" class="headerlink" title="阶段一：监督微调（SFT）"></a>阶段一：监督微调（SFT）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SFT训练 - 在人工编写的指令数据上微调</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SFTTrainer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, tokenizer, learning_rate=<span class="number">5e-6</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        self.tokenizer = tokenizer</span><br><span class="line">        self.optimizer = AdamW(model.parameters(), lr=learning_rate)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">self, batch</span>):</span><br><span class="line">        input_ids = batch[<span class="string">&quot;input_ids&quot;</span>]</span><br><span class="line">        labels = batch[<span class="string">&quot;labels&quot;</span>]  <span class="comment"># -100用于mask prompt部分</span></span><br><span class="line">        </span><br><span class="line">        outputs = self.model(input_ids=input_ids, labels=labels)</span><br><span class="line">        loss = outputs.loss</span><br><span class="line">        </span><br><span class="line">        loss.backward()</span><br><span class="line">        torch.nn.utils.clip_grad_norm_(self.model.parameters(), <span class="number">1.0</span>)</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        self.optimizer.zero_grad()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> loss.item()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据格式示例</span></span><br><span class="line">sft_example = &#123;</span><br><span class="line">    <span class="string">&quot;input_ids&quot;</span>: tokenizer.encode(</span><br><span class="line">        <span class="string">&quot;### Human: 解释什么是梯度下降\n### Assistant: &quot;</span></span><br><span class="line">    ),</span><br><span class="line">    <span class="string">&quot;labels&quot;</span>: [-<span class="number">100</span>, -<span class="number">100</span>, -<span class="number">100</span>, -<span class="number">100</span>, -<span class="number">100</span>] + tokenizer.encode(</span><br><span class="line">        <span class="string">&quot;梯度下降是一种优化算法，通过沿着梯度反方向迭代更新参数...&quot;</span></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="阶段二：奖励模型训练"><a href="#阶段二：奖励模型训练" class="headerlink" title="阶段二：奖励模型训练"></a>阶段二：奖励模型训练</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RewardModelTrainer</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, lr=<span class="number">1e-5</span></span>):</span><br><span class="line">        self.model = model  <span class="comment"># 基于SFT模型初始化</span></span><br><span class="line">        self.optimizer = AdamW(model.parameters(), lr=lr)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">self, batch</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        batch包含:</span></span><br><span class="line"><span class="string">        - query: 用户输入</span></span><br><span class="line"><span class="string">        - chosen: 人类偏好的回答</span></span><br><span class="line"><span class="string">        - rejected: 人类不偏好的回答</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        chosen_rewards = self.model(batch[<span class="string">&quot;query&quot;</span>], batch[<span class="string">&quot;chosen&quot;</span>])</span><br><span class="line">        rejected_rewards = self.model(batch[<span class="string">&quot;query&quot;</span>], batch[<span class="string">&quot;rejected&quot;</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Bradley-Terry偏好损失</span></span><br><span class="line">        loss = -torch.log(</span><br><span class="line">            torch.sigmoid(chosen_rewards - rejected_rewards)</span><br><span class="line">        ).mean()</span><br><span class="line">        </span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss.item()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_on_rankings</span>(<span class="params">self, batch</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        处理多个回答的排序（不只是pairwise比较）</span></span><br><span class="line"><span class="string">        使用Elo评分系统的变体</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        K = <span class="built_in">len</span>(batch[<span class="string">&quot;responses&quot;</span>])  <span class="comment"># 回答数量</span></span><br><span class="line">        rewards = []</span><br><span class="line">        <span class="keyword">for</span> resp <span class="keyword">in</span> batch[<span class="string">&quot;responses&quot;</span>]:</span><br><span class="line">            r = self.model(batch[<span class="string">&quot;query&quot;</span>], resp)</span><br><span class="line">            rewards.append(r)</span><br><span class="line">        </span><br><span class="line">        rewards = torch.stack(rewards)</span><br><span class="line">        rankings = batch[<span class="string">&quot;rankings&quot;</span>]  <span class="comment"># 人工排序</span></span><br><span class="line">        </span><br><span class="line">        loss = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(K):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(K):</span><br><span class="line">                <span class="keyword">if</span> rankings[i] &lt; rankings[j]:  <span class="comment"># i排名更高</span></span><br><span class="line">                    loss -= torch.log(</span><br><span class="line">                        torch.sigmoid(rewards[i] - rewards[j])</span><br><span class="line">                    )</span><br><span class="line">        <span class="keyword">return</span> loss / (K * (K-<span class="number">1</span>) / <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="阶段三：PPO强化学习"><a href="#阶段三：PPO强化学习" class="headerlink" title="阶段三：PPO强化学习"></a>阶段三：PPO强化学习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RLHF_PPO</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, policy, ref_model, reward_model, value_model</span>):</span><br><span class="line">        self.policy = policy</span><br><span class="line">        self.ref_model = ref_model</span><br><span class="line">        self.reward_model = reward_model</span><br><span class="line">        self.value_model = value_model</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 超参数</span></span><br><span class="line">        self.kl_coef = <span class="number">0.2</span>        <span class="comment"># KL惩罚系数</span></span><br><span class="line">        self.gamma = <span class="number">1.0</span>          <span class="comment"># 折扣因子</span></span><br><span class="line">        self.lam = <span class="number">0.95</span>           <span class="comment"># GAE参数</span></span><br><span class="line">        self.clip_range = <span class="number">0.2</span>     <span class="comment"># PPO裁剪范围</span></span><br><span class="line">        self.vf_coef = <span class="number">0.1</span>        <span class="comment"># 价值函数损失系数</span></span><br><span class="line">        self.ent_coef = <span class="number">0.01</span>      <span class="comment"># 熵正则系数</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_and_score</span>(<span class="params">self, queries</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;生成回答并计算各项指标&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="comment"># 策略模型生成</span></span><br><span class="line">            responses = self.policy.generate(</span><br><span class="line">                queries, </span><br><span class="line">                max_length=<span class="number">512</span>,</span><br><span class="line">                do_sample=<span class="literal">True</span>,</span><br><span class="line">                temperature=<span class="number">0.7</span></span><br><span class="line">            )</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 奖励模型评分</span></span><br><span class="line">            rm_scores = self.reward_model(queries, responses)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># KL散度计算</span></span><br><span class="line">            policy_logp = self.policy.log_prob(queries, responses)</span><br><span class="line">            ref_logp = self.ref_model.log_prob(queries, responses)</span><br><span class="line">            kl_div = (policy_logp - ref_logp).mean()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 综合奖励</span></span><br><span class="line">            rewards = rm_scores - self.kl_coef * kl_div</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 价值函数估计</span></span><br><span class="line">            values = self.value_model(queries, responses)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> responses, rewards, values, policy_logp</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_advantages</span>(<span class="params">self, rewards, values</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算GAE优势估计&quot;&quot;&quot;</span></span><br><span class="line">        advantages = []</span><br><span class="line">        gae = <span class="number">0</span></span><br><span class="line">        next_value = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(<span class="built_in">len</span>(rewards))):</span><br><span class="line">            delta = rewards[t] + self.gamma * next_value - values[t]</span><br><span class="line">            gae = delta + self.gamma * self.lam * gae</span><br><span class="line">            advantages.insert(<span class="number">0</span>, gae)</span><br><span class="line">            next_value = values[t]</span><br><span class="line">        </span><br><span class="line">        advantages = torch.tensor(advantages)</span><br><span class="line">        <span class="keyword">return</span> (advantages - advantages.mean()) / (advantages.std() + <span class="number">1e-8</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">ppo_update</span>(<span class="params">self, queries, responses, old_logprobs, </span></span><br><span class="line"><span class="params">                   rewards, values, advantages</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;PPO策略更新&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):  <span class="comment"># PPO epoch数</span></span><br><span class="line">            new_logprobs = self.policy.log_prob(queries, responses)</span><br><span class="line">            ratio = torch.exp(new_logprobs - old_logprobs)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 策略损失（裁剪）</span></span><br><span class="line">            surr1 = ratio * advantages</span><br><span class="line">            surr2 = torch.clamp(</span><br><span class="line">                ratio, </span><br><span class="line">                <span class="number">1</span> - self.clip_range, </span><br><span class="line">                <span class="number">1</span> + self.clip_range</span><br><span class="line">            ) * advantages</span><br><span class="line">            policy_loss = -torch.<span class="built_in">min</span>(surr1, surr2).mean()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 价值函数损失</span></span><br><span class="line">            new_values = self.value_model(queries, responses)</span><br><span class="line">            value_loss = F.mse_loss(new_values, rewards)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 熵奖励</span></span><br><span class="line">            entropy = self.policy.entropy(queries, responses).mean()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 总损失</span></span><br><span class="line">            total_loss = (</span><br><span class="line">                policy_loss </span><br><span class="line">                + self.vf_coef * value_loss </span><br><span class="line">                - self.ent_coef * entropy</span><br><span class="line">            )</span><br><span class="line">            </span><br><span class="line">            total_loss.backward()</span><br><span class="line">            torch.nn.utils.clip_grad_norm_(</span><br><span class="line">                self.policy.parameters(), <span class="number">0.5</span></span><br><span class="line">            )</span><br><span class="line">            self.optimizer.step()</span><br><span class="line">            self.optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-RLHF的关键挑战"><a href="#3-RLHF的关键挑战" class="headerlink" title="3. RLHF的关键挑战"></a>3. RLHF的关键挑战</h2><h3 id="3-1-奖励模型过拟合"><a href="#3-1-奖励模型过拟合" class="headerlink" title="3.1 奖励模型过拟合"></a>3.1 奖励模型过拟合</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 诊断奖励模型过拟合</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_rm_overfitting</span>(<span class="params">rm, eval_data</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;在验证集上检查RM的校准情况&quot;&quot;&quot;</span></span><br><span class="line">    correct = <span class="number">0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> eval_data:</span><br><span class="line">        chosen_score = rm(batch[<span class="string">&quot;query&quot;</span>], batch[<span class="string">&quot;chosen&quot;</span>])</span><br><span class="line">        rejected_score = rm(batch[<span class="string">&quot;query&quot;</span>], batch[<span class="string">&quot;rejected&quot;</span>])</span><br><span class="line">        <span class="keyword">if</span> chosen_score &gt; rejected_score:</span><br><span class="line">            correct += <span class="number">1</span></span><br><span class="line">        total += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    accuracy = correct / total</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;RM准确率: <span class="subst">&#123;accuracy:<span class="number">.2</span>%&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> accuracy &gt; <span class="number">0.95</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;警告: 可能存在过拟合!&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> accuracy</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-奖励注入（Reward-Hacking）"><a href="#3-2-奖励注入（Reward-Hacking）" class="headerlink" title="3.2 奖励注入（Reward Hacking）"></a>3.2 奖励注入（Reward Hacking）</h3><p>策略模型可能找到RM的漏洞而非真正改善输出质量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">症状：RM分数持续上升，但人类评估质量下降</span><br><span class="line">原因：策略模型发现了RM的评分漏洞</span><br><span class="line">解决：定期更新RM数据、增加KL惩罚、人工抽检</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-标注一致性"><a href="#3-3-标注一致性" class="headerlink" title="3.3 标注一致性"></a>3.3 标注一致性</h3><p>不同标注员对同一输出的偏好可能不同，解决方案：</p>
+<ul>
+<li>使用详细的标注指南</li>
+<li>多人标注取多数</li>
+<li>引入Elo评分系统</li>
+</ul>
+<h2 id="4-RLHF的替代方案"><a href="#4-RLHF的替代方案" class="headerlink" title="4. RLHF的替代方案"></a>4. RLHF的替代方案</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RLHF</td>
+<td>效果显著</td>
+<td>标注成本高</td>
+</tr>
+<tr>
+<td>RLAIF</td>
+<td>成本低</td>
+<td>AI可能传播偏见</td>
+</tr>
+<tr>
+<td>DPO</td>
+<td>无需单独训练RM</td>
+<td>灵活性较低</td>
+</tr>
+<tr>
+<td>Constitutional AI</td>
+<td>可扩展</td>
+<td>需要精心设计原则</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>RLHF是大模型对齐人类偏好的关键技术。它通过三阶段训练流程（SFT→RM→PPO），有效地将语言模型从文本生成器转变为有用的AI助手。理解RLHF的原理和实现细节，对于从事大模型开发和应用的工程师来说至关重要。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/RLHF/">RLHF</a>
+    
+      <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">强化学习</a>
+    
+      <a href="/tags/PPO/">PPO</a>
+    
+      <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83/">大模型训练</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/03/10/2022-03-10-RLHF人类反馈强化学习详解/" target="_blank" title="RLHF人类反馈强化学习详解">https://www.coomatrix.com/2022/03/10/2022-03-10-RLHF人类反馈强化学习详解/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/04/05/2022-04-05-CLIP%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          CLIP模型原理与多模态学习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/20/2022-02-20-InstructGPT%E4%B8%8E%E4%BA%BA%E7%B1%BB%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">InstructGPT与人类对齐技术</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RLHF%E4%BA%BA%E7%B1%BB%E5%8F%8D%E9%A6%88%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">RLHF人类反馈强化学习详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81RLHF"><span class="nav-number">1.1.</span> <span class="nav-text">1. 为什么需要RLHF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-RLHF%E4%B8%89%E9%98%B6%E6%AE%B5%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">2. RLHF三阶段架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%EF%BC%9A%E7%9B%91%E7%9D%A3%E5%BE%AE%E8%B0%83%EF%BC%88SFT%EF%BC%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">阶段一：监督微调（SFT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C%EF%BC%9A%E5%A5%96%E5%8A%B1%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">1.2.2.</span> <span class="nav-text">阶段二：奖励模型训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%89%EF%BC%9APPO%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.2.3.</span> <span class="nav-text">阶段三：PPO强化学习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-RLHF%E7%9A%84%E5%85%B3%E9%94%AE%E6%8C%91%E6%88%98"><span class="nav-number">1.3.</span> <span class="nav-text">3. RLHF的关键挑战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%A5%96%E5%8A%B1%E6%A8%A1%E5%9E%8B%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 奖励模型过拟合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%A5%96%E5%8A%B1%E6%B3%A8%E5%85%A5%EF%BC%88Reward-Hacking%EF%BC%89"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 奖励注入（Reward Hacking）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%A0%87%E6%B3%A8%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 标注一致性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-RLHF%E7%9A%84%E6%9B%BF%E4%BB%A3%E6%96%B9%E6%A1%88"><span class="nav-number">1.4.</span> <span class="nav-text">4. RLHF的替代方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

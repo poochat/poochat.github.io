@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>github copilot：ai编程助手初体验 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="GitHub Copilot使用体验与技术原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub Copilot：AI编程助手初体验">
+<meta property="og:url" content="https://www.coomatrix.com/2021/05/05/2021-05-05-GitHub-Copilot%EF%BC%9AAI%E7%BC%96%E7%A8%8B%E5%8A%A9%E6%89%8B%E5%88%9D%E4%BD%93%E9%AA%8C/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="GitHub Copilot使用体验与技术原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475">
+<meta property="article:published_time" content="2021-05-05T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:34:49.528Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="AI编程">
+<meta property="article:tag" content="GitHub Copilot">
+<meta property="article:tag" content="代码生成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1518770660439-4636190af475">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-05-05-GitHub-Copilot：AI编程助手初体验" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1518770660439-4636190af475" rel="gallery_cmoopizr900489cv61ldn34hz noopener">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      GitHub Copilot：AI编程助手初体验
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/05/05/2021-05-05-GitHub-Copilot%EF%BC%9AAI%E7%BC%96%E7%A8%8B%E5%8A%A9%E6%89%8B%E5%88%9D%E4%BD%93%E9%AA%8C/" class="article-date">
+	  <time datetime="2021-05-05T02:00:00.000Z" itemprop="datePublished">五月 5, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>GitHub Copilot是GitHub与OpenAI合作开发的AI编程助手，基于GPT系列模型，能够根据上下文自动补全代码。本文分享Copilot的使用体验和技术原理。</p>
+<h2 id="Copilot使用体验"><a href="#Copilot使用体验" class="headerlink" title="Copilot使用体验"></a>Copilot使用体验</h2><h3 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装VS Code扩展</span></span><br><span class="line">code --install-extension GitHub.copilot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装IntelliJ插件</span></span><br><span class="line"><span class="comment"># 在Plugins中搜索 &quot;GitHub Copilot&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>Copilot会自动在注释中理解意图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个快速排序函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">quicksort</span>(<span class="params">arr</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    快速排序算法</span></span><br><span class="line"><span class="string">    时间复杂度: O(n log n) 平均, O(n²) 最坏</span></span><br><span class="line"><span class="string">    空间复杂度: O(log n)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(arr) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> arr</span><br><span class="line">    </span><br><span class="line">    pivot = arr[<span class="built_in">len</span>(arr) // <span class="number">2</span>]</span><br><span class="line">    left = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x &lt; pivot]</span><br><span class="line">    middle = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x == pivot]</span><br><span class="line">    right = [x <span class="keyword">for</span> x <span class="keyword">in</span> arr <span class="keyword">if</span> x &gt; pivot]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> quicksort(left) + middle + quicksort(right)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">numbers = [<span class="number">64</span>, <span class="number">34</span>, <span class="number">25</span>, <span class="number">12</span>, <span class="number">22</span>, <span class="number">11</span>, <span class="number">90</span>]</span><br><span class="line"><span class="built_in">print</span>(quicksort(numbers))</span><br><span class="line"><span class="comment"># Copilot会给出补全建议</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="复杂函数生成"><a href="#复杂函数生成" class="headerlink" title="复杂函数生成"></a>复杂函数生成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">DataProcessor</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;数据处理器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config</span>):</span><br><span class="line">        self.config = config</span><br><span class="line">        self.cache = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_data</span>(<span class="params">self, data, transform_type=<span class="string">&#x27;normalize&#x27;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        处理数据</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            data: 输入数据 (numpy array)</span></span><br><span class="line"><span class="string">            transform_type: 转换类型</span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            处理后的数据</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> transform_type == <span class="string">&#x27;normalize&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> self._normalize(data)</span><br><span class="line">        <span class="keyword">elif</span> transform_type == <span class="string">&#x27;standardize&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> self._standardize(data)</span><br><span class="line">        <span class="keyword">elif</span> transform_type == <span class="string">&#x27;minmax&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> self._minmax_scale(data)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">f&quot;Unknown transform: <span class="subst">&#123;transform_type&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_normalize</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;L2归一化&quot;&quot;&quot;</span></span><br><span class="line">        norm = np.linalg.norm(data)</span><br><span class="line">        <span class="keyword">if</span> norm == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> data</span><br><span class="line">        <span class="keyword">return</span> data / norm</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_standardize</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;标准化 (z-score)&quot;&quot;&quot;</span></span><br><span class="line">        mean = np.mean(data, axis=<span class="number">0</span>)</span><br><span class="line">        std = np.std(data, axis=<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> (data - mean) / (std + <span class="number">1e-8</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_minmax_scale</span>(<span class="params">self, data</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Min-Max缩放&quot;&quot;&quot;</span></span><br><span class="line">        min_val = np.<span class="built_in">min</span>(data)</span><br><span class="line">        max_val = np.<span class="built_in">max</span>(data)</span><br><span class="line">        <span class="keyword">return</span> (data - min_val) / (max_val - min_val + <span class="number">1e-8</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="技术原理"><a href="#技术原理" class="headerlink" title="技术原理"></a>技术原理</h2><p>Copilot背后的技术：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基于Codex模型的简化版实现概念</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CodeGenerationModel</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;代码生成模型（概念实现）&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name=<span class="string">&#x27;codex&#x27;</span></span>):</span><br><span class="line">        self.tokenizer = self._load_tokenizer()</span><br><span class="line">        self.model = self._load_model(model_name)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_code</span>(<span class="params">self, prompt, max_tokens=<span class="number">100</span>, temperature=<span class="number">0.4</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        生成代码补全</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            prompt: 上下文提示（注释、函数签名等）</span></span><br><span class="line"><span class="string">            max_tokens: 最大生成token数</span></span><br><span class="line"><span class="string">            temperature: 采样温度</span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">            生成的代码</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 编码提示</span></span><br><span class="line">        input_ids = self.tokenizer.encode(prompt, return_tensors=<span class="string">&#x27;pt&#x27;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            output_ids = self.model.generate(</span><br><span class="line">                input_ids,</span><br><span class="line">                max_length=input_ids.size(<span class="number">1</span>) + max_tokens,</span><br><span class="line">                temperature=temperature,</span><br><span class="line">                top_p=<span class="number">0.95</span>,</span><br><span class="line">                num_return_sequences=<span class="number">1</span></span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 解码</span></span><br><span class="line">        generated_code = self.tokenizer.decode(output_ids[<span class="number">0</span>], skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> generated_code</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CopilotExtension</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;IDE扩展接口&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.model = CodeGenerationModel()</span><br><span class="line">        self.suggestion_cache = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_suggestions</span>(<span class="params">self, context</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取代码建议&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 收集上下文</span></span><br><span class="line">        prompt = self._build_prompt(context)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 生成建议</span></span><br><span class="line">        suggestions = []</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):  <span class="comment"># 生成多个建议</span></span><br><span class="line">            code = self.model.generate_code(prompt, max_tokens=<span class="number">150</span>)</span><br><span class="line">            suggestions.append(code)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> suggestions</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_build_prompt</span>(<span class="params">self, context</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;构建输入提示&quot;&quot;&quot;</span></span><br><span class="line">        lines = []</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加相关导入</span></span><br><span class="line">        <span class="keyword">if</span> context.get(<span class="string">&#x27;imports&#x27;</span>):</span><br><span class="line">            lines.extend(context[<span class="string">&#x27;imports&#x27;</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加函数签名</span></span><br><span class="line">        <span class="keyword">if</span> context.get(<span class="string">&#x27;function_signature&#x27;</span>):</span><br><span class="line">            lines.append(context[<span class="string">&#x27;function_signature&#x27;</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加注释</span></span><br><span class="line">        <span class="keyword">if</span> context.get(<span class="string">&#x27;comment&#x27;</span>):</span><br><span class="line">            lines.append(<span class="string">f&quot;# <span class="subst">&#123;context[<span class="string">&#x27;comment&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;\n&#x27;</span>.join(lines)</span><br></pre></td></tr></table></figure>
+
+<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><h3 id="1-单元测试生成"><a href="#1-单元测试生成" class="headerlink" title="1. 单元测试生成"></a>1. 单元测试生成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原始函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">binary_search</span>(<span class="params">arr, target</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;二分查找&quot;&quot;&quot;</span></span><br><span class="line">    left, right = <span class="number">0</span>, <span class="built_in">len</span>(arr) - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">        mid = (left + right) // <span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> arr[mid] == target:</span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">        <span class="keyword">elif</span> arr[mid] &lt; target:</span><br><span class="line">            left = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right = mid - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Copilot可生成的测试</span></span><br><span class="line"><span class="keyword">import</span> pytest</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestBinarySearch</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_target_found</span>(<span class="params">self</span>):</span><br><span class="line">        arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">        <span class="keyword">assert</span> binary_search(arr, <span class="number">5</span>) == <span class="number">4</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_target_not_found</span>(<span class="params">self</span>):</span><br><span class="line">        arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">        <span class="keyword">assert</span> binary_search(arr, <span class="number">6</span>) == -<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_empty_array</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> binary_search([], <span class="number">1</span>) == -<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_single_element</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">assert</span> binary_search([<span class="number">1</span>], <span class="number">1</span>) == <span class="number">0</span></span><br><span class="line">        <span class="keyword">assert</span> binary_search([<span class="number">1</span>], <span class="number">2</span>) == -<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test_duplicates</span>(<span class="params">self</span>):</span><br><span class="line">        arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">        result = binary_search(arr, <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">assert</span> result <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]  <span class="comment"># 返回任一匹配位置</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-SQL查询生成"><a href="#2-SQL查询生成" class="headerlink" title="2. SQL查询生成"></a>2. SQL查询生成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注释描述</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">query_database</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    获取每个部门的员工数量和平均工资</span></span><br><span class="line"><span class="string">    仅包含工资高于部门平均的员工</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">pass</span>  <span class="comment"># Copilot会补全SQL</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成结果可能类似:</span></span><br><span class="line">query = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">SELECT </span></span><br><span class="line"><span class="string">    d.department_name,</span></span><br><span class="line"><span class="string">    COUNT(e.employee_id) as employee_count,</span></span><br><span class="line"><span class="string">    AVG(e.salary) as avg_salary</span></span><br><span class="line"><span class="string">FROM employees e</span></span><br><span class="line"><span class="string">JOIN departments d ON e.department_id = d.department_id</span></span><br><span class="line"><span class="string">WHERE e.salary &gt; (</span></span><br><span class="line"><span class="string">    SELECT AVG(salary) </span></span><br><span class="line"><span class="string">    FROM employees </span></span><br><span class="line"><span class="string">    WHERE department_id = e.department_id</span></span><br><span class="line"><span class="string">)</span></span><br><span class="line"><span class="string">GROUP BY d.department_name</span></span><br><span class="line"><span class="string">ORDER BY avg_salary DESC;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-API调用"><a href="#3-API调用" class="headerlink" title="3. API调用"></a>3. API调用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Dict</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WeatherAPI</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;天气API客户端&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, api_key: <span class="built_in">str</span></span>):</span><br><span class="line">        self.api_key = api_key</span><br><span class="line">        self.base_url = <span class="string">&quot;https://api.weather.com/v1&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_current_weather</span>(<span class="params">self, city: <span class="built_in">str</span></span>) -&gt; <span class="type">Dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取当前天气&quot;&quot;&quot;</span></span><br><span class="line">        endpoint = <span class="string">f&quot;<span class="subst">&#123;self.base_url&#125;</span>/current&quot;</span></span><br><span class="line">        params = &#123;</span><br><span class="line">            <span class="string">&#x27;city&#x27;</span>: city,</span><br><span class="line">            <span class="string">&#x27;key&#x27;</span>: self.api_key,</span><br><span class="line">            <span class="string">&#x27;units&#x27;</span>: <span class="string">&#x27;metric&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        response = requests.get(endpoint, params=params)</span><br><span class="line">        response.raise_for_status()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> response.json()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_forecast</span>(<span class="params">self, city: <span class="built_in">str</span>, days: <span class="built_in">int</span> = <span class="number">7</span></span>) -&gt; <span class="type">List</span>[<span class="type">Dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取天气预报&quot;&quot;&quot;</span></span><br><span class="line">        endpoint = <span class="string">f&quot;<span class="subst">&#123;self.base_url&#125;</span>/forecast&quot;</span></span><br><span class="line">        params = &#123;</span><br><span class="line">            <span class="string">&#x27;city&#x27;</span>: city,</span><br><span class="line">            <span class="string">&#x27;days&#x27;</span>: days,</span><br><span class="line">            <span class="string">&#x27;key&#x27;</span>: self.api_key</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        response = requests.get(endpoint, params=params)</span><br><span class="line">        <span class="keyword">return</span> response.json()[<span class="string">&#x27;forecast&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_weather_alerts</span>(<span class="params">self, lat: <span class="built_in">float</span>, lon: <span class="built_in">float</span></span>) -&gt; <span class="type">List</span>[<span class="type">Dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取天气警报&quot;&quot;&quot;</span></span><br><span class="line">        endpoint = <span class="string">f&quot;<span class="subst">&#123;self.base_url&#125;</span>/alerts&quot;</span></span><br><span class="line">        params = &#123;</span><br><span class="line">            <span class="string">&#x27;lat&#x27;</span>: lat,</span><br><span class="line">            <span class="string">&#x27;lon&#x27;</span>: lon,</span><br><span class="line">            <span class="string">&#x27;key&#x27;</span>: self.api_key</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        response = requests.get(endpoint, params=params)</span><br><span class="line">        <span class="keyword">return</span> response.json().get(<span class="string">&#x27;alerts&#x27;</span>, [])</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h2><ol>
+<li><strong>清晰注释</strong>：写好函数文档字符串</li>
+<li><strong>提供示例</strong>：展示输入输出格式</li>
+<li><strong>分步生成</strong>：大任务分解成小函数</li>
+<li><strong>代码审查</strong>：Copilot可能产生有bug的代码</li>
+</ol>
+<h2 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h2><ul>
+<li>可能生成有安全漏洞的代码</li>
+<li>不总是理解复杂业务逻辑</li>
+<li>需要人工审核和测试</li>
+<li>对特定领域可能不准确</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>GitHub Copilot代表了AI辅助编程的新方向，尽管存在局限性，但已显著提升编程效率。随着模型能力的提升，AI编程助手将在软件开发中扮演更重要角色。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/features/copilot">GitHub Copilot</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.03374">Evaluating Large Language Models Trained on Code</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/AI%E7%BC%96%E7%A8%8B/">AI编程</a>
+    
+      <a href="/tags/GitHub-Copilot/">GitHub Copilot</a>
+    
+      <a href="/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/">代码生成</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/05/05/2021-05-05-GitHub-Copilot：AI编程助手初体验/" target="_blank" title="GitHub Copilot：AI编程助手初体验">https://www.coomatrix.com/2021/05/05/2021-05-05-GitHub-Copilot：AI编程助手初体验/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/05/15/2021-05-15-%E9%A2%84%E8%AE%AD%E7%BB%83%E4%B8%8E%E5%BE%AE%E8%B0%83%EF%BC%9A%E7%8E%B0%E4%BB%A3NLP%E7%9A%84%E8%8C%83%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          预训练与微调：现代NLP的范式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/25/2021-04-25-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9A%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B0%E8%8C%83%E5%BC%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">联邦学习：隐私保护的机器学习新范式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Copilot%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C"><span class="nav-number">2.</span> <span class="nav-text">Copilot使用体验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.</span> <span class="nav-text">安装配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0%E7%94%9F%E6%88%90"><span class="nav-number">2.3.</span> <span class="nav-text">复杂函数生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">技术原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">实际应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%94%9F%E6%88%90"><span class="nav-number">4.1.</span> <span class="nav-text">1. 单元测试生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQL%E6%9F%A5%E8%AF%A2%E7%94%9F%E6%88%90"><span class="nav-number">4.2.</span> <span class="nav-text">2. SQL查询生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-API%E8%B0%83%E7%94%A8"><span class="nav-number">4.3.</span> <span class="nav-text">3. API调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">5.</span> <span class="nav-text">使用技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">局限性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>embedding模型选型与实战指南 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言Embedding模型是现代AI系统的基础组件，广泛应用于语义搜索、推荐系统、RAG等领域。选择合适的Embedding模型对系统性能至关重要。本文将全面对比分析主流Embedding模型，并提供实战选型建议。 Embedding模型分类1. 模型架构分类1234567891011121314151617181920212223242526272829303132333435363738394">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Embedding模型选型与实战指南">
+<meta property="og:url" content="https://www.coomatrix.com/2023/04/12/2023-04-12-Embedding%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B%E4%B8%8E%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言Embedding模型是现代AI系统的基础组件，广泛应用于语义搜索、推荐系统、RAG等领域。选择合适的Embedding模型对系统性能至关重要。本文将全面对比分析主流Embedding模型，并提供实战选型建议。 Embedding模型分类1. 模型架构分类1234567891011121314151617181920212223242526272829303132333435363738394">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1504868584819-f8e0b037a5e4">
+<meta property="article:published_time" content="2023-04-12T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:36:32.606Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="Embedding">
+<meta property="article:tag" content="向量表示">
+<meta property="article:tag" content="模型选型">
+<meta property="article:tag" content="语义搜索">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1504868584819-f8e0b037a5e4">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-04-12-Embedding模型选型与实战指南" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1504868584819-f8e0b037a5e4" rel="gallery_cmoopizrk006k9cv606a62n3d noopener">
+        <img src="https://images.unsplash.com/photo-1504868584819-f8e0b037a5e4" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Embedding模型选型与实战指南
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/04/12/2023-04-12-Embedding%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B%E4%B8%8E%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97/" class="article-date">
+	  <time datetime="2023-04-12T02:00:00.000Z" itemprop="datePublished">四月 12, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Embedding模型是现代AI系统的基础组件，广泛应用于语义搜索、推荐系统、RAG等领域。选择合适的Embedding模型对系统性能至关重要。本文将全面对比分析主流Embedding模型，并提供实战选型建议。</p>
+<h2 id="Embedding模型分类"><a href="#Embedding模型分类" class="headerlink" title="Embedding模型分类"></a>Embedding模型分类</h2><h3 id="1-模型架构分类"><a href="#1-模型架构分类" class="headerlink" title="1. 模型架构分类"></a>1. 模型架构分类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> ABC, abstractmethod</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Tuple</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingModel</span>(<span class="title class_ inherited__">ABC</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Embedding模型基类</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], **kwargs</span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;将文本编码为向量&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_dimension</span>(<span class="params">self</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取向量维度&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BiEncoder</span>(<span class="title class_ inherited__">EmbeddingModel</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Bi-Encoder: 独立编码查询和文档</span></span><br><span class="line"><span class="string">    优点：高效，适合大规模检索</span></span><br><span class="line"><span class="string">    缺点：查询和文档无交互</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name: <span class="built_in">str</span></span>):</span><br><span class="line">        self.model_name = model_name</span><br><span class="line">        self.model = self._load_model()</span><br><span class="line">        self.dim = self._get_embedding_dim()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], **kwargs</span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="comment"># 独立编码</span></span><br><span class="line">        embeddings = self.model.encode(texts, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> embeddings</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_dimension</span>(<span class="params">self</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">return</span> self.dim</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CrossEncoder</span>(<span class="title class_ inherited__">EmbeddingModel</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Cross-Encoder: 联合编码查询和文档</span></span><br><span class="line"><span class="string">    优点：精度高，适合重排序</span></span><br><span class="line"><span class="string">    缺点：计算量大，不适合大规模检索</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name: <span class="built_in">str</span></span>):</span><br><span class="line">        self.model_name = model_name</span><br><span class="line">        self.model = self._load_model()</span><br><span class="line">        self.dim = <span class="number">1</span>  <span class="comment"># 输出相似度分数</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="type">Tuple</span>[<span class="built_in">str</span>, <span class="built_in">str</span>]], **kwargs</span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        编码(query, document)对</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        scores = self.model.predict(texts, **kwargs)</span><br><span class="line">        <span class="keyword">return</span> np.array(scores).reshape(-<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_dimension</span>(<span class="params">self</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_score</span>(<span class="params">self, query: <span class="built_in">str</span>, documents: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">float</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算查询与每个文档的相似度&quot;&quot;&quot;</span></span><br><span class="line">        pairs = [(query, doc) <span class="keyword">for</span> doc <span class="keyword">in</span> documents]</span><br><span class="line">        scores = self.model.predict(pairs)</span><br><span class="line">        <span class="keyword">return</span> scores.tolist()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-主流模型对比"><a href="#2-主流模型对比" class="headerlink" title="2. 主流模型对比"></a>2. 主流模型对比</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">EMBEDDING_MODELS = &#123;</span><br><span class="line">    <span class="comment"># OpenAI Embeddings</span></span><br><span class="line">    <span class="string">&quot;text-embedding-ada-002&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;openai&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dimension&quot;</span>: <span class="number">1536</span>,</span><br><span class="line">        <span class="string">&quot;max_tokens&quot;</span>: <span class="number">8191</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;通用最强模型&quot;</span>,</span><br><span class="line">        <span class="string">&quot;cost_per_1k&quot;</span>: <span class="number">0.0001</span>,</span><br><span class="line">        <span class="string">&quot;strengths&quot;</span>: [<span class="string">&quot;通用能力强&quot;</span>, <span class="string">&quot;稳定性好&quot;</span>],</span><br><span class="line">        <span class="string">&quot;weaknesses&quot;</span>: [<span class="string">&quot;需要API调用&quot;</span>, <span class="string">&quot;有延迟&quot;</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># HuggingFace Models</span></span><br><span class="line">    <span class="string">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dimension&quot;</span>: <span class="number">384</span>,</span><br><span class="line">        <span class="string">&quot;max_tokens&quot;</span>: <span class="number">256</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;轻量高效模型&quot;</span>,</span><br><span class="line">        <span class="string">&quot;cost_per_1k&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;strengths&quot;</span>: [<span class="string">&quot;速度快&quot;</span>, <span class="string">&quot;本地部署&quot;</span>, <span class="string">&quot;中文还行&quot;</span>],</span><br><span class="line">        <span class="string">&quot;weaknesses&quot;</span>: [<span class="string">&quot;精度略低&quot;</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    <span class="string">&quot;sentence-transformers/all-mpnet-base-v2&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dimension&quot;</span>: <span class="number">768</span>,</span><br><span class="line">        <span class="string">&quot;max_tokens&quot;</span>: <span class="number">384</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;精度最高模型&quot;</span>,</span><br><span class="line">        <span class="string">&quot;cost_per_1k&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;strengths&quot;</span>: [<span class="string">&quot;精度最高&quot;</span>, <span class="string">&quot;支持多语言&quot;</span>],</span><br><span class="line">        <span class="string">&quot;weaknesses&quot;</span>: [<span class="string">&quot;相对较慢&quot;</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 中文优化模型</span></span><br><span class="line">    <span class="string">&quot;moka-ai/m3e-base&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dimension&quot;</span>: <span class="number">768</span>,</span><br><span class="line">        <span class="string">&quot;max_tokens&quot;</span>: <span class="number">512</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;中文优化模型&quot;</span>,</span><br><span class="line">        <span class="string">&quot;cost_per_1k&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;strengths&quot;</span>: [<span class="string">&quot;中文优秀&quot;</span>, <span class="string">&quot;性价比高&quot;</span>],</span><br><span class="line">        <span class="string">&quot;weaknesses&quot;</span>: [<span class="string">&quot;英文较弱&quot;</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    <span class="string">&quot;BAAI/bge-large-zh&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dimension&quot;</span>: <span class="number">1024</span>,</span><br><span class="line">        <span class="string">&quot;max_tokens&quot;</span>: <span class="number">512</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;中文BGE大模型&quot;</span>,</span><br><span class="line">        <span class="string">&quot;cost_per_1k&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;strengths&quot;</span>: [<span class="string">&quot;中文最强&quot;</span>, <span class="string">&quot;精度高&quot;</span>],</span><br><span class="line">        <span class="string">&quot;weaknesses&quot;</span>: [<span class="string">&quot;占用资源大&quot;</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># E5 Embeddings</span></span><br><span class="line">    <span class="string">&quot;intfloat/e5-base-v2&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;provider&quot;</span>: <span class="string">&quot;huggingface&quot;</span>,</span><br><span class="line">        <span class="string">&quot;dimension&quot;</span>: <span class="number">768</span>,</span><br><span class="line">        <span class="string">&quot;max_tokens&quot;</span>: <span class="number">512</span>,</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;E5通用模型&quot;</span>,</span><br><span class="line">        <span class="string">&quot;cost_per_1k&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;strengths&quot;</span>: [<span class="string">&quot;通用性好&quot;</span>, <span class="string">&quot;支持多语言&quot;</span>],</span><br><span class="line">        <span class="string">&quot;weaknesses&quot;</span>: [<span class="string">&quot;需要前缀&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="模型实现"><a href="#模型实现" class="headerlink" title="模型实现"></a>模型实现</h2><h3 id="1-OpenAI-Embedding"><a href="#1-OpenAI-Embedding" class="headerlink" title="1. OpenAI Embedding"></a>1. OpenAI Embedding</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OpenAIEmbedding</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    OpenAI Embedding封装</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model: <span class="built_in">str</span> = <span class="string">&quot;text-embedding-ada-002&quot;</span>, api_key: <span class="built_in">str</span> = <span class="literal">None</span></span>):</span><br><span class="line">        self.model = model</span><br><span class="line">        <span class="keyword">if</span> api_key:</span><br><span class="line">            openai.api_key = api_key</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], batch_size: <span class="built_in">int</span> = <span class="number">100</span></span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        批量编码</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        all_embeddings = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(texts), batch_size):</span><br><span class="line">            batch = texts[i:i + batch_size]</span><br><span class="line">            </span><br><span class="line">            response = openai.Embedding.create(</span><br><span class="line">                model=self.model,</span><br><span class="line">                <span class="built_in">input</span>=batch</span><br><span class="line">            )</span><br><span class="line">            </span><br><span class="line">            embeddings = [item[<span class="string">&#x27;embedding&#x27;</span>] <span class="keyword">for</span> item <span class="keyword">in</span> response[<span class="string">&#x27;data&#x27;</span>]]</span><br><span class="line">            all_embeddings.extend(embeddings)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> np.array(all_embeddings)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode_single</span>(<span class="params">self, text: <span class="built_in">str</span></span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;单文本编码&quot;&quot;&quot;</span></span><br><span class="line">        response = openai.Embedding.create(</span><br><span class="line">            model=self.model,</span><br><span class="line">            <span class="built_in">input</span>=text</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> np.array(response[<span class="string">&#x27;data&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;embedding&#x27;</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_similarity</span>(<span class="params">self, text1: <span class="built_in">str</span>, text2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">float</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算两个文本的相似度&quot;&quot;&quot;</span></span><br><span class="line">        emb1 = self.encode_single(text1)</span><br><span class="line">        emb2 = self.encode_single(text2)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 余弦相似度</span></span><br><span class="line">        <span class="keyword">return</span> np.dot(emb1, emb2) / (np.linalg.norm(emb1) * np.linalg.norm(emb2))</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-HuggingFace-Sentence-Transformers"><a href="#2-HuggingFace-Sentence-Transformers" class="headerlink" title="2. HuggingFace Sentence Transformers"></a>2. HuggingFace Sentence Transformers</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sentence_transformers <span class="keyword">import</span> SentenceTransformer</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">HuggingFaceEmbedding</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    HuggingFace Sentence Transformers封装</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name: <span class="built_in">str</span>, device: <span class="built_in">str</span> = <span class="string">&quot;cuda&quot;</span></span>):</span><br><span class="line">        self.model = SentenceTransformer(model_name)</span><br><span class="line">        self.device = device</span><br><span class="line">        self.model.to(device)</span><br><span class="line">        self.dimension = self.model.get_sentence_embedding_dimension()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], batch_size: <span class="built_in">int</span> = <span class="number">32</span>, </span></span><br><span class="line"><span class="params">               normalize: <span class="built_in">bool</span> = <span class="literal">True</span>, show_progress: <span class="built_in">bool</span> = <span class="literal">False</span></span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        批量编码</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        embeddings = self.model.encode(</span><br><span class="line">            texts,</span><br><span class="line">            batch_size=batch_size,</span><br><span class="line">            normalize_embeddings=normalize,</span><br><span class="line">            show_progress_bar=show_progress,</span><br><span class="line">            convert_to_numpy=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> embeddings</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode_on_device</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], batch_size: <span class="built_in">int</span> = <span class="number">32</span></span>) -&gt; torch.Tensor:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;在GPU上编码，返回Tensor&quot;&quot;&quot;</span></span><br><span class="line">        embeddings = self.model.encode(</span><br><span class="line">            texts,</span><br><span class="line">            batch_size=batch_size,</span><br><span class="line">            convert_to_tensor=<span class="literal">True</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> embeddings</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">similarity</span>(<span class="params">self, text1: <span class="built_in">str</span>, text2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">float</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算余弦相似度&quot;&quot;&quot;</span></span><br><span class="line">        emb1 = self.encode([text1])[<span class="number">0</span>]</span><br><span class="line">        emb2 = self.encode([text2])[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">float</span>(np.dot(emb1, emb2))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_similarity</span>(<span class="params">self, query: <span class="built_in">str</span>, documents: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">float</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;批量计算相似度&quot;&quot;&quot;</span></span><br><span class="line">        query_emb = self.encode([query])</span><br><span class="line">        doc_embs = self.encode(documents)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 余弦相似度</span></span><br><span class="line">        similarities = np.dot(query_emb, doc_embs.T)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> similarities.tolist()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">semantic_search</span>(<span class="params">self, query: <span class="built_in">str</span>, documents: <span class="type">List</span>[<span class="built_in">str</span>], </span></span><br><span class="line"><span class="params">                       top_k: <span class="built_in">int</span> = <span class="number">5</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;语义搜索&quot;&quot;&quot;</span></span><br><span class="line">        query_emb = self.encode([query])</span><br><span class="line">        doc_embs = self.encode(documents)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算相似度</span></span><br><span class="line">        scores = np.dot(query_emb, doc_embs.T)[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 排序</span></span><br><span class="line">        sorted_indices = np.argsort(scores)[::-<span class="number">1</span>][:top_k]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            &#123;<span class="string">&quot;index&quot;</span>: <span class="built_in">int</span>(idx), <span class="string">&quot;score&quot;</span>: <span class="built_in">float</span>(scores[idx]), <span class="string">&quot;text&quot;</span>: documents[idx]&#125;</span><br><span class="line">            <span class="keyword">for</span> idx <span class="keyword">in</span> sorted_indices</span><br><span class="line">        ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-多语言Embedding"><a href="#3-多语言Embedding" class="headerlink" title="3. 多语言Embedding"></a>3. 多语言Embedding</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultilingualEmbedding</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    多语言Embedding模型</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    MODELS = &#123;</span><br><span class="line">        <span class="string">&quot;xlm-roberta-base&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dim&quot;</span>: <span class="number">768</span>,</span><br><span class="line">            <span class="string">&quot;languages&quot;</span>: <span class="string">&quot;100+&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;XLM-RoBERTa基础版&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;paraphrase-multilingual-MiniLM-L12-v2&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dim&quot;</span>: <span class="number">384</span>,</span><br><span class="line">            <span class="string">&quot;languages&quot;</span>: <span class="string">&quot;50+&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;多语言MiniLM&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;distiluse-base-multilingual-cased-v2&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;dim&quot;</span>: <span class="number">512</span>,</span><br><span class="line">            <span class="string">&quot;languages&quot;</span>: <span class="string">&quot;15&quot;</span>,</span><br><span class="line">            <span class="string">&quot;description&quot;</span>: <span class="string">&quot;支持15种语言&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name: <span class="built_in">str</span> = <span class="string">&quot;xlm-roberta-base&quot;</span></span>):</span><br><span class="line">        self.model = SentenceTransformer(model_name)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], **kwargs</span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;多语言编码&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.encode(texts, **kwargs)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cross_lingual_search</span>(<span class="params">self, query: <span class="built_in">str</span>, documents: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">dict</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        跨语言搜索</span></span><br><span class="line"><span class="string">        例如：英文查询，中文文档</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model semantic_search(query, documents)</span><br></pre></td></tr></table></figure>
+
+<h2 id="模型选型指南"><a href="#模型选型指南" class="headerlink" title="模型选型指南"></a>模型选型指南</h2><h3 id="1-选型决策树"><a href="#1-选型决策树" class="headerlink" title="1. 选型决策树"></a>1. 选型决策树</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingSelector</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Embedding模型选择器</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">select_model</span>(<span class="params">use_case: <span class="built_in">str</span>, language: <span class="built_in">str</span> = <span class="string">&quot;en&quot;</span>, </span></span><br><span class="line"><span class="params">                   budget: <span class="built_in">str</span> = <span class="string">&quot;medium&quot;</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        根据场景选择模型</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            use_case: 使用场景</span></span><br><span class="line"><span class="string">            language: 语言</span></span><br><span class="line"><span class="string">            budget: 预算 (low/medium/high)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># RAG/检索场景</span></span><br><span class="line">        <span class="keyword">if</span> use_case == <span class="string">&quot;rag&quot;</span> <span class="keyword">or</span> use_case == <span class="string">&quot;retrieval&quot;</span>:</span><br><span class="line">            <span class="keyword">if</span> language == <span class="string">&quot;zh&quot;</span>:</span><br><span class="line">                <span class="keyword">if</span> budget == <span class="string">&quot;low&quot;</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;moka-ai/m3e-base&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;BAAI/bge-large-zh&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> budget == <span class="string">&quot;low&quot;</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span></span><br><span class="line">                <span class="keyword">elif</span> budget == <span class="string">&quot;medium&quot;</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;intfloat/e5-base-v2&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;text-embedding-ada-002&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 语义相似度</span></span><br><span class="line">        <span class="keyword">elif</span> use_case == <span class="string">&quot;similarity&quot;</span>:</span><br><span class="line">            <span class="keyword">if</span> language == <span class="string">&quot;zh&quot;</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;moka-ai/m3e-base&quot;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;sentence-transformers/all-mpnet-base-v2&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 重排序</span></span><br><span class="line">        <span class="keyword">elif</span> use_case == <span class="string">&quot;reranking&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;BAAI/bge-reranker-base&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 多语言</span></span><br><span class="line">        <span class="keyword">elif</span> use_case == <span class="string">&quot;multilingual&quot;</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;xlm-roberta-base&quot;</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;sentence-transformers/all-MiniLM-L6-v2&quot;</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_recommended_config</span>(<span class="params">use_case: <span class="built_in">str</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获取推荐配置</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        configs = &#123;</span><br><span class="line">            <span class="string">&quot;rag&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;normalize&quot;</span>: <span class="literal">True</span>,</span><br><span class="line">                <span class="string">&quot;batch_size&quot;</span>: <span class="number">32</span>,</span><br><span class="line">                <span class="string">&quot;show_progress&quot;</span>: <span class="literal">True</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;similarity&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;normalize&quot;</span>: <span class="literal">True</span>,</span><br><span class="line">                <span class="string">&quot;batch_size&quot;</span>: <span class="number">64</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;reranking&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;normalize&quot;</span>: <span class="literal">False</span>,</span><br><span class="line">                <span class="string">&quot;batch_size&quot;</span>: <span class="number">8</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> configs.get(use_case, &#123;&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Benchmark实现"><a href="#2-Benchmark实现" class="headerlink" title="2. Benchmark实现"></a>2. Benchmark实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingBenchmark</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Embedding模型性能基准测试</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, test_dataset: <span class="built_in">dict</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        test_dataset: &#123;</span></span><br><span class="line"><span class="string">            &quot;queries&quot;: [...],</span></span><br><span class="line"><span class="string">            &quot;documents&quot;: [...],</span></span><br><span class="line"><span class="string">            &quot;relevant&quot;: &#123;...&#125;  # query_id -&gt; [doc_ids]</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.dataset = test_dataset</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">evaluate</span>(<span class="params">self, model: HuggingFaceEmbedding, k_values=[<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">20</span>]</span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        评估模型性能</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        results = &#123;</span><br><span class="line">            <span class="string">&quot;recall@k&quot;</span>: &#123;&#125;,</span><br><span class="line">            <span class="string">&quot;mrr&quot;</span>: [],</span><br><span class="line">            <span class="string">&quot;ndcg&quot;</span>: []</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> query_id, query <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.dataset[<span class="string">&quot;queries&quot;</span>]):</span><br><span class="line">            <span class="comment"># 编码查询和文档</span></span><br><span class="line">            query_emb = model.encode([query])</span><br><span class="line">            doc_embs = model.encode(self.dataset[<span class="string">&quot;documents&quot;</span>])</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算相似度</span></span><br><span class="line">            scores = np.dot(query_emb, doc_embs.T)[<span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 排序</span></span><br><span class="line">            ranked_indices = np.argsort(scores)[::-<span class="number">1</span>]</span><br><span class="line">            ranked_docs = [self.dataset[<span class="string">&quot;documents&quot;</span>][i] <span class="keyword">for</span> i <span class="keyword">in</span> ranked_indices]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 计算指标</span></span><br><span class="line">            relevant_docs = <span class="built_in">set</span>(self.dataset[<span class="string">&quot;relevant&quot;</span>][query_id])</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> k_values:</span><br><span class="line">                top_k_docs = <span class="built_in">set</span>(ranked_indices[:k])</span><br><span class="line">                recall = <span class="built_in">len</span>(top_k_docs &amp; relevant_docs) / <span class="built_in">len</span>(relevant_docs)</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> results[<span class="string">&quot;recall@k&quot;</span>]:</span><br><span class="line">                    results[<span class="string">&quot;recall@k&quot;</span>][k] = []</span><br><span class="line">                results[<span class="string">&quot;recall@k&quot;</span>][k].append(recall)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># MRR</span></span><br><span class="line">            <span class="keyword">for</span> i, doc_idx <span class="keyword">in</span> <span class="built_in">enumerate</span>(ranked_indices):</span><br><span class="line">                <span class="keyword">if</span> doc_idx <span class="keyword">in</span> relevant_docs:</span><br><span class="line">                    results[<span class="string">&quot;mrr&quot;</span>].append(<span class="number">1.0</span> / (i + <span class="number">1</span>))</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 平均</span></span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> k_values:</span><br><span class="line">            results[<span class="string">&quot;recall@k&quot;</span>][k] = np.mean(results[<span class="string">&quot;recall@k&quot;</span>][k])</span><br><span class="line">        results[<span class="string">&quot;mrr&quot;</span>] = np.mean(results[<span class="string">&quot;mrr&quot;</span>]) <span class="keyword">if</span> results[<span class="string">&quot;mrr&quot;</span>] <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> results</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compare_models</span>(<span class="params">self, models: <span class="built_in">dict</span></span>) -&gt; pd.DataFrame:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        对比多个模型</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        comparison = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> model_name, model <span class="keyword">in</span> models.items():</span><br><span class="line">            metrics = self.evaluate(model)</span><br><span class="line">            </span><br><span class="line">            comparison.append(&#123;</span><br><span class="line">                <span class="string">&quot;model&quot;</span>: model_name,</span><br><span class="line">                <span class="string">&quot;recall@1&quot;</span>: metrics[<span class="string">&quot;recall@k&quot;</span>].get(<span class="number">1</span>, <span class="number">0</span>),</span><br><span class="line">                <span class="string">&quot;recall@5&quot;</span>: metrics[<span class="string">&quot;recall@k&quot;</span>].get(<span class="number">5</span>, <span class="number">0</span>),</span><br><span class="line">                <span class="string">&quot;recall@10&quot;</span>: metrics[<span class="string">&quot;recall@k&quot;</span>].get(<span class="number">10</span>, <span class="number">0</span>),</span><br><span class="line">                <span class="string">&quot;mrr&quot;</span>: metrics[<span class="string">&quot;mrr&quot;</span>]</span><br><span class="line">            &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> pd.DataFrame(comparison)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Embedding优化"><a href="#Embedding优化" class="headerlink" title="Embedding优化"></a>Embedding优化</h2><h3 id="1-Matryoshka表示学习"><a href="#1-Matryoshka表示学习" class="headerlink" title="1. Matryoshka表示学习"></a>1. Matryoshka表示学习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MatryoshkaEmbedding</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Matryoshka表示学习</span></span><br><span class="line"><span class="string">    一模型多维度输出，节省存储</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_name: <span class="built_in">str</span></span>):</span><br><span class="line">        self.model = SentenceTransformer(model_name)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, texts: <span class="type">List</span>[<span class="built_in">str</span>], dimensions: <span class="type">List</span>[<span class="built_in">int</span>] = [<span class="number">768</span>, <span class="number">512</span>, <span class="number">256</span>, <span class="number">128</span>]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        输出多维度表示</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 获取完整表示</span></span><br><span class="line">        full_embeddings = self.model.encode(texts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 截取不同维度</span></span><br><span class="line">        matryoshka_embeddings = []</span><br><span class="line">        <span class="keyword">for</span> dim <span class="keyword">in</span> dimensions:</span><br><span class="line">            truncated = full_embeddings[:, :dim]</span><br><span class="line">            <span class="comment"># 归一化</span></span><br><span class="line">            truncated = truncated / np.linalg.norm(truncated, axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">            matryoshka_embeddings.append(truncated)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> matryoshka_embeddings</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode_with_dim</span>(<span class="params">self, text: <span class="built_in">str</span>, dim: <span class="built_in">int</span></span>) -&gt; np.ndarray:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;编码为指定维度&quot;&quot;&quot;</span></span><br><span class="line">        emb = self.model.encode([text])</span><br><span class="line">        truncated = emb[<span class="number">0</span>, :dim]</span><br><span class="line">        <span class="keyword">return</span> truncated / np.linalg.norm(truncated)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-在线量化"><a href="#2-在线量化" class="headerlink" title="2. 在线量化"></a>2. 在线量化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EmbeddingQuantizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Embedding向量量化</span></span><br><span class="line"><span class="string">    减少存储空间</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n_bits: <span class="built_in">int</span> = <span class="number">8</span></span>):</span><br><span class="line">        self.n_bits = n_bits</span><br><span class="line">        self.codebook = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fit</span>(<span class="params">self, embeddings: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        训练量化器</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line">        </span><br><span class="line">        n_clusters = <span class="number">2</span> ** self.n_bits</span><br><span class="line">        </span><br><span class="line">        kmeans = KMeans(n_clusters=n_clusters, random_state=<span class="number">42</span>)</span><br><span class="line">        kmeans.fit(embeddings)</span><br><span class="line">        </span><br><span class="line">        self.codebook = kmeans.cluster_centers_</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">quantize</span>(<span class="params">self, embeddings: np.ndarray</span>) -&gt; <span class="built_in">tuple</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        量化</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 计算到各中心的距离</span></span><br><span class="line">        distances = np.linalg.norm(</span><br><span class="line">            embeddings[:, np.newaxis, :] - self.codebook[np.newaxis, :, :],</span><br><span class="line">            axis=<span class="number">2</span></span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 最近邻</span></span><br><span class="line">        codes = np.argmin(distances, axis=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 量化值</span></span><br><span class="line">        quantized = self.codebook[codes]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> codes, quantized</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compression_ratio</span>(<span class="params">self</span>) -&gt; <span class="built_in">float</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;压缩比&quot;&quot;&quot;</span></span><br><span class="line">        original_bits = <span class="number">32</span></span><br><span class="line">        compressed_bits = self.n_bits + np.log2(<span class="built_in">len</span>(self.codebook))</span><br><span class="line">        <span class="keyword">return</span> original_bits / compressed_bits</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>选择合适的Embedding模型需要综合考虑语言特性、精度要求、推理延迟和成本等因素。本文详细对比了主流Embedding模型的特性和适用场景，并提供了完整的实现代码和选型指南。建议根据具体业务需求进行benchmark测试，选择最适合的模型。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.sbert.net/">Sentence Transformers</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/spaces/mteb/leaderboard">MTEB Benchmark</a></li>
+<li><a target="_blank" rel="noopener" href="https://platform.openai.com/docs/guides/embeddings">OpenAI Embeddings</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/RAG%E7%B3%BB%E7%BB%9F/">RAG系统</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/Embedding/">Embedding</a>
+    
+      <a href="/tags/%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA/">向量表示</a>
+    
+      <a href="/tags/%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B/">模型选型</a>
+    
+      <a href="/tags/%E8%AF%AD%E4%B9%89%E6%90%9C%E7%B4%A2/">语义搜索</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/04/12/2023-04-12-Embedding模型选型与实战指南/" target="_blank" title="Embedding模型选型与实战指南">https://www.coomatrix.com/2023/04/12/2023-04-12-Embedding模型选型与实战指南/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/04/20/2023-04-20-ChatGLM%E4%B8%AD%E6%96%87%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BA%94%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ChatGLM中文大模型：技术原理与产业应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/03/25/2023-03-25-AI%E4%B8%8E%E9%80%9A%E4%BF%A1%E6%8A%80%E6%9C%AF-%E5%A4%A9%E7%BA%BF%E6%9D%A1%E7%BA%BF%E6%99%BA%E8%83%BD%E4%BC%98%E5%8C%96%E8%AE%BE%E8%AE%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">AI与通信技术：天线条线智能优化设计</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Embedding%E6%A8%A1%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">Embedding模型分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84%E5%88%86%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">1. 模型架构分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%BB%E6%B5%81%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94"><span class="nav-number">2.2.</span> <span class="nav-text">2. 主流模型对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">模型实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-OpenAI-Embedding"><span class="nav-number">3.1.</span> <span class="nav-text">1. OpenAI Embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-HuggingFace-Sentence-Transformers"><span class="nav-number">3.2.</span> <span class="nav-text">2. HuggingFace Sentence Transformers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A4%9A%E8%AF%AD%E8%A8%80Embedding"><span class="nav-number">3.3.</span> <span class="nav-text">3. 多语言Embedding</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B%E6%8C%87%E5%8D%97"><span class="nav-number">4.</span> <span class="nav-text">模型选型指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%89%E5%9E%8B%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">4.1.</span> <span class="nav-text">1. 选型决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Benchmark%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">2. Benchmark实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Embedding%E4%BC%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">Embedding优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Matryoshka%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0"><span class="nav-number">5.1.</span> <span class="nav-text">1. Matryoshka表示学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8%E7%BA%BF%E9%87%8F%E5%8C%96"><span class="nav-number">5.2.</span> <span class="nav-text">2. 在线量化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

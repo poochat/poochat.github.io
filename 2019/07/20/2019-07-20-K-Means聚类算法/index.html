@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>k-means聚类算法：从原理到实战 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="K-Means聚类算法：从原理到实战K-Means是最经典的无监督学习算法之一，用于将数据划分为K个簇，使簇内方差最小化。 算法原理K-Means的目标是最小化簇内平方误差和： $$J &#x3D; \sum_{k&#x3D;1}^{K}\sum_{\mathbf{x}_i \in C_k} |\mathbf{x}_i - \boldsymbol{\mu}_k|^2$$ 算法步骤：  随机初始化K">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K-Means聚类算法：从原理到实战">
+<meta property="og:url" content="https://www.coomatrix.com/2019/07/20/2019-07-20-K-Means%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="K-Means聚类算法：从原理到实战K-Means是最经典的无监督学习算法之一，用于将数据划分为K个簇，使簇内方差最小化。 算法原理K-Means的目标是最小化簇内平方误差和： $$J &#x3D; \sum_{k&#x3D;1}^{K}\sum_{\mathbf{x}_i \in C_k} |\mathbf{x}_i - \boldsymbol{\mu}_k|^2$$ 算法步骤：  随机初始化K">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1">
+<meta property="article:published_time" content="2019-07-20T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:32:58.359Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="K-Means">
+<meta property="article:tag" content="聚类">
+<meta property="article:tag" content="无监督学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2019-07-20-K-Means聚类算法" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1" rel="gallery_cmoopizqp001c9cv60kujeeb1 noopener">
+        <img src="https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      K-Means聚类算法：从原理到实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2019/07/20/2019-07-20-K-Means%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/" class="article-date">
+	  <time datetime="2019-07-20T08:00:00.000Z" itemprop="datePublished">七月 20, 2019</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="K-Means聚类算法：从原理到实战"><a href="#K-Means聚类算法：从原理到实战" class="headerlink" title="K-Means聚类算法：从原理到实战"></a>K-Means聚类算法：从原理到实战</h2><p>K-Means是最经典的无监督学习算法之一，用于将数据划分为K个簇，使簇内方差最小化。</p>
+<h3 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h3><p>K-Means的目标是最小化簇内平方误差和：</p>
+<p>$$J &#x3D; \sum_{k&#x3D;1}^{K}\sum_{\mathbf{x}_i \in C_k} |\mathbf{x}_i - \boldsymbol{\mu}_k|^2$$</p>
+<p>算法步骤：</p>
+<ol>
+<li>随机初始化K个聚类中心</li>
+<li>将每个样本分配到最近的聚类中心</li>
+<li>更新聚类中心为簇内样本均值</li>
+<li>重复步骤2-3直到收敛</li>
+</ol>
+<h3 id="手动实现K-Means"><a href="#手动实现K-Means" class="headerlink" title="手动实现K-Means"></a>手动实现K-Means</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KMeans</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n_clusters=<span class="number">3</span>, max_iters=<span class="number">100</span>, random_state=<span class="number">42</span></span>):</span><br><span class="line">        self.n_clusters = n_clusters</span><br><span class="line">        self.max_iters = max_iters</span><br><span class="line">        self.random_state = random_state</span><br><span class="line">        self.centroids = <span class="literal">None</span></span><br><span class="line">        self.labels = <span class="literal">None</span></span><br><span class="line">        self.inertia_ = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fit</span>(<span class="params">self, X</span>):</span><br><span class="line">        np.random.seed(self.random_state)</span><br><span class="line">        <span class="comment"># 随机初始化聚类中心</span></span><br><span class="line">        random_idx = np.random.choice(<span class="built_in">len</span>(X), self.n_clusters, replace=<span class="literal">False</span>)</span><br><span class="line">        self.centroids = X[random_idx]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(self.max_iters):</span><br><span class="line">            <span class="comment"># 分配样本到最近的聚类中心</span></span><br><span class="line">            self.labels = self._assign_clusters(X)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 更新聚类中心</span></span><br><span class="line">            new_centroids = np.array([</span><br><span class="line">                X[self.labels == k].mean(axis=<span class="number">0</span>)</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(self.n_clusters)</span><br><span class="line">            ])</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检查收敛</span></span><br><span class="line">            <span class="keyword">if</span> np.<span class="built_in">all</span>(self.centroids == new_centroids):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            self.centroids = new_centroids</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算惯性（簇内平方和）</span></span><br><span class="line">        self.inertia_ = <span class="built_in">sum</span>(</span><br><span class="line">            np.<span class="built_in">sum</span>((X[self.labels == k] - self.centroids[k]) ** <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(self.n_clusters)</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_assign_clusters</span>(<span class="params">self, X</span>):</span><br><span class="line">        distances = np.array([</span><br><span class="line">            np.sqrt(np.<span class="built_in">sum</span>((X - centroid) ** <span class="number">2</span>, axis=<span class="number">1</span>))</span><br><span class="line">            <span class="keyword">for</span> centroid <span class="keyword">in</span> self.centroids</span><br><span class="line">        ])</span><br><span class="line">        <span class="keyword">return</span> np.argmin(distances, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="keyword">return</span> self._assign_clusters(X)</span><br></pre></td></tr></table></figure>
+
+<h3 id="K-Means-初始化"><a href="#K-Means-初始化" class="headerlink" title="K-Means++初始化"></a>K-Means++初始化</h3><p>K-Means++通过更智能的初始化避免差解：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">KMeansPlusPlus</span>(<span class="title class_ inherited__">KMeans</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fit</span>(<span class="params">self, X</span>):</span><br><span class="line">        np.random.seed(self.random_state)</span><br><span class="line">        <span class="comment"># K-Means++初始化</span></span><br><span class="line">        centroids = [X[np.random.randint(<span class="built_in">len</span>(X))]]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, self.n_clusters):</span><br><span class="line">            <span class="comment"># 计算每个样本到最近聚类中心的距离</span></span><br><span class="line">            distances = np.array([</span><br><span class="line">                <span class="built_in">min</span>(np.<span class="built_in">sum</span>((x - c) ** <span class="number">2</span>) <span class="keyword">for</span> c <span class="keyword">in</span> centroids)</span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> X</span><br><span class="line">            ])</span><br><span class="line">            <span class="comment"># 按距离比例选择下一个聚类中心</span></span><br><span class="line">            probs = distances / distances.<span class="built_in">sum</span>()</span><br><span class="line">            next_centroid_idx = np.random.choice(<span class="built_in">len</span>(X), p=probs)</span><br><span class="line">            centroids.append(X[next_centroid_idx])</span><br><span class="line"></span><br><span class="line">        self.centroids = np.array(centroids)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 标准K-Means迭代</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(self.max_iters):</span><br><span class="line">            self.labels = self._assign_clusters(X)</span><br><span class="line">            new_centroids = np.array([</span><br><span class="line">                X[self.labels == k].mean(axis=<span class="number">0</span>)</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(self.n_clusters)</span><br><span class="line">            ])</span><br><span class="line">            <span class="keyword">if</span> np.<span class="built_in">all</span>(self.centroids == new_centroids):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            self.centroids = new_centroids</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+
+<h3 id="肘部法则选择K值"><a href="#肘部法则选择K值" class="headerlink" title="肘部法则选择K值"></a>肘部法则选择K值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_blobs</span><br><span class="line"></span><br><span class="line">X, _ = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line">inertias = []</span><br><span class="line">K_range = <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> K_range:</span><br><span class="line">    km = KMeans(n_clusters=k)</span><br><span class="line">    km.fit(X)</span><br><span class="line">    inertias.append(km.inertia_)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">5</span>))</span><br><span class="line">plt.plot(K_range, inertias, <span class="string">&#x27;bo-&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Number of clusters (K)&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Inertia&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Elbow Method&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="轮廓系数"><a href="#轮廓系数" class="headerlink" title="轮廓系数"></a>轮廓系数</h3><p>轮廓系数衡量聚类的紧密度和分离度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> silhouette_score, silhouette_samples</span><br><span class="line"></span><br><span class="line">silhouette_scores = []</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">11</span>):</span><br><span class="line">    km = KMeans(n_clusters=k)</span><br><span class="line">    km.fit(X)</span><br><span class="line">    score = silhouette_score(X, km.labels)</span><br><span class="line">    silhouette_scores.append(score)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">5</span>))</span><br><span class="line">plt.plot(<span class="built_in">range</span>(<span class="number">2</span>, <span class="number">11</span>), silhouette_scores, <span class="string">&#x27;bo-&#x27;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Number of clusters (K)&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Silhouette Score&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Silhouette Analysis&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用scikit-learn"><a href="#使用scikit-learn" class="headerlink" title="使用scikit-learn"></a>使用scikit-learn</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans <span class="keyword">as</span> SklearnKMeans</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化数据</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">X_scaled = scaler.fit_transform(X)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 聚类</span></span><br><span class="line">kmeans = SklearnKMeans(n_clusters=<span class="number">4</span>, init=<span class="string">&#x27;k-means++&#x27;</span>, n_init=<span class="number">10</span>, random_state=<span class="number">42</span>)</span><br><span class="line">labels = kmeans.fit_predict(X_scaled)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化</span></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">6</span>))</span><br><span class="line">scatter = plt.scatter(X_scaled[:, <span class="number">0</span>], X_scaled[:, <span class="number">1</span>], c=labels, cmap=<span class="string">&#x27;viridis&#x27;</span>)</span><br><span class="line">plt.scatter(kmeans.cluster_centers_[:, <span class="number">0</span>], kmeans.cluster_centers_[:, <span class="number">1</span>],</span><br><span class="line">           s=<span class="number">200</span>, c=<span class="string">&#x27;red&#x27;</span>, marker=<span class="string">&#x27;X&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;K-Means Clustering&#x27;</span>)</span><br><span class="line">plt.colorbar(scatter)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="K-Means的局限性"><a href="#K-Means的局限性" class="headerlink" title="K-Means的局限性"></a>K-Means的局限性</h3><ol>
+<li><strong>假设球形簇</strong>：K-Means假设簇是凸形的，对非凸簇效果差</li>
+<li><strong>需要预先指定K</strong>：不合适的K值导致差结果</li>
+<li><strong>对初始化敏感</strong>：不同的初始化可能得到不同结果</li>
+<li><strong>对异常值敏感</strong>：少量异常值可能显著影响聚类中心</li>
+</ol>
+<h3 id="替代算法"><a href="#替代算法" class="headerlink" title="替代算法"></a>替代算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN, AgglomerativeClustering</span><br><span class="line"></span><br><span class="line"><span class="comment"># DBSCAN：基于密度的聚类，能发现任意形状的簇</span></span><br><span class="line">dbscan = DBSCAN(eps=<span class="number">0.5</span>, min_samples=<span class="number">5</span>)</span><br><span class="line">labels_db = dbscan.fit_predict(X_scaled)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 层次聚类</span></span><br><span class="line">agg = AgglomerativeClustering(n_clusters=<span class="number">4</span>)</span><br><span class="line">labels_agg = agg.fit_predict(X_scaled)</span><br></pre></td></tr></table></figure>
+
+<h3 id="图像分割应用"><a href="#图像分割应用" class="headerlink" title="图像分割应用"></a>图像分割应用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_sample_image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载图像</span></span><br><span class="line">image = load_sample_image(<span class="string">&#x27;china.jpg&#x27;</span>)</span><br><span class="line">h, w, c = image.shape</span><br><span class="line">image_2d = image.reshape(-<span class="number">1</span>, c).astype(<span class="built_in">float</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># K-Means颜色量化</span></span><br><span class="line">kmeans_img = SklearnKMeans(n_clusters=<span class="number">16</span>, random_state=<span class="number">42</span>)</span><br><span class="line">labels_img = kmeans_img.fit_predict(image_2d)</span><br><span class="line">quantized = kmeans_img.cluster_centers_[labels_img].reshape(h, w, c).astype(np.uint8)</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>K-Means是最常用的聚类算法，简单高效。K-Means++改进了初始化，肘部法则和轮廓系数帮助选择K值。对于非凸簇，DBSCAN等密度聚类算法更合适。在实际应用中，数据预处理（特别是标准化）对K-Means效果影响很大。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/K-Means/">K-Means</a>
+    
+      <a href="/tags/%E8%81%9A%E7%B1%BB/">聚类</a>
+    
+      <a href="/tags/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">无监督学习</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2019/07/20/2019-07-20-K-Means聚类算法/" target="_blank" title="K-Means聚类算法：从原理到实战">https://www.coomatrix.com/2019/07/20/2019-07-20-K-Means聚类算法/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/05/2019-08-05-NumPy%E9%AB%98%E6%95%88%E6%95%B0%E5%80%BC%E8%AE%A1%E7%AE%97/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          NumPy高效数值计算指南
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/15/2019-07-15-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E5%AE%9E%E6%88%98-%E4%BB%8EBagging%E5%88%B0Boosting/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">集成学习实战：从Bagging到Boosting</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#K-Means%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95%EF%BC%9A%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E5%AE%9E%E6%88%98"><span class="nav-number">1.</span> <span class="nav-text">K-Means聚类算法：从原理到实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">算法原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0K-Means"><span class="nav-number">1.2.</span> <span class="nav-text">手动实现K-Means</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-Means-%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">K-Means++初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%82%98%E9%83%A8%E6%B3%95%E5%88%99%E9%80%89%E6%8B%A9K%E5%80%BC"><span class="nav-number">1.4.</span> <span class="nav-text">肘部法则选择K值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AE%E5%BB%93%E7%B3%BB%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">轮廓系数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8scikit-learn"><span class="nav-number">1.6.</span> <span class="nav-text">使用scikit-learn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-Means%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">1.7.</span> <span class="nav-text">K-Means的局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E4%BB%A3%E7%AE%97%E6%B3%95"><span class="nav-number">1.8.</span> <span class="nav-text">替代算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2%E5%BA%94%E7%94%A8"><span class="nav-number">1.9.</span> <span class="nav-text">图像分割应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.10.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

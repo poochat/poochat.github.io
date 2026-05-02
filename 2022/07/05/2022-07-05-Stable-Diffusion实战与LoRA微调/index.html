@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>stable diffusion实战与lora微调 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="Stable Diffusion实战与LoRA微调Stable Diffusion开源后，社区涌现了大量微调和个性化方案。其中LoRA（Low-Rank Adaptation）因其高效性成为最流行的微调方法，仅需少量数据即可训练出个性化的图像生成模型。 1. LoRA原理1.1 低秩分解LoRA的核心思想：预训练权重矩阵的更新具有低秩特性，可以用两个小矩阵的乘积来近似： graph TB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stable Diffusion实战与LoRA微调">
+<meta property="og:url" content="https://www.coomatrix.com/2022/07/05/2022-07-05-Stable-Diffusion%E5%AE%9E%E6%88%98%E4%B8%8ELoRA%E5%BE%AE%E8%B0%83/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="Stable Diffusion实战与LoRA微调Stable Diffusion开源后，社区涌现了大量微调和个性化方案。其中LoRA（Low-Rank Adaptation）因其高效性成为最流行的微调方法，仅需少量数据即可训练出个性化的图像生成模型。 1. LoRA原理1.1 低秩分解LoRA的核心思想：预训练权重矩阵的更新具有低秩特性，可以用两个小矩阵的乘积来近似： graph TB">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1555255707-c07966088b7b">
+<meta property="article:published_time" content="2022-07-05T01:45:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:35:45.566Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="微调">
+<meta property="article:tag" content="Stable Diffusion">
+<meta property="article:tag" content="AIGC">
+<meta property="article:tag" content="LoRA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1555255707-c07966088b7b">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2022-07-05-Stable-Diffusion实战与LoRA微调" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1555255707-c07966088b7b" rel="gallery_cmoopizrf005l9cv67ir32moy noopener">
+        <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Stable Diffusion实战与LoRA微调
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2022/07/05/2022-07-05-Stable-Diffusion%E5%AE%9E%E6%88%98%E4%B8%8ELoRA%E5%BE%AE%E8%B0%83/" class="article-date">
+	  <time datetime="2022-07-05T01:45:00.000Z" itemprop="datePublished">七月 5, 2022</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h1 id="Stable-Diffusion实战与LoRA微调"><a href="#Stable-Diffusion实战与LoRA微调" class="headerlink" title="Stable Diffusion实战与LoRA微调"></a>Stable Diffusion实战与LoRA微调</h1><p>Stable Diffusion开源后，社区涌现了大量微调和个性化方案。其中LoRA（Low-Rank Adaptation）因其高效性成为最流行的微调方法，仅需少量数据即可训练出个性化的图像生成模型。</p>
+<h2 id="1-LoRA原理"><a href="#1-LoRA原理" class="headerlink" title="1. LoRA原理"></a>1. LoRA原理</h2><h3 id="1-1-低秩分解"><a href="#1-1-低秩分解" class="headerlink" title="1.1 低秩分解"></a>1.1 低秩分解</h3><p>LoRA的核心思想：预训练权重矩阵的更新具有低秩特性，可以用两个小矩阵的乘积来近似：</p>
+<pre class="mermaid">graph TB
+    subgraph "原始权重 W (d×k)"
+        W["W ∈ ℝ^(d×k)"]
+    end
+    subgraph "LoRA更新 ΔW = B×A"
+        A["A ∈ ℝ^(r×k) r≪min(d,k)"]
+        B["B ∈ ℝ^(d×r)"]
+        A -->|"矩阵乘法"| B
+    end
+    W -->|"W + α·BA"| OUT["更新后权重"]</pre>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LoRALinear</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;LoRA线性层：冻结原始权重，仅训练低秩矩阵&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, original_linear, rank=<span class="number">4</span>, alpha=<span class="number">1.0</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.original = original_linear</span><br><span class="line">        self.rank = rank</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        </span><br><span class="line">        d = original_linear.out_features</span><br><span class="line">        k = original_linear.in_features</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 低秩矩阵A和B</span></span><br><span class="line">        self.lora_A = nn.Parameter(torch.zeros(rank, k))</span><br><span class="line">        self.lora_B = nn.Parameter(torch.zeros(d, rank))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 冻结原始权重</span></span><br><span class="line">        self.original.weight.requires_grad = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> self.original.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self.original.bias.requires_grad = <span class="literal">False</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Kaiming初始化A</span></span><br><span class="line">        nn.init.kaiming_uniform_(self.lora_A, a=<span class="number">5</span>**<span class="number">0.5</span>)</span><br><span class="line">        <span class="comment"># B初始化为零，确保初始时ΔW=0</span></span><br><span class="line">        nn.init.zeros_(self.lora_B)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="comment"># 原始变换 + LoRA调整</span></span><br><span class="line">        original_out = self.original(x)</span><br><span class="line">        lora_out = (x @ self.lora_A.T @ self.lora_B.T) * (self.alpha / self.rank)</span><br><span class="line">        <span class="keyword">return</span> original_out + lora_out</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-在SD中应用LoRA"><a href="#1-2-在SD中应用LoRA" class="headerlink" title="1.2 在SD中应用LoRA"></a>1.2 在SD中应用LoRA</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">apply_lora_to_unet</span>(<span class="params">unet, rank=<span class="number">4</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将LoRA应用到U-Net的注意力层&quot;&quot;&quot;</span></span><br><span class="line">    lora_layers = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> name, module <span class="keyword">in</span> unet.named_modules():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, nn.Linear) <span class="keyword">and</span> <span class="string">&#x27;attention&#x27;</span> <span class="keyword">in</span> name:</span><br><span class="line">            <span class="comment"># 替换为LoRA层</span></span><br><span class="line">            lora_layer = LoRALinear(module, rank=rank)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 设置属性（简化版，实际需要更复杂的路径替换）</span></span><br><span class="line">            parts = name.split(<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">            parent = unet</span><br><span class="line">            <span class="keyword">for</span> part <span class="keyword">in</span> parts[:-<span class="number">1</span>]:</span><br><span class="line">                parent = <span class="built_in">getattr</span>(parent, part)</span><br><span class="line">            <span class="built_in">setattr</span>(parent, parts[-<span class="number">1</span>], lora_layer)</span><br><span class="line">            </span><br><span class="line">            lora_layers.append(lora_layer)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 冻结所有非LoRA参数</span></span><br><span class="line">    <span class="keyword">for</span> name, param <span class="keyword">in</span> unet.named_parameters():</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;lora_A&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> name <span class="keyword">and</span> <span class="string">&#x27;lora_B&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> name:</span><br><span class="line">            param.requires_grad = <span class="literal">False</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> unet, lora_layers</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-LoRA训练流程"><a href="#2-LoRA训练流程" class="headerlink" title="2. LoRA训练流程"></a>2. LoRA训练流程</h2><h3 id="2-1-数据准备"><a href="#2-1-数据准备" class="headerlink" title="2.1 数据准备"></a>2.1 数据准备</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LoRADataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;LoRA微调数据集&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, data_dir, size=<span class="number">512</span>, placeholder_token=<span class="string">&quot;&lt;sks&gt;&quot;</span></span>):</span><br><span class="line">        self.size = size</span><br><span class="line">        self.placeholder = placeholder_token</span><br><span class="line">        self.data = []</span><br><span class="line">        </span><br><span class="line">        data_path = Path(data_dir)</span><br><span class="line">        <span class="keyword">for</span> img_file <span class="keyword">in</span> <span class="built_in">sorted</span>(data_path.glob(<span class="string">&quot;*.jpg&quot;</span>)):</span><br><span class="line">            caption_file = img_file.with_suffix(<span class="string">&quot;.txt&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> caption_file.exists():</span><br><span class="line">                caption = caption_file.read_text().strip()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                caption = <span class="string">f&quot;a photo of <span class="subst">&#123;placeholder_token&#125;</span>&quot;</span></span><br><span class="line">            </span><br><span class="line">            self.data.append(&#123;</span><br><span class="line">                <span class="string">&quot;image&quot;</span>: <span class="built_in">str</span>(img_file),</span><br><span class="line">                <span class="string">&quot;caption&quot;</span>: caption</span><br><span class="line">            &#125;)</span><br><span class="line">        </span><br><span class="line">        self.transform = transforms.Compose([</span><br><span class="line">            transforms.Resize((size, size)),</span><br><span class="line">            transforms.ToTensor(),</span><br><span class="line">            transforms.Normalize([<span class="number">0.5</span>], [<span class="number">0.5</span>])</span><br><span class="line">        ])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.data)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, idx</span>):</span><br><span class="line">        item = self.data[idx]</span><br><span class="line">        image = Image.<span class="built_in">open</span>(item[<span class="string">&quot;image&quot;</span>]).convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        image = self.transform(image)</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;pixel_values&quot;</span>: image, <span class="string">&quot;caption&quot;</span>: item[<span class="string">&quot;caption&quot;</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-训练循环"><a href="#2-2-训练循环" class="headerlink" title="2.2 训练循环"></a>2.2 训练循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_lora</span>(<span class="params"></span></span><br><span class="line"><span class="params">    pretrained_model=<span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>,</span></span><br><span class="line"><span class="params">    data_dir=<span class="string">&quot;./training_data&quot;</span>,</span></span><br><span class="line"><span class="params">    output_dir=<span class="string">&quot;./lora_output&quot;</span>,</span></span><br><span class="line"><span class="params">    rank=<span class="number">4</span>,</span></span><br><span class="line"><span class="params">    learning_rate=<span class="number">1e-4</span>,</span></span><br><span class="line"><span class="params">    max_train_steps=<span class="number">1000</span>,</span></span><br><span class="line"><span class="params">    batch_size=<span class="number">1</span>,</span></span><br><span class="line"><span class="params">    gradient_accumulation_steps=<span class="number">4</span></span></span><br><span class="line"><span class="params"></span>):</span><br><span class="line">    <span class="comment"># 加载预训练模型</span></span><br><span class="line">    pipe = StableDiffusionPipeline.from_pretrained(</span><br><span class="line">        pretrained_model, torch_dtype=torch.float16</span><br><span class="line">    ).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    unet = pipe.unet</span><br><span class="line">    vae = pipe.vae</span><br><span class="line">    text_encoder = pipe.text_encoder</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 应用LoRA</span></span><br><span class="line">    unet, lora_layers = apply_lora_to_unet(unet, rank=rank)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 只优化LoRA参数</span></span><br><span class="line">    optimizer = torch.optim.AdamW(</span><br><span class="line">        [p <span class="keyword">for</span> layer <span class="keyword">in</span> lora_layers <span class="keyword">for</span> p <span class="keyword">in</span> [layer.lora_A, layer.lora_B]],</span><br><span class="line">        lr=learning_rate</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 噪声调度器</span></span><br><span class="line">    noise_scheduler = DDPMScheduler.from_config(pipe.scheduler.config)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 数据集</span></span><br><span class="line">    dataset = LoRADataset(data_dir)</span><br><span class="line">    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 训练</span></span><br><span class="line">    global_step = <span class="number">0</span></span><br><span class="line">    unet.train()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> global_step &lt; max_train_steps:</span><br><span class="line">        <span class="keyword">for</span> batch <span class="keyword">in</span> dataloader:</span><br><span class="line">            <span class="comment"># 编码图像到潜空间</span></span><br><span class="line">            <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">                latents = vae.encode(batch[<span class="string">&quot;pixel_values&quot;</span>].to(<span class="string">&quot;cuda&quot;</span>))</span><br><span class="line">                latents = latents * <span class="number">0.18215</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 编码文本</span></span><br><span class="line">            <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">                text_inputs = pipe.tokenizer(</span><br><span class="line">                    batch[<span class="string">&quot;caption&quot;</span>], padding=<span class="literal">True</span>, </span><br><span class="line">                    truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span></span><br><span class="line">                ).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">                text_embeddings = text_encoder(**text_inputs)[<span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 添加噪声</span></span><br><span class="line">            noise = torch.randn_like(latents)</span><br><span class="line">            timesteps = torch.randint(</span><br><span class="line">                <span class="number">0</span>, noise_scheduler.num_train_timesteps, </span><br><span class="line">                (latents.shape[<span class="number">0</span>],), device=<span class="string">&quot;cuda&quot;</span></span><br><span class="line">            )</span><br><span class="line">            noisy_latents = noise_scheduler.add_noise(latents, noise, timesteps)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 预测噪声</span></span><br><span class="line">            noise_pred = unet(noisy_latents, timesteps, text_embeddings).sample</span><br><span class="line">            loss = F.mse_loss(noise_pred, noise)</span><br><span class="line">            </span><br><span class="line">            loss.backward()</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (global_step + <span class="number">1</span>) % gradient_accumulation_steps == <span class="number">0</span>:</span><br><span class="line">                optimizer.step()</span><br><span class="line">                optimizer.zero_grad()</span><br><span class="line">            </span><br><span class="line">            global_step += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> global_step % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Step <span class="subst">&#123;global_step&#125;</span>, Loss: <span class="subst">&#123;loss.item():<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> global_step &gt;= max_train_steps:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 保存LoRA权重</span></span><br><span class="line">    save_lora_weights(lora_layers, output_dir)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;LoRA权重已保存到 <span class="subst">&#123;output_dir&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-保存和加载LoRA"><a href="#2-3-保存和加载LoRA" class="headerlink" title="2.3 保存和加载LoRA"></a>2.3 保存和加载LoRA</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">save_lora_weights</span>(<span class="params">lora_layers, output_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;仅保存LoRA权重（通常只有几MB）&quot;&quot;&quot;</span></span><br><span class="line">    state_dict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i, layer <span class="keyword">in</span> <span class="built_in">enumerate</span>(lora_layers):</span><br><span class="line">        state_dict[<span class="string">f&quot;lora_<span class="subst">&#123;i&#125;</span>_A&quot;</span>] = layer.lora_A.data.cpu()</span><br><span class="line">        state_dict[<span class="string">f&quot;lora_<span class="subst">&#123;i&#125;</span>_B&quot;</span>] = layer.lora_B.data.cpu()</span><br><span class="line">    </span><br><span class="line">    torch.save(state_dict, <span class="string">f&quot;<span class="subst">&#123;output_dir&#125;</span>/lora_weights.pt&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_lora_weights</span>(<span class="params">pipe, lora_path, rank=<span class="number">4</span>, alpha=<span class="number">1.0</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;加载LoRA权重到推理管线&quot;&quot;&quot;</span></span><br><span class="line">    state_dict = torch.load(lora_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 重新应用LoRA层</span></span><br><span class="line">    unet, lora_layers = apply_lora_to_unet(pipe.unet, rank=rank)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 加载权重</span></span><br><span class="line">    <span class="keyword">for</span> i, layer <span class="keyword">in</span> <span class="built_in">enumerate</span>(lora_layers):</span><br><span class="line">        layer.lora_A.data = state_dict[<span class="string">f&quot;lora_<span class="subst">&#123;i&#125;</span>_A&quot;</span>].to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">        layer.lora_B.data = state_dict[<span class="string">f&quot;lora_<span class="subst">&#123;i&#125;</span>_B&quot;</span>].to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">        layer.alpha = alpha</span><br><span class="line">    </span><br><span class="line">    pipe.unet = unet</span><br><span class="line">    <span class="keyword">return</span> pipe</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-推理与生成"><a href="#3-推理与生成" class="headerlink" title="3. 推理与生成"></a>3. 推理与生成</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_with_lora</span>(<span class="params">base_model, lora_path, prompt, **kwargs</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用LoRA微调后的模型生成图像&quot;&quot;&quot;</span></span><br><span class="line">    pipe = StableDiffusionPipeline.from_pretrained(</span><br><span class="line">        base_model, torch_dtype=torch.float16</span><br><span class="line">    ).to(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 加载LoRA</span></span><br><span class="line">    pipe = load_lora_weights(pipe, lora_path)</span><br><span class="line">    </span><br><span class="line">    image = pipe(prompt, **kwargs).images[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> image</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成示例</span></span><br><span class="line">image = generate_with_lora(</span><br><span class="line">    base_model=<span class="string">&quot;CompVis/stable-diffusion-v1-4&quot;</span>,</span><br><span class="line">    lora_path=<span class="string">&quot;./lora_output/lora_weights.pt&quot;</span>,</span><br><span class="line">    prompt=<span class="string">&quot;a photo of &lt;sks&gt; in a garden, detailed, 4k&quot;</span>,</span><br><span class="line">    num_inference_steps=<span class="number">50</span>,</span><br><span class="line">    guidance_scale=<span class="number">7.5</span></span><br><span class="line">)</span><br><span class="line">image.save(<span class="string">&quot;lora_output.png&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-常用LoRA变体"><a href="#4-常用LoRA变体" class="headerlink" title="4. 常用LoRA变体"></a>4. 常用LoRA变体</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LoRA</td>
+<td>经典低秩分解</td>
+<td>通用微调</td>
+</tr>
+<tr>
+<td>LoHA</td>
+<td>Hadamard积低秩</td>
+<td>更高效率</td>
+</tr>
+<tr>
+<td>LoKr</td>
+<td>Kronecker积</td>
+<td>更大模型</td>
+</tr>
+<tr>
+<td>DoRA</td>
+<td>分解幅度和方向</td>
+<td>更好性能</td>
+</tr>
+<tr>
+<td>QLoRA</td>
+<td>4-bit量化+LoRA</td>
+<td>极低显存</td>
+</tr>
+</tbody></table>
+<h2 id="5-实用技巧"><a href="#5-实用技巧" class="headerlink" title="5. 实用技巧"></a>5. 实用技巧</h2><h3 id="5-1-参数建议"><a href="#5-1-参数建议" class="headerlink" title="5.1 参数建议"></a>5.1 参数建议</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">训练数据量: 15-30张高质量图片</span><br><span class="line">Rank: 4-16（风格LoRA用4，人物LoRA用8-16）</span><br><span class="line">学习率: 1e-4 ~ 5e-5</span><br><span class="line">训练步数: 800-2000步</span><br><span class="line">Alpha: 通常设为Rank值</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-避免过拟合"><a href="#5-2-避免过拟合" class="headerlink" title="5.2 避免过拟合"></a>5.2 避免过拟合</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 早停策略</span></span><br><span class="line">best_loss = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">patience = <span class="number">100</span></span><br><span class="line">patience_counter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(max_train_steps):</span><br><span class="line">    loss = train_step()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> loss &lt; best_loss:</span><br><span class="line">        best_loss = loss</span><br><span class="line">        patience_counter = <span class="number">0</span></span><br><span class="line">        save_best_model()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        patience_counter += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> patience_counter &gt;= patience:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;早停于步数 <span class="subst">&#123;step&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>LoRA通过低秩分解将微调参数量降低了数千倍，使得普通用户也能在消费级GPU上训练个性化的Stable Diffusion模型。这一技术不仅适用于图像生成，后来也被广泛应用于大语言模型的微调，成为2022年最重要的AI技术之一。</p>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81/">多模态</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E5%BE%AE%E8%B0%83/">微调</a>
+    
+      <a href="/tags/Stable-Diffusion/">Stable Diffusion</a>
+    
+      <a href="/tags/AIGC/">AIGC</a>
+    
+      <a href="/tags/LoRA/">LoRA</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2022/07/05/2022-07-05-Stable-Diffusion实战与LoRA微调/" target="_blank" title="Stable Diffusion实战与LoRA微调">https://www.coomatrix.com/2022/07/05/2022-07-05-Stable-Diffusion实战与LoRA微调/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/10/2022-08-10-Prompt-Engineering%E6%8A%80%E5%B7%A7%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Prompt Engineering技巧与最佳实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/08/2022-06-08-Stable-Diffusion%E5%8E%9F%E7%90%86%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Stable Diffusion原理深度解析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Stable-Diffusion%E5%AE%9E%E6%88%98%E4%B8%8ELoRA%E5%BE%AE%E8%B0%83"><span class="nav-number">1.</span> <span class="nav-text">Stable Diffusion实战与LoRA微调</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-LoRA%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">1. LoRA原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BD%8E%E7%A7%A9%E5%88%86%E8%A7%A3"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 低秩分解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%9C%A8SD%E4%B8%AD%E5%BA%94%E7%94%A8LoRA"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 在SD中应用LoRA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-LoRA%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">2. LoRA训练流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 数据准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%AE%AD%E7%BB%83%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 训练循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E4%BF%9D%E5%AD%98%E5%92%8C%E5%8A%A0%E8%BD%BDLoRA"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 保存和加载LoRA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8E%A8%E7%90%86%E4%B8%8E%E7%94%9F%E6%88%90"><span class="nav-number">1.3.</span> <span class="nav-text">3. 推理与生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%B8%B8%E7%94%A8LoRA%E5%8F%98%E4%BD%93"><span class="nav-number">1.4.</span> <span class="nav-text">4. 常用LoRA变体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">1.5.</span> <span class="nav-text">5. 实用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E5%8F%82%E6%95%B0%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1 参数建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E9%81%BF%E5%85%8D%E8%BF%87%E6%8B%9F%E5%90%88"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2 避免过拟合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

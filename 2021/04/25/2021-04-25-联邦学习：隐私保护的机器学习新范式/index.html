@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>联邦学习：隐私保护的机器学习新范式 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="联邦学习原理与实践指南">
+<meta property="og:type" content="article">
+<meta property="og:title" content="联邦学习：隐私保护的机器学习新范式">
+<meta property="og:url" content="https://www.coomatrix.com/2021/04/25/2021-04-25-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9A%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B0%E8%8C%83%E5%BC%8F/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="联邦学习原理与实践指南">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1555255707-c07966088b7b">
+<meta property="article:published_time" content="2021-04-25T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:34:36.545Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="联邦学习">
+<meta property="article:tag" content="隐私保护">
+<meta property="article:tag" content="分布式学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1555255707-c07966088b7b">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2021-04-25-联邦学习：隐私保护的机器学习新范式" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1555255707-c07966088b7b" rel="gallery_cmoopizr900469cv6bkgcafqo noopener">
+        <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      联邦学习：隐私保护的机器学习新范式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2021/04/25/2021-04-25-%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%EF%BC%9A%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B0%E8%8C%83%E5%BC%8F/" class="article-date">
+	  <time datetime="2021-04-25T02:00:00.000Z" itemprop="datePublished">四月 25, 2021</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>联邦学习（Federated Learning）是一种分布式机器学习范式，允许在不直接共享原始数据的情况下进行模型训练，有效保护用户隐私。本文将深入解析联邦学习的原理、算法和实现。</p>
+<h2 id="联邦学习核心思想"><a href="#联邦学习核心思想" class="headerlink" title="联邦学习核心思想"></a>联邦学习核心思想</h2><p>联邦学习的核心是”数据不动，模型动”：</p>
+<ul>
+<li>数据保留在本地设备</li>
+<li>只共享模型参数或梯度</li>
+<li>中央服务器聚合更新</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FederatedClient</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;联邦学习客户端&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, client_id, model, train_data, device=<span class="string">&#x27;cpu&#x27;</span></span>):</span><br><span class="line">        self.client_id = client_id</span><br><span class="line">        self.model = model</span><br><span class="line">        self.train_data = train_data</span><br><span class="line">        self.device = device</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">set_model_params</span>(<span class="params">self, global_params</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;从全局模型加载参数&quot;&quot;&quot;</span></span><br><span class="line">        self.model.load_state_dict(global_params)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_model_params</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;获取本地模型参数&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.state_dict()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">local_train</span>(<span class="params">self, epochs=<span class="number">5</span>, lr=<span class="number">0.01</span>, batch_size=<span class="number">32</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;本地训练&quot;&quot;&quot;</span></span><br><span class="line">        self.model.train()</span><br><span class="line">        optimizer = torch.optim.SGD(self.model.parameters(), lr=lr)</span><br><span class="line">        criterion = nn.CrossEntropyLoss()</span><br><span class="line">        </span><br><span class="line">        total_loss = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">            <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.train_data):</span><br><span class="line">                data, target = data.to(self.device), target.to(self.device)</span><br><span class="line">                </span><br><span class="line">                optimizer.zero_grad()</span><br><span class="line">                output = self.model(data)</span><br><span class="line">                loss = criterion(output, target)</span><br><span class="line">                loss.backward()</span><br><span class="line">                optimizer.step()</span><br><span class="line">                </span><br><span class="line">                total_loss += loss.item()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> total_loss</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">compute_gradient_update</span>(<span class="params">self, global_params</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算梯度更新&quot;&quot;&quot;</span></span><br><span class="line">        self.set_model_params(global_params)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 复制原始参数</span></span><br><span class="line">        original_params = OrderedDict(&#123;</span><br><span class="line">            name: param.clone() </span><br><span class="line">            <span class="keyword">for</span> name, param <span class="keyword">in</span> global_params.items()</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 本地训练</span></span><br><span class="line">        self.local_train(epochs=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算参数差异</span></span><br><span class="line">        gradient_updates = OrderedDict(&#123;</span><br><span class="line">            name: original_params[name] - param </span><br><span class="line">            <span class="keyword">for</span> name, param <span class="keyword">in</span> self.model.state_dict().items()</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> gradient_updates</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FederatedServer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;联邦学习中央服务器&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model, num_clients</span>):</span><br><span class="line">        self.global_model = model</span><br><span class="line">        self.num_clients = num_clients</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">aggregate</span>(<span class="params">self, client_updates, client_weights=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;聚合客户端更新</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            client_updates: 客户端参数更新列表</span></span><br><span class="line"><span class="string">            client_weights: 客户端权重（通常为数据量比例）</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> client_weights <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># 均匀加权</span></span><br><span class="line">            client_weights = [<span class="number">1.0</span> / self.num_clients] * self.num_clients</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 加权平均</span></span><br><span class="line">        global_state = OrderedDict()</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> client_updates[<span class="number">0</span>].keys():</span><br><span class="line">            global_state[key] = <span class="built_in">sum</span>(</span><br><span class="line">                update[key] * weight </span><br><span class="line">                <span class="keyword">for</span> update, weight <span class="keyword">in</span> <span class="built_in">zip</span>(client_updates, client_weights)</span><br><span class="line">            )</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 更新全局模型</span></span><br><span class="line">        self.global_model.load_state_dict(global_state)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.global_model.state_dict()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">federated_averaging</span>(<span class="params">self, client_updates, sample_rates</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;联邦平均算法 FedAvg&quot;&quot;&quot;</span></span><br><span class="line">        total_samples = <span class="built_in">sum</span>(sample_rates)</span><br><span class="line">        </span><br><span class="line">        aggregated_params = OrderedDict()</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> client_updates[<span class="number">0</span>].keys():</span><br><span class="line">            weighted_sum = torch.zeros_like(client_updates[<span class="number">0</span>][key])</span><br><span class="line">            <span class="keyword">for</span> update, rate <span class="keyword">in</span> <span class="built_in">zip</span>(client_updates, sample_rates):</span><br><span class="line">                weighted_sum += update[key] * (rate / total_samples)</span><br><span class="line">            aggregated_params[key] = weighted_sum</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> aggregated_params</span><br></pre></td></tr></table></figure>
+
+<h2 id="FedAvg算法实现"><a href="#FedAvg算法实现" class="headerlink" title="FedAvg算法实现"></a>FedAvg算法实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fedavg_training</span>(<span class="params">server, clients, rounds=<span class="number">100</span>, local_epochs=<span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;联邦平均训练流程&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> round_idx <span class="keyword">in</span> <span class="built_in">range</span>(rounds):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n=== Round <span class="subst">&#123;round_idx + <span class="number">1</span>&#125;</span> ===&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 获取全局参数</span></span><br><span class="line">        global_params = server.global_model.state_dict()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 选择客户端（模拟）</span></span><br><span class="line">        selected_clients = clients</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 收集客户端更新</span></span><br><span class="line">        client_updates = []</span><br><span class="line">        sample_rates = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> client <span class="keyword">in</span> selected_clients:</span><br><span class="line">            <span class="comment"># 设置全局参数</span></span><br><span class="line">            client.set_model_params(global_params)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 本地训练</span></span><br><span class="line">            client.local_train(epochs=local_epochs)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 获取更新</span></span><br><span class="line">            update = client.get_model_params()</span><br><span class="line">            client_updates.append(update)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 记录样本数</span></span><br><span class="line">            sample_rates.append(<span class="built_in">len</span>(client.train_data.dataset))</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 服务器聚合</span></span><br><span class="line">        server.aggregate(client_updates, </span><br><span class="line">                        [rate/<span class="built_in">sum</span>(sample_rates) <span class="keyword">for</span> rate <span class="keyword">in</span> sample_rates])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 评估全局模型</span></span><br><span class="line">        accuracy = evaluate(server.global_model, test_data)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Global Model Accuracy: <span class="subst">&#123;accuracy:<span class="number">.2</span>f&#125;</span>%&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> server.global_model</span><br></pre></td></tr></table></figure>
+
+<h2 id="差分隐私"><a href="#差分隐私" class="headerlink" title="差分隐私"></a>差分隐私</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DPFederatedClient</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;差分隐私联邦学习客户端&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, client_id, model, train_data, noise_multiplier=<span class="number">1.0</span>, max_grad_norm=<span class="number">1.0</span></span>):</span><br><span class="line">        self.client_id = client_id</span><br><span class="line">        self.model = model</span><br><span class="line">        self.train_data = train_data</span><br><span class="line">        self.noise_multiplier = noise_multiplier</span><br><span class="line">        self.max_grad_norm = max_grad_norm</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_with_dp</span>(<span class="params">self, epochs=<span class="number">5</span>, lr=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;带差分隐私的本地训练&quot;&quot;&quot;</span></span><br><span class="line">        optimizer = torch.optim.SGD(self.model.parameters(), lr=lr)</span><br><span class="line">        criterion = nn.CrossEntropyLoss()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">            <span class="keyword">for</span> data, target <span class="keyword">in</span> self.train_data:</span><br><span class="line">                optimizer.zero_grad()</span><br><span class="line">                output = self.model(data)</span><br><span class="line">                loss = criterion(output, target)</span><br><span class="line">                loss.backward()</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 梯度裁剪</span></span><br><span class="line">                self._clip_gradients()</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 添加噪声</span></span><br><span class="line">                self._add_noise()</span><br><span class="line">                </span><br><span class="line">                optimizer.step()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_clip_gradients</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;梯度裁剪&quot;&quot;&quot;</span></span><br><span class="line">        total_norm = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.model.parameters():</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                param_norm = p.grad.data.norm(<span class="number">2</span>)</span><br><span class="line">                total_norm += param_norm.item() ** <span class="number">2</span></span><br><span class="line">        total_norm = total_norm ** <span class="number">0.5</span></span><br><span class="line">        </span><br><span class="line">        clip_coef = self.max_grad_norm / (total_norm + <span class="number">1e-6</span>)</span><br><span class="line">        <span class="keyword">if</span> clip_coef &lt; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">for</span> p <span class="keyword">in</span> self.model.parameters():</span><br><span class="line">                <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    p.grad.data.mul_(clip_coef)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_add_noise</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加高斯噪声&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> self.model.parameters():</span><br><span class="line">            <span class="keyword">if</span> p.grad <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                noise = torch.randn_like(p.grad) * self.noise_multiplier * self.max_grad_norm</span><br><span class="line">                p.grad.data.add_(noise)</span><br></pre></td></tr></table></figure>
+
+<h2 id="FedProx算法"><a href="#FedProx算法" class="headerlink" title="FedProx算法"></a>FedProx算法</h2><p>处理联邦学习中的数据异构性问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FedProxClient</span>(<span class="title class_ inherited__">FederatedClient</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;FedProx客户端&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, client_id, model, train_data, mu=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(client_id, model, train_data)</span><br><span class="line">        self.mu = mu</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">local_train_prox</span>(<span class="params">self, global_params, epochs=<span class="number">5</span>, lr=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;带近端项的本地训练&quot;&quot;&quot;</span></span><br><span class="line">        self.set_model_params(global_params)</span><br><span class="line">        </span><br><span class="line">        optimizer = torch.optim.SGD(self.model.parameters(), lr=lr)</span><br><span class="line">        criterion = nn.CrossEntropyLoss()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">            <span class="keyword">for</span> data, target <span class="keyword">in</span> self.train_data:</span><br><span class="line">                optimizer.zero_grad()</span><br><span class="line">                output = self.model(data)</span><br><span class="line">                loss = criterion(output, target)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 近端项：惩罚与全局模型的偏离</span></span><br><span class="line">                prox_loss = self._compute_prox_term(global_params)</span><br><span class="line">                total_loss = loss + self.mu * prox_loss</span><br><span class="line">                </span><br><span class="line">                total_loss.backward()</span><br><span class="line">                optimizer.step()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self.get_model_params()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_compute_prox_term</span>(<span class="params">self, global_params</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算近端项&quot;&quot;&quot;</span></span><br><span class="line">        prox_term = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> (name, param), (g_name, g_param) <span class="keyword">in</span> <span class="built_in">zip</span>(</span><br><span class="line">            self.model.named_parameters(), global_params.items()</span><br><span class="line">        ):</span><br><span class="line">            prox_term += torch.<span class="built_in">sum</span>((param - g_param) ** <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> prox_term / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="联邦学习通信优化"><a href="#联邦学习通信优化" class="headerlink" title="联邦学习通信优化"></a>联邦学习通信优化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CompressedFederatedClient</span>(<span class="title class_ inherited__">FederatedClient</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;压缩通信的联邦学习客户端&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, client_id, model, train_data, compression_ratio=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(client_id, model, train_data)</span><br><span class="line">        self.compression_ratio = compression_ratio</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_compressed_update</span>(<span class="params">self, global_params</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;发送压缩更新&quot;&quot;&quot;</span></span><br><span class="line">        self.set_model_params(global_params)</span><br><span class="line">        self.local_train(epochs=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        local_params = self.get_model_params()</span><br><span class="line">        compressed = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> name, param <span class="keyword">in</span> local_params.items():</span><br><span class="line">            <span class="comment"># Top-K压缩</span></span><br><span class="line">            flat_param = param.flatten()</span><br><span class="line">            k = <span class="built_in">int</span>(<span class="built_in">len</span>(flat_param) * self.compression_ratio)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 选择最大的k个值</span></span><br><span class="line">            values, indices = torch.topk(flat_param.<span class="built_in">abs</span>(), k)</span><br><span class="line">            mask = torch.zeros_like(flat_param)</span><br><span class="line">            mask[indices] = <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            compressed[name] = &#123;</span><br><span class="line">                <span class="string">&#x27;values&#x27;</span>: flat_param[mask.<span class="built_in">bool</span>()],</span><br><span class="line">                <span class="string">&#x27;indices&#x27;</span>: indices,</span><br><span class="line">                <span class="string">&#x27;shape&#x27;</span>: param.shape</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> compressed</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decompress_update</span>(<span class="params">self, compressed_update</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;解压更新&quot;&quot;&quot;</span></span><br><span class="line">        decompressed = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> name, data <span class="keyword">in</span> compressed_update.items():</span><br><span class="line">            flat = torch.zeros(data[<span class="string">&#x27;shape&#x27;</span>].numel())</span><br><span class="line">            flat[data[<span class="string">&#x27;indices&#x27;</span>]] = data[<span class="string">&#x27;values&#x27;</span>]</span><br><span class="line">            decompressed[name] = flat.view(data[<span class="string">&#x27;shape&#x27;</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> decompressed</span><br></pre></td></tr></table></figure>
+
+<h2 id="联邦学习类型"><a href="#联邦学习类型" class="headerlink" title="联邦学习类型"></a>联邦学习类型</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>数据分布</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>横向联邦</td>
+<td>特征相同，样本不同</td>
+<td>跨银行用户数据</td>
+</tr>
+<tr>
+<td>纵向联邦</td>
+<td>样本相同，特征不同</td>
+<td>电商+银行合作</td>
+</tr>
+<tr>
+<td>联邦迁移</td>
+<td>异构数据</td>
+<td>跨域学习</td>
+</tr>
+</tbody></table>
+<h2 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h2><p>联邦学习在以下领域应用广泛：</p>
+<ul>
+<li><strong>移动键盘预测</strong>：Gboard输入法</li>
+<li><strong>健康医疗</strong>：跨医院医学数据协作</li>
+<li><strong>金融风控</strong>：银行间的风控模型</li>
+<li><strong>边缘计算</strong>：IoT设备上的分布式学习</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>联邦学习为隐私敏感场景下的机器学习提供了可行的解决方案，通过在数据不出本地的情况下进行协作学习，平衡了数据利用和隐私保护的需求。</p>
+<span id="more"></span>
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1602.05629">Communication-Efficient Learning of Deep Networks from Decentralized Data</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1912.04977">Advances and Open Problems in Federated Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1812.06127">FedProx: Federated Optimization in Heterogeneous Networks</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/">联邦学习</a>
+    
+      <a href="/tags/%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4/">隐私保护</a>
+    
+      <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%A6%E4%B9%A0/">分布式学习</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2021/04/25/2021-04-25-联邦学习：隐私保护的机器学习新范式/" target="_blank" title="联邦学习：隐私保护的机器学习新范式">https://www.coomatrix.com/2021/04/25/2021-04-25-联邦学习：隐私保护的机器学习新范式/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/05/05/2021-05-05-GitHub-Copilot%EF%BC%9AAI%E7%BC%96%E7%A8%8B%E5%8A%A9%E6%89%8B%E5%88%9D%E4%BD%93%E9%AA%8C/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          GitHub Copilot：AI编程助手初体验
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/15/2021-04-15-MAE%EF%BC%9A%E6%8E%A9%E7%A0%81%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8%E7%9A%84%E7%AA%81%E7%A0%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MAE：掩码自编码器的突破</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-number">2.</span> <span class="nav-text">联邦学习核心思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FedAvg%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">FedAvg算法实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81"><span class="nav-number">4.</span> <span class="nav-text">差分隐私</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FedProx%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">FedProx算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">联邦学习通信优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">联邦学习类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">8.</span> <span class="nav-text">实际应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">10.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+

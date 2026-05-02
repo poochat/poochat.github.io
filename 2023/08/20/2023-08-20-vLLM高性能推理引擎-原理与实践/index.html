@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>vllm高性能推理引擎：原理与实践 | ovo$^{mc^2}$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="学习" />
+  
+  
+  
+  
+  <meta name="description" content="引言vLLM是2023年最热门的LLM推理框架之一，它通过PagedAttention技术和连续批处理，实现了极高的推理吞吐量。本文深入解析vLLM的架构设计、核心技术以及部署实践。 vLLM核心架构1. PagedAttention原理123456789101112131415161718192021222324252627282930313233343536373839404142434445">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vLLM高性能推理引擎：原理与实践">
+<meta property="og:url" content="https://www.coomatrix.com/2023/08/20/2023-08-20-vLLM%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E-%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:description" content="引言vLLM是2023年最热门的LLM推理框架之一，它通过PagedAttention技术和连续批处理，实现了极高的推理吞吐量。本文深入解析vLLM的架构设计、核心技术以及部署实践。 vLLM核心架构1. PagedAttention原理123456789101112131415161718192021222324252627282930313233343536373839404142434445">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+<meta property="article:published_time" content="2023-08-20T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-02T18:37:02.522Z">
+<meta property="article:author" content="云上零度">
+<meta property="article:tag" content="vLLM">
+<meta property="article:tag" content="高性能推理">
+<meta property="article:tag" content="PagedAttention">
+<meta property="article:tag" content="LLM服务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1544256718-3bcf237f3974">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+  themeMenus["/photography"] = "摄影"; 
+
+  themeMenus["/about"] = "关于"; 
+
+  themeMenus["/guestbook"] = "留言"; 
+
+  themeMenus["/AI"] = "ai"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="ovo$^{mc^2}$" rel="home"> ovo$^{mc^2}$ </a>
+            
+          </h1>
+
+          
+            <div class="site-description">互联网人工智能技术开发者</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/photography">摄影</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/blog.gif,css/images/pose.jpg,css/images/pose2.jpg,css/images/pose3.jpg,css/images/pose4.jpg,https://images.wallpaperscraft.com/image/couple_mountains_travel_125490_1280x720.jpg,https://cdn.pixabay.com/photo/2019/05/26/16/43/norway-4230682_1280.jpg".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;">
+<article id="post-2023-08-20-vLLM高性能推理引擎-原理与实践" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1544256718-3bcf237f3974" rel="gallery_cmoopizrn007e9cv6bevjctxq noopener">
+        <img src="https://images.unsplash.com/photo-1544256718-3bcf237f3974" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      vLLM高性能推理引擎：原理与实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2023/08/20/2023-08-20-vLLM%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E-%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2023-08-20T06:00:00.000Z" itemprop="datePublished">八月 20, 2023</time>
+	</a>
+
+      
+      
+    </div>
+    
+    <!-- 首页显示：缩略图 + 摘要 -->
+    
+      <!-- 文章详情页 -->
+      <div class="article-entry post-entry">
+        
+        <div class="tts-controls">
+          <div class="tts-header">
+            <span class="tts-title">🎙️ 语音朗读</span>
+            <span id="tts-current-voice" class="tts-current">当前: 晓晓 (温柔女声)</span>
+          </div>
+          <div class="tts-body">
+            <button id="tts-btn" class="tts-btn" onclick="toggleSpeech()">
+              <span id="tts-icon">🔊</span> <span id="tts-text">朗读全文</span>
+            </button>
+            <div class="voice-toggle">
+              <button id="tts-female-btn" class="voice-btn active" onclick="switchVoice('female')">
+                <div class="voice-icon">👩</div>
+                <div class="voice-name">女声</div>
+                <div class="voice-desc">晓晓 - 温柔</div>
+              </button>
+              <button id="tts-male-btn" class="voice-btn" onclick="switchVoice('male')">
+                <div class="voice-icon">👨</div>
+                <div class="voice-name">男声</div>
+                <div class="voice-desc">云希 - 清朗</div>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div id="article-content"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>vLLM是2023年最热门的LLM推理框架之一，它通过PagedAttention技术和连续批处理，实现了极高的推理吞吐量。本文深入解析vLLM的架构设计、核心技术以及部署实践。</p>
+<h2 id="vLLM核心架构"><a href="#vLLM核心架构" class="headerlink" title="vLLM核心架构"></a>vLLM核心架构</h2><h3 id="1-PagedAttention原理"><a href="#1-PagedAttention原理" class="headerlink" title="1. PagedAttention原理"></a>1. PagedAttention原理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">PagedAttention: 基于虚拟内存管理的注意力机制</span></span><br><span class="line"><span class="string">核心思想：将KV Cache分成固定大小的&quot;页&quot;，实现高效内存管理</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Optional</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PagedAttentionConfig</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    PagedAttention配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, block_size=<span class="number">16</span>, num_blocks=<span class="number">1024</span></span>):</span><br><span class="line">        self.block_size = block_size        <span class="comment"># 每块大小</span></span><br><span class="line">        self.num_blocks = num_blocks        <span class="comment"># 总块数</span></span><br><span class="line">        self.head_dim = <span class="number">128</span>                 <span class="comment"># 注意力头维度</span></span><br><span class="line">        self.num_heads = <span class="number">32</span>                 <span class="comment"># 注意力头数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KVCache</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    分页KV Cache</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config: PagedAttentionConfig</span>):</span><br><span class="line">        self.config = config</span><br><span class="line">        self.block_size = config.block_size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 物理块管理器</span></span><br><span class="line">        self.num_blocks = config.num_blocks</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># KV缓存张量</span></span><br><span class="line">        self.k_cache = <span class="literal">None</span></span><br><span class="line">        self.v_cache = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 块表：逻辑块 -&gt; 物理块</span></span><br><span class="line">        self.block_tables = &#123;&#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alloc</span>(<span class="params">self, seq_len: <span class="built_in">int</span></span>) -&gt; <span class="built_in">dict</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        为新序列分配缓存块</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        num_blocks_needed = (seq_len + self.block_size - <span class="number">1</span>) // self.block_size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分配物理块</span></span><br><span class="line">        physical_blocks = []</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_blocks_needed):</span><br><span class="line">            block_id = self._alloc_physical_block()</span><br><span class="line">            <span class="keyword">if</span> block_id <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;Out of memory&quot;</span>)</span><br><span class="line">            physical_blocks.append(block_id)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 更新块表</span></span><br><span class="line">        block_table = physical_blocks.copy()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;num_blocks&quot;</span>: num_blocks_needed,</span><br><span class="line">            <span class="string">&quot;block_table&quot;</span>: block_table</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_alloc_physical_block</span>(<span class="params">self</span>) -&gt; <span class="type">Optional</span>[<span class="built_in">int</span>]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;分配物理块&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 简化实现</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.num_blocks):</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> self.used_blocks:</span><br><span class="line">                self.used_blocks.add(i)</span><br><span class="line">                <span class="keyword">return</span> i</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params">self, seq_id: <span class="built_in">int</span>, start_pos: <span class="built_in">int</span>, k: torch.Tensor, v: torch.Tensor</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        更新KV缓存</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        block_table = self.block_tables[seq_id]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算块索引和块内偏移</span></span><br><span class="line">        block_idx = start_pos // self.block_size</span><br><span class="line">        block_offset = start_pos % self.block_size</span><br><span class="line">        </span><br><span class="line">        num_tokens = k.shape[<span class="number">0</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_tokens):</span><br><span class="line">            <span class="keyword">if</span> block_offset == self.block_size:</span><br><span class="line">                block_idx += <span class="number">1</span></span><br><span class="line">                block_offset = <span class="number">0</span></span><br><span class="line">            </span><br><span class="line">            physical_block = block_table[block_idx]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 写入缓存</span></span><br><span class="line">            self.k_cache[physical_block, block_offset] = k[i]</span><br><span class="line">            self.v_cache[physical_block, block_offset] = v[i]</span><br><span class="line">            </span><br><span class="line">            block_offset += <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">free</span>(<span class="params">self, seq_id: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;释放序列的缓存块&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> seq_id <span class="keyword">in</span> self.block_tables:</span><br><span class="line">            <span class="keyword">for</span> block_id <span class="keyword">in</span> self.block_tables[seq_id]:</span><br><span class="line">                self.used_blocks.discard(block_id)</span><br><span class="line">            <span class="keyword">del</span> self.block_tables[seq_id]</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PagedAttention</span>(nn.Module):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    PagedAttention实现</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config: PagedAttentionConfig</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.config = config</span><br><span class="line">        self.kv_cache = KVCache(config)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, query: torch.Tensor, key: torch.Tensor, value: torch.Tensor,</span></span><br><span class="line"><span class="params">                block_tables: <span class="built_in">dict</span>, seq_lens: <span class="built_in">dict</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        PagedAttention前向传播</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            query: 查询张量 [batch, heads, seq_len, head_dim]</span></span><br><span class="line"><span class="string">            key: 键张量 [batch, heads, seq_len, head_dim]</span></span><br><span class="line"><span class="string">            value: 值张量 [batch, heads, seq_len, head_dim]</span></span><br><span class="line"><span class="string">            block_tables: 块表，映射逻辑位置到物理块</span></span><br><span class="line"><span class="string">            seq_lens: 每个序列的长度</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        B, H, T, D = query.shape</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 扩展query以匹配key/value长度</span></span><br><span class="line">        <span class="keyword">if</span> T != key.shape[<span class="number">2</span>]:</span><br><span class="line">            query = query.expand(-<span class="number">1</span>, -<span class="number">1</span>, key.shape[<span class="number">2</span>], -<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算注意力分数</span></span><br><span class="line">        scale = <span class="number">1.0</span> / (D ** <span class="number">0.5</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 分块计算注意力</span></span><br><span class="line">        output = torch.zeros_like(query)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> batch_idx <span class="keyword">in</span> <span class="built_in">range</span>(B):</span><br><span class="line">            seq_len = seq_lens[batch_idx]</span><br><span class="line">            block_table = block_tables[batch_idx]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 获取当前batch的KV</span></span><br><span class="line">            k_seq = key[batch_idx]  <span class="comment"># [H, seq_len, D]</span></span><br><span class="line">            v_seq = value[batch_idx]  <span class="comment"># [H, seq_len, D]</span></span><br><span class="line">            q = query[batch_idx]  <span class="comment"># [H, T, D]</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 分块计算</span></span><br><span class="line">            num_blocks = (seq_len + self.config.block_size - <span class="number">1</span>) // self.config.block_size</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> block_idx <span class="keyword">in</span> <span class="built_in">range</span>(num_blocks):</span><br><span class="line">                <span class="comment"># 获取物理块</span></span><br><span class="line">                physical_block = block_table[block_idx]</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 获取KV块</span></span><br><span class="line">                start = block_idx * self.config.block_size</span><br><span class="line">                end = <span class="built_in">min</span>(start + self.config.block_size, seq_len)</span><br><span class="line">                </span><br><span class="line">                k_block = k_seq[:, start:end]  <span class="comment"># [H, block_size, D]</span></span><br><span class="line">                v_block = v_seq[:, start:end]  <span class="comment"># [H, block_size, D]</span></span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 计算注意力</span></span><br><span class="line">                attn = torch.matmul(q, k_block.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) * scale  <span class="comment"># [H, T, block_size]</span></span><br><span class="line">                attn = torch.softmax(attn, dim=-<span class="number">1</span>)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 累积输出</span></span><br><span class="line">                output[batch_idx, :, start:end] = torch.matmul(attn, v_block)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-连续批处理"><a href="#2-连续批处理" class="headerlink" title="2. 连续批处理"></a>2. 连续批处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Optional</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="meta">@dataclass</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GenerationRequest</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成请求&quot;&quot;&quot;</span></span><br><span class="line">    request_id: <span class="built_in">str</span></span><br><span class="line">    prompt: <span class="built_in">str</span></span><br><span class="line">    max_tokens: <span class="built_in">int</span></span><br><span class="line">    temperature: <span class="built_in">float</span></span><br><span class="line">    created_at: <span class="built_in">float</span></span><br><span class="line">    </span><br><span class="line"><span class="meta">@dataclass</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">GenerationResult</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;生成结果&quot;&quot;&quot;</span></span><br><span class="line">    request_id: <span class="built_in">str</span></span><br><span class="line">    text: <span class="built_in">str</span></span><br><span class="line">    num_generated_tokens: <span class="built_in">int</span></span><br><span class="line">    latency: <span class="built_in">float</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ContinuousBatching</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    连续批处理调度器</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, model_runner, max_batch_size=<span class="number">32</span></span>):</span><br><span class="line">        self.model_runner = model_runner</span><br><span class="line">        self.max_batch_size = max_batch_size</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 请求队列</span></span><br><span class="line">        self.pending_requests: <span class="type">List</span>[GenerationRequest] = []</span><br><span class="line">        self.running_requests: <span class="built_in">dict</span> = &#123;&#125;  <span class="comment"># request_id -&gt; request info</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 统计</span></span><br><span class="line">        self.total_requests = <span class="number">0</span></span><br><span class="line">        self.total_tokens = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">add_request</span>(<span class="params">self, request: GenerationRequest</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;添加请求到队列&quot;&quot;&quot;</span></span><br><span class="line">        self.pending_requests.append(request)</span><br><span class="line">        self.total_requests += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">step</span>(<span class="params">self</span>) -&gt; <span class="type">List</span>[GenerationResult]:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        调度步骤</span></span><br><span class="line"><span class="string">        返回完成的结果</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        completed = []</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 1. 准备批处理</span></span><br><span class="line">        batch_requests = self.pending_requests[:self.max_batch_size]</span><br><span class="line">        self.pending_requests = self.pending_requests[self.max_batch_size:]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> batch_requests:</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(<span class="number">0.01</span>)</span><br><span class="line">            <span class="keyword">return</span> completed</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 运行推理</span></span><br><span class="line">        prompts = [r.prompt <span class="keyword">for</span> r <span class="keyword">in</span> batch_requests]</span><br><span class="line">        results = self.model_runner.generate_batch(prompts)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 处理结果</span></span><br><span class="line">        <span class="keyword">for</span> req, result <span class="keyword">in</span> <span class="built_in">zip</span>(batch_requests, results):</span><br><span class="line">            completed_result = GenerationResult(</span><br><span class="line">                request_id=req.request_id,</span><br><span class="line">                text=result[<span class="string">&quot;text&quot;</span>],</span><br><span class="line">                num_generated_tokens=result[<span class="string">&quot;num_tokens&quot;</span>],</span><br><span class="line">                latency=time.time() - req.created_at</span><br><span class="line">            )</span><br><span class="line">            completed.append(completed_result)</span><br><span class="line">            self.total_tokens += completed_result.num_generated_tokens</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> completed</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;运行调度器&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            completed = <span class="keyword">await</span> self.step()</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 处理完成的请求</span></span><br><span class="line">            <span class="keyword">for</span> result <span class="keyword">in</span> completed:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Request <span class="subst">&#123;result.request_id&#125;</span> completed: <span class="subst">&#123;result.latency:<span class="number">.2</span>f&#125;</span>s&quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 检查是否所有请求都已完成</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.pending_requests <span class="keyword">and</span> <span class="keyword">not</span> self.running_requests:</span><br><span class="line">                <span class="keyword">await</span> asyncio.sleep(<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="vLLM部署实践"><a href="#vLLM部署实践" class="headerlink" title="vLLM部署实践"></a>vLLM部署实践</h2><h3 id="1-OpenAI兼容API"><a href="#1-OpenAI兼容API" class="headerlink" title="1. OpenAI兼容API"></a>1. OpenAI兼容API</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动vLLM服务器</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">vllm serve mistralai/Mistral-7B-Instruct-v0.1 \</span></span><br><span class="line"><span class="string">    --tensor-parallel-size 2 \</span></span><br><span class="line"><span class="string">    --gpu-memory-utilization 0.9 \</span></span><br><span class="line"><span class="string">    --port 8000</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">vLLMClient</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    vLLM客户端</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, base_url=<span class="string">&quot;http://localhost:8000/v1&quot;</span></span>):</span><br><span class="line">        self.client = OpenAI(base_url=base_url, api_key=<span class="string">&quot;EMPTY&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">chat_completion</span>(<span class="params">self, messages: <span class="built_in">list</span>, model: <span class="built_in">str</span> = <span class="string">&quot;mistral&quot;</span>,</span></span><br><span class="line"><span class="params">                       temperature: <span class="built_in">float</span> = <span class="number">0.7</span>, max_tokens: <span class="built_in">int</span> = <span class="number">256</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        对话补全</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        response = self.client.chat.completions.create(</span><br><span class="line">            model=model,</span><br><span class="line">            messages=messages,</span><br><span class="line">            temperature=temperature,</span><br><span class="line">            max_tokens=max_tokens</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;content&quot;</span>: response.choices[<span class="number">0</span>].message.content,</span><br><span class="line">            <span class="string">&quot;usage&quot;</span>: response.usage.to_dict()</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">completion</span>(<span class="params">self, prompt: <span class="built_in">str</span>, model: <span class="built_in">str</span> = <span class="string">&quot;mistral&quot;</span>,</span></span><br><span class="line"><span class="params">                  max_tokens: <span class="built_in">int</span> = <span class="number">256</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        文本补全</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        response = self.client.completions.create(</span><br><span class="line">            model=model,</span><br><span class="line">            prompt=prompt,</span><br><span class="line">            max_tokens=max_tokens</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;content&quot;</span>: response.choices[<span class="number">0</span>].text,</span><br><span class="line">            <span class="string">&quot;usage&quot;</span>: response.usage.to_dict()</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">batch_completion</span>(<span class="params">self, prompts: <span class="type">List</span>[<span class="built_in">str</span>], model: <span class="built_in">str</span> = <span class="string">&quot;mistral&quot;</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        批量补全</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        response = self.client.completions.create(</span><br><span class="line">            model=model,</span><br><span class="line">            prompts=prompts,</span><br><span class="line">            max_tokens=<span class="number">256</span>,</span><br><span class="line">            batch_size=<span class="built_in">len</span>(prompts)</span><br><span class="line">        )</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            &#123;<span class="string">&quot;content&quot;</span>: choice.text, <span class="string">&quot;index&quot;</span>: choice.index&#125;</span><br><span class="line">            <span class="keyword">for</span> choice <span class="keyword">in</span> response.choices</span><br><span class="line">        ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-FastAPI集成"><a href="#2-FastAPI集成" class="headerlink" title="2. FastAPI集成"></a>2. FastAPI集成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, BackgroundTasks</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Optional</span></span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"></span><br><span class="line">app = FastAPI(title=<span class="string">&quot;LLM Inference API&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 存储请求状态</span></span><br><span class="line">request_status = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChatRequest</span>(<span class="title class_ inherited__">BaseModel</span>):</span><br><span class="line">    messages: <span class="type">List</span>[<span class="built_in">dict</span>]</span><br><span class="line">    model: <span class="built_in">str</span> = <span class="string">&quot;mistral&quot;</span></span><br><span class="line">    temperature: <span class="built_in">float</span> = <span class="number">0.7</span></span><br><span class="line">    max_tokens: <span class="built_in">int</span> = <span class="number">256</span></span><br><span class="line">    stream: <span class="built_in">bool</span> = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/chat/completions&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">chat_completions</span>(<span class="params">request: ChatRequest, background_tasks: BackgroundTasks</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对话补全接口</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    request_id = <span class="built_in">str</span>(uuid.uuid4())</span><br><span class="line">    </span><br><span class="line">    request_status[request_id] = &#123;</span><br><span class="line">        <span class="string">&quot;status&quot;</span>: <span class="string">&quot;processing&quot;</span>,</span><br><span class="line">        <span class="string">&quot;created_at&quot;</span>: time.time()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建vLLM客户端</span></span><br><span class="line">    client = vLLMClient()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 调用vLLM</span></span><br><span class="line">    result = client.chat_completion(</span><br><span class="line">        messages=request.messages,</span><br><span class="line">        model=request.model,</span><br><span class="line">        temperature=request.temperature,</span><br><span class="line">        max_tokens=request.max_tokens</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    request_status[request_id][<span class="string">&quot;status&quot;</span>] = <span class="string">&quot;completed&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&quot;id&quot;</span>: <span class="string">f&quot;chatcmpl-<span class="subst">&#123;request_id[:<span class="number">8</span>]&#125;</span>&quot;</span>,</span><br><span class="line">        <span class="string">&quot;object&quot;</span>: <span class="string">&quot;chat.completion&quot;</span>,</span><br><span class="line">        <span class="string">&quot;created&quot;</span>: <span class="built_in">int</span>(time.time()),</span><br><span class="line">        <span class="string">&quot;model&quot;</span>: request.model,</span><br><span class="line">        <span class="string">&quot;choices&quot;</span>: [&#123;</span><br><span class="line">            <span class="string">&quot;index&quot;</span>: <span class="number">0</span>,</span><br><span class="line">            <span class="string">&quot;message&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>,</span><br><span class="line">                <span class="string">&quot;content&quot;</span>: result[<span class="string">&quot;content&quot;</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;finish_reason&quot;</span>: <span class="string">&quot;stop&quot;</span></span><br><span class="line">        &#125;],</span><br><span class="line">        <span class="string">&quot;usage&quot;</span>: result[<span class="string">&quot;usage&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/models&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">list_models</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;列出可用模型&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&quot;data&quot;</span>: [</span><br><span class="line">            &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;mistral&quot;</span>, <span class="string">&quot;object&quot;</span>: <span class="string">&quot;model&quot;</span>, <span class="string">&quot;owned_by&quot;</span>: <span class="string">&quot;mistralai&quot;</span>&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;llama&quot;</span>, <span class="string">&quot;object&quot;</span>: <span class="string">&quot;model&quot;</span>, <span class="string">&quot;owned_by&quot;</span>: <span class="string">&quot;meta&quot;</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(<span class="params"><span class="string">&quot;/health&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">health</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;健康检查&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;status&quot;</span>: <span class="string">&quot;ok&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    uvicorn.run(app, host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">8000</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-性能基准测试"><a href="#3-性能基准测试" class="headerlink" title="3. 性能基准测试"></a>3. 性能基准测试</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> statistics</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LLMBenchmark</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    LLM推理性能基准测试</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, client: vLLMClient</span>):</span><br><span class="line">        self.client = client</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">throughput_benchmark</span>(<span class="params">self, num_requests: <span class="built_in">int</span> = <span class="number">100</span>, </span></span><br><span class="line"><span class="params">                            num_concurrent: <span class="built_in">int</span> = <span class="number">10</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        吞吐量测试</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        prompts = [</span><br><span class="line">            <span class="string">&quot;解释量子计算的基本原理。&quot;</span> * <span class="number">10</span>,</span><br><span class="line">            <span class="string">&quot;写一段Python代码实现快速排序。&quot;</span>,</span><br><span class="line">            <span class="string">&quot;什么是机器学习中的梯度下降法？&quot;</span></span><br><span class="line">        ]</span><br><span class="line">        </span><br><span class="line">        latencies = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">make_request</span>():</span><br><span class="line">            start = time.time()</span><br><span class="line">            self.client.completion(</span><br><span class="line">                prompt=prompts[<span class="number">0</span>],</span><br><span class="line">                max_tokens=<span class="number">256</span></span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">return</span> time.time() - start</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 串行热身</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            make_request()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 并发测试</span></span><br><span class="line">        <span class="keyword">with</span> ThreadPoolExecutor(max_workers=num_concurrent) <span class="keyword">as</span> executor:</span><br><span class="line">            futures = [executor.submit(make_request) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_requests)]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> future <span class="keyword">in</span> futures:</span><br><span class="line">                latencies.append(future.result())</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;num_requests&quot;</span>: num_requests,</span><br><span class="line">            <span class="string">&quot;num_concurrent&quot;</span>: num_concurrent,</span><br><span class="line">            <span class="string">&quot;total_time&quot;</span>: <span class="built_in">sum</span>(latencies),</span><br><span class="line">            <span class="string">&quot;avg_latency&quot;</span>: statistics.mean(latencies),</span><br><span class="line">            <span class="string">&quot;median_latency&quot;</span>: statistics.median(latencies),</span><br><span class="line">            <span class="string">&quot;p95_latency&quot;</span>: <span class="built_in">sorted</span>(latencies)[<span class="built_in">int</span>(<span class="built_in">len</span>(latencies) * <span class="number">0.95</span>)],</span><br><span class="line">            <span class="string">&quot;p99_latency&quot;</span>: <span class="built_in">sorted</span>(latencies)[<span class="built_in">int</span>(<span class="built_in">len</span>(latencies) * <span class="number">0.99</span>)],</span><br><span class="line">            <span class="string">&quot;throughput&quot;</span>: num_requests / <span class="built_in">sum</span>(latencies)</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">latency_benchmark</span>(<span class="params">self, prompt: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        延迟测试</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        results = &#123;<span class="string">&quot;first_token&quot;</span>: [], <span class="string">&quot;end_to_end&quot;</span>: []&#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">20</span>):</span><br><span class="line">            <span class="comment"># 首token延迟</span></span><br><span class="line">            start = time.time()</span><br><span class="line">            <span class="comment"># 模拟首token测量</span></span><br><span class="line">            self.client.completion(prompt, max_tokens=<span class="number">1</span>)</span><br><span class="line">            results[<span class="string">&quot;first_token&quot;</span>].append(time.time() - start)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 端到端延迟</span></span><br><span class="line">            start = time.time()</span><br><span class="line">            self.client.completion(prompt, max_tokens=<span class="number">256</span>)</span><br><span class="line">            results[<span class="string">&quot;end_to_end&quot;</span>].append(time.time() - start)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;first_token_avg&quot;</span>: statistics.mean(results[<span class="string">&quot;first_token&quot;</span>]),</span><br><span class="line">            <span class="string">&quot;first_token_p50&quot;</span>: statistics.median(results[<span class="string">&quot;first_token&quot;</span>]),</span><br><span class="line">            <span class="string">&quot;e2e_avg&quot;</span>: statistics.mean(results[<span class="string">&quot;end_to_end&quot;</span>]),</span><br><span class="line">            <span class="string">&quot;e2e_p50&quot;</span>: statistics.median(results[<span class="string">&quot;end_to_end&quot;</span>])</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="vLLM性能优化"><a href="#vLLM性能优化" class="headerlink" title="vLLM性能优化"></a>vLLM性能优化</h2><h3 id="1-Tensor-Parallel"><a href="#1-Tensor-Parallel" class="headerlink" title="1. Tensor Parallel"></a>1. Tensor Parallel</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 多GPU并行推理</span></span><br><span class="line">vllm serve meta-llama/Llama-2-70b-chat-hf \</span><br><span class="line">    --tensor-parallel-size 4 \</span><br><span class="line">    --gpu-memory-utilization 0.9</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TensorParallelRunner</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Tensor Parallel配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">calculate_num_gpus</span>(<span class="params">num_params: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        根据模型参数量计算所需GPU数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 估算：每个参数2字节(FP16)，加上KV cache等开销</span></span><br><span class="line">        memory_per_param = <span class="number">2</span> + <span class="number">0.5</span>  <span class="comment"># weight + KV cache overhead</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> num_gpus <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>]:</span><br><span class="line">            available_memory = num_gpus * <span class="number">80</span> * <span class="number">1024</span>**<span class="number">3</span>  <span class="comment"># 假设每卡80GB</span></span><br><span class="line">            required_memory = num_params * memory_per_param</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> required_memory &lt; available_memory * <span class="number">0.9</span>:</span><br><span class="line">                <span class="keyword">return</span> num_gpus</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="number">8</span>  <span class="comment"># 最大8卡</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-显存优化"><a href="#2-显存优化" class="headerlink" title="2. 显存优化"></a>2. 显存优化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MemoryOptimizer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    vLLM显存优化配置</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_optimal_config</span>(<span class="params">num_gpus: <span class="built_in">int</span>, gpu_memory_gb: <span class="built_in">float</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获取最优配置</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># GPU利用率</span></span><br><span class="line">        gpu_util = <span class="number">0.9</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 根据显存计算最大batch size</span></span><br><span class="line">        <span class="keyword">if</span> gpu_memory_gb &gt;= <span class="number">80</span>:</span><br><span class="line">            max_model_len = <span class="number">8192</span></span><br><span class="line">            max_num_seqs = <span class="number">256</span></span><br><span class="line">        <span class="keyword">elif</span> gpu_memory_gb &gt;= <span class="number">40</span>:</span><br><span class="line">            max_model_len = <span class="number">4096</span></span><br><span class="line">            max_num_seqs = <span class="number">128</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            max_model_len = <span class="number">2048</span></span><br><span class="line">            max_num_seqs = <span class="number">64</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;--gpu-memory-utilization&quot;</span>: gpu_util,</span><br><span class="line">            <span class="string">&quot;--max-model-len&quot;</span>: max_model_len,</span><br><span class="line">            <span class="string">&quot;--max-num-seqs&quot;</span>: max_num_seqs,</span><br><span class="line">            <span class="string">&quot;--num-scheduler-steps&quot;</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">&quot;--enable-chunked-prefill&quot;</span>: <span class="literal">True</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>vLLM通过PagedAttention和连续批处理技术，实现了LLM推理的重大性能提升。其OpenAI兼容的API设计使得从其他服务迁移变得简单。本文详细介绍了vLLM的架构原理和部署实践，为开发者提供了全面的参考指南。</p>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/vllm-project/vllm">vLLM GitHub</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2309.06180">PagedAttention论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.vllm.ai/">vLLM文档</a></li>
+</ul>
+</div>
+      </div>
+    
+    
+    <footer class="entry-meta entry-footer">
+      
+        
+	<span class="ico-folder"></span>
+    <span class="article-category">
+    
+    
+      
+        <a href="/categories/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">模型部署</a>
+      
+    
+    </span>
+
+
+        
+  <span class="ico-tags"></span>
+  <span class="article-tag">
+  
+  
+    
+      <a href="/tags/vLLM/">vLLM</a>
+    
+      <a href="/tags/%E9%AB%98%E6%80%A7%E8%83%BD%E6%8E%A8%E7%90%86/">高性能推理</a>
+    
+      <a href="/tags/PagedAttention/">PagedAttention</a>
+    
+      <a href="/tags/LLM%E6%9C%8D%E5%8A%A1/">LLM服务</a>
+    
+  
+  </span>
+
+
+        
+          <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+        
+        
+          <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>作者:  </strong>云上零度</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>文章链接:  </strong>
+          <a href="/2023/08/20/2023-08-20-vLLM高性能推理引擎-原理与实践/" target="_blank" title="vLLM高性能推理引擎：原理与实践">https://www.coomatrix.com/2023/08/20/2023-08-20-vLLM高性能推理引擎-原理与实践/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>版权声明:   </strong>
+            本博客所有文章除特别声明外，均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            许可协议。转载请注明出处！
+          </li>
+        </ul>
+      <div>
+        
+        
+          
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC80OTQ4NC8yNTk3Ng==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+        
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/09/08/2023-09-08-LangChain%E8%BF%9B%E9%98%B6-%E6%9E%84%E5%BB%BA%E4%BC%81%E4%B8%9A%E7%BA%A7RAG%E5%BA%94%E7%94%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          LangChain进阶：构建企业级RAG应用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/15/2023-08-15-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3-Embedding%E4%B8%8E%E7%9B%B8%E4%BC%BC%E6%80%A7%E6%90%9C%E7%B4%A2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">向量数据库技术详解：Embedding与相似性搜索</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vLLM%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">vLLM核心架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PagedAttention%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">1. PagedAttention原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%BF%9E%E7%BB%AD%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">2. 连续批处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vLLM%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5"><span class="nav-number">3.</span> <span class="nav-text">vLLM部署实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-OpenAI%E5%85%BC%E5%AE%B9API"><span class="nav-number">3.1.</span> <span class="nav-text">1. OpenAI兼容API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-FastAPI%E9%9B%86%E6%88%90"><span class="nav-number">3.2.</span> <span class="nav-text">2. FastAPI集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%80%A7%E8%83%BD%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95"><span class="nav-number">3.3.</span> <span class="nav-text">3. 性能基准测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vLLM%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">vLLM性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Tensor-Parallel"><span class="nav-number">4.1.</span> <span class="nav-text">1. Tensor Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%98%BE%E5%AD%98%E4%BC%98%E5%8C%96"><span class="nav-number">4.2.</span> <span class="nav-text">2. 显存优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">6.</span> <span class="nav-text">参考资源</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+          
+            | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+<!-- TTS 语音播报 -->
+
+<script src="/js/tts.js"></script>
+
+<!-- 图片加载失败处理 -->
+
+<script src="/js/image-fallback.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/photography" class="mobile-nav-link">photography</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+  
+    <a href="/AI" class="mobile-nav-link">AI</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- 不蒜子统计 -->
+
+
+<!-- Mermaid图表初始化 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        },
+        sequence: {
+          useMaxWidth: true,
+          diagramMarginX: 20,
+          diagramMarginY: 20
+        },
+        gantt: {
+          useMaxWidth: true
+        }
+      });
+      // 手动触发渲染
+      mermaid.run();
+    }
+  });
+  
+  // MutationObserver监听动态加载的内容
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.classList && node.classList.contains('mermaid')) {
+            if (typeof mermaid !== 'undefined') {
+              mermaid.run({nodes: [node]});
+            }
+          }
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
