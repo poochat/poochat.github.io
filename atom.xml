@@ -193,9 +193,9 @@
     
     <category term="LLaMA" scheme="https://www.coomatrix.com/tags/LLaMA/"/>
     
-    <category term="开源大模型" scheme="https://www.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
-    
     <category term="Qwen" scheme="https://www.coomatrix.com/tags/Qwen/"/>
+    
+    <category term="开源大模型" scheme="https://www.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     <category term="Mistral" scheme="https://www.coomatrix.com/tags/Mistral/"/>
     
@@ -322,11 +322,11 @@
     <category term="AI前沿" scheme="https://www.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
     
     
+    <category term="世界模型" scheme="https://www.coomatrix.com/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/"/>
+    
     <category term="具身智能" scheme="https://www.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/"/>
     
     <category term="机器人" scheme="https://www.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/"/>
-    
-    <category term="世界模型" scheme="https://www.coomatrix.com/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/"/>
     
     <category term="物理仿真" scheme="https://www.coomatrix.com/tags/%E7%89%A9%E7%90%86%E4%BB%BF%E7%9C%9F/"/>
     
@@ -489,9 +489,9 @@
     <category term="RAG系统" scheme="https://www.coomatrix.com/categories/RAG%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="RAG" scheme="https://www.coomatrix.com/tags/RAG/"/>
-    
     <category term="向量数据库" scheme="https://www.coomatrix.com/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    <category term="RAG" scheme="https://www.coomatrix.com/tags/RAG/"/>
     
     <category term="检索增强" scheme="https://www.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/"/>
     
