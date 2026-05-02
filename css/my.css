@@ -3,3 +3,218 @@ type your custom css here
 在本文件键入您的自定义CSS
 升级主题文件时请注意保护本文件，防止意外覆盖。
 */
+
+/* ===========================
+   移动端响应式适配
+   =========================== */
+
+/* 基础移动端设置 */
+@media screen and (max-width: 768px) {
+    /* 容器自适应 */
+    .container {
+        width: 100% !important;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    
+    /* 整体布局调整 */
+    body {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    
+    /* 隐藏侧边栏在小屏幕上 */
+    .site-sidebar {
+        display: none;
+    }
+    
+    /* 主内容区域全宽 */
+    .site-content {
+        margin: 0 !important;
+        width: 100% !important;
+    }
+    
+    /* 文章标题调整 */
+    .entry-title {
+        font-size: 1.5em !important;
+        margin-right: 0 !important;
+    }
+    
+    /* 文章内容中的图片自适应 */
+    .article-entry img,
+    .entry-content img {
+        max-width: 100% !important;
+        height: auto !important;
+        margin: 10px auto !important;
+    }
+    
+    /* 代码块横向滚动 */
+    .article-entry pre,
+    .entry-content pre,
+    pre {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        font-size: 12px !important;
+    }
+    
+    /* 表格横向滚动 */
+    .article-entry table,
+    .entry-content table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    /* 导航菜单调整 */
+    #main-navigation {
+        font-size: 12px;
+    }
+    
+    #main-navigation li a {
+        padding: 0 10px !important;
+        font-size: 1em !important;
+    }
+    
+    /* 页脚调整 */
+    .site-footer {
+        text-align: center;
+        padding: 15px 5px;
+    }
+    
+    .site-info, .site-credit {
+        float: none !important;
+        display: block;
+        margin: 5px 0;
+    }
+    
+    /* 头部调整 */
+    .site-header {
+        padding: 10px 0;
+    }
+    
+    .site-title {
+        font-size: 1.5em !important;
+    }
+    
+    .site-description {
+        font-size: 0.8em;
+    }
+    
+    /* 标签云调整 */
+    .tag-cloud {
+        font-size: 12px;
+    }
+    
+    /* 首页文章列表调整 */
+    .hentry {
+        padding: 15px 0;
+    }
+    
+    /* 封面图片调整 */
+    .entry-thumbnail {
+        width: 100% !important;
+        max-width: 300px;
+        margin: 0 auto 15px !important;
+        float: none !important;
+    }
+    
+    /* 分页按钮调整 */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    /* 评论区调整 */
+    .comment-content {
+        margin: 10px 0;
+    }
+    
+    /* 作者信息框调整 */
+    .author-info {
+        padding: 10px;
+    }
+    
+    .author-info .author-photo {
+        float: none !important;
+        margin: 0 auto 10px !important;
+        display: block;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .author-info .author-content {
+        margin: 0 !important;
+        text-align: center;
+    }
+}
+
+/* 极小屏幕进一步调整 */
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+    
+    .container {
+        padding: 0 8px;
+    }
+    
+    .entry-title {
+        font-size: 1.3em !important;
+    }
+    
+    h1 { font-size: 1.4rem !important; }
+    h2 { font-size: 1.2rem !important; }
+    h3 { font-size: 1.1rem !important; }
+    
+    pre, code {
+        font-size: 11px !important;
+    }
+    
+    /* 隐藏不必要元素 */
+    .site-extra .widget-area {
+        display: none;
+    }
+    
+    .comments-link {
+        float: none !important;
+        display: block;
+        margin: 10px 0;
+    }
+    
+    /* 社交图标调整 */
+    .widget_athemes_social_icons li {
+        margin: 10px 5px 0;
+    }
+    
+    .widget_athemes_social_icons li a [class^="fa"]:before {
+        width: 35px;
+        line-height: 35px;
+        font-size: 16px;
+    }
+}
+
+/* 确保所有嵌入式内容自适应 */
+@media screen and (max-width: 768px) {
+    iframe {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    embed, object, video {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Mermaid 图表自适应 */
+    .mermaid {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+    }
+    
+    /* MathJax 公式自适应 */
+    .MathJax, .MathJax_Display {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+    }
+}
