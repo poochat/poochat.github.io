@@ -542,7 +542,7 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/2021/05/25/2021-05-25-Transformer%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3%E5%BA%8F%E5%88%97%E9%A1%BA%E5%BA%8F/</loc>
+    <loc>https://ai.coomatrix.com/2021/06/05/2021-06-05-ViT%EF%BC%9AVision-Transformer%E8%AF%A6%E8%A7%A3/</loc>
     
     <lastmod>2026-05-02</lastmod>
     
@@ -551,7 +551,7 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/2021/06/05/2021-06-05-ViT%EF%BC%9AVision-Transformer%E8%AF%A6%E8%A7%A3/</loc>
+    <loc>https://ai.coomatrix.com/2021/05/25/2021-05-25-Transformer%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E7%90%86%E8%A7%A3%E5%BA%8F%E5%88%97%E9%A1%BA%E5%BA%8F/</loc>
     
     <lastmod>2026-05-02</lastmod>
     
@@ -1382,27 +1382,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/RNN/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/LSTM/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%BA%8F%E5%88%97%E5%BB%BA%E6%A8%A1/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/CNN/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -1424,28 +1403,21 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</loc>
+    <loc>https://ai.coomatrix.com/tags/RNN/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Sigmoid/</loc>
+    <loc>https://ai.coomatrix.com/tags/LSTM/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/ReLU/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/Swish/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E5%BA%8F%E5%88%97%E5%BB%BA%E6%A8%A1/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1508,6 +1480,34 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/Sigmoid/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/ReLU/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/Swish/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -1537,6 +1537,76 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E5%88%86%E7%B1%BB/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/SVM/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%A0%B8%E5%87%BD%E6%95%B0/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%86%B3%E7%AD%96%E6%A0%91/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/Bagging/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/Boosting/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/XGBoost/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/LightGBM/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1578,48 +1648,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%86%B3%E7%AD%96%E6%A0%91/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/SVM/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%A0%B8%E5%87%BD%E6%95%B0/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/K-Means/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -1641,28 +1669,21 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Bagging/</loc>
+    <loc>https://ai.coomatrix.com/tags/Pandas/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Boosting/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/XGBoost/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/LightGBM/</loc>
+    <loc>https://ai.coomatrix.com/tags/DataFrame/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1690,20 +1711,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Matplotlib/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/PyTorch/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -1718,21 +1725,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Pandas/</loc>
+    <loc>https://ai.coomatrix.com/tags/Matplotlib/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/DataFrame/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1809,20 +1809,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/GPT-2/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/ViT/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -1844,6 +1830,20 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/GPT-2/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/YOLO/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -1859,41 +1859,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/SSD/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/GAN/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/DCGAN/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/WGAN/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1929,6 +1894,41 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/DeepLab/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/GAN/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/DCGAN/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/WGAN/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%9B%BE%E5%83%8F%E7%94%9F%E6%88%90/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1998,14 +1998,21 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/MAE/</loc>
+    <loc>https://ai.coomatrix.com/tags/AI%E7%BC%96%E7%A8%8B/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Vision-Transformer/</loc>
+    <loc>https://ai.coomatrix.com/tags/GitHub-Copilot/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2033,6 +2040,13 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%BE%AE%E8%B0%83/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2040,28 +2054,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/AI%E7%BC%96%E7%A8%8B/</loc>
+    <loc>https://ai.coomatrix.com/tags/MAE/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/GitHub-Copilot/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%BE%AE%E8%B0%83/</loc>
+    <loc>https://ai.coomatrix.com/tags/Vision-Transformer/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2089,20 +2089,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E4%BC%98%E5%8C%96%E5%99%A8/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/CLIP/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2124,6 +2110,20 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/%E4%BC%98%E5%8C%96%E5%99%A8/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E8%AE%AD%E7%BB%83%E6%8A%80%E5%B7%A7/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/MobileNet/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2132,6 +2132,27 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/ChatGPT/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/GPT/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2159,27 +2180,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E9%87%8F%E5%8C%96/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/INT8/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/InstructGPT/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2201,21 +2201,21 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/ChatGPT/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E9%87%8F%E5%8C%96/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/GPT/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
+    <loc>https://ai.coomatrix.com/tags/INT8/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2250,14 +2250,7 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/DALL-E/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/AIGC/</loc>
+    <loc>https://ai.coomatrix.com/tags/Stable-Diffusion/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2271,7 +2264,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Stable-Diffusion/</loc>
+    <loc>https://ai.coomatrix.com/tags/AIGC/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/DALL-E/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2285,7 +2285,7 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/LangChain/</loc>
+    <loc>https://ai.coomatrix.com/tags/Prompt-Engineering/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2293,6 +2293,20 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/LLM/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/LangChain/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2314,20 +2328,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/Prompt-Engineering/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2558,27 +2558,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/AI%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%A4%A9%E7%BA%BF%E8%AE%BE%E8%AE%A1/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E9%80%9A%E4%BF%A1/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/ChatGLM/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2607,21 +2586,28 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/AutoGPT/</loc>
+    <loc>https://ai.coomatrix.com/tags/AI%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/AI-Agent/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E5%A4%A9%E7%BA%BF%E8%AE%BE%E8%AE%A1/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E4%BB%A3%E7%90%86/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E9%80%9A%E4%BF%A1/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2636,27 +2622,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E9%87%8F%E5%8C%96%E6%84%9F%E7%9F%A5%E8%AE%AD%E7%BB%83/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/LLaMA2/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2684,7 +2649,56 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/FAISS/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/LLaMA2/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/AutoGPT/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/AI-Agent/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E4%BB%A3%E7%90%86/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/LLM%E5%BA%94%E7%94%A8/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2740,6 +2754,20 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/Jetson/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/TensorRT-LLM/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/Mistral/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2761,41 +2789,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/LLM%E5%BA%94%E7%94%A8/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/Jetson/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/TensorRT-LLM/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/GPT-4o/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2804,6 +2797,13 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/Gemini/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2852,6 +2852,13 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/%E5%88%86%E5%AD%90%E5%8A%A8%E5%8A%9B%E5%AD%A6/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2880,13 +2887,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/DDPM/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -2902,6 +2902,20 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E5%B0%84%E9%A2%91/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/GPU%E5%8A%A0%E9%80%9F/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/LLM%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2929,14 +2943,7 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/GPU%E5%8A%A0%E9%80%9F/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/LLM%E9%83%A8%E7%BD%B2/</loc>
+    <loc>https://ai.coomatrix.com/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2951,34 +2958,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/Jetson-AGX-Orin/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/CUDA/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/AI%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3006,14 +2985,21 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E8%A7%86%E8%A7%89%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/</loc>
+    <loc>https://ai.coomatrix.com/tags/Jetson-AGX-Orin/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E8%B7%A8%E6%A8%A1%E6%80%81/</loc>
+    <loc>https://ai.coomatrix.com/tags/CUDA/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/AI%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3035,6 +3021,20 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/XAI/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E8%A7%86%E8%A7%89%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E8%B7%A8%E6%A8%A1%E6%80%81/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3063,6 +3063,27 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3111,41 +3132,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/Cursor/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/Devin/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/%E6%A8%A1%E4%BB%BF%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -3154,13 +3140,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3196,6 +3175,27 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E9%A2%84%E6%B5%8B/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/Cursor/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/Devin/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3244,20 +3244,6 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/tags/%E7%89%A9%E7%90%86%E4%BB%BF%E7%9C%9F/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E8%AE%A4%E7%9F%A5%E6%99%BA%E8%83%BD/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -3280,6 +3266,27 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E4%BB%BB%E5%8A%A1%E8%A7%84%E5%88%92/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/AGI/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E7%89%A9%E7%90%86%E4%BB%BF%E7%9C%9F/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E8%AE%A4%E7%9F%A5%E6%99%BA%E8%83%BD/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3315,13 +3322,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E8%A1%8C%E4%B8%9A%E5%BA%94%E7%94%A8/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/AGI/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3412,6 +3412,27 @@
   </url>
   
   <url>
+    <loc>https://ai.coomatrix.com/tags/AI-API/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/%E5%85%8D%E8%B4%B9%E6%8E%A5%E5%8F%A3/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ai.coomatrix.com/tags/API%E6%8E%A5%E5%8F%A3/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ai.coomatrix.com/tags/AI%E5%AE%89%E5%85%A8/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -3434,27 +3455,6 @@
   
   <url>
     <loc>https://ai.coomatrix.com/tags/%E5%8F%AF%E8%A7%A3%E9%87%8AAI/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/AI-API/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/%E5%85%8D%E8%B4%B9%E6%8E%A5%E5%8F%A3/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ai.coomatrix.com/tags/API%E6%8E%A5%E5%8F%A3/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3526,14 +3526,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/</loc>
+    <loc>https://ai.coomatrix.com/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
+    <loc>https://ai.coomatrix.com/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3617,14 +3617,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/AI%E7%94%9F%E6%88%90/</loc>
+    <loc>https://ai.coomatrix.com/categories/AI%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/AI%E5%B5%8C%E5%85%A5%E5%BC%8F/</loc>
+    <loc>https://ai.coomatrix.com/categories/AI%E7%94%9F%E6%88%90/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3652,14 +3652,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/AI%E5%B0%84%E9%A2%91%E6%8A%80%E6%9C%AF/</loc>
+    <loc>https://ai.coomatrix.com/categories/AI%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/AI%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/</loc>
+    <loc>https://ai.coomatrix.com/categories/AI%E5%B0%84%E9%A2%91%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -3680,14 +3680,14 @@
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://ai.coomatrix.com/categories/%E5%8F%AF%E8%A7%A3%E9%87%8AAI/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ai.coomatrix.com/categories/%E5%8F%AF%E8%A7%A3%E9%87%8AAI/</loc>
+    <loc>https://ai.coomatrix.com/categories/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
