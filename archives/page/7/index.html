@@ -105,9 +105,11 @@ var themeMenus = {};
 
   themeMenus["/about"] = "关于"; 
 
-  themeMenus["/guestbook"] = "留言"; 
+  themeMenus["/projects"] = "承接项目"; 
 
   themeMenus["/AI"] = "ai"; 
+
+  themeMenus["/games"] = "休闲一刻"; 
 
 </script>
 
@@ -148,9 +150,11 @@ var themeMenus = {};
                     
                       <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/guestbook">留言</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/projects">承接项目</a> </li>
                     
                       <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/games">休闲一刻</a> </li>
                     
               </ul>
             </div>
@@ -773,9 +777,11 @@ var themeMenus = {};
   
     <a href="/about" class="mobile-nav-link">About</a>
   
-    <a href="/guestbook" class="mobile-nav-link">guestbook</a>
+    <a href="/projects" class="mobile-nav-link">承接项目</a>
   
     <a href="/AI" class="mobile-nav-link">AI</a>
+  
+    <a href="/games" class="mobile-nav-link">休闲一刻</a>
   
 </nav> -->
     
@@ -893,6 +899,293 @@ var themeMenus = {};
       });
     }).observe(document.body, { childList: true, subtree: true });
   }
+</script>
+
+<!-- Live2D 数字人交互功能 -->
+<script>
+// Live2D 交互功能
+(function() {
+  let utterance = null;
+  let isSpeaking = false;
+  let isMenuOpen = false;
+  
+  // 获取文章正文内容
+  function getArticleText() {
+    const article = document.querySelector('.article-entry') || document.querySelector('.entry-content');
+    if (!article) return '';
+    
+    const clone = article.cloneNode(true);
+    const removeElements = clone.querySelectorAll('pre, code, img, script, style, figure, figcaption, .mermaid, iframe, video, audio');
+    removeElements.forEach(el => el.remove());
+    
+    let text = clone.textContent || clone.innerText;
+    text = text.replace(/\s+/g, ' ').trim();
+    
+    return text;
+  }
+  
+  // 朗读函数
+  function speak(text) {
+    if (!('speechSynthesis' in window)) {
+      showMessage('抱歉，您的浏览器不支持语音功能！');
+      return;
+    }
+    
+    window.speechSynthesis.cancel();
+    
+    utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    
+    const voices = window.speechSynthesis.getVoices();
+    const chineseVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('CN'));
+    if (chineseVoice) {
+      utterance.voice = chineseVoice;
+    }
+    
+    utterance.onstart = function() {
+      isSpeaking = true;
+      showMessage('开始朗读文章...');
+    };
+    
+    utterance.onend = function() {
+      isSpeaking = false;
+      showMessage('朗读完成！');
+    };
+    
+    utterance.onerror = function(e) {
+      isSpeaking = false;
+      showMessage('朗读出错啦~');
+    };
+    
+    window.speechSynthesis.speak(utterance);
+  }
+  
+  // 停止朗读
+  function stopSpeech() {
+    window.speechSynthesis.cancel();
+    isSpeaking = false;
+    showMessage('已停止朗读');
+  }
+  
+  // 显示气泡消息
+  function showMessage(msg) {
+    let bubble = document.getElementById('live2d-message-bubble');
+    if (!bubble) {
+      bubble = document.createElement('div');
+      bubble.id = 'live2d-message-bubble';
+      bubble.style.cssText = `
+        position: fixed;
+        bottom: 320px;
+        left: 20px;
+        background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        max-width: 200px;
+        word-wrap: break-word;
+        z-index: 9999;
+        box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      `;
+      document.body.appendChild(bubble);
+    }
+    
+    bubble.textContent = msg;
+    bubble.style.opacity = '1';
+    
+    setTimeout(() => {
+      bubble.style.opacity = '0';
+    }, 3000);
+  }
+  
+  // 创建 Live2D 菜单和浮动按钮
+  function createLive2DControls() {
+    // 创建浮动按钮
+    const btn = document.createElement('div');
+    btn.id = 'live2d-float-btn';
+    btn.innerHTML = '🤖';
+    btn.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+      color: white;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9997;
+      box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+    `;
+    btn.onclick = toggleLive2DMenu;
+    btn.onmouseenter = function() {
+      this.style.transform = 'scale(1.1)';
+    };
+    btn.onmouseleave = function() {
+      this.style.transform = 'scale(1)';
+    };
+    document.body.appendChild(btn);
+    
+    // 创建菜单
+    const menu = document.createElement('div');
+    menu.id = 'live2d-menu';
+    menu.innerHTML = `
+      <style>
+        #live2d-menu {
+          position: fixed;
+          bottom: 80px;
+          left: 20px;
+          background: linear-gradient(135deg, #1a0505 0%, #2a0a0a 100%);
+          border: 2px solid #ff4444;
+          border-radius: 16px;
+          padding: 10px;
+          z-index: 9998;
+          box-shadow: 0 4px 20px rgba(255, 68, 68, 0.3);
+          display: none;
+          min-width: 160px;
+        }
+        #live2d-menu.show {
+          display: block;
+          animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        #live2d-menu .menu-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 15px;
+          color: #fff;
+          font-size: 14px;
+          cursor: pointer;
+          border-radius: 10px;
+          transition: all 0.3s;
+          margin: 3px 0;
+        }
+        #live2d-menu .menu-item:hover {
+          background: rgba(255, 68, 68, 0.3);
+        }
+        #live2d-menu .menu-divider {
+          height: 1px;
+          background: rgba(255, 68, 68, 0.3);
+          margin: 5px 0;
+        }
+        @media (max-width: 768px) {
+          #live2d-float-btn {
+            bottom: 80px;
+          }
+          #live2d-menu {
+            bottom: 150px;
+            left: 10px;
+            right: 10px;
+            min-width: auto;
+          }
+        }
+      </style>
+      <div class="menu-item" onclick="live2dReadArticle()">
+        <span>🔊</span> 朗读文章
+      </div>
+      <div class="menu-item" onclick="live2dStopRead()">
+        <span>⏹</span> 停止朗读
+      </div>
+      <div class="menu-divider"></div>
+      <div class="menu-item" onclick="live2dGreeting()">
+        <span>👋</span> 打招呼
+      </div>
+      <div class="menu-item" onclick="live2dRandomTalk()">
+        <span>💬</span> 随机对话
+      </div>
+      <div class="menu-divider"></div>
+      <div class="menu-item" onclick="toggleLive2DMenu()">
+        <span>❌</span> 关闭菜单
+      </div>
+    `;
+    document.body.appendChild(menu);
+  }
+  
+  // 切换菜单显示
+  window.toggleLive2DMenu = function() {
+    const menu = document.getElementById('live2d-menu');
+    if (menu) {
+      isMenuOpen = !isMenuOpen;
+      menu.classList.toggle('show', isMenuOpen);
+    }
+  };
+  
+  // 朗读文章
+  window.live2dReadArticle = function() {
+    toggleLive2DMenu();
+    const text = getArticleText();
+    if (text.length > 0) {
+      speak(text);
+    } else {
+      showMessage('没有找到文章内容哦~');
+    }
+  };
+  
+  // 停止朗读
+  window.live2dStopRead = function() {
+    toggleLive2DMenu();
+    stopSpeech();
+  };
+  
+  // 打招呼
+  window.live2dGreeting = function() {
+    toggleLive2DMenu();
+    const greetings = [
+      '你好呀！欢迎来到我的博客~',
+      '嗨！今天过得怎么样？',
+      '欢迎欢迎！有什么我可以帮你的吗？',
+      '你好！我是你的AI助手，很高兴见到你！'
+    ];
+    const msg = greetings[Math.floor(Math.random() * greetings.length)];
+    showMessage(msg);
+    speak(msg);
+  };
+  
+  // 随机对话
+  window.live2dRandomTalk = function() {
+    toggleLive2DMenu();
+    const talks = [
+      '你知道吗？人工智能正在改变世界呢！',
+      '学习编程是一件很有趣的事情哦~',
+      '今天也要加油学习呀！',
+      '有什么不懂的问题可以问我哦~',
+      '保持好奇心，终身学习！',
+      '代码改变世界，技术创造未来！'
+    ];
+    const msg = talks[Math.floor(Math.random() * talks.length)];
+    showMessage(msg);
+    speak(msg);
+  };
+  
+  // 初始化
+  document.addEventListener('DOMContentLoaded', function() {
+    // 等待语音列表加载
+    if ('speechSynthesis' in window) {
+      speechSynthesis.getVoices();
+      speechSynthesis.onvoiceschanged = function() {
+        speechSynthesis.getVoices();
+      };
+    }
+    
+    createLive2DControls();
+    showMessage('点击左下角🤖按钮打开菜单~');
+  });
+})();
 </script>
   </div>
 
