@@ -20,7 +20,7 @@
   <!-- PACE Progress Bar START -->
 
   
-  <title>2026年ai技术回顾与2027年展望 | ovo$^{mc^2}$</title>
+  <title>视频理解与视频大模型：技术原理与最新进展 | ovo$^{mc^2}$</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="学习" />
@@ -28,23 +28,24 @@
   
   
   
-  <meta name="description" content="概述2026年AI领域取得了哪些突破？本文回顾关键技术进展并展望2027年的发展方向。 2026年技术突破大模型进展gantt     title 2026年大模型里程碑     dateFormat  YYYY-MM          section 模型发布     Gemini 2.0      :2026-01, 2026-01     GPT-5           :2026-03,">
+  <meta name="description" content="概述视频理解是计算机视觉的下一个前沿，本文系统介绍视频理解的核心技术和视频大模型的发展。 视频理解技术发展flowchart TB     subgraph 传统方法         FRAME[逐帧处理]         FRAME --&gt; OPT[光流特征]         OPT --&gt; FUSION[特征融合]     end          subgraph 深度学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2026年AI技术回顾与2027年展望">
-<meta property="og:url" content="https://www.coomatrix.com/2026/12/10/2026-12-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/index.html">
+<meta property="og:title" content="视频理解与视频大模型：技术原理与最新进展">
+<meta property="og:url" content="https://www.coomatrix.com/2026/04/15/2026-04-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/index.html">
 <meta property="og:site_name" content="ovo$^{mc^2}$">
-<meta property="og:description" content="概述2026年AI领域取得了哪些突破？本文回顾关键技术进展并展望2027年的发展方向。 2026年技术突破大模型进展gantt     title 2026年大模型里程碑     dateFormat  YYYY-MM          section 模型发布     Gemini 2.0      :2026-01, 2026-01     GPT-5           :2026-03,">
+<meta property="og:description" content="概述视频理解是计算机视觉的下一个前沿，本文系统介绍视频理解的核心技术和视频大模型的发展。 视频理解技术发展flowchart TB     subgraph 传统方法         FRAME[逐帧处理]         FRAME --&gt; OPT[光流特征]         OPT --&gt; FUSION[特征融合]     end          subgraph 深度学习">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://images.unsplash.com/photo-1555949963-aa79dcee981c">
-<meta property="article:published_time" content="2026-12-10T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-02T18:29:15.660Z">
+<meta property="og:image" content="https://images.unsplash.com/photo-1563207153-f403bf289096">
+<meta property="article:published_time" content="2026-04-15T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-03T16:59:24.853Z">
 <meta property="article:author" content="云上零度">
-<meta property="article:tag" content="年度总结">
-<meta property="article:tag" content="AI趋势">
-<meta property="article:tag" content="技术展望">
-<meta property="article:tag" content="行业应用">
+<meta property="article:tag" content="多模态">
+<meta property="article:tag" content="视频生成">
+<meta property="article:tag" content="视频理解">
+<meta property="article:tag" content="VideoLLM">
+<meta property="article:tag" content="时序建模">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1555949963-aa79dcee981c">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1563207153-f403bf289096">
   
   <link rel="icon" href="/css/images/favicon.ico">
   
@@ -114,7 +115,7 @@ var themeMenus = {};
 
   themeMenus["/projects"] = "承接项目"; 
 
-  themeMenus["/AI"] = "ai"; 
+  themeMenus["/AI"] = "ai应用"; 
 
   themeMenus["/games"] = "休闲一刻"; 
 
@@ -159,7 +160,7 @@ var themeMenus = {};
                     
                       <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/projects">承接项目</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/AI">ai应用</a> </li>
                     
                       <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/games">休闲一刻</a> </li>
                     
@@ -208,14 +209,14 @@ var themeMenus = {};
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
-<article id="post-2026-12-10-2026年AI技术回顾与2027年展望" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
+<article id="post-2026-04-15-视频理解与视频大模型-技术原理与最新进展" style="width: 66%; float:left;" class="article article-type-post article-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1555949963-aa79dcee981c" rel="gallery_cmopxhw7q00wf84v6gkzp51ou noopener">
-        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c" itemprop="image">
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1563207153-f403bf289096" rel="gallery_cmoq1a6lu00o6hov65eha92pz noopener">
+        <img src="https://images.unsplash.com/photo-1563207153-f403bf289096" itemprop="image">
       </a>
     
   </div>
@@ -226,7 +227,7 @@ var themeMenus = {};
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      2026年AI技术回顾与2027年展望
+      视频理解与视频大模型：技术原理与最新进展
     </h1>
   
 
@@ -234,8 +235,8 @@ var themeMenus = {};
     
     <div class="article-meta">
       
-	Posted on <a href="/2026/12/10/2026-12-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/" class="article-date">
-	  <time datetime="2026-12-10T02:00:00.000Z" itemprop="datePublished">十二月 10, 2026</time>
+	Posted on <a href="/2026/04/15/2026-04-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/" class="article-date">
+	  <time datetime="2026-04-15T02:00:00.000Z" itemprop="datePublished">四月 15, 2026</time>
 	</a>
 
       
@@ -272,72 +273,29 @@ var themeMenus = {};
         </div>
         
         
-        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>2026年AI领域取得了哪些突破？本文回顾关键技术进展并展望2027年的发展方向。</p>
-<h2 id="2026年技术突破"><a href="#2026年技术突破" class="headerlink" title="2026年技术突破"></a>2026年技术突破</h2><h3 id="大模型进展"><a href="#大模型进展" class="headerlink" title="大模型进展"></a>大模型进展</h3><pre class="mermaid">gantt
-    title 2026年大模型里程碑
-    dateFormat  YYYY-MM
+        <div id="article-content"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>视频理解是计算机视觉的下一个前沿，本文系统介绍视频理解的核心技术和视频大模型的发展。</p>
+<h2 id="视频理解技术发展"><a href="#视频理解技术发展" class="headerlink" title="视频理解技术发展"></a>视频理解技术发展</h2><pre class="mermaid">flowchart TB
+    subgraph 传统方法
+        FRAME[逐帧处理]
+        FRAME --> OPT[光流特征]
+        OPT --> FUSION[特征融合]
+    end
     
-    section 模型发布
-    Gemini 2.0      :2026-01, 2026-01
-    GPT-5           :2026-03, 2026-03
-    Claude 4        :2026-04, 2026-04
-    DeepSeek V4     :2026-06, 2026-06
+    subgraph 深度学习
+        3DCNN[3D CNN]
+        3DCNN --> I3D[I3D]
+        TRANS[Transformer]
+        TRANS --> VIDEO[Video Transformer]
+    end
     
-    section 技术突破
-    上下文1M       :2026-02, 2026-05
-    原生多模态      :2026-04, 2026-08
-    推理优化10x    :2026-06, 2026-09</pre>
+    subgraph 多模态时代
+        VLLM[VideoLLM]
+        VLLM --> UNIFIED[统一视频模型]
+    end</pre>
 
-<h3 id="各领域突破总结"><a href="#各领域突破总结" class="headerlink" title="各领域突破总结"></a>各领域突破总结</h3><table>
-<thead>
-<tr>
-<th>领域</th>
-<th>2026突破</th>
-<th>代表工作</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>大模型</td>
-<td>百万上下文</td>
-<td>Gemini 2.0</td>
-</tr>
-<tr>
-<td>多模态</td>
-<td>原生融合</td>
-<td>GPT-4o系列</td>
-</tr>
-<tr>
-<td>AI Agent</td>
-<td>自主执行</td>
-<td>Claude Agents</td>
-</tr>
-<tr>
-<td>视频生成</td>
-<td>物理一致</td>
-<td>Sora 3</td>
-</tr>
-<tr>
-<td>机器人</td>
-<td>通用操作</td>
-<td>Figure 02</td>
-</tr>
-</tbody></table>
-<h2 id="2027年技术展望"><a href="#2027年技术展望" class="headerlink" title="2027年技术展望"></a>2027年技术展望</h2><h3 id="十大预测"><a href="#十大预测" class="headerlink" title="十大预测"></a>十大预测</h3><pre class="mermaid">mindmap
-  root((2027年AI展望))
-    技术突破
-      AGI接近
-      超长上下文
-      更强推理
-    应用普及
-      AI编程爆发
-      具身智能落地
-      个性化AI助手
-    安全治理
-      AI法规完善
-      安全评估标准
-      伦理框架</pre>
+<h2 id="时序建模方法"><a href="#时序建模方法" class="headerlink" title="时序建模方法"></a>时序建模方法</h2><h3 id="3D-CNN-vs-Transformer"><a href="#3D-CNN-vs-Transformer" class="headerlink" title="3D CNN vs Transformer"></a>3D CNN vs Transformer</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">VideoClassification</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;视频分类模型&quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">i3d_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;I3D 3D卷积模型&quot;&quot;&quot;</span></span><br><span class="line">        model = InceptionI3d(<span class="number">400</span>, in_channels=<span class="number">3</span>)</span><br><span class="line">        <span class="keyword">return</span> model</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">slowfast_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;SlowFast 双路径模型&quot;&quot;&quot;</span></span><br><span class="line">        model = torch.hub.load(<span class="string">&#x27;facebookresearch/pytorchvideo&#x27;</span>, </span><br><span class="line">                              <span class="string">&#x27;slowfast_r50&#x27;</span>, pretrained=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> model</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">videomamba_model</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;VideoMamba 时序Mamba&quot;&quot;&quot;</span></span><br><span class="line">        model = VideoMamba(</span><br><span class="line">            spatial_depth=<span class="number">24</span>,</span><br><span class="line">            temporal_depth=<span class="number">24</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>2026年是AI发展史上重要的一年，大模型能力持续提升，应用场景不断拓展。2027年，我们将见证更多突破性进展。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>视频理解和视频生成是AI领域的下一个爆发点，视频大模型将改变内容创作、教育、娱乐等多个行业。</p>
 </div>
       </div>
     
@@ -350,7 +308,7 @@ var themeMenus = {};
     
     
       
-        <a href="/categories/AI%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">AI年度总结</a>
+        <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a>
       
     
     </span>
@@ -362,13 +320,15 @@ var themeMenus = {};
   
   
     
-      <a href="/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/">年度总结</a>
+      <a href="/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/">多模态</a>
     
-      <a href="/tags/AI%E8%B6%8B%E5%8A%BF/">AI趋势</a>
+      <a href="/tags/%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90/">视频生成</a>
     
-      <a href="/tags/%E6%8A%80%E6%9C%AF%E5%B1%95%E6%9C%9B/">技术展望</a>
+      <a href="/tags/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/">视频理解</a>
     
-      <a href="/tags/%E8%A1%8C%E4%B8%9A%E5%BA%94%E7%94%A8/">行业应用</a>
+      <a href="/tags/VideoLLM/">VideoLLM</a>
+    
+      <a href="/tags/%E6%97%B6%E5%BA%8F%E5%BB%BA%E6%A8%A1/">时序建模</a>
     
   
   </span>
@@ -398,7 +358,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>文章链接:  </strong>
-          <a href="/2026/12/10/2026-12-10-2026年AI技术回顾与2027年展望/" target="_blank" title="2026年AI技术回顾与2027年展望">https://www.coomatrix.com/2026/12/10/2026-12-10-2026年AI技术回顾与2027年展望/</a>
+          <a href="/2026/04/15/2026-04-15-视频理解与视频大模型-技术原理与最新进展/" target="_blank" title="视频理解与视频大模型：技术原理与最新进展">https://www.coomatrix.com/2026/04/15/2026-04-15-视频理解与视频大模型-技术原理与最新进展/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>
@@ -440,10 +400,19 @@ var a = new Donate({
     
 <nav id="article-nav">
   
+    <a href="/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Mixture of Experts (MoE)：大模型稀疏激活技术深度解析
+        
+      </div>
+    </a>
   
-    <a href="/2026/11/15/2026-11-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2026/04/10/2026-04-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">视频理解与视频大模型：技术原理与最新进展</div>
+      <div class="article-nav-title">2026年AI技术回顾与2027年展望</div>
     </a>
   
 </nav>
@@ -457,7 +426,7 @@ var a = new Donate({
     <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
     <strong class="toc-title">文章目录</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2026%E5%B9%B4%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4"><span class="nav-number">2.</span> <span class="nav-text">2026年技术突破</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%BF%9B%E5%B1%95"><span class="nav-number">2.1.</span> <span class="nav-text">大模型进展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E9%A2%86%E5%9F%9F%E7%AA%81%E7%A0%B4%E6%80%BB%E7%BB%93"><span class="nav-number">2.2.</span> <span class="nav-text">各领域突破总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2027%E5%B9%B4%E6%8A%80%E6%9C%AF%E5%B1%95%E6%9C%9B"><span class="nav-number">3.</span> <span class="nav-text">2027年技术展望</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%A4%A7%E9%A2%84%E6%B5%8B"><span class="nav-number">3.1.</span> <span class="nav-text">十大预测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E6%8A%80%E6%9C%AF%E5%8F%91%E5%B1%95"><span class="nav-number">2.</span> <span class="nav-text">视频理解技术发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%BA%8F%E5%BB%BA%E6%A8%A1%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">时序建模方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-CNN-vs-Transformer"><span class="nav-number">3.1.</span> <span class="nav-text">3D CNN vs Transformer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol>
     
     </div>
   </aside>
@@ -519,7 +488,7 @@ var a = new Donate({
   
     <a href="/projects" class="mobile-nav-link">承接项目</a>
   
-    <a href="/AI" class="mobile-nav-link">AI</a>
+    <a href="/AI" class="mobile-nav-link">AI应用</a>
   
     <a href="/games" class="mobile-nav-link">休闲一刻</a>
   
