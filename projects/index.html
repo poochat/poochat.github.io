@@ -28,20 +28,20 @@
   
   
   
-  <meta name="description" content="承接项目 - AI项目服务              * {             margin: 0;             padding: 0;             box-sizing: border-box;         }         body {             font-family: -apple-system, Blin">
+  <meta name="description" content="承接项目 - AI项目服务              * { margin: 0; padding: 0; box-sizing: border-box; }         body {             font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-ser">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ovo$^{mc^2}$">
 <meta property="og:url" content="https://www.coomatrix.com/projects/index.html">
 <meta property="og:site_name" content="ovo$^{mc^2}$">
-<meta property="og:description" content="承接项目 - AI项目服务              * {             margin: 0;             padding: 0;             box-sizing: border-box;         }         body {             font-family: -apple-system, Blin">
+<meta property="og:description" content="承接项目 - AI项目服务              * { margin: 0; padding: 0; box-sizing: border-box; }         body {             font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-ser">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://www.coomatrix.com/projects/wechat-qrcode.jpg">
-<meta property="article:published_time" content="2026-05-03T13:28:52.679Z">
-<meta property="article:modified_time" content="2026-05-03T13:28:52.679Z">
+<meta property="og:image" content="https://www.coomatrix.com/projects/index/wechat-qrcode.jpg">
+<meta property="article:published_time" content="2026-05-03T13:41:46.913Z">
+<meta property="article:modified_time" content="2026-05-03T13:41:46.913Z">
 <meta property="article:author" content="云上零度">
 <meta property="article:tag" content="人工智能算法、TensorFlow&#x2F;Pytorch、C&#x2F;C++&#x2F;Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.coomatrix.com/projects/wechat-qrcode.jpg">
+<meta name="twitter:image" content="https://www.coomatrix.com/projects/index/wechat-qrcode.jpg">
   
   <link rel="icon" href="/css/images/favicon.ico">
   
@@ -212,7 +212,7 @@ var themeMenus = {};
     <div class="article-meta">
       
 	Posted on <a href="/projects/index.html" class="article-date">
-	  <time datetime="2026-05-03T13:28:52.679Z" itemprop="datePublished">五月 3, 2026</time>
+	  <time datetime="2026-05-03T13:41:46.913Z" itemprop="datePublished">五月 3, 2026</time>
 	</a>
 
       
@@ -232,22 +232,16 @@ var themeMenus = {};
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>承接项目 - AI项目服务</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        .projects-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .projects-header {
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .header {
             text-align: center;
             padding: 50px 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -256,40 +250,151 @@ var themeMenus = {};
             color: white;
             box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
         }
-        .projects-header h1 {
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        .header h1 { font-size: 2.8em; margin-bottom: 15px; }
+        .header p { font-size: 1.3em; opacity: 0.95; }
+        .badge { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.2); 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            margin-top: 15px;
+            font-size: 0.95em;
         }
-        .projects-header .subtitle {
-            font-size: 1.3em;
-            opacity: 0.95;
-        }
-        .intro-section {
-            margin-bottom: 40px;
-        }
-        .intro-card {
+        
+        .card {
             background: white;
-            padding: 35px;
             border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        .intro-card h2 {
-            margin-bottom: 15px;
-            color: #333;
-            font-size: 1.5em;
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .intro-card p {
-            line-height: 1.9;
+        .card h2 span { font-size: 1.5em; }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .service-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .service-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .service-item p { color: #666; line-height: 1.6; font-size: 0.95em; }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tech-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .task-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 15px;
+        }
+        .task-item {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
             color: #555;
-            font-size: 1.08em;
+            position: relative;
+            padding-left: 30px;
         }
+        .task-item::before {
+            content: "✓";
+            color: #667eea;
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+        }
+        
+        .frameworks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .framework-item {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .contact-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        .wechat-id {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+            letter-spacing: 3px;
+        }
+        .wechat-qrcode {
+            margin: 25px auto;
+            max-width: 220px;
+        }
+        .wechat-qrcode img {
+            width: 100%;
+            border-radius: 12px;
+            border: 4px solid white;
+        }
+        .contact-note { font-size: 1.1em; margin-top: 15px; opacity: 0.9; }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .feature-item {
+            text-align: center;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .feature-icon { font-size: 2.5em; margin-bottom: 10px; }
+        .feature-item h4 { color: #667eea; margin-bottom: 8px; }
+        .feature-item p { color: #666; font-size: 0.9em; }
+        
+        .highlight-section {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+            border: 2px solid #ffd700;
+        }
+        .highlight-section h2 { color: #b8860b; }
+        
         .section-title {
             text-align: center;
             font-size: 2em;
             color: #333;
-            margin-bottom: 30px;
-            position: relative;
+            margin: 40px 0 30px;
         }
         .section-title::after {
             content: '';
@@ -300,406 +405,215 @@ var themeMenus = {};
             margin: 15px auto 0;
             border-radius: 2px;
         }
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-        .service-card {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-align: center;
-        }
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-        }
-        .card-icon {
-            font-size: 3.5em;
-            margin-bottom: 20px;
-        }
-        .service-card h3 {
-            color: #667eea;
-            margin-bottom: 12px;
-            font-size: 1.3em;
-        }
-        .service-card p {
-            color: #666;
-            line-height: 1.7;
-        }
-        .tech-stack {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-bottom: 50px;
-        }
-        .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-        }
-        .tech-tag {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.95em;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .tech-tag:hover {
-            transform: scale(1.08);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        .projects-list {
-            margin-bottom: 50px;
-        }
-        .project-item {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            border-left: 5px solid;
-            border-image: linear-gradient(to bottom, #667eea, #764ba2) 1;
-        }
-        .project-item h3 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.25em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .project-item ul {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 10px;
-        }
-        .project-item li {
-            padding: 10px 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            color: #555;
-            position: relative;
-            padding-left: 25px;
-        }
-        .project-item li::before {
-            content: "✓";
-            color: #667eea;
-            position: absolute;
-            left: 10px;
-            font-weight: bold;
-        }
-        .contact-section {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .contact-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px;
-            border-radius: 20px;
-            display: inline-block;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
-        }
-        .wechat-qrcode {
-            margin: 25px auto;
-            max-width: 250px;
-        }
-        .wechat-qrcode img {
-            width: 100%;
-            border-radius: 12px;
-            border: 4px solid white;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        .qrcode-placeholder {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            color: #667eea;
-            font-size: 1.1em;
-        }
-        .contact-item {
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .contact-label {
-            font-weight: bold;
-        }
-        .contact-value {
-            font-weight: bold;
-            letter-spacing: 2px;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 8px;
-        }
-        .contact-note {
-            font-size: 1em;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-        .service-features {
-            margin-bottom: 40px;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-        }
-        .feature-item {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        .feature-item:hover {
-            transform: translateY(-5px);
-        }
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-        .feature-item h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-        .feature-item p {
-            color: #666;
-        }
+        
         .footer {
             text-align: center;
             padding: 30px;
             color: #888;
-            font-size: 0.9em;
         }
+        
         @media (max-width: 768px) {
-            .projects-header h1 {
-                font-size: 2em;
-            }
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            .contact-card {
-                padding: 30px 20px;
-                width: 100%;
-            }
-            .project-item ul {
-                grid-template-columns: 1fr;
-            }
+            .header h1 { font-size: 2em; }
+            .task-list { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .contact-card { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="projects-container">
-        <header class="projects-header">
+    <div class="container">
+        <header class="header">
             <h1>🤖 AI 项目承接</h1>
-            <p class="subtitle">专业的人工智能解决方案服务商</p>
+            <p>专业的人工智能解决方案服务商 | 全天候在线</p>
+            <span class="badge">🎓 985博士团队 | 个人接单 | 品质保障</span>
         </header>
 
-        <section class="intro-section">
-            <div class="intro-card">
-                <h2>💡 服务介绍</h2>
-                <p>专业承接各类 AI / ML 项目，包括但不限于深度学习模型开发、计算机视觉应用、自然语言处理等项目。我们拥有丰富的实战经验，能够为您提供从需求分析到项目落地的全流程服务。</p>
+        <h2 class="section-title">💡 核心服务领域</h2>
+        <div class="card">
+            <h2><span>🎯</span> 人工智能应用产品设计与开发</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <h3>🧠 深度学习与机器学习</h3>
+                    <p>模型训练、优化、微调、融合，代码改进与调试，预测模型开发，时间序列分析，数据处理</p>
+                </div>
+                <div class="service-item">
+                    <h3>👁️ 计算机视觉 CV</h3>
+                    <p>图像分类、目标检测、语义分割、实例分割、人脸识别、目标跟踪、行为识别</p>
+                </div>
+                <div class="service-item">
+                    <h3>📝 自然语言处理 NLP</h3>
+                    <p>文本分类、情感分析、命名实体识别、聊天机器人、机器翻译、大语言模型</p>
+                </div>
+                <div class="service-item">
+                    <h3>🔗 图神经网络 GNN/GCN</h3>
+                    <p>节点分类、图卷积神经网络、推荐算法（LightGCN、NCGF）、自监督学习</p>
+                </div>
+                <div class="service-item">
+                    <h3>🏥 医学图像处理</h3>
+                    <p>DICOM/NII数据处理、肿瘤分割、影像组学、多模态融合、病灶检测、病理分析</p>
+                </div>
+                <div class="service-item">
+                    <h3>🚗 智能驾驶与仿真</h3>
+                    <p>Sumo/Carla联合仿真、智能交通系统、自动泊车、强化学习训练</p>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <h2 class="section-title">🎯 核心服务</h2>
-        <section class="services-grid">
-            <div class="service-card">
-                <div class="card-icon">🎯</div>
-                <h3>AI 产品设计</h3>
-                <p>专业的 AI 产品设计开发服务，从概念到落地的一站式解决方案</p>
+        <h2 class="section-title">🛠️ 技术框架</h2>
+        <div class="card">
+            <h2><span>📦</span> 主流深度学习框架</h2>
+            <div class="frameworks">
+                <div class="framework-item">PyTorch</div>
+                <div class="framework-item">TensorFlow</div>
+                <div class="framework-item">Keras</div>
+                <div class="framework-item">PaddlePaddle</div>
+                <div class="framework-item">OpenMMLab</div>
+                <div class="framework-item">OpenCV</div>
             </div>
-            <div class="service-card">
-                <div class="card-icon">🧠</div>
-                <h3>深度学习</h3>
-                <p>CNN、RNN、LSTM、Transformer 等各类深度学习模型的开发与优化</p>
-            </div>
-            <div class="service-card">
-                <div class="card-icon">👁️</div>
-                <h3>计算机视觉</h3>
-                <p>图像分类、目标检测、图像分割、人脸识别、OCR 等视觉任务</p>
-            </div>
-            <div class="service-card">
-                <div class="card-icon">🔧</div>
-                <h3>模型训练与优化</h3>
-                <p>提供专业的模型训练、参数调优、推理加速等技术服务</p>
-            </div>
-            <div class="service-card">
-                <div class="card-icon">🐍</div>
-                <h3>Python 开发</h3>
-                <p>PyTorch、TensorFlow、Keras、PaddlePaddle 等主流框架开发</p>
-            </div>
-            <div class="service-card">
-                <div class="card-icon">📊</div>
-                <h3>数据分析</h3>
-                <p>Pandas、NumPy、Matplotlib 等数据处理与可视化分析</p>
-            </div>
-            <div class="service-card">
-                <div class="card-icon">🏥</div>
-                <h3>医学图像处理</h3>
-                <p>CT、MRI、X光等医学影像的智能分析与处理</p>
-            </div>
-            <div class="service-card">
-                <div class="card-icon">🎓</div>
-                <h3>留学生服务</h3>
-                <p>Assignment 代做、代码辅导、项目开发、论文润色等学术服务</p>
-            </div>
-        </section>
-
-        <section class="tech-stack">
-            <h2 class="section-title">🛠️ 技术栈</h2>
+        </div>
+        
+        <div class="card">
+            <h2><span>🔧</span> 核心算法与模型</h2>
             <div class="tech-tags">
-                <span class="tech-tag">PyTorch</span>
-                <span class="tech-tag">TensorFlow</span>
-                <span class="tech-tag">Keras</span>
-                <span class="tech-tag">PaddlePaddle</span>
-                <span class="tech-tag">OpenCV</span>
-                <span class="tech-tag">YOLO</span>
-                <span class="tech-tag">Detectron</span>
-                <span class="tech-tag">MMDetection</span>
-                <span class="tech-tag">Scikit-learn</span>
-                <span class="tech-tag">NLTK</span>
-                <span class="tech-tag">spaCy</span>
-                <span class="tech-tag">Hugging Face</span>
-                <span class="tech-tag">Pandas</span>
-                <span class="tech-tag">NumPy</span>
-                <span class="tech-tag">Matplotlib</span>
-                <span class="tech-tag">Seaborn</span>
-                <span class="tech-tag">Plotly</span>
-                <span class="tech-tag">Django</span>
-                <span class="tech-tag">Flask</span>
-                <span class="tech-tag">FastAPI</span>
-                <span class="tech-tag">Docker</span>
-                <span class="tech-tag">Git</span>
-                <span class="tech-tag">Linux</span>
+                <span class="tech-tag">YOLO系列</span>
+                <span class="tech-tag">UNet</span>
+                <span class="tech-tag">CNN</span>
+                <span class="tech-tag">GAN</span>
+                <span class="tech-tag">Transformer</span>
+                <span class="tech-tag">VGG / ResNet</span>
+                <span class="tech-tag">LSTM / GRU</span>
+                <span class="tech-tag">BERT / ViT</span>
+                <span class="tech-tag">Deeplab</span>
+                <span class="tech-tag">Mask RCNN</span>
+                <span class="tech-tag">Stable Diffusion</span>
+                <span class="tech-tag">StyleGAN</span>
+                <span class="tech-tag">SVM / XGBoost</span>
+                <span class="tech-tag">scikit-learn</span>
+                <span class="tech-tag">MATLAB</span>
             </div>
-        </section>
+        </div>
 
-        <h2 class="section-title">📁 典型项目案例</h2>
-        <section class="projects-list">
-            <div class="project-item">
-                <h3>🎨 图像处理与生成</h3>
-                <ul>
-                    <li>图像风格迁移</li>
-                    <li>图像增强 / 图像修复</li>
-                    <li>超分辨率重建 / 去噪 / 去模糊</li>
-                    <li>图像分割 / 语义分割 / 实例分割</li>
-                    <li>GAN 生成对抗网络应用</li>
-                </ul>
+        <h2 class="section-title">📋 具体项目类型</h2>
+        <div class="card">
+            <h2><span>🖼️</span> 计算机视觉项目</h2>
+            <div class="task-list">
+                <div class="task-item">人脸识别、表情识别、口罩检测</div>
+                <div class="task-item">目标检测（YOLO/RCNN系列）</div>
+                <div class="task-item">目标跟踪与行为识别</div>
+                <div class="task-item">语义分割、实例分割（UNet/Deeplab）</div>
+                <div class="task-item">图像去噪、去模糊、去水印</div>
+                <div class="task-item">图像超分辨率重建</div>
+                <div class="task-item">图像风格迁移</div>
+                <div class="task-item">工业缺陷检测</div>
+                <div class="task-item">车辆检测、车牌识别</div>
+                <div class="task-item">异常检测、运动检测</div>
+                <div class="task-item">3D点云分割</div>
+                <div class="task-item">特征图可视化（热力图/彩虹图）</div>
             </div>
-            <div class="project-item">
-                <h3>🔍 目标检测与识别</h3>
-                <ul>
-                    <li>YOLO 系列目标检测模型训练与部署</li>
-                    <li>人脸检测与识别系统</li>
-                    <li>车辆检测与跟踪</li>
-                    <li>工业缺陷检测</li>
-                </ul>
-            </div>
-            <div class="project-item">
-                <h3>📝 自然语言处理</h3>
-                <ul>
-                    <li>文本分类与情感分析</li>
-                    <li>命名实体识别 (NER)</li>
-                    <li>聊天机器人开发</li>
-                    <li>机器翻译</li>
-                </ul>
-            </div>
-            <div class="project-item">
-                <h3>🏥 医学影像分析</h3>
-                <ul>
-                    <li>医学影像分割与标注</li>
-                    <li>疾病辅助诊断系统</li>
-                    <li>细胞计数与形态分析</li>
-                    <li>CT/MRI 影像分析</li>
-                </ul>
-            </div>
-            <div class="project-item">
-                <h3>📚 学术服务项目</h3>
-                <ul>
-                    <li>Machine Learning / Deep Learning Assignment</li>
-                    <li>代码辅导与代做</li>
-                    <li>Course Project / Final Project</li>
-                    <li>毕设项目开发与指导</li>
-                    <li>论文代码复现</li>
-                </ul>
-            </div>
-            <div class="project-item">
-                <h3>🐛 模型调试与优化</h3>
-                <ul>
-                    <li>模型效果差、精度不达标的调试优化</li>
-                    <li>模型推理速度优化与部署</li>
-                    <li>深度学习环境配置与问题排查</li>
-                </ul>
-            </div>
-        </section>
+        </div>
 
-        <section class="contact-section">
-            <h2 class="section-title">📬 联系方式</h2>
-            <div class="contact-card">
-                <div class="contact-item">
-                    <span>💬</span>
-                    <span class="contact-label">微信：</span>
-                    <span class="contact-value">popoking01</span>
-                </div>
-                <div class="wechat-qrcode">
-                    <!-- 请将您的微信二维码图片命名为 wechat-qrcode.jpg 或 wechat-qrcode.png 放到 source/projects/ 目录 -->
-                    <!-- 然后取消下面注释，注释掉 qrcode-placeholder -->
-                    <!-- <img src="/projects/wechat-qrcode.jpg" alt="微信二维码"> -->
-                    <div class="qrcode-placeholder">
-                        📱 请上传微信二维码图片<br>
-                        <small>将图片放入 source/projects/ 目录</small>
-                    </div>
-                </div>
-                <p class="contact-note">添加时请备注：项目咨询</p>
-                <p class="contact-note">⏰ 24小时内必回复，欢迎随时打扰！</p>
+        <div class="card">
+            <h2><span>📊</span> 机器学习与数据分析</h2>
+            <div class="task-list">
+                <div class="task-item">回归预测、时间序列预测</div>
+                <div class="task-item">分类问题（二分类/多分类）</div>
+                <div class="task-item">数据预处理与数据增强</div>
+                <div class="task-item">学习率调度器优化</div>
+                <div class="task-item">模型训练与泛化</div>
+                <div class="task-item">SPSS / Stata / SAS 分析</div>
+                <div class="task-item">数据可视化（Matplotlib/Seaborn）</div>
             </div>
-        </section>
+        </div>
 
-        <section class="service-features">
-            <h2 class="section-title">✨ 为什么选择我们</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <span class="feature-icon">⚡</span>
-                    <h4>快速响应</h4>
-                    <p>24小时内回复，紧急项目可加急处理</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">💎</span>
-                    <h4>高质量代码</h4>
-                    <p>代码规范、注释完整、易于维护和扩展</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🔄</span>
-                    <h4>免费修改</h4>
-                    <p>项目交付后提供免费修改服务直到满意</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">📚</span>
-                    <h4>详细文档</h4>
-                    <p>提供完整的技术文档和使用说明</p>
+        <div class="card">
+            <h2><span>🔬</span> 学术与研究服务</h2>
+            <div class="task-list">
+                <div class="task-item">论文代码复现</div>
+                <div class="task-item">网络结构创新与改进</div>
+                <div class="task-item">算法性能提升优化</div>
+                <div class="task-item">SCI论文全程1v1指导</div>
+                <div class="task-item">创新点分析（1-3个）</div>
+                <div class="task-item">MovieLens数据集实验（Recall/NDCG）</div>
+            </div>
+        </div>
+
+        <div class="card highlight-section">
+            <h2><span>🎓</span> 留学生课程辅导</h2>
+            <div class="task-list">
+                <div class="task-item">Python / Java / C/C++ / R / MATLAB 编程</div>
+                <div class="task-item">Machine Learning / Deep Learning Assignment</div>
+                <div class="task-item">Course Project / Final Project 辅导</div>
+                <div class="task-item">毕设项目开发与指导</div>
+                <div class="task-item">BP / CNN / RNN / LSTM / GRU 算法</div>
+                <div class="task-item">Transformer / GNN / BERT 讲解</div>
+                <div class="task-item">决策树 / SVM / XGBoost 实现</div>
+                <div class="task-item">数据结构 / 算法 / 操作系统</div>
+                <div class="task-item">线性代数 / 概率统计 / 矩阵论</div>
+                <div class="task-item">深度强化学习 / 联邦学习</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>⚙️</span> 其他服务</h2>
+            <div class="task-list">
+                <div class="task-item">远程安装配置环境</div>
+                <div class="task-item">代码调试与bug修复</div>
+                <div class="task-item">代码解读与注释添加</div>
+                <div class="task-item">UI界面制作</div>
+                <div class="task-item">数学建模</div>
+                <div class="task-item">物理信息神经网络</div>
+                <div class="task-item">流体力学/有限元分析仿真</div>
+                <div class="task-item">电磁学/材料科学计算</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">✨ 服务优势</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <h4>快速响应</h4>
+                <p>24小时内回复，全天候在线</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">💎</span>
+                <h4>高质量代码</h4>
+                <p>代码规范、注释完整、易维护</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🔄</span>
+                <h4>免费修改</h4>
+                <p>交付后免费修改直到满意</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📚</span>
+                <h4>详细讲解</h4>
+                <p>原理分析、代码解读、答疑</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🎯</span>
+                <h4>远程协助</h4>
+                <p>可远程编程、配置环境</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🚀</span>
+                <h4>高效交付</h4>
+                <p>3090/A100算力支持</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">📬 联系方式</h2>
+        <div class="contact-card">
+            <h2 style="color: white; font-size: 1.8em;">欢迎咨询</h2>
+            <div class="wechat-id">💬 微信号：popoking01</div>
+            <div class="wechat-qrcode">
+                <img src="/projects/index/wechat-qrcode.jpg" alt="微信二维码" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style="display:none; background:white; padding:30px; border-radius:10px; color:#667eea;">
+                    📱 请扫码添加微信
                 </div>
             </div>
-        </section>
+            <p class="contact-note">添加时请备注：项目咨询</p>
+            <p class="contact-note">⏰ 24小时内必回复，欢迎随时打扰！</p>
+        </div>
 
         <footer class="footer">
             <p>© 2024 AI 项目承接 | 让 AI 创造价值</p>
