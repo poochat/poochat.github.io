@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研分享 - KangChou</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans SC', -apple-system, sans-serif; background: #f0f4f8; color: #1a202c; line-height: 1.7; }
+        
+        /* 顶部导航 */
+        .topbar {
+            background: white;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .topbar-brand { display: flex; align-items: center; gap: 12px; color: #2d3748; text-decoration: none; }
+        .topbar-brand h1 { font-size: 1.4em; font-weight: 700; color: #667eea; }
+        .back-btn { color: #667eea; text-decoration: none; padding: 8px 20px; border: 2px solid #667eea; border-radius: 25px; font-weight: 500; transition: all 0.3s; }
+        .back-btn:hover { background: #667eea; color: white; }
+
+        /* 主容器 */
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+        /* 头部卡片 */
+        .hero-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+        .hero-card h1 { font-size: 2.8em; margin-bottom: 15px; font-weight: 700; }
+        .hero-card p { font-size: 1.15em; opacity: 0.95; max-width: 600px; margin: 0 auto 25px; }
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        /* 统计行 */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 50px; }
+        .stat-card { background: white; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(102, 126, 234, 0.15); }
+        .stat-num { font-size: 2.5em; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-text { color: #64748b; font-size: 0.95em; margin-top: 5px; }
+
+        /* 区块 */
+        .section { margin-bottom: 50px; }
+        .section-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #e2e8f0; }
+        .section-icon { width: 52px; height: 52px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: white; }
+        .section-title { font-size: 1.5em; font-weight: 700; color: #2d3748; }
+        .section-sub { color: #94a3b8; font-size: 0.9em; }
+
+        /* 卡片网格 */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+        .card { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); cursor: pointer; transition: all 0.3s; border: 1px solid #edf2f7; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(102, 126, 234, 0.15); border-color: #667eea; }
+        .card-icon { font-size: 2em; margin-bottom: 12px; }
+        .card-title { font-size: 1.1em; font-weight: 600; color: #2d3748; margin-bottom: 8px; }
+        .card-desc { color: #64748b; font-size: 0.9em; line-height: 1.6; margin-bottom: 12px; }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag { padding: 3px 10px; border-radius: 12px; font-size: 0.78em; font-weight: 500; }
+        .tag-purple { background: #f3e8ff; color: #7c3aed; }
+        .tag-blue { background: #dbeafe; color: #2563eb; }
+        .tag-green { background: #dcfce7; color: #16a34a; }
+        .tag-orange { background: #ffedd5; color: #ea580c; }
+
+        /* 论文列表 */
+        .paper-list { display: flex; flex-direction: column; gap: 16px; }
+        .paper-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); border-left: 5px solid #667eea; transition: all 0.3s; }
+        .paper-card:hover { transform: translateX(6px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+        .paper-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .paper-title { font-size: 1.05em; font-weight: 600; color: #2d3748; }
+        .paper-badge { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 4px 12px; border-radius: 8px; font-size: 0.8em; }
+        .paper-meta { color: #94a3b8; font-size: 0.88em; margin-bottom: 8px; }
+        .paper-desc { color: #64748b; font-size: 0.92em; line-height: 1.7; }
+        .star { color: #fbbf24; }
+
+        /* 页脚 */
+        .footer { background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-align: center; padding: 30px; border-radius: 20px; margin-top: 60px; }
+        .footer a { color: white; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .topbar { padding: 12px 20px; flex-direction: column; gap: 12px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .hero-card { padding: 30px 20px; }
+            .hero-card h1 { font-size: 1.8em; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="topbar">
+        <a href="/" class="topbar-brand"><span style="font-size:1.3em;">🔬</span><h1>科研分享</h1></a>
+        <a href="/" class="back-btn">🏠 返回首页</a>
+    </nav>
+
+    <div class="container">
+        <div class="hero-card">
+            <h1>🔬 科研资源宝库</h1>
+            <p>汇集顶级期刊、科研工具与论文复现成果，助力科研之路</p>
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 搜索期刊、工具或论文..." onkeyup="searchContent()">
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-num">50+</div><div class="stat-text">顶级期刊</div></div>
+            <div class="stat-card"><div class="stat-num">90+</div><div class="stat-text">科研工具</div></div>
+            <div class="stat-card"><div class="stat-num">25+</div><div class="stat-text">复现成果</div></div>
+            <div class="stat-card"><div class="stat-num">150+</div><div class="stat-text">论文解读</div></div>
+        </div>
+
+        <!-- AI/ML顶会 -->
+        <div class="section">
+            <div class="section-head"><div class="section-icon">🤖</div><div><div class="section-title">AI / ML 顶会期刊</div><div class="section-sub">人工智能与机器学习领域顶级学术会议</div></div></div>
+            <div class="card-grid">
+                <div class="card" onclick="window.open('https://arxiv.org/','_blank')"><div class="card-icon">📄</div><div class="card-title">arXiv</div><div class="card-desc">预印本论文库，涵盖CS、ML、AI等领域最新研究成果</div><div class="card-tags"><span class="tag tag-purple">AI</span><span class="tag tag-blue">CS</span></div></div>
+                <div class="card" onclick="window.open('https://papers.nips.cc/','_blank')"><div class="card-icon">🎓</div><div class="card-title">NeurIPS</div><div class="card-desc">神经信息处理系统大会，AI领域顶级会议</div><div class="card-tags"><span class="tag tag-purple">AI</span></div></div>
+                <div class="card" onclick="window.open('https://icml.cc/','_blank')"><div class="card-icon">🎓</div><div class="card-title">ICML</div><div class="card-desc">国际机器学习大会，机器学习领域顶级会议</div><div class="card-tags"><span class="tag tag-purple">ML</span></div></div>
+                <div class="card" onclick="window.open('https://iclr.cc/','_blank')"><div class="card-icon">🎓</div><div class="card-title">ICLR</div><div class="card-desc">国际学习表征会议，深度学习领域顶级会议</div><div class="card-tags"><span class="tag tag-purple">DL</span></div></div>
+                <div class="card" onclick="window.open('https://openaccess.thecvf.com/','_blank')"><div class="card-icon">🎓</div><div class="card-title">CVPR</div><div class="card-desc">计算机视觉与模式识别会议，计算机视觉顶会</div><div class="card-tags"><span class="tag tag-blue">CV</span></div></div>
+                <div class="card" onclick="window.open('https://eccv.ecva.net/','_blank')"><div class="card-icon">🎓</div><div class="card-title">ECCV</div><div class="card-desc">欧洲计算机视觉会议，计算机视觉顶会</div><div class="card-tags"><span class="tag tag-blue">CV</span></div></div>
+                <div class="card" onclick="window.open('https://aclanthology.org/','_blank')"><div class="card-icon">📚</div><div class="card-title">ACL Anthology</div><div class="card-desc">NLP/CL领域论文库，包含ACL、EMNLP等会议</div><div class="card-tags"><span class="tag tag-purple">NLP</span></div></div>
+                <div class="card" onclick="window.open('https://aaai.org/','_blank')"><div class="card-icon">🎓</div><div class="card-title">AAAI</div><div class="card-desc">人工智能促进协会年会，AI领域顶级会议</div><div class="card-tags"><span class="tag tag-purple">AI</span></div></div>
+                <div class="card" onclick="window.open('https://emnlp.cc/','_blank')"><div class="card-icon">🎓</div><div class="card-title">EMNLP</div><div class="card-desc">自然语言处理实证方法会议，NLP顶会</div><div class="card-tags"><span class="tag tag-purple">NLP</span></div></div>
+                <div class="card" onclick="window.open('https://distill.pub/','_blank')"><div class="card-icon">📖</div><div class="card-title">Distill</div><div class="card-desc">机器学习可视化解释期刊</div><div class="card-tags"><span class="tag tag-purple">解释</span></div></div>
+            </div>
+        </div>
+
+        <!-- 科研工具 -->
+        <div class="section">
+            <div class="section-head"><div class="section-icon">🛠️</div><div><div class="section-title">科研工具汇总</div><div class="section-sub">文献检索、论文写作、实验管理等必备工具</div></div></div>
+            <div class="card-grid">
+                <div class="card" onclick="window.open('https://scholar.google.com/','_blank')"><div class="card-icon">🔍</div><div class="card-title">Google Scholar</div><div class="card-desc">学术文献搜索利器，支持引用追踪和高被引论文发现</div><div class="card-tags"><span class="tag tag-blue">搜索</span></div></div>
+                <div class="card" onclick="window.open('https://www.semanticscholar.org/','_blank')"><div class="card-icon">🧠</div><div class="card-title">Semantic Scholar</div><div class="card-desc">AI驱动的学术搜索平台，提供论文影响力分析</div><div class="card-tags"><span class="tag tag-purple">AI</span></div></div>
+                <div class="card" onclick="window.open('https://connectedpapers.com/','_blank')"><div class="card-icon">🔗</div><div class="card-title">Connected Papers</div><div class="card-desc">论文关系图谱，可视化展示论文引用网络</div><div class="card-tags"><span class="tag tag-purple">可视化</span></div></div>
+                <div class="card" onclick="window.open('https://paperswithcode.com/','_blank')"><div class="card-icon">💻</div><div class="card-title">Papers with Code</div><div class="card-desc">论文代码复现平台，附官方和社区实现代码</div><div class="card-tags"><span class="tag tag-purple">代码</span></div></div>
+                <div class="card" onclick="window.open('https://www.zotero.org/','_blank')"><div class="card-icon">📚</div><div class="card-title">Zotero</div><div class="card-desc">免费开源的参考文献管理工具</div><div class="card-tags"><span class="tag tag-blue">文献</span></div></div>
+                <div class="card" onclick="window.open('https://overleaf.com/','_blank')"><div class="card-icon">📄</div><div class="card-title">Overleaf</div><div class="card-desc">在线LaTeX编辑器，支持多人协作撰写论文</div><div class="card-tags"><span class="tag tag-blue">写作</span></div></div>
+                <div class="card" onclick="window.open('https://colab.research.google.com/','_blank')"><div class="card-icon">📓</div><div class="card-title">Google Colab</div><div class="card-desc">免费GPU云端编程环境，支持Python和深度学习</div><div class="card-tags"><span class="tag tag-purple">GPU</span></div></div>
+                <div class="card" onclick="window.open('https://kaggle.com/','_blank')"><div class="card-icon">📊</div><div class="card-title">Kaggle</div><div class="card-desc">数据科学竞赛平台，提供数据集和GPU资源</div><div class="card-tags"><span class="tag tag-green">数据</span></div></div>
+                <div class="card" onclick="window.open('https://wandb.ai/','_blank')"><div class="card-icon">📈</div><div class="card-title">Weights & Biases</div><div class="card-desc">实验追踪和可视化工具，记录训练过程</div><div class="card-tags"><span class="tag tag-purple">实验</span></div></div>
+                <div class="card" onclick="window.open('https://www.notion.so/','_blank')"><div class="card-icon">📝</div><div class="card-title">Notion</div><div class="card-desc">科研笔记管理，记录实验过程和文献整理</div><div class="card-tags"><span class="tag tag-blue">笔记</span></div></div>
+                <div class="card" onclick="window.open('https://plotly.com/','_blank')"><div class="card-icon">📉</div><div class="card-title">Plotly</div><div class="card-desc">Python交互式数据可视化库，支持多种图表类型</div><div class="card-tags"><span class="tag tag-purple">可视化</span></div></div>
+                <div class="card" onclick="window.open('https://excalidraw.com/','_blank')"><div class="card-icon">✒️</div><div class="card-title">Excalidraw</div><div class="card-desc">手绘风格图表工具，适合绘制论文示意图</div><div class="card-tags"><span class="tag tag-blue">图表</span></div></div>
+            </div>
+        </div>
+
+        <!-- 论文撰写工具 -->
+        <div class="section">
+            <div class="section-head"><div class="section-icon">✍️</div><div><div class="section-title">科研论文撰写工具</div><div class="section-sub">语法检查、论文润色、排版工具</div></div></div>
+            <div class="card-grid">
+                <div class="card" onclick="window.open('https://www.grammarly.com/','_blank')"><div class="card-icon">✅</div><div class="card-title">Grammarly</div><div class="card-desc">英语语法检查和写作辅助工具</div><div class="card-tags"><span class="tag tag-blue">语法</span></div></div>
+                <div class="card" onclick="window.open('https://quillbot.com/','_blank')"><div class="card-icon">🔄</div><div class="card-title">QuillBot</div><div class="card-desc">AI写作辅助工具，提供改写、摘要功能</div><div class="card-tags"><span class="tag tag-purple">AI</span></div></div>
+                <div class="card" onclick="window.open('https://scispace.com/','_blank')"><div class="card-icon">🔍</div><div class="card-title">SciSpace</div><div class="card-desc">AI论文阅读助手，自动解释复杂概念</div><div class="card-tags"><span class="tag tag-purple">AI</span></div></div>
+                <div class="card" onclick="window.open('https://www.mathcha.io/','_blank')"><div class="card-icon">📐</div><div class="card-title">Mathcha</div><div class="card-desc">在线数学公式编辑器，支持手写识别</div><div class="card-tags"><span class="tag tag-blue">公式</span></div></div>
+                <div class="card" onclick="window.open('https://www.tablesgenerator.com/','_blank')"><div class="card-icon">📊</div><div class="card-title">Tables Generator</div><div class="card-desc">在线表格生成器，支持LaTeX、HTML格式</div><div class="card-tags"><span class="tag tag-blue">表格</span></div></div>
+                <div class="card" onclick="window.open('https://figma.com/','_blank')"><div class="card-icon">🎨</div><div class="card-title">Figma</div><div class="card-desc">协作设计工具，可绘制高颜值论文图表</div><div class="card-tags"><span class="tag tag-blue">设计</span></div></div>
+            </div>
+        </div>
+
+        <!-- 论文复现 -->
+        <div class="section">
+            <div class="section-head"><div class="section-icon">🔄</div><div><div class="section-title">论文复现成果</div><div class="section-sub">经典论文的完整复现与实验验证</div></div></div>
+            <div class="paper-list">
+                <div class="paper-card"><div class="paper-head"><div class="paper-title">BERT: Pre-training of Deep Bidirectional Transformers</div><span class="paper-badge">NLP</span></div><div class="paper-meta">Devlin et al. | NAACL 2019 | 复现难度: <span class="star">⭐⭐⭐⭐</span></div><div class="paper-desc">完成BERT模型的预训练和Fine-tuning复现，在GLUE基准上达到87.2%的准确率。</div></div>
+                <div class="paper-card"><div class="paper-head"><div class="paper-title">ResNet: Deep Residual Learning for Image Recognition</div><span class="paper-badge">CV</span></div><div class="paper-meta">He et al. | CVPR 2016 | 复现难度: <span class="star">⭐⭐⭐</span></div><div class="paper-desc">复现ResNet残差网络结构，验证了skip connection的有效性。</div></div>
+                <div class="paper-card"><div class="paper-head"><div class="paper-title">Attention Is All You Need (Transformer)</div><span class="paper-badge">NLP</span></div><div class="paper-meta">Vaswani et al. | NeurIPS 2017 | 复现难度: <span class="star">⭐⭐⭐⭐</span></div><div class="paper-desc">完整复现Transformer架构，包含Encoder-Decoder、Multi-Head Attention。</div></div>
+                <div class="paper-card"><div class="paper-head"><div class="paper-title">CLIP: Learning Transferable Visual Models</div><span class="paper-badge">多模态</span></div><div class="paper-meta">Radford et al. | ICML 2021 | 复现难度: <span class="star">⭐⭐⭐⭐</span></div><div class="paper-desc">复现CLIP对比语言-图像预训练模型，实现零样本图像分类。</div></div>
+                <div class="paper-card"><div class="paper-head"><div class="paper-title">Stable Diffusion: High-Resolution Image Synthesis</div><span class="paper-badge">文生图</span></div><div class="paper-meta">Rombach et al. | CVPR 2022 | 复现难度: <span class="star">⭐⭐⭐⭐</span></div><div class="paper-desc">完整复现Latent Diffusion Model，实现文本引导的图像生成。</div></div>
+                <div class="paper-card"><div class="paper-head"><div class="paper-title">LLaMA: Open and Efficient Foundation Language Models</div><span class="paper-badge">LLM</span></div><div class="paper-meta">Touvron et al. | Meta AI 2023 | 复现难度: <span class="star">⭐⭐⭐⭐⭐</span></div><div class="paper-desc">复现LLaMA模型架构，验证Scale Law。</div></div>
+            </div>
+        </div>
+
+        <!-- 科研经验 -->
+        <div class="section">
+            <div class="section-head"><div class="section-icon">💡</div><div><div class="section-title">科研经验分享</div><div class="section-sub">论文阅读、实验设计、学术交流的实用技巧</div></div></div>
+            <div class="paper-list">
+                <div class="paper-card"><div class="paper-title">📝 如何高效阅读学术论文</div><div class="paper-meta">核心技巧 | 效率提升 300%</div><div class="paper-desc">采用"三遍阅读法"：第一遍看标题摘要判断价值，第二遍抓重点图表和方法，第三遍深入细节和实验。</div></div>
+                <div class="paper-card"><div class="paper-title">🔬 论文复现的实用技巧</div><div class="paper-meta">经验总结 | 新手必读</div><div class="paper-desc">1. 先从GitHub找官方代码 2. 仔细阅读Issue和Discussions 3. 从small scale开始验证 4. 使用相同的数据集和评估指标</div></div>
+                <div class="paper-card"><div class="paper-title">✍️ 论文写作注意事项</div><div class="paper-meta">写作技巧 | 提升质量</div><div class="paper-desc">1. 图表先行，让读者快速理解核心贡献 2. 逻辑清晰，层层递进 3. Related Work要全面且分类清晰 4. 实验要充分</div></div>
+                <div class="paper-card"><div class="paper-title">🎯 如何选择研究方向</div><div class="paper-meta">研究方向 | 职业规划</div><div class="paper-desc">关注顶会论文趋势、GitHub热榜、HuggingFace新模型。结合个人兴趣和可行性，选择"站在巨人肩膀上"的创新点。</div></div>
+                <div class="paper-card"><div class="paper-title">📊 如何做科研实验记录</div><div class="paper-meta">实验管理 | 效率工具</div><div class="paper-desc">使用Notion建立实验日志模板，包含：实验目的、超参数设置、数据集信息、中间结果、结论反思。</div></div>
+            </div>
+        </div>
+
+        <!-- 其他资源 -->
+        <div class="section">
+            <div class="section-head"><div class="section-icon">🔗</div><div><div class="section-title">其他科研资源</div><div class="section-sub">学术社交、问答社区、论文获取等资源</div></div></div>
+            <div class="card-grid">
+                <div class="card" onclick="window.open('https://www.researchgate.net/','_blank')"><div class="card-icon">🎓</div><div class="card-title">ResearchGate</div><div class="card-desc">学术社交网络，可直接联系作者获取论文</div><div class="card-tags"><span class="tag tag-blue">社交</span></div></div>
+                <div class="card" onclick="window.open('https://www.zhihu.com/','_blank')"><div class="card-icon">💬</div><div class="card-title">知乎</div><div class="card-desc">科研问答与经验分享社区</div><div class="card-tags"><span class="tag tag-blue">社区</span></div></div>
+                <div class="card" onclick="window.open('https://stats.stackexchange.com/','_blank')"><div class="card-icon">📊</div><div class="card-title">Cross Validated</div><div class="card-desc">统计与机器学习问答社区</div><div class="card-tags"><span class="tag tag-blue">Q&A</span></div></div>
+                <div class="card" onclick="window.open('https://www.aminer.cn/','_blank')"><div class="card-icon">🏆</div><div class="card-title">AMiner</div><div class="card-desc">中国版学术社交平台，提供学者排名</div><div class="card-tags"><span class="tag tag-blue">中国</span></div></div>
+                <div class="card" onclick="window.open('https://www.cnki.net/','_blank')"><div class="card-icon">📚</div><div class="card-title">CNKI 中国知网</div><div class="card-desc">中国最大的学术文献数据库</div><div class="card-tags"><span class="tag tag-blue">中文</span></div></div>
+                <div class="card" onclick="window.open('https://www.reddit.com/r/MachineLearning/','_blank')"><div class="card-icon">🔴</div><div class="card-title">r/MachineLearning</div><div class="card-desc">Reddit机器学习社区，讨论前沿进展</div><div class="card-tags"><span class="tag tag-purple">社区</span></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer"><p>🔬 科研分享 - 整理于 2026年5月 | <a href="https://www.coomatrix.com">云上零度</a></p></div>
+
+    <script>
+        function searchContent() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toUpperCase();
+            var cards = document.getElementsByClassName('card');
+            var papers = document.getElementsByClassName('paper-card');
+            for (var i = 0; i < cards.length; i++) {
+                var title = cards[i].getElementsByClassName('card-title')[0];
+                var desc = cards[i].getElementsByClassName('card-desc')[0];
+                if (title && desc) {
+                    var txt = title.textContent + desc.textContent;
+                    cards[i].style.display = txt.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                }
+            }
+            for (var i = 0; i < papers.length; i++) {
+                var title = papers[i].getElementsByClassName('paper-title')[0];
+                var desc = papers[i].getElementsByClassName('paper-desc')[0];
+                if (title && desc) {
+                    var txt = title.textContent + desc.textContent;
+                    papers[i].style.display = txt.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
