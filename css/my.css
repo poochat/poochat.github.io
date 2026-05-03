@@ -218,3 +218,148 @@ type your custom css here
         overflow-x: auto !important;
     }
 }
+
+/* ===========================
+   标签页面多列布局
+   =========================== */
+
+/* 标签云样式 */
+.tags-cloud-wrap {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+}
+
+.tags-cloud-title {
+    color: white;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.tags-cloud {
+    background: rgba(255,255,255,0.95) !important;
+    padding: 20px;
+    border-radius: 15px;
+    border: none !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.tags-cloud a {
+    color: #667eea;
+    text-decoration: none;
+    padding: 5px 12px;
+    display: inline-block;
+    margin: 4px;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.tags-cloud a:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* 标签网格容器 */
+.tags-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.tags-column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* 标签区块 */
+.tag-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tag-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+/* 标签标题 */
+.archive-tag {
+    font-size: 1.3em;
+    color: #667eea;
+    margin: 0 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #667eea;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tag-icon {
+    font-size: 1.2em;
+}
+
+.tag-count {
+    font-size: 0.8em;
+    color: #999;
+    font-weight: normal;
+}
+
+/* 文章列表 */
+.tag-section .archives {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.archive-post {
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.archive-post:last-child {
+    border-bottom: none;
+}
+
+.archive-post a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.archive-post a:hover {
+    color: #667eea;
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 1024px) {
+    .tags-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .tags-grid-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .archive-tag {
+        font-size: 1.1em;
+    }
+    
+    .tags-cloud-wrap {
+        padding: 20px;
+    }
+}
