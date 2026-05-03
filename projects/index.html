@@ -84,16 +84,17 @@
         
         .task-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 12px;
         }
         .task-item {
             background: #f8f9fa;
-            padding: 15px 20px;
+            padding: 12px 18px;
             border-radius: 10px;
             color: #555;
             position: relative;
-            padding-left: 30px;
+            padding-left: 28px;
+            font-size: 0.95em;
         }
         .task-item::before {
             content: "✓";
@@ -105,16 +106,17 @@
         
         .frameworks {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
         }
         .framework-item {
             text-align: center;
             background: #f8f9fa;
-            padding: 20px;
+            padding: 18px;
             border-radius: 12px;
             font-weight: 600;
             color: #555;
+            font-size: 0.95em;
         }
         
         .contact-card {
@@ -144,7 +146,7 @@
         
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
         .feature-item {
@@ -185,6 +187,12 @@
             color: #888;
         }
         
+        .intro-text {
+            line-height: 1.9;
+            color: #555;
+            font-size: 1.02em;
+        }
+        
         @media (max-width: 768px) {
             .header h1 { font-size: 2em; }
             .task-list { grid-template-columns: 1fr; }
@@ -203,38 +211,41 @@
 
         <h2 class="section-title">💡 核心服务领域</h2>
         <div class="card">
-            <h2><span>🎯</span> 人工智能应用产品设计与开发</h2>
+            <h2><span>🎯</span> 深度学习与机器学习服务</h2>
+            <p class="intro-text" style="margin-bottom: 20px;">
+                专注于深度学习、机器学习、强化学习等前沿人工智能领域，为留学生及相关科研人员提供专业的编程服务与技术支持。代码复现、代码改进、带跑通、创新点分析、文章复现、深度学习指导。
+            </p>
             <div class="services-grid">
                 <div class="service-item">
-                    <h3>🧠 深度学习与机器学习</h3>
-                    <p>模型训练、优化、微调、融合，代码改进与调试，预测模型开发，时间序列分析，数据处理</p>
+                    <h3>🧠 深度学习</h3>
+                    <p>CNN、DBN、LSTM、RNN、GAN、RBFN、MLP、SOM、RBN、Autoencoders 等网络架构搭建与优化</p>
                 </div>
                 <div class="service-item">
                     <h3>👁️ 计算机视觉 CV</h3>
                     <p>图像分类、目标检测、语义分割、实例分割、人脸识别、目标跟踪、行为识别</p>
                 </div>
                 <div class="service-item">
-                    <h3>📝 自然语言处理 NLP</h3>
-                    <p>文本分类、情感分析、命名实体识别、聊天机器人、机器翻译、大语言模型</p>
+                    <h3>🔗 图神经网络 GNN</h3>
+                    <p>图卷积神经网络、节点分类、推荐算法（LightGCN、NCGF）、自监督学习</p>
                 </div>
                 <div class="service-item">
-                    <h3>🔗 图神经网络 GNN/GCN</h3>
-                    <p>节点分类、图卷积神经网络、推荐算法（LightGCN、NCGF）、自监督学习</p>
+                    <h3>📝 自然语言处理 NLP</h3>
+                    <p>文本分类、情感分析、命名实体识别、关系抽取、事件抽取、聊天机器人</p>
                 </div>
                 <div class="service-item">
                     <h3>🏥 医学图像处理</h3>
-                    <p>DICOM/NII数据处理、肿瘤分割、影像组学、多模态融合、病灶检测、病理分析</p>
+                    <p>DICOM/NII数据处理、肿瘤分割、影像组学、病灶检测、病理分析</p>
                 </div>
                 <div class="service-item">
-                    <h3>🚗 智能驾驶与仿真</h3>
-                    <p>Sumo/Carla联合仿真、智能交通系统、自动泊车、强化学习训练</p>
+                    <h3>🎮 强化学习</h3>
+                    <p>策略优化、环境交互、避障规划、游戏 AI、强化学习算法实现</p>
                 </div>
             </div>
         </div>
 
         <h2 class="section-title">🛠️ 技术框架</h2>
         <div class="card">
-            <h2><span>📦</span> 主流深度学习框架</h2>
+            <h2><span>📦</span> 主流深度学习框架与工具</h2>
             <div class="frameworks">
                 <div class="framework-item">PyTorch</div>
                 <div class="framework-item">TensorFlow</div>
@@ -242,6 +253,8 @@
                 <div class="framework-item">PaddlePaddle</div>
                 <div class="framework-item">OpenMMLab</div>
                 <div class="framework-item">OpenCV</div>
+                <div class="framework-item">MATLAB</div>
+                <div class="framework-item">C++ / Python</div>
             </div>
         </div>
         
@@ -249,20 +262,23 @@
             <h2><span>🔧</span> 核心算法与模型</h2>
             <div class="tech-tags">
                 <span class="tech-tag">YOLO系列</span>
+                <span class="tech-tag">Faster R-CNN</span>
+                <span class="tech-tag">SSD</span>
+                <span class="tech-tag">CenterNet</span>
                 <span class="tech-tag">UNet</span>
-                <span class="tech-tag">CNN</span>
-                <span class="tech-tag">GAN</span>
+                <span class="tech-tag">FCN</span>
+                <span class="tech-tag">DeepLab</span>
+                <span class="tech-tag">ResNet</span>
+                <span class="tech-tag">VGG</span>
+                <span class="tech-tag">MobileNet</span>
                 <span class="tech-tag">Transformer</span>
-                <span class="tech-tag">VGG / ResNet</span>
+                <span class="tech-tag">ViT</span>
+                <span class="tech-tag">GoogLeNet</span>
+                <span class="tech-tag">GAN</span>
                 <span class="tech-tag">LSTM / GRU</span>
-                <span class="tech-tag">BERT / ViT</span>
-                <span class="tech-tag">Deeplab</span>
-                <span class="tech-tag">Mask RCNN</span>
-                <span class="tech-tag">Stable Diffusion</span>
-                <span class="tech-tag">StyleGAN</span>
-                <span class="tech-tag">SVM / XGBoost</span>
-                <span class="tech-tag">scikit-learn</span>
-                <span class="tech-tag">MATLAB</span>
+                <span class="tech-tag">BERT</span>
+                <span class="tech-tag">GCN</span>
+                <span class="tech-tag">Oriented RCNN</span>
             </div>
         </div>
 
@@ -270,18 +286,36 @@
         <div class="card">
             <h2><span>🖼️</span> 计算机视觉项目</h2>
             <div class="task-list">
-                <div class="task-item">人脸识别、表情识别、口罩检测</div>
-                <div class="task-item">目标检测（YOLO/RCNN系列）</div>
-                <div class="task-item">目标跟踪与行为识别</div>
-                <div class="task-item">语义分割、实例分割（UNet/Deeplab）</div>
+                <div class="task-item">人脸识别、表情识别、年龄/性别识别</div>
+                <div class="task-item">目标检测（YOLO/FasterRCNN/SSD/CenterNet）</div>
+                <div class="task-item">语义分割、实例分割（UNet/Deeplab/FCN）</div>
                 <div class="task-item">图像去噪、去模糊、去水印</div>
                 <div class="task-item">图像超分辨率重建</div>
                 <div class="task-item">图像风格迁移</div>
-                <div class="task-item">工业缺陷检测</div>
+                <div class="task-item">图像分类（ResNet/VGG/MobileNet/Transformer）</div>
+                <div class="task-item">目标跟踪与行为识别</div>
+                <div class="task-item">3D目标检测</div>
+                <div class="task-item">遥感图像目标检测</div>
+                <div class="task-item">SAR图像船舰检测</div>
+                <div class="task-item">小目标检测</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>🔍</span> 检测与识别应用</h2>
+            <div class="task-list">
+                <div class="task-item">口罩检测、安全帽检测</div>
+                <div class="task-item">摔倒检测、吸烟检测</div>
+                <div class="task-item">火焰检测、烟雾检测</div>
                 <div class="task-item">车辆检测、车牌识别</div>
-                <div class="task-item">异常检测、运动检测</div>
-                <div class="task-item">3D点云分割</div>
-                <div class="task-item">特征图可视化（热力图/彩虹图）</div>
+                <div class="task-item">行人检测、行人计数</div>
+                <div class="task-item">水果识别、花卉识别</div>
+                <div class="task-item">交通标志识别</div>
+                <div class="task-item">垃圾分类、手势识别</div>
+                <div class="task-item">PCB缺陷检测</div>
+                <div class="task-item">水面垃圾识别</div>
+                <div class="task-item">遥感图像变化检测</div>
+                <div class="task-item">姿态估计</div>
             </div>
         </div>
 
@@ -293,8 +327,8 @@
                 <div class="task-item">数据预处理与数据增强</div>
                 <div class="task-item">学习率调度器优化</div>
                 <div class="task-item">模型训练与泛化</div>
-                <div class="task-item">SPSS / Stata / SAS 分析</div>
-                <div class="task-item">数据可视化（Matplotlib/Seaborn）</div>
+                <div class="task-item">特征工程</div>
+                <div class="task-item">模型压缩与量化</div>
             </div>
         </div>
 
@@ -304,43 +338,69 @@
                 <div class="task-item">论文代码复现</div>
                 <div class="task-item">网络结构创新与改进</div>
                 <div class="task-item">算法性能提升优化</div>
-                <div class="task-item">SCI论文全程1v1指导</div>
                 <div class="task-item">创新点分析（1-3个）</div>
-                <div class="task-item">MovieLens数据集实验（Recall/NDCG）</div>
+                <div class="task-item">SCI论文全程1v1指导</div>
+                <div class="task-item">提供源码和改进方案</div>
+                <div class="task-item">代码讲解与实现指导</div>
+                <div class="task-item">核心期刊发表支持</div>
             </div>
         </div>
 
         <div class="card highlight-section">
             <h2><span>🎓</span> 留学生课程辅导</h2>
             <div class="task-list">
-                <div class="task-item">Python / Java / C/C++ / R / MATLAB 编程</div>
+                <div class="task-item">Python / Java / C/C++ / MATLAB 编程</div>
                 <div class="task-item">Machine Learning / Deep Learning Assignment</div>
                 <div class="task-item">Course Project / Final Project 辅导</div>
                 <div class="task-item">毕设项目开发与指导</div>
-                <div class="task-item">BP / CNN / RNN / LSTM / GRU 算法</div>
+                <div class="task-item">CNN / RNN / LSTM / GRU 算法</div>
                 <div class="task-item">Transformer / GNN / BERT 讲解</div>
                 <div class="task-item">决策树 / SVM / XGBoost 实现</div>
                 <div class="task-item">数据结构 / 算法 / 操作系统</div>
                 <div class="task-item">线性代数 / 概率统计 / 矩阵论</div>
                 <div class="task-item">深度强化学习 / 联邦学习</div>
+                <div class="task-item">计算机程序设计</div>
+                <div class="task-item">软件设计与开发</div>
             </div>
         </div>
 
         <div class="card">
-            <h2><span>⚙️</span> 其他服务</h2>
+            <h2><span>⚙️</span> 软件开发与部署服务</h2>
             <div class="task-list">
-                <div class="task-item">远程安装配置环境</div>
-                <div class="task-item">代码调试与bug修复</div>
-                <div class="task-item">代码解读与注释添加</div>
-                <div class="task-item">UI界面制作</div>
-                <div class="task-item">数学建模</div>
-                <div class="task-item">物理信息神经网络</div>
-                <div class="task-item">流体力学/有限元分析仿真</div>
-                <div class="task-item">电磁学/材料科学计算</div>
+                <div class="task-item">Java Web / Spring Boot 开发</div>
+                <div class="task-item">Vue / React 前端开发</div>
+                <div class="task-item">小程序开发</div>
+                <div class="task-item">数据库设计</div>
+                <div class="task-item">Docker 容器化部署</div>
+                <div class="task-item">远程配置运行环境</div>
+                <div class="task-item">项目部署上线</div>
+                <div class="task-item">LLM大模型应用开发</div>
+                <div class="task-item">单片机程序开发</div>
+                <div class="task-item">Bug修复与代码调试</div>
+                <div class="task-item">文档编写</div>
+                <div class="task-item">管理系统定制开发</div>
             </div>
         </div>
 
-        <h2 class="section-title">✨ 服务优势</h2>
+        <div class="card">
+            <h2><span>✨</span> 服务内容</h2>
+            <div class="task-list">
+                <div class="task-item">代码改进与优化</div>
+                <div class="task-item">模型训练与跑通</div>
+                <div class="task-item">模型优化与微调</div>
+                <div class="task-item">增加模块</div>
+                <div class="task-item">环境配置调试</div>
+                <div class="task-item">预测模型开发</div>
+                <div class="task-item">模型融合创新</div>
+                <div class="task-item">算法性能提升</div>
+                <div class="task-item">残差网络优化</div>
+                <div class="task-item">小创新点设计</div>
+                <div class="task-item">网络结构改进</div>
+                <div class="task-item">数学建模</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🏆 服务优势</h2>
         <div class="features-grid">
             <div class="feature-item">
                 <span class="feature-icon">⚡</span>
