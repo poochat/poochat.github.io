@@ -1,0 +1,895 @@
+---
+title: 休闲一刻
+date: 2026-05-03 10:00:00
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>休闲一刻 - 小游戏</title>
+    <link href="https://fonts.googleapis.com/css2?family=Microsoft+YaHei&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .games-header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .games-header h1 { font-size: 2.8em; margin-bottom: 10px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .games-header p { color: rgba(255,255,255,0.95); font-size: 1.2em; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 50px; }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .game-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+            border: none;
+            border-radius: 20px;
+            padding: 30px 25px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+        .game-icon { font-size: 4em; margin-bottom: 15px; }
+        .game-card h3 { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0; font-size: 1.4em; 
+        }
+        .game-card p { color: #666; font-size: 0.95em; line-height: 1.6; }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(102,126,234,0.95) 0%, rgba(118,75,162,0.95) 100%);
+            z-index: 10000;
+            overflow: auto;
+        }
+        .modal.active { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .modal-header {
+            width: 100%; max-width: 800px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding: 15px 0;
+        }
+        .modal-header h2 { color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .btn-group { display: flex; gap: 10px; }
+        .ctrl-btn {
+            background: rgba(255,255,255,0.2); color: white; border: 2px solid white;
+            padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 1em;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .ctrl-btn:hover { background: white; color: #764ba2; }
+        .close-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white; border: none;
+            padding: 10px 25px; border-radius: 25px; cursor: pointer; font-size: 1em;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+        .close-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255,107,107,0.5); }
+        .game-area {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f8f8 100%);
+            border-radius: 24px; padding: 30px;
+            max-width: 800px; width: 100%; text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .game-area.fullscreen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            max-width: 100vw;
+            border-radius: 0;
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        canvas { display: block; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .game-info { color: #666; margin-top: 15px; font-size: 1em; font-weight: 500; }
+        
+        /* 2048 */
+        .grid-2048 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 320px; margin: 0 auto; }
+        .cell-2048 {
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            font-size: 1.6em; font-weight: bold; border-radius: 12px; 
+            background: linear-gradient(145deg, #e8e8e8 0%, #d0d0d0 100%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .cell-2048.v2 { background: linear-gradient(145deg, #a8e6cf 0%, #88d8b0 100%); color: #2d5a3d; }
+        .cell-2048.v4 { background: linear-gradient(145deg, #88d8b0 0%, #6bcf8e 100%); color: #2d5a3d; }
+        .cell-2048.v8 { background: linear-gradient(145deg, #ffeaa7 0%, #fdcb6e 100%); color: #80650a; }
+        .cell-2048.v16 { background: linear-gradient(145deg, #fdcb6e 0%, #f39c12 100%); color: white; }
+        .cell-2048.v32 { background: linear-gradient(145deg, #fab1a0 0%, #e17055 100%); color: white; }
+        .cell-2048.v64 { background: linear-gradient(145deg, #ff7675 0%, #d63031 100%); color: white; }
+        .cell-2048.v128 { background: linear-gradient(145deg, #a29bfe 0%, #6c5ce7 100%); color: white; font-size: 1.4em; }
+        .cell-2048.v256 { background: linear-gradient(145deg, #74b9ff 0%, #0984e3 100%); color: white; font-size: 1.4em; }
+        .cell-2048.v512, .cell-2048.v1024, .cell-2048.v2048 { background: linear-gradient(145deg, #fd79a8 0%, #e84393 100%); color: white; font-size: 1.3em; }
+        
+        /* 记忆 */
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 320px; margin: 0 auto; }
+        .memory-card {
+            aspect-ratio: 1; 
+            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2em; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+            color: white;
+        }
+        .memory-card:hover { transform: scale(1.05); }
+        .memory-card.flipped { background: linear-gradient(145deg, #11998e 0%, #38ef7d 100%); }
+        .memory-card.matched { background: linear-gradient(145deg, #f093fb 0%, #f5576c 100%); cursor: default; }
+        
+        /* 井字棋 */
+        .tic-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 280px; margin: 0 auto; }
+        .tic-cell {
+            aspect-ratio: 1; 
+            background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3em; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .tic-cell:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(102,126,234,0.3); }
+        .tic-status { 
+            color: #764ba2; font-size: 1.3em; margin-bottom: 20px; text-align: center; 
+            font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        /* 华容道 */
+        .puzzle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 280px; margin: 0 auto; }
+        .puzzle-tile {
+            aspect-ratio: 1; 
+            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8em; font-weight: bold; cursor: pointer; transition: all 0.3s;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+        }
+        .puzzle-tile.empty { background: linear-gradient(145deg, #e0e0e0 0%, #d0d0d0 100%); cursor: default; }
+        .puzzle-tile:hover:not(.empty) { transform: scale(1.05); }
+        .puzzle-info { text-align: center; color: #666; margin-top: 20px; font-size: 1.1em; font-weight: 500; }
+        
+        /* 21点 */
+        .bj-hand { display: flex; justify-content: center; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+        .bj-card {
+            width: 70px; height: 100px; background: linear-gradient(145deg, #ffffff 0%, #f8f8f8 100%);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6em; font-weight: bold; color: #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .bj-card.red { color: #e74c3c; }
+        .bj-label { text-align: center; color: #666; font-size: 1.1em; font-weight: 500; }
+        
+        /* 打字 */
+        .typing-text {
+            padding: 25px; 
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 16px;
+            font-size: 1.4em; min-height: 120px; margin-bottom: 20px;
+            color: #fff; line-height: 1.8;
+        }
+        .typing-input {
+            width: 100%; padding: 18px; 
+            background: linear-gradient(145deg, #f8f8f8 0%, #e8e8e8 100%);
+            border: 3px solid #667eea; border-radius: 12px;
+            color: #333; font-size: 1.2em; outline: none;
+        }
+        .typing-input:focus { border-color: #764ba2; }
+        .typing-stats { margin-top: 15px; color: #764ba2; font-size: 1.1em; font-weight: bold; }
+        
+        /* 找不同 */
+        .find-container { display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; }
+        .find-container canvas { cursor: crosshair; border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        
+        /* 弹球 */
+        #bounceCanvas { cursor: none; }
+        
+        @media (max-width: 768px) {
+            .games-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .game-icon { font-size: 2.8em; }
+            .modal { padding: 10px; }
+            .btn-group { flex-wrap: wrap; }
+            .game-card { padding: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="games-header">
+        <h1>🎮 休闲一刻</h1>
+        <p>工作学习之余，放松一下吧！</p>
+    </header>
+    
+    <div class="container">
+        <div class="games-grid">
+            <div class="game-card" onclick="openGame('snake')">
+                <div class="game-icon">🐍</div>
+                <h3>贪吃蛇</h3>
+                <p>经典怀旧游戏，控制蛇吃掉食物</p>
+            </div>
+            <div class="game-card" onclick="openGame('2048')">
+                <div class="game-icon">🔢</div>
+                <h3>2048</h3>
+                <p>滑动合并数字方块</p>
+            </div>
+            <div class="game-card" onclick="openGame('memory')">
+                <div class="game-icon">🧠</div>
+                <h3>记忆翻牌</h3>
+                <p>记住牌的位置，配对成功</p>
+            </div>
+            <div class="game-card" onclick="openGame('tictactoe')">
+                <div class="game-icon">⭕</div>
+                <h3>井字棋</h3>
+                <p>和电脑对战井字棋</p>
+            </div>
+            <div class="game-card" onclick="openGame('puzzle')">
+                <div class="game-icon">🧩</div>
+                <h3>数字华容道</h3>
+                <p>滑动方块还原顺序</p>
+            </div>
+            <div class="game-card" onclick="openGame('bounce')">
+                <div class="game-icon">🏓</div>
+                <h3>弹球游戏</h3>
+                <p>用挡板反弹小球</p>
+            </div>
+            <div class="game-card" onclick="openGame('typing')">
+                <div class="game-icon">⌨️</div>
+                <h3>打字练习</h3>
+                <p>测试打字速度</p>
+            </div>
+            <div class="game-card" onclick="openGame('blackjack')">
+                <div class="game-icon">🃏</div>
+                <h3>21点</h3>
+                <p>经典纸牌游戏</p>
+            </div>
+            <div class="game-card" onclick="openGame('find')">
+                <div class="game-icon">🔍</div>
+                <h3>找不同</h3>
+                <p>找出两幅图的不同</p>
+            </div>
+            <div class="game-card" onclick="openGame('tetris')">
+                <div class="game-icon">🧱</div>
+                <h3>俄罗斯方块</h3>
+                <p>经典消除游戏</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 游戏模态框 -->
+    <div class="modal" id="gameModal">
+        <div class="modal-header">
+            <h2 id="gameTitle">游戏</h2>
+            <div class="btn-group">
+                <button class="ctrl-btn" id="fullscreenBtn" onclick="toggleFullscreen()">⛶ 全屏</button>
+                <button class="close-btn" onclick="closeGame()">✕ 关闭</button>
+            </div>
+        </div>
+        <div class="game-area" id="gameArea"></div>
+    </div>
+    
+    <script>
+    // ===== 游戏配置 =====
+    const gameConfigs = {
+        snake: { title: '🐍 贪吃蛇', w: 400, h: 400 },
+        '2048': { title: '🔢 2048' },
+        memory: { title: '🧠 记忆翻牌' },
+        tictactoe: { title: '⭕ 井字棋' },
+        puzzle: { title: '🧩 数字华容道' },
+        bounce: { title: '🏓 弹球游戏', w: 400, h: 400 },
+        typing: { title: '⌨️ 打字练习' },
+        blackjack: { title: '🃏 21点' },
+        find: { title: '🔍 找不同' },
+        tetris: { title: '🧱 俄罗斯方块', w: 240, h: 480 }
+    };
+    
+    let currentGameId = null;
+    let gameInterval = null;
+    
+    function openGame(id) {
+        currentGameId = id;
+        document.getElementById('gameModal').classList.add('active');
+        document.getElementById('gameTitle').textContent = gameConfigs[id].title;
+        document.getElementById('gameArea').innerHTML = '<p style="color:#888;">加载中...</p>';
+        document.getElementById('fullscreenBtn').textContent = '⛶ 全屏';
+        setTimeout(() => initGame(id), 50);
+    }
+    
+    function closeGame() {
+        if (gameInterval) { clearInterval(gameInterval); gameInterval = null; }
+        document.getElementById('gameModal').classList.remove('active');
+        document.getElementById('gameArea').classList.remove('fullscreen');
+    }
+    
+    function toggleFullscreen() {
+        const area = document.getElementById('gameArea');
+        area.classList.toggle('fullscreen');
+        const btn = document.getElementById('fullscreenBtn');
+        btn.textContent = area.classList.contains('fullscreen') ? '⛶ 退出全屏' : '⛶ 全屏';
+        // 重新调整canvas大小
+        window.dispatchEvent(new Event('resize'));
+    }
+    
+    function initGame(id) {
+        switch(id) {
+            case 'snake': initSnake(); break;
+            case '2048': init2048(); break;
+            case 'memory': initMemory(); break;
+            case 'tictactoe': initTicTacToe(); break;
+            case 'puzzle': initPuzzle(); break;
+            case 'bounce': initBounce(); break;
+            case 'typing': initTyping(); break;
+            case 'blackjack': initBlackjack(); break;
+            case 'find': initFind(); break;
+            case 'tetris': initTetris(); break;
+        }
+    }
+    
+    // ===== 贪吃蛇 =====
+    function initSnake() {
+        const area = document.getElementById('gameArea');
+        area.innerHTML = '<canvas id="snakeCanvas"></canvas><p class="game-info">方向键或WASD控制移动 | 吃食物得分</p>';
+        const canvas = document.getElementById('snakeCanvas');
+        const size = 20;
+        let canvasW = 400, canvasH = 400;
+        
+        function resize() {
+            const maxW = area.clientWidth - 40;
+            const maxH = window.innerHeight - 200;
+            const scale = Math.min(maxW / 400, maxH / 400, 1);
+            canvas.width = canvasW = Math.floor(400 * scale);
+            canvas.height = canvasH = Math.floor(400 * scale);
+        }
+        
+        resize();
+        window.addEventListener('resize', resize);
+        
+        const ctx = canvas.getContext('2d');
+        const count = 20;
+        let snake = [{x:10,y:10}], food = {x:15,y:15}, dx=0, dy=0, score=0, lastDir={dx:0,dy:0};
+        
+        document.onkeydown = e => {
+            if (e.key==='ArrowUp'||e.key==='w') { if(lastDir.dy!==1){dx=0;dy=-1;}}
+            if (e.key==='ArrowDown'||e.key==='s') { if(lastDir.dy!==-1){dx=0;dy=1;}}
+            if (e.key==='ArrowLeft'||e.key==='a') { if(lastDir.dx!==1){dx=-1;dy=0;}}
+            if (e.key==='ArrowRight'||e.key==='d') { if(lastDir.dx!==-1){dx=1;dy=0;}}
+            e.preventDefault();
+        };
+        
+        function loop() {
+            lastDir = {dx, dy};
+            ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,canvasW,canvasH);
+            
+            let h = {x:snake[0].x+dx, y:snake[0].y+dy};
+            
+            if (h.x<0||h.x>=count||h.y<0||h.y>=count||snake.some(s=>s.x===h.x&&s.y===h.y)) {
+                alert('游戏结束！得分: '+score);
+                snake=[{x:10,y:10}]; dx=dy=0; lastDir={dx:0,dy:0}; score=0;
+            }
+            
+            snake.unshift(h);
+            if (h.x===food.x&&h.y===food.y) { 
+                score+=10; 
+                do { food={x:Math.random()*count|0,y:Math.random()*count|0}; }
+                while(snake.some(s=>s.x===food.x&&s.y===food.y));
+            } else { snake.pop(); }
+            
+            const scale = canvasW / 400;
+            ctx.fillStyle='#ff4444'; ctx.fillRect(snake[0].x*size*scale,snake[0].y*size*scale,(size-1)*scale,(size-1)*scale);
+            ctx.fillStyle='#cc0000'; snake.slice(1).forEach(s=>ctx.fillRect(s.x*size*scale,s.y*size*scale,(size-1)*scale,(size-1)*scale));
+            ctx.fillStyle='#00ff00'; ctx.fillRect(food.x*size*scale,food.y*size*scale,(size-1)*scale,(size-1)*scale);
+            ctx.fillStyle='#fff'; ctx.font=`${14*scale}px Arial`; ctx.fillText('分数: '+score,5*scale,18*scale);
+        }
+        
+        if (gameInterval) clearInterval(gameInterval);
+        gameInterval = setInterval(loop, 120);
+        loop();
+    }
+    
+    // ===== 2048 =====
+    function init2048() {
+        const area = document.getElementById('gameArea');
+        area.innerHTML = '<div class="grid-2048" id="g2048"></div><p class="game-info">方向键移动方块，相同数字相加</p>';
+        let g = Array(4).fill().map(()=>Array(4).fill(0));
+        
+        function add() { 
+            let e=[]; 
+            for(let i=0;i<4;i++) for(let j=0;j<4;j++) if(!g[i][j]) e.push({i,j}); 
+            if(e.length) { let {i,j}=e[Math.random()*e.length|0]; g[i][j]=Math.random()<.9?2:4; } 
+        }
+        
+        function render() {
+            let html=''; 
+            for(let i=0;i<4;i++) for(let j=0;j<4;j++) {
+                let v=g[i][j], cls='cell-2048'+(v?' v'+v:'');
+                html+=`<div class="${cls}">${v||''}</div>`;
+            }
+            document.getElementById('g2048').innerHTML=html;
+        }
+        
+        function slide(row) {
+            let a=row.filter(x=>x);
+            for(let i=0;i<a.length-1;i++) if(a[i]===a[i+1]) { a[i]*=2; a[i+1]=0; }
+            a=a.filter(x=>x); while(a.length<4) a.push(0); return a;
+        }
+        
+        function canMove() {
+            for(let i=0;i<4;i++) for(let j=0;j<4;j++) {
+                if(!g[i][j]) return true;
+                if(j<3&&g[i][j]===g[i][j+1]) return true;
+                if(i<3&&g[i][j]===g[i+1][j]) return true;
+            }
+            return false;
+        }
+        
+        document.onkeydown = e => {
+            let k={'ArrowUp':'up','ArrowDown':'down','ArrowLeft':'left','ArrowRight':'right'}[e.key];
+            if(k) {
+                e.preventDefault();
+                let old = JSON.stringify(g);
+                if(k==='left') g=g.map(r=>slide(r));
+                if(k==='right') g=g.map(r=>slide([...r].reverse()).reverse());
+                if(k==='up') { for(let j=0;j<4;j++) { let c=[g[0][j],g[1][j],g[2][j],g[3][j]]; c=slide(c); g.forEach((r,i)=>r[j]=c[i]); } }
+                if(k==='down') { for(let j=0;j<4;j++) { let c=[g[3][j],g[2][j],g[1][j],g[0][j]]; c=slide(c); g.forEach((r,i)=>r[3-j]=c[i]); } }
+                if(JSON.stringify(g)!==old) { add(); render(); }
+                if(!canMove()) { setTimeout(()=>alert('游戏结束！无法移动了！'),100); }
+            }
+        };
+        add(); add(); render();
+    }
+    
+    // ===== 记忆翻牌 =====
+    function initMemory() {
+        const area = document.getElementById('gameArea');
+        area.innerHTML='<div class="memory-grid" id="memGrid"></div><p class="game-info">找到所有配对 | 步数: <span id="memMoves">0</span></p>';
+        const emojis=['🎮','🎯','🎲','🎨','🎭','🎪','🎢','🎡'];
+        let cards=[...emojis,...emojis].sort(()=>Math.random()-.5), flipped=[], matched=0, moves=0, locked=false;
+        const grid=document.getElementById('memGrid');
+        
+        function render() {
+            grid.innerHTML=''; 
+            cards.forEach((e,i)=>{
+                let f=flipped.find(x=>x.i===i);
+                let isMatched = matched>=8;
+                grid.innerHTML+=`<div class="memory-card${f?' flipped':''}${isMatched?' matched':''}" data-idx="${i}">${f||isMatched?e:'?'}</div>`;
+            });
+            document.getElementById('memMoves').textContent=moves;
+        }
+        
+        grid.onclick = e => {
+            let card = e.target.closest('.memory-card');
+            if(!card || locked || matched>=8) return;
+            let i = parseInt(card.dataset.idx);
+            if(flipped.find(x=>x.i===i)) return;
+            if(flipped.length>=2) return;
+            
+            flipped.push({i,v:cards[i]});
+            render();
+            
+            if(flipped.length===2) {
+                moves++;
+                locked = true;
+                if(flipped[0].v===flipped[1].v) { 
+                    matched++; 
+                    flipped=[]; 
+                    locked = false;
+                    render();
+                    if(matched>=8) setTimeout(()=>alert('太棒了！用了'+moves+'步！'),100); 
+                } else {
+                    setTimeout(()=>{ flipped=[]; locked=false; render(); },800);
+                }
+            }
+        };
+        render();
+    }
+    
+    // ===== 井字棋 =====
+    function initTicTacToe() {
+        const area=document.getElementById('gameArea');
+        area.innerHTML='<div class="tic-status" id="ticStatus">你的回合 (X)</div><div class="tic-board" id="ticBoard"></div><div class="btn-group" style="margin-top:15px;"><button class="ctrl-btn" onclick="initTicTacToe()">重新开始</button></div>';
+        let board=Array(9).fill(''), cur='X', over=false;
+        
+        function check() {
+            const l=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for(let [a,b,c] of l) if(board[a]&&board[a]===board[b]&&board[b]===board[c]) return board[a];
+            return board.includes('')?null:'平局';
+        }
+        
+        function render() {
+            document.getElementById('ticBoard').innerHTML='';
+            board.forEach((v,i)=>{
+                let cell = document.createElement('div');
+                cell.className = 'tic-cell';
+                cell.textContent = v;
+                cell.dataset.idx = i;
+                if(!v && !over && cur==='X') cell.onclick = () => ticClick(i);
+                document.getElementById('ticBoard').appendChild(cell);
+            });
+            const w=check();
+            if(w) { 
+                over=true; 
+                document.getElementById('ticStatus').textContent=w==='平局'?'平局！':(w==='X'?'你赢了！🎉':'电脑赢了！'); 
+            }
+        }
+        
+        function ticClick(i) {
+            if(board[i]||over||cur==='O') return;
+            board[i]='X';
+            const w=check(); if(w) { render(); return; }
+            cur='O'; document.getElementById('ticStatus').textContent='电脑思考中...';
+            setTimeout(()=>{
+                let empty=board.map((v,i)=>v?'':i).filter(i=>i!=='');
+                if(empty.length) board[empty[Math.random()*empty.length|0]]='O';
+                cur='X'; render();
+            },400);
+            render();
+        }
+        render();
+    }
+    
+    // ===== 数字华容道 =====
+    function initPuzzle() {
+        const area=document.getElementById('gameArea');
+        area.innerHTML='<div class="puzzle-grid" id="puzGrid"></div><div class="puzzle-info">移动次数: <span id="puzMoves">0</span></div><div class="btn-group" style="margin-top:15px;"><button class="ctrl-btn" onclick="initPuzzle()">重新开始</button></div>';
+        let tiles=[1,2,3,4,5,6,7,8,0], moves=0;
+        
+        // 洗牌确保有解
+        for(let i=0;i<200;i++) {
+            let e=tiles.indexOf(0), nb=[];
+            if(e%3>0) nb.push(e-1);
+            if(e%3<2) nb.push(e+1);
+            if(e>=3) nb.push(e-3);
+            if(e<6) nb.push(e+3);
+            let rand = nb[Math.random()*nb.length|0];
+            [tiles[e],tiles[rand]]=[tiles[rand],tiles[e]];
+        }
+        
+        function render() {
+            document.getElementById('puzGrid').innerHTML='';
+            tiles.forEach((v,i)=>{
+                let tile = document.createElement('div');
+                tile.className='puzzle-tile'+(v?'':' empty');
+                tile.textContent=v||'';
+                tile.dataset.idx=i;
+                if(v) tile.onclick=()=>puzClick(i);
+                document.getElementById('puzGrid').appendChild(tile);
+            });
+            document.getElementById('puzMoves').textContent=moves;
+        }
+        
+        window.puzClick = (i) => {
+            let e=tiles.indexOf(0), nb=[];
+            if(e%3>0) nb.push(e-1);
+            if(e%3<2) nb.push(e+1);
+            if(e>=3) nb.push(e-3);
+            if(e<6) nb.push(e+3);
+            if(nb.includes(i)) { [tiles[e],tiles[i]]=[tiles[i],tiles[e]]; moves++; render(); if(tiles.join('')==='123456780') setTimeout(()=>alert('恭喜！用了'+moves+'步！'),100); }
+        };
+        render();
+    }
+    
+    // ===== 弹球 =====
+    function initBounce() {
+        const area=document.getElementById('gameArea');
+        area.innerHTML='<canvas id="bounceCanvas"></canvas><p class="game-info">鼠标或触摸控制挡板 | 接住小球得分</p>';
+        const canvas=document.getElementById('bounceCanvas');
+        let canvasW=400, canvasH=400;
+        
+        function resize() {
+            const maxW = area.clientWidth - 40;
+            const maxH = window.innerHeight - 200;
+            const scale = Math.min(maxW / 400, maxH / 400, 1);
+            canvas.width = canvasW = Math.floor(400 * scale);
+            canvas.height = canvasH = Math.floor(400 * scale);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        
+        const ctx=canvas.getContext('2d');
+        const scale = () => canvasW / 400;
+        let ball={x:200,y:200,dx:3,dy:-3,r:10}, paddle={x:160,y:360,w:80,h:15}, score=0;
+        
+        canvas.onmousemove=e=>{ let r=canvas.getBoundingClientRect(); paddle.x=(e.clientX-r.left)*scale()-paddle.w/2; paddle.x=Math.max(0,Math.min(canvasW-paddle.w,paddle.x)); };
+        canvas.ontouchmove=e=>{ e.preventDefault(); let r=canvas.getBoundingClientRect(); paddle.x=(e.touches[0].clientX-r.left)*scale()-paddle.w/2; paddle.x=Math.max(0,Math.min(canvasW-paddle.w,paddle.x)); };
+        
+        function loop() {
+            ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,canvasW,canvasH);
+            ball.x+=ball.dx; ball.y+=ball.dy;
+            
+            if(ball.x<=ball.r) { ball.dx=Math.abs(ball.dx); ball.x=ball.r; }
+            if(ball.x>=canvasW-ball.r) { ball.dx=-Math.abs(ball.dx); ball.x=canvasW-ball.r; }
+            if(ball.y<=ball.r) { ball.dy=Math.abs(ball.dy); ball.y=ball.r; }
+            
+            if(ball.y>=canvasH-ball.r) {
+                if(ball.x>=paddle.x&&ball.x<=paddle.x+paddle.w) { 
+                    ball.dy=-Math.abs(ball.dy); 
+                    ball.y=canvasH-ball.r-paddle.h;
+                    score++;
+                } else {
+                    alert('游戏结束！得分: '+score); 
+                    score=0; ball={x:canvasW/2,y:canvasH/2,dx:3,dy:-3,r:10*scale()}; 
+                }
+            }
+            
+            ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2); ctx.fillStyle='#ff4444'; ctx.fill();
+            ctx.fillStyle='#00ff00'; ctx.fillRect(paddle.x,canvasH-paddle.h,paddle.w,paddle.h);
+            ctx.fillStyle='#fff'; ctx.font=`${14*scale()}px Arial`; ctx.fillText('分数: '+score,5*scale(),18*scale());
+            
+            if(gameInterval) requestAnimationFrame(loop);
+        }
+        
+        if (gameInterval) cancelAnimationFrame(gameInterval);
+        gameInterval = 'bounce';
+        loop();
+    }
+    
+    // ===== 打字 =====
+    function initTyping() {
+        const phrases=['人工智能改变世界','编程是一门艺术','学习使我快乐','科技引领未来','代码创造价值'];
+        const area=document.getElementById('gameArea');
+        area.innerHTML='<div class="typing-text" id="typeText"></div><input class="typing-input" id="typeInput" placeholder="点击这里开始打字..."><div class="typing-stats">速度: <span id="typeWpm">0</span> 字/分 | 正确率: <span id="typeAcc">100</span>%</div>';
+        let phrase=phrases[Math.random()*phrases.length|0], start=null, chars=0, errors=0;
+        document.getElementById('typeText').textContent=phrase;
+        const input=document.getElementById('typeInput');
+        input.value=''; input.focus();
+        input.oninput=()=>{
+            if(!start) start=Date.now();
+            const t=input.value, p=phrase;
+            let html='';
+            for(let i=0;i<p.length;i++) {
+                if(i<t.length) html+=`<span style="color:${t[i]===p[i]?'#0f0':'#f00'}">${p[i]}</span>`;
+                else html+=p[i];
+            }
+            document.getElementById('typeText').innerHTML=html;
+            chars=t.length; errors=[...t].filter((c,i)=>c!==p[i]).length;
+            const min=(Date.now()-start)/60000;
+            document.getElementById('typeWpm').textContent=Math.round(chars/5/min)||0;
+            document.getElementById('typeAcc').textContent=chars?Math.round((chars-errors)/chars*100):100;
+            if(t===phrase) { phrase=phrases[Math.random()*phrases.length|0]; document.getElementById('typeText').textContent=phrase; input.value=''; start=null; }
+        };
+    }
+    
+    // ===== 21点 =====
+    function initBlackjack() {
+        const area=document.getElementById('gameArea');
+        area.innerHTML='<div id="bjArea"></div><div class="btn-group" style="margin-top:15px;"><button class="ctrl-btn" onclick="initBlackjack()">重新开始</button></div>';
+        const suits=['♠','♥','♦','♣'], vals=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+        let pCards=[], dCards=[], over=false;
+        
+        function card() { return vals[Math.random()*vals.length|0]+suits[Math.random()*4|0]; }
+        
+        function calc(cards) {
+            let s=0, a=0;
+            for(let c of cards) {
+                let v=c.slice(0,-1);
+                if(v==='A') { a++; s+=11; }
+                else if(['K','Q','J'].includes(v)) s+=10;
+                else s+=+v;
+            }
+            while(s>21&&a--) s-=10;
+            return s;
+        }
+        
+        function render() {
+            let html=`<div class="bj-label">庄家 (${calc(dCards)})</div><div class="bj-hand">${dCards.map(c=>`<div class="bj-card${'♥♦'.includes(c.slice(-1))?' red':''}">${c}</div>`).join('')}</div>`;
+            html+=`<div class="bj-label">你 (${calc(pCards)})</div><div class="bj-hand">${pCards.map(c=>`<div class="bj-card${'♥♦'.includes(c.slice(-1))?' red':''}">${c}</div>`).join('')}</div>`;
+            if(!over) html+='<div class="btn-group" style="margin-top:20px;"><button class="close-btn" onclick="bjHit()">要牌</button><button class="close-btn" onclick="bjStand()">停牌</button></div>';
+            document.getElementById('bjArea').innerHTML=html;
+        }
+        
+        window.bjHit=()=>{ 
+            pCards.push(card()); 
+            if(calc(pCards)>21) { over=true; render(); setTimeout(()=>alert('爆牌！你输了！'),100); } 
+            else render(); 
+        };
+        
+        window.bjStand=()=>{
+            while(calc(dCards)<17) dCards.push(card());
+            over=true; render();
+            let p=calc(pCards), d=calc(dCards);
+            setTimeout(()=>{
+                if(d>21||p>d) alert('你赢了！🎉');
+                else if(p<d) alert('你输了！');
+                else alert('平局！');
+            },100);
+        };
+        
+        pCards=[card(),card()]; dCards=[card(),card()];
+        render();
+    }
+    
+    // ===== 找不同 =====
+    function initFind() {
+        const area=document.getElementById('gameArea');
+        const size = 200;
+        area.innerHTML='<div class="find-container"><canvas id="findC1"></canvas><canvas id="findC2"></canvas></div><p class="game-info">找到 <span id="findFound">0</span> / <span id="findTotal">3</span> 处不同 (点击右边图)</p>';
+        const c1=document.getElementById('findC1'), c2=document.getElementById('findC2');
+        
+        function resize() {
+            const maxW = Math.min((area.clientWidth - 60) / 2, 300);
+            const s = Math.floor(maxW);
+            c1.width = c2.width = s;
+            c1.height = c2.height = s;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        
+        const ctx1=c1.getContext('2d'), ctx2=c2.getContext('2d');
+        const colors=['#ff4444','#00ff00','#0088ff','#ffff00','#ff00ff'];
+        let found=0, total=3;
+        
+        function draw(ctx, diffX, diffY, diffW, diffH) {
+            const w=c1.width, h=c1.height;
+            ctx.fillStyle='#1a1a1a'; ctx.fillRect(0,0,w,h);
+            // 固定图形
+            for(let i=0;i<12;i++) {
+                ctx.fillStyle=colors[i%colors.length];
+                ctx.beginPath();
+                ctx.arc((i*40+20)%w, Math.floor(i/5)*80+60, 15+i%3*5, 0, Math.PI*2);
+                ctx.fill();
+            }
+            // 差异区域
+            if(diffX!==null) {
+                ctx.fillStyle='#ff0000'; 
+                ctx.fillRect(diffX*w/size, diffY*h/size, diffW*w/size, diffH*h/size);
+            }
+        }
+        
+        function newRound() {
+            const diffX=50+Math.random()*80, diffY=50+Math.random()*80;
+            draw(ctx1, null); draw(ctx2, diffX, diffY, 30, 30);
+        }
+        
+        newRound();
+        document.getElementById('findFound').textContent=found;
+        document.getElementById('findTotal').textContent=total;
+        
+        c2.onclick=e=>{
+            let r=c2.getBoundingClientRect(), 
+                x=(e.clientX-r.left)*c2.width/r.width, 
+                y=(e.clientY-r.top)*c2.height/r.height;
+            const diffX=50+Math.random()*80, diffY=50+Math.random()*80;
+            
+            if(x>=diffX*c2.width/size&&x<=diffX*c2.width/size+30*c2.width/size &&
+               y>=diffY*c2.height/size&&y<=diffY*c2.height/size+30*c2.height/size) {
+                found++; 
+                document.getElementById('findFound').textContent=found;
+                if(found>=total) { setTimeout(()=>alert('太棒了！你找到了所有不同！🎉'),100); found=0; }
+                newRound();
+            }
+        };
+    }
+    
+    // ===== 俄罗斯方块 =====
+    function initTetris() {
+        const area=document.getElementById('gameArea');
+        area.innerHTML='<canvas id="tetrisCanvas"></canvas><p class="game-info">←→移动 ↑旋转 ↓加速 | 消除整行得分</p>';
+        const canvas=document.getElementById('tetrisCanvas');
+        const baseW=240, baseH=480;
+        let canvasW=baseW, canvasH=baseH;
+        
+        function resize() {
+            const maxW = area.clientWidth - 40;
+            const maxH = window.innerHeight - 200;
+            const scale = Math.min(maxW/baseW, maxH/baseH, 1);
+            canvas.width = canvasW = Math.floor(baseW * scale);
+            canvas.height = canvasH = Math.floor(baseH * scale);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        
+        const ctx=canvas.getContext('2d');
+        const scale = () => canvasW / baseW;
+        const cols=baseW/30|0, rows=baseH/30|0;
+        const pieces=[
+            [[1,1,1,1]],
+            [[1,1],[1,1]],
+            [[0,1,1],[1,1,0]],
+            [[1,0,0],[1,1,1]],
+            [[0,0,1],[1,1,1]],
+            [[0,1,0],[0,1,0],[1,1,1]],
+            [[0,1,0],[1,1,1],[0,1,0]]
+        ];
+        let board=Array(rows).fill().map(()=>Array(cols).fill(0)), 
+            piece={shape:pieces[Math.random()*pieces.length|0],x:cols/2|0,y:0}, score=0, over=false, speed=300;
+        
+        function collide(offsetX=0, offsetY=0, shape=piece.shape) {
+            for(let i=0;i<shape.length;i++) for(let j=0;j<shape[i].length;j++)
+                if(shape[i][j]) {
+                    let nx=piece.x+j+offsetX, ny=piece.y+i+offsetY;
+                    if(nx<0||nx>=cols||ny>=rows) return true;
+                    if(ny>=0&&board[ny][nx]) return true;
+                }
+            return false;
+        }
+        
+        function merge() {
+            piece.shape.forEach((r,i)=>r.forEach((c,j)=>{ if(c&&piece.y+i>=0) board[piece.y+i][piece.x+j]=1; }));
+            // 消除
+            for(let i=rows-1;i>=0;i--) {
+                if(board[i].every(c=>c)) {
+                    board.splice(i,1);
+                    board.unshift(Array(cols).fill(0));
+                    score+=100;
+                    speed=Math.max(100,speed-5);
+                }
+            }
+        }
+        
+        function newPiece() {
+            piece={shape:pieces[Math.random()*pieces.length|0],x:cols/2|0,y:0};
+            if(collide()) { over=true; alert('游戏结束！分数: '+score); }
+        }
+        
+        function draw() {
+            const s=scale(), sz=30*s;
+            ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,canvasW,canvasH);
+            ctx.strokeStyle='#222'; 
+            for(let i=0;i<=rows;i++) { ctx.beginPath(); ctx.moveTo(0,i*sz); ctx.lineTo(canvasW,i*sz); ctx.stroke(); }
+            for(let j=0;j<=cols;j++) { ctx.beginPath(); ctx.moveTo(j*sz,0); ctx.lineTo(j*sz,canvasH); ctx.stroke(); }
+            
+            for(let i=0;i<rows;i++) for(let j=0;j<cols;j++) if(board[i][j]) {
+                ctx.fillStyle='#666'; ctx.fillRect(j*sz+2,i*sz+2,sz-4,sz-4);
+            }
+            
+            piece.shape.forEach((r,i)=>r.forEach((c,j)=>{
+                if(c&&piece.y+i>=0) {
+                    ctx.fillStyle='#ff4444'; ctx.fillRect((piece.x+j)*sz+2,(piece.y+i)*sz+2,sz-4,sz-4);
+                }
+            }));
+            
+            ctx.fillStyle='#fff'; ctx.font=`${12*s}px Arial`; ctx.fillText('分数: '+score,5*s,15*s);
+        }
+        
+        function update() {
+            if(collide(0,1)) { merge(); newPiece(); }
+            else piece.y++;
+        }
+        
+        let lastTime=0;
+        function loop(time) {
+            if(over) return;
+            if(time-lastTime>=speed) { update(); lastTime=time; }
+            draw();
+            gameInterval = requestAnimationFrame(loop);
+        }
+        
+        document.onkeydown=e=>{
+            if(e.key==='ArrowLeft'&&!collide(-1)) piece.x--;
+            if(e.key==='ArrowRight'&&!collide(1)) piece.x++;
+            if(e.key==='ArrowDown'&&!collide(0,1)) { piece.y++; score++; }
+            if(e.key==='ArrowUp') {
+                let rot=piece.shape[0].map((_,i)=>piece.shape.map(r=>r[i]).reverse());
+                if(!collide(0,0,rot)) piece.shape=rot;
+            }
+        };
+        
+        if (gameInterval) cancelAnimationFrame(gameInterval);
+        gameInterval = 'tetris';
+        loop(0);
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+---
+layout: false
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>承接项目 - 项目服务</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        .back-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        .header h1 { font-size: 2.8em; margin-bottom: 15px; }
+        .header p { font-size: 1.3em; opacity: 0.95; }
+        .badge { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.2); 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            margin-top: 15px;
+            font-size: 0.95em;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 span { font-size: 1.5em; }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .service-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .service-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .service-item p { color: #666; line-height: 1.6; font-size: 0.95em; }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tech-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .task-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 12px;
+        }
+        .task-item {
+            background: #f8f9fa;
+            padding: 12px 18px;
+            border-radius: 10px;
+            color: #555;
+            position: relative;
+            padding-left: 28px;
+            font-size: 0.95em;
+        }
+        .task-item::before {
+            content: "✓";
+            color: #667eea;
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+        }
+        
+        .frameworks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .framework-item {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        .contact-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        .wechat-id {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+            letter-spacing: 3px;
+        }
+        .wechat-qrcode {
+            margin: 25px auto;
+            max-width: 220px;
+        }
+        .wechat-qrcode img {
+            width: 100%;
+            border-radius: 12px;
+            border: 4px solid white;
+        }
+        .contact-note { font-size: 1.1em; margin-top: 15px; opacity: 0.9; }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .feature-item {
+            text-align: center;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .feature-icon { font-size: 2.5em; margin-bottom: 10px; }
+        .feature-item h4 { color: #667eea; margin-bottom: 8px; }
+        .feature-item p { color: #666; font-size: 0.9em; }
+        
+        .highlight-section {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+            border: 2px solid #ffd700;
+        }
+        .highlight-section h2 { color: #b8860b; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            margin: 40px 0 30px;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+        
+        .intro-text {
+            line-height: 1.9;
+            color: #555;
+            font-size: 1.02em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .task-list { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .contact-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://ai.coomatrix.com" class="back-home">🏠 返回首页</a>
+        <header class="header">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 50px; flex-wrap: wrap;">
+                <!-- 左侧：标题区域 -->
+                <div style="text-align: left;">
+                    <h1 style="font-size: 2.5em; margin-bottom: 15px;">🤖 项目承接</h1>
+                    <p style="font-size: 1.2em; opacity: 0.95; margin-bottom: 15px;">专业的人工智能解决方案服务</p>
+                    <span class="badge">🎓 985硕博士团队 | 个人接单 | 品质保障</span>
+                    <div style="margin-top: 20px; font-size: 1.1em; opacity: 0.9;">
+                        <div>⏰ 全天候在线 | 🚀 快速响应 | 💯 品质保证</div>
+                    </div>
+                </div>
+                <!-- 右侧：联系方式 -->
+                <div style="background: rgba(255,255,255,0.2); border-radius: 16px; padding: 20px; text-align: center; backdrop-filter: blur(10px);">
+                    <div style="font-size: 1.1em; margin-bottom: 10px; font-weight: 600;">📱 扫码咨询</div>
+                    <img src="https://ai.coomatrix.com/projects/wechat-qrcode.jpg" alt="微信二维码" style="width: 140px; height: 140px; border-radius: 12px; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    <div style="margin-top: 10px; font-size: 1em; font-weight: bold;">💬 popoking01</div>
+                    <div style="font-size: 0.85em; opacity: 0.9; margin-top: 5px;">备注"项目咨询"</div>
+                </div>
+            </div>
+        </header>
+
+        <h2 class="section-title">💡 核心服务领域</h2>
+        <div class="card">
+            <h2><span>🎯</span> 深度学习与机器学习服务</h2>
+            <p class="intro-text" style="margin-bottom: 20px;">
+                专注于深度学习、机器学习、强化学习等前沿人工智能领域，为留学生及相关科研人员提供专业的编程服务与技术支持。代码复现、代码改进、带跑通、创新点分析、文章复现、深度学习指导。
+            </p>
+            <div class="services-grid">
+                <div class="service-item">
+                    <h3>🧠 深度学习</h3>
+                    <p>CNN、DBN、LSTM、RNN、GAN、RBFN、MLP、SOM、RBN、Autoencoders 等网络架构搭建与优化</p>
+                </div>
+                <div class="service-item">
+                    <h3>👁️ 计算机视觉 CV</h3>
+                    <p>图像分类、目标检测、语义分割、实例分割、人脸识别、目标跟踪、行为识别</p>
+                </div>
+                <div class="service-item">
+                    <h3>🔗 图神经网络 GNN</h3>
+                    <p>图卷积神经网络、节点分类、推荐算法（LightGCN、NCGF）、自监督学习</p>
+                </div>
+                <div class="service-item">
+                    <h3>📝 自然语言处理 NLP</h3>
+                    <p>文本分类、情感分析、命名实体识别、关系抽取、事件抽取、聊天机器人</p>
+                </div>
+                <div class="service-item">
+                    <h3>🏥 医学图像处理</h3>
+                    <p>DICOM/NII数据处理、肿瘤分割、影像组学、病灶检测、病理分析</p>
+                </div>
+                <div class="service-item">
+                    <h3>🎮 强化学习</h3>
+                    <p>策略优化、环境交互、避障规划、游戏 AI、强化学习算法实现</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🛠️ 技术框架</h2>
+        <div class="card">
+            <h2><span>📦</span> 主流深度学习框架与工具</h2>
+            <div class="frameworks">
+                <div class="framework-item">PyTorch</div>
+                <div class="framework-item">TensorFlow</div>
+                <div class="framework-item">Keras</div>
+                <div class="framework-item">PaddlePaddle</div>
+                <div class="framework-item">OpenMMLab</div>
+                <div class="framework-item">OpenCV</div>
+                <div class="framework-item">MATLAB</div>
+                <div class="framework-item">C++ / Python</div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2><span>🔧</span> 核心算法与模型</h2>
+            <div class="tech-tags">
+                <span class="tech-tag">YOLO系列</span>
+                <span class="tech-tag">Faster R-CNN</span>
+                <span class="tech-tag">SSD</span>
+                <span class="tech-tag">CenterNet</span>
+                <span class="tech-tag">UNet</span>
+                <span class="tech-tag">FCN</span>
+                <span class="tech-tag">DeepLab</span>
+                <span class="tech-tag">ResNet</span>
+                <span class="tech-tag">VGG</span>
+                <span class="tech-tag">MobileNet</span>
+                <span class="tech-tag">Transformer</span>
+                <span class="tech-tag">ViT</span>
+                <span class="tech-tag">GoogLeNet</span>
+                <span class="tech-tag">GAN</span>
+                <span class="tech-tag">LSTM / GRU</span>
+                <span class="tech-tag">BERT</span>
+                <span class="tech-tag">GCN</span>
+                <span class="tech-tag">Oriented RCNN</span>
+            </div>
+        </div>
+
+        <h2 class="section-title">📋 具体项目类型</h2>
+        <div class="card">
+            <h2><span>🖼️</span> 计算机视觉项目</h2>
+            <div class="task-list">
+                <div class="task-item">人脸识别、表情识别、年龄/性别识别</div>
+                <div class="task-item">目标检测（YOLO/FasterRCNN/SSD/CenterNet）</div>
+                <div class="task-item">语义分割、实例分割（UNet/Deeplab/FCN）</div>
+                <div class="task-item">图像去噪、去模糊、去水印</div>
+                <div class="task-item">图像超分辨率重建</div>
+                <div class="task-item">图像风格迁移</div>
+                <div class="task-item">图像分类（ResNet/VGG/MobileNet/Transformer）</div>
+                <div class="task-item">目标跟踪与行为识别</div>
+                <div class="task-item">3D目标检测</div>
+                <div class="task-item">遥感图像目标检测</div>
+                <div class="task-item">SAR图像船舰检测</div>
+                <div class="task-item">小目标检测</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>🔍</span> 检测与识别应用</h2>
+            <div class="task-list">
+                <div class="task-item">口罩检测、安全帽检测</div>
+                <div class="task-item">摔倒检测、吸烟检测</div>
+                <div class="task-item">火焰检测、烟雾检测</div>
+                <div class="task-item">车辆检测、车牌识别</div>
+                <div class="task-item">行人检测、行人计数</div>
+                <div class="task-item">水果识别、花卉识别</div>
+                <div class="task-item">交通标志识别</div>
+                <div class="task-item">垃圾分类、手势识别</div>
+                <div class="task-item">PCB缺陷检测</div>
+                <div class="task-item">水面垃圾识别</div>
+                <div class="task-item">遥感图像变化检测</div>
+                <div class="task-item">姿态估计</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>📊</span> 机器学习与数据分析</h2>
+            <div class="task-list">
+                <div class="task-item">回归预测、时间序列预测</div>
+                <div class="task-item">分类问题（二分类/多分类）</div>
+                <div class="task-item">数据预处理与数据增强</div>
+                <div class="task-item">学习率调度器优化</div>
+                <div class="task-item">模型训练与泛化</div>
+                <div class="task-item">特征工程</div>
+                <div class="task-item">模型压缩与量化</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>🔬</span> 学术与研究服务</h2>
+            <div class="task-list">
+                <div class="task-item">论文代码复现</div>
+                <div class="task-item">网络结构创新与改进</div>
+                <div class="task-item">算法性能提升优化</div>
+                <div class="task-item">创新点分析（1-3个）</div>
+                <div class="task-item">SCI论文全程1v1指导</div>
+                <div class="task-item">提供源码和改进方案</div>
+                <div class="task-item">代码讲解与实现指导</div>
+                <div class="task-item">核心期刊发表支持</div>
+            </div>
+        </div>
+
+        <div class="card highlight-section">
+            <h2><span>🎓</span> 留学生课程辅导</h2>
+            <div class="task-list">
+                <div class="task-item">Python / Java / C/C++ / MATLAB 编程</div>
+                <div class="task-item">Machine Learning / Deep Learning Assignment</div>
+                <div class="task-item">Course Project / Final Project 辅导</div>
+                <div class="task-item">毕设项目开发与指导</div>
+                <div class="task-item">CNN / RNN / LSTM / GRU 算法</div>
+                <div class="task-item">Transformer / GNN / BERT 讲解</div>
+                <div class="task-item">决策树 / SVM / XGBoost 实现</div>
+                <div class="task-item">数据结构 / 算法 / 操作系统</div>
+                <div class="task-item">线性代数 / 概率统计 / 矩阵论</div>
+                <div class="task-item">深度强化学习 / 联邦学习</div>
+                <div class="task-item">计算机程序设计</div>
+                <div class="task-item">软件设计与开发</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>⚙️</span> 软件开发与部署服务</h2>
+            <div class="task-list">
+                <div class="task-item">Java Web / Spring Boot 开发</div>
+                <div class="task-item">Vue / React 前端开发</div>
+                <div class="task-item">小程序开发</div>
+                <div class="task-item">数据库设计</div>
+                <div class="task-item">Docker 容器化部署</div>
+                <div class="task-item">远程配置运行环境</div>
+                <div class="task-item">项目部署上线</div>
+                <div class="task-item">LLM大模型应用开发</div>
+                <div class="task-item">单片机程序开发</div>
+                <div class="task-item">Bug修复与代码调试</div>
+                <div class="task-item">文档编写</div>
+                <div class="task-item">管理系统定制开发</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>✨</span> 服务内容</h2>
+            <div class="task-list">
+                <div class="task-item">代码改进与优化</div>
+                <div class="task-item">模型训练与跑通</div>
+                <div class="task-item">模型优化与微调</div>
+                <div class="task-item">增加模块</div>
+                <div class="task-item">环境配置调试</div>
+                <div class="task-item">预测模型开发</div>
+                <div class="task-item">模型融合创新</div>
+                <div class="task-item">算法性能提升</div>
+                <div class="task-item">残差网络优化</div>
+                <div class="task-item">小创新点设计</div>
+                <div class="task-item">网络结构改进</div>
+                <div class="task-item">数学建模</div>
+            </div>
+        </div>
+
+        <!-- 交通仿真服务 -->
+        <div class="card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">🚗 交通仿真与自动驾驶服务</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">专业提供 SUMO / CARLA / VISSIM 交通仿真，支持 Windows 和 Linux 双平台交付</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Carla无人驾驶仿真环境配置</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">交通联合仿真</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">SUMO微观交通仿真</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">PID跟车控制算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">路径规划算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">车辆避障算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">深度学习避障算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">交通流分配优化</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">遗传算法交通优化</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">GIS数据处理</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">C++/MATLAB控制算法</div>
+            </div>
+        </div>
+
+        <!-- 仿真项目类型 -->
+        <div class="card">
+            <h2 class="section-title" style="margin-top: 0;">🎯 仿真项目类型</h2>
+            <div class="task-list">
+                <div class="task-item">交叉口红绿灯优化</div>
+                <div class="task-item">环岛交通仿真</div>
+                <div class="task-item">自适应信号控制</div>
+                <div class="task-item">公交优先系统</div>
+                <div class="task-item">车辆换道模型</div>
+                <div class="task-item">跟驰模型仿真</div>
+                <div class="task-item">碰撞拥堵模拟</div>
+                <div class="task-item">高速路车队控制</div>
+                <div class="task-item">入口出口匝道</div>
+                <div class="task-item">车路协同</div>
+                <div class="task-item">车联网通信</div>
+                <div class="task-item">网联车协调控制</div>
+            </div>
+        </div>
+
+        <!-- 自动驾驶实战 -->
+        <div class="card" style="background: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">🤖 自动驾驶项目实战</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">基于 Apollo 框架改写的完整项目，支持仿真测试和实车对接</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Lattice路径规划</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">EM Planner规划算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">A*算法路径规划</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">速度规划 S-T 图</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">参考线平滑算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">LQR控制算法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">MPC模型预测控制</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">PID速度控制</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">交叉口信号配时</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">停车场路径规划</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">轨道交通仿真</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">文献复现验证</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">可对接实车测试</div>
+            </div>
+        </div>
+
+        <!-- 路径规划定制 -->
+        <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">🗺️ Matlab/Python 路径规划定制</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">个人独立完成，代码高品质、可复现、注释完整，只做高质量！</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">遗传算法 GA</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">模拟退火 SA</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">蚁群算法 ACO</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">粒子群算法 PSO</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Dijkstra / Floyd</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">A* / RRT / RRT*</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">D* Lite</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">人工势场法</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">强化学习路径规划</div>
+            </div>
+        </div>
+
+        <!-- 路径规划场景 -->
+        <div class="card">
+            <h2 class="section-title" style="margin-top: 0;">🚛 路径规划应用场景</h2>
+            <div class="task-list">
+                <div class="task-item">旅行商问题 TSP</div>
+                <div class="task-item">车辆路径问题 VRP</div>
+                <div class="task-item">多车辆协同 MVRP</div>
+                <div class="task-item">带容量约束 CVRP</div>
+                <div class="task-item">带时间窗口 VRPTW</div>
+                <div class="task-item">电动车辆 EVRP</div>
+                <div class="task-item">无人机三维路径规划</div>
+                <div class="task-item">移动机器人路径规划</div>
+                <div class="task-item">栅格地图路径规划</div>
+                <div class="task-item">动态环境避障</div>
+                <div class="task-item">仓储 AGV 调度</div>
+                <div class="task-item">多目标路径优化</div>
+            </div>
+        </div>
+
+        <!-- Matlab仿真建模 -->
+        <div class="card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">⚡ Matlab/Python 仿真建模</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">电力系统、自动控制、智能算法、文献复现，按需定制！</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">电力系统建模</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">PID控制 / 模糊控制</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">滑模控制</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">光伏/风力发电</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">智能电网</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">预测控制</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">单相/三相逆变器</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Simulink建模</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">电机控制</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">综合能源系统</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">微电网优化</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">主从博弈优化</div>
+            </div>
+        </div>
+
+        <!-- Java开发服务 -->
+        <div class="card">
+            <h2 class="section-title" style="margin-top: 0;">☕ Java 全栈开发服务</h2>
+            <p style="color: #555; margin-bottom: 15px;">Spring Boot3 + Vue3 全新主流技术栈，1-5天交付，包安装部署！</p>
+            <div class="task-list">
+                <div class="task-item">Spring Boot / SSM / JavaWeb</div>
+                <div class="task-item">MyBatis / MySQL / Redis</div>
+                <div class="task-item">Vue3 / Element Plus</div>
+                <div class="task-item">商城/预约/点餐/博客系统</div>
+                <div class="task-item">后台管理系统开发</div>
+                <div class="task-item">Bug修改 / 新功能添加</div>
+                <div class="task-item">项目部署运行</div>
+                <div class="task-item">一对一辅导讲解</div>
+            </div>
+        </div>
+
+        <!-- 软件安装服务 -->
+        <div class="card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">🖥️ 软件安装与环境配置</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">支持 Windows、Linux、Mac 系统，远程安装配置！</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">MySQL 数据库</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Nginx Web服务器</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Docker 容器化</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Python 环境配置</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">Matlab 环境</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">深度学习框架</div>
+            </div>
+        </div>
+
+        <!-- AI大模型与小程序 -->
+        <div class="card">
+            <h2 class="section-title" style="margin-top: 0;">🚀 AI 大模型与小程序开发</h2>
+            <div class="task-list">
+                <div class="task-item">AI 大模型产品开发</div>
+                <div class="task-item">微信小程序开发</div>
+                <div class="task-item">DeepSeek 集成应用</div>
+                <div class="task-item">uni-app 跨平台开发</div>
+                <div class="task-item">Web 应用开发</div>
+            </div>
+        </div>
+
+        <!-- AI Agent 智能系统 -->
+        <div class="card" style="background: linear-gradient(135deg, #232526 0%, #414345 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">🤖 AI Agent 智能系统定制开发</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">构建真正能落地业务的AI智能系统，让AI替代重复工作，提高效率与自动化能力</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">AI Agent 智能系统搭建</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">基于 Dify / Coze 平台构建</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">多智能体协作系统</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">企业知识库问答 RAG</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">自动化业务处理</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">系统对接与流程自动化</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">私有化部署方案</div>
+            </div>
+        </div>
+
+        <!-- Agent 适用场景 -->
+        <div class="card">
+            <h2 class="section-title" style="margin-top: 0;">💼 Agent 适用场景</h2>
+            <div class="task-list">
+                <div class="task-item">企业内部知识查询系统</div>
+                <div class="task-item">自动报表生成与分析</div>
+                <div class="task-item">业务流程自动执行</div>
+                <div class="task-item">智能客服与问答系统</div>
+                <div class="task-item">企业数字化转型</div>
+                <div class="task-item">办公自动化系统</div>
+                <div class="task-item">科研与项目系统开发</div>
+            </div>
+        </div>
+
+        <!-- 多模态大模型 -->
+        <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <h2 style="color: white; font-size: 1.5em; margin-bottom: 15px;">🧠 多模态大模型与深度学习</h2>
+            <p style="color: white; opacity: 0.95; margin-bottom: 15px;">大模型微调、重构、算法设计、AI智能体开发，支持主流大模型！</p>
+            <div class="task-list">
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">多模态大模型</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">大模型微调 SFT / RLHF / PPO</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">DeepSeek / Qwen / Llama / GLM</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">RAG 问答与知识库集成</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">多模态情感分析</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">多模态融合与跨模态交互</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">预训练模型架构设计</div>
+                <div class="task-item" style="background: rgba(255,255,255,0.2); color: white;">文章复现与创新点设计</div>
+            </div>
+        </div>
+
+        <!-- NLP 与机器学习 -->
+        <div class="card">
+            <h2 class="section-title" style="margin-top: 0;">📝 NLP 与机器学习服务</h2>
+            <div class="task-list">
+                <div class="task-item">文本分类与文本聚类</div>
+                <div class="task-item">命名实体识别 NER</div>
+                <div class="task-item">关系抽取与信息抽取</div>
+                <div class="task-item">文本摘要与检索</div>
+                <div class="task-item">对话系统设计</div>
+                <div class="task-item">回归/分类/聚类/集成学习</div>
+                <div class="task-item">特征选择与降维</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">🏆 服务优势</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <h4>快速响应</h4>
+                <p>24小时内回复，全天候在线</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">💎</span>
+                <h4>高质量代码</h4>
+                <p>代码规范、注释完整、易维护</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🔄</span>
+                <h4>免费修改</h4>
+                <p>交付后免费修改直到满意</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📚</span>
+                <h4>详细讲解</h4>
+                <p>原理分析、代码解读、答疑</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🎯</span>
+                <h4>远程协助</h4>
+                <p>可远程编程、配置环境</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🚀</span>
+                <h4>高效交付</h4>
+                <p>3090/A100算力支持</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">📬 联系方式</h2>
+        <div class="contact-card">
+            <h2 style="color: white; font-size: 1.8em;">欢迎咨询</h2>
+            <div class="wechat-id">💬 微信号：popoking01</div>
+            <div class="wechat-qrcode">
+                <img src="https://ai.coomatrix.com/projects/wechat-qrcode.jpg" alt="微信二维码" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style="display:none; background:white; padding:30px; border-radius:10px; color:#667eea;">
+                    📱 请扫码添加微信
+                </div>
+            </div>
+            <p class="contact-note">添加时请备注：项目咨询</p>
+            <p class="contact-note">⏰ 24小时内必回复，欢迎随时打扰！</p>
+        </div>
+
+        <footer class="footer">
+            <p>© 项目承接 | 让 技术 创造价值</p>
+        </footer>
+    </div>
+</body>
+</html>
