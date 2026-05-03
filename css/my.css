@@ -5,7 +5,47 @@ type your custom css here
 */
 
 /* ===========================
+   Livere评论系统广告屏蔽
+   =========================== */
+
+/* 屏蔽Livere浮动广告 */
+.livere-ad, 
+.livere-ads, 
+[id^="livere_ads"],
+[id*="livere-ad"],
+[class*="livere-ad"],
+[class*="ads-banner"],
+[class*="ad-container"],
+[class*="ad-wrap"],
+[id*="ad-"],
+[class*="ad-"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 屏蔽Livere推荐内容弹窗 */
+.livere-recommend,
+.livere-share,
+[class*="recommend"],
+[id*="recommend-popup"],
+[class*="share-popup"] {
+    display: none !important;
+}
+
+/* 屏蔽来必力底部广告区域 */
+#lv-ads,
+#lv-ad,
+.lv-ad-container,
+.ad-banner-container {
+    display: none !important;
+}
+
+/* ===========================
    移动端响应式适配
+   =========================== */
    =========================== */
 
 /* 基础移动端设置 */
