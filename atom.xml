@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>ovo$^{mc^2}$</title>
+  <title>云上零度 OvO$^{mc^2}$</title>
   
   <subtitle>作者:zhoukang</subtitle>
-  <link href="https://www.coomatrix.com/atom.xml" rel="self"/>
+  <link href="https://ai.coomatrix.com/atom.xml" rel="self"/>
   
-  <link href="https://www.coomatrix.com/"/>
-  <updated>2026-05-03T17:45:02.677Z</updated>
-  <id>https://www.coomatrix.com/</id>
+  <link href="https://ai.coomatrix.com/"/>
+  <updated>2026-05-03T18:06:04.917Z</updated>
+  <id>https://ai.coomatrix.com/</id>
   
   <author>
     <name>云上零度</name>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>2026年最新免费AI大模型API接口大全（99+平台汇总）</title>
-    <link href="https://www.coomatrix.com/2026/05/04/2026-05-04-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E5%85%8D%E8%B4%B9AI%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E6%8E%A5%E5%8F%A3%E5%A4%A7%E5%85%A8/"/>
-    <id>https://www.coomatrix.com/2026/05/04/2026-05-04-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E5%85%8D%E8%B4%B9AI%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E6%8E%A5%E5%8F%A3%E5%A4%A7%E5%85%A8/</id>
+    <link href="https://ai.coomatrix.com/2026/05/04/2026-05-04-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E5%85%8D%E8%B4%B9AI%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E6%8E%A5%E5%8F%A3%E5%A4%A7%E5%85%A8/"/>
+    <id>https://ai.coomatrix.com/2026/05/04/2026-05-04-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E5%85%8D%E8%B4%B9AI%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E6%8E%A5%E5%8F%A3%E5%A4%A7%E5%85%A8/</id>
     <published>2026-05-03T17:35:00.000Z</published>
-    <updated>2026-05-03T17:45:02.677Z</updated>
+    <updated>2026-05-03T18:06:04.917Z</updated>
     
     <content type="html"><![CDATA[<h1 id="2026年最新免费AI大模型API接口大全（99-平台汇总）"><a href="#2026年最新免费AI大模型API接口大全（99-平台汇总）" class="headerlink" title="2026年最新免费AI大模型API接口大全（99+平台汇总）"></a>2026年最新免费AI大模型API接口大全（99+平台汇总）</h1><blockquote><p><strong>更新时间</strong>：2026年5月<br><strong>整理者</strong>：云上零度  </p></blockquote><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着AI技术的飞速发展，2026年涌现了大量提供免费额度的AI大模型API平台。本文系统梳理了国内外<strong>99+个免费AI API接口</strong>，涵盖文本生成、代码补全、图像生成、多模态等全场景，帮助开发者、学生和AI爱好者<strong>零成本</strong>开启AI开发之旅。</p><hr><h2 id="一、国内免费AI-API平台（40-个）"><a href="#一、国内免费AI-API平台（40-个）" class="headerlink" title="一、国内免费AI API平台（40+个）"></a>一、国内免费AI API平台（40+个）</h2><h3 id="1-智谱AI（GLM系列）⭐推荐"><a href="#1-智谱AI（GLM系列）⭐推荐" class="headerlink" title="1. 智谱AI（GLM系列）⭐推荐"></a>1. 智谱AI（GLM系列）⭐推荐</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://open.bigmodel.cn/api/paas/v4/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://open.bigmodel.cn/">https://open.bigmodel.cn/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户<strong>2000万Token</strong></td></tr><tr><td><strong>永久免费</strong></td><td>GLM-4-Flash、GLM-Z1-Flash</td></tr><tr><td><strong>并发限制</strong></td><td>30</td></tr><tr><td><strong>调用格式</strong></td><td>OpenAI兼容</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python调用示例</span></span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"></span><br><span class="line">client = openai.OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;你的API_KEY&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://open.bigmodel.cn/api/paas/v4/&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;glm-4-flash&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;你好，介绍一下自己&quot;</span>&#125;]</span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(response.choices[<span class="number">0</span>].message.content)</span><br></pre></td></tr></table></figure><hr><h3 id="2-月之暗面-Kimi"><a href="#2-月之暗面-Kimi" class="headerlink" title="2. 月之暗面 Kimi"></a>2. 月之暗面 Kimi</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.moonshot.cn/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://platform.moonshot.cn/">https://platform.moonshot.cn/</a></td></tr><tr><td><strong>免费额度</strong></td><td>3次&#x2F;分钟，Token不限量</td></tr><tr><td><strong>认证赠送</strong></td><td>个人认证送15元</td></tr><tr><td><strong>特色</strong></td><td><strong>256K超长上下文</strong></td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Kimi API调用</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;moonshot-你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.moonshot.cn/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;kimi-k2&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;分析这段代码的复杂度&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="3-硅基流动-SiliconFlow-⭐高性价比"><a href="#3-硅基流动-SiliconFlow-⭐高性价比" class="headerlink" title="3. 硅基流动 SiliconFlow ⭐高性价比"></a>3. 硅基流动 SiliconFlow ⭐高性价比</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.siliconflow.cn/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://siliconflow.cn/">https://siliconflow.cn/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>1000 RPM&#x2F;模型</strong></td></tr><tr><td><strong>永久免费模型</strong></td><td>DeepSeek-R1-0528、Qwen3-8B、GLM-4-9B-chat</td></tr><tr><td><strong>调用格式</strong></td><td>OpenAI兼容</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SiliconFlow调用</span></span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.siliconflow.cn/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用DeepSeek R1</span></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;deepseek-ai/DeepSeek-R1-0528&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;解释什么是Transformer架构&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="4-魔搭-ModelScope"><a href="#4-魔搭-ModelScope" class="headerlink" title="4. 魔搭 ModelScope"></a>4. 魔搭 ModelScope</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.modelscope.cn/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://modelscope.cn/">https://modelscope.cn/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>2000次&#x2F;天</strong></td></tr><tr><td><strong>特色模型</strong></td><td>Flux.1图像生成、QWen-Image、DeepSeek-R1</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ModelScope调用</span></span><br><span class="line"><span class="keyword">import</span> modelscope</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文本生成</span></span><br><span class="line">response = modelscope.Generation(</span><br><span class="line">    model=<span class="string">&#x27;deepseek-ai/DeepSeek-R1-Distill-Qwen-32B&#x27;</span>,</span><br><span class="line">    <span class="built_in">input</span>=<span class="string">&quot;写一个快速排序算法&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="5-OpenRouter-⭐国内可用"><a href="#5-OpenRouter-⭐国内可用" class="headerlink" title="5. OpenRouter ⭐国内可用"></a>5. OpenRouter ⭐国内可用</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://openrouter.ai/api/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://openrouter.ai/">https://openrouter.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>50次&#x2F;天</strong>（充值后1000次&#x2F;天）</td></tr><tr><td><strong>支持模型</strong></td><td>DeepSeek、Kimi、Qwen、Mistral等</td></tr><tr><td><strong>特殊说明</strong></td><td>✅ <strong>国内可直接访问</strong></td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># OpenRouter调用</span></span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;sk-or-v1-你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://openrouter.ai/api/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;deepseek/deepseek-chat-v3&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;用Python实现一个Web服务器&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="6-阿里云通义千问（百炼平台）"><a href="#6-阿里云通义千问（百炼平台）" class="headerlink" title="6. 阿里云通义千问（百炼平台）"></a>6. 阿里云通义千问（百炼平台）</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://dashscope.aliyuncs.com/compatible-mode/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://bailian.console.aliyun.com/">https://bailian.console.aliyun.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户100万Token</td></tr><tr><td><strong>特色模型</strong></td><td>Qwen3、DeepSeek全系、Kimi系列</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通义千问调用</span></span><br><span class="line"><span class="keyword">import</span> openai</span><br><span class="line"></span><br><span class="line">client = openai.OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;sk-你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;qwen-plus&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;解释什么是RAG&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="7-百度文心一言（千帆平台）"><a href="#7-百度文心一言（千帆平台）" class="headerlink" title="7. 百度文心一言（千帆平台）"></a>7. 百度文心一言（千帆平台）</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://qianfan.baidubce.com/v2</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://qianfan.baidubce.com/">https://qianfan.baidubce.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td>需申请测试额度</td></tr><tr><td><strong>特色</strong></td><td>数理逻辑准确率92%+</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 百度千帆调用</span></span><br><span class="line"><span class="keyword">import</span> qianfan</span><br><span class="line"></span><br><span class="line">chat = qianfan.ChatCompletion()</span><br><span class="line">response = chat.do(</span><br><span class="line">    model=<span class="string">&quot;ernie-4.0-8k&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;分析2026年AI发展趋势&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="8-腾讯混元"><a href="#8-腾讯混元" class="headerlink" title="8. 腾讯混元"></a>8. 腾讯混元</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://hunyuan.cloud.tencent.com/v2</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://cloud.tencent.com/">https://cloud.tencent.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户测试额度</td></tr><tr><td><strong>特色</strong></td><td>数学方向能力强</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 腾讯混元调用</span></span><br><span class="line"><span class="keyword">import</span> tencentcloud</span><br><span class="line"><span class="keyword">from</span> tencentcloud.hunyuan.v20230901 <span class="keyword">import</span> HunyuanClient</span><br><span class="line"></span><br><span class="line">client = HunyuanClient(credential=&#123;<span class="string">&quot;secret_id&quot;</span>: <span class="string">&quot;xxx&quot;</span>, <span class="string">&quot;secret_key&quot;</span>: <span class="string">&quot;xxx&quot;</span>&#125;)</span><br></pre></td></tr></table></figure><hr><h3 id="9-字节豆包（火山引擎）"><a href="#9-字节豆包（火山引擎）" class="headerlink" title="9. 字节豆包（火山引擎）"></a>9. 字节豆包（火山引擎）</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://ark.cn-beijing.volces.com/api/v3</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://www.volcengine.com/product/ark">https://www.volcengine.com/product/ark</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户赠送额度</td></tr><tr><td><strong>特色</strong></td><td>多模态能力、全网低价</td></tr></tbody></table><hr><h3 id="10-讯飞星火"><a href="#10-讯飞星火" class="headerlink" title="10. 讯飞星火"></a>10. 讯飞星火</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://spark-api.xf-yun.com/v3.1/chat</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://xinghuo.xfyun.cn/">https://xinghuo.xfyun.cn/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户测试额度</td></tr><tr><td><strong>特色</strong></td><td>联网搜索、AI绘图、长文档处理</td></tr></tbody></table><hr><h3 id="11-DeepSeek-官方"><a href="#11-DeepSeek-官方" class="headerlink" title="11. DeepSeek 官方"></a>11. DeepSeek 官方</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.deepseek.com/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td>输入0.1元&#x2F;千Token，输出0.1元&#x2F;千Token</td></tr><tr><td><strong>特色模型</strong></td><td>DeepSeek-V3、DeepSeek-R1</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DeepSeek官方调用</span></span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;sk-你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.deepseek.com/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;deepseek-chat&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;解释MoE架构&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="12-MiniMax（海螺AI）"><a href="#12-MiniMax（海螺AI）" class="headerlink" title="12. MiniMax（海螺AI）"></a>12. MiniMax（海螺AI）</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.minimax.chat/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://www.minimax.chat/">https://www.minimax.chat/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户赠送额度</td></tr><tr><td><strong>特色</strong></td><td>视频生成API</td></tr></tbody></table><hr><h3 id="13-书生·浦语（intern-ai）"><a href="#13-书生·浦语（intern-ai）" class="headerlink" title="13. 书生·浦语（intern-ai）"></a>13. 书生·浦语（intern-ai）</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://chat.intern-ai.org.cn/api/v1</code></td></tr><tr><td><strong>免费额度</strong></td><td><strong>10 RPM</strong></td></tr><tr><td><strong>特色模型</strong></td><td>InternVL3-78B</td></tr><tr><td><strong>密钥有效期</strong></td><td>6个月</td></tr></tbody></table><hr><h3 id="14-阶跃星辰（Step）"><a href="#14-阶跃星辰（Step）" class="headerlink" title="14. 阶跃星辰（Step）"></a>14. 阶跃星辰（Step）</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.stepfun.com/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://platform.stepfun.com/">https://platform.stepfun.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户赠送</td></tr></tbody></table><hr><h3 id="15-40-更多国内平台"><a href="#15-40-更多国内平台" class="headerlink" title="15-40. 更多国内平台"></a>15-40. 更多国内平台</h3><table><thead><tr><th>平台</th><th>API格式</th><th>特色</th></tr></thead><tbody><tr><td><strong>360智脑</strong></td><td>OpenAI兼容</td><td>安全大模型</td></tr><tr><td><strong>商汤日日新</strong></td><td>API调用</td><td>多模态</td></tr><tr><td><strong>出门问问</strong></td><td>API调用</td><td>语音合成</td></tr><tr><td><strong>面壁智能</strong></td><td>OpenAI兼容</td><td>端侧部署</td></tr><tr><td><strong>元象科技</strong></td><td>API调用</td><td>开源模型</td></tr><tr><td><strong>澜舟科技</strong></td><td>API调用</td><td>金融大模型</td></tr><tr><td><strong>竹间智能</strong></td><td>API调用</td><td>情感计算</td></tr><tr><td><strong>中科曙光</strong></td><td>API调用</td><td>国产算力</td></tr><tr><td><strong>燧原科技</strong></td><td>API调用</td><td>国产GPU</td></tr><tr><td><strong>天数智芯</strong></td><td>API调用</td><td>AI芯片</td></tr><tr><td><strong>寒武纪</strong></td><td>API调用</td><td>云端推理</td></tr><tr><td><strong>华为云盘古</strong></td><td>API调用</td><td>NLP能力</td></tr><tr><td><strong>移动云</strong></td><td>API调用</td><td>九天大模型</td></tr><tr><td><strong>联通云</strong></td><td>API调用</td><td>文本生成</td></tr><tr><td><strong>电信天翼</strong></td><td>API调用</td><td>多模态</td></tr><tr><td><strong>平安科技</strong></td><td>API调用</td><td>金融AI</td></tr><tr><td><strong>同花顺</strong></td><td>API调用</td><td>金融分析</td></tr><tr><td><strong>科大讯飞</strong></td><td>API调用</td><td>语音交互</td></tr><tr><td><strong>云知声</strong></td><td>API调用</td><td>语音AI</td></tr><tr><td><strong>声网</strong></td><td>API调用</td><td>实时语音</td></tr><tr><td><strong>出门问问</strong></td><td>API调用</td><td>对话AI</td></tr><tr><td><strong>追一科技</strong></td><td>API调用</td><td>客服AI</td></tr><tr><td><strong>蓦然认知</strong></td><td>API调用</td><td>对话系统</td></tr><tr><td><strong>硅语科技</strong></td><td>API调用</td><td>客服AI</td></tr><tr><td><strong>循环智能</strong></td><td>API调用</td><td>销售AI</td></tr><tr><td><strong>容联七陌</strong></td><td>API调用</td><td>智能客服</td></tr></tbody></table><hr><h2 id="二、国际免费AI-API平台（35-个）"><a href="#二、国际免费AI-API平台（35-个）" class="headerlink" title="二、国际免费AI API平台（35+个）"></a>二、国际免费AI API平台（35+个）</h2><h3 id="1-Google-AI-Studio-⭐最强免费"><a href="#1-Google-AI-Studio-⭐最强免费" class="headerlink" title="1. Google AI Studio ⭐最强免费"></a>1. Google AI Studio ⭐最强免费</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://generativelanguage.googleapis.com/v1beta/openai/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://aistudio.google.com/">https://aistudio.google.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>Gemini 2.5 Flash: 30RPM &#x2F; 1440次&#x2F;天</strong></td></tr><tr><td><strong>特色模型</strong></td><td>gemini-2.5-flash、gemini-3-flash</td></tr><tr><td><strong>限制</strong></td><td>⚠️ 需要魔法</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Google Gemini调用</span></span><br><span class="line"><span class="keyword">import</span> google.generativeai <span class="keyword">as</span> genai</span><br><span class="line"></span><br><span class="line">genai.configure(api_key=<span class="string">&quot;你的API_KEY&quot;</span>)</span><br><span class="line">model = genai.GenerativeModel(<span class="string">&#x27;gemini-2.5-flash&#x27;</span>)</span><br><span class="line"></span><br><span class="line">response = model.generate_content(<span class="string">&quot;解释什么是Chain of Thought&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure><hr><h3 id="2-GitHub-Models-⭐无需魔法"><a href="#2-GitHub-Models-⭐无需魔法" class="headerlink" title="2. GitHub Models ⭐无需魔法"></a>2. GitHub Models ⭐无需魔法</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://models.github.ai/inference</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://github.com/marketplace/models">https://github.com/marketplace/models</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>15 RPM &#x2F; 150次&#x2F;天</strong></td></tr><tr><td><strong>支持模型</strong></td><td>GPT-4.1、GPT-4o、Claude系列</td></tr><tr><td><strong>特殊说明</strong></td><td>✅ <strong>无需魔法</strong>，仅需GitHub账户</td></tr></tbody></table><hr><h3 id="3-Groq-⭐速度最快"><a href="#3-Groq-⭐速度最快" class="headerlink" title="3. Groq ⭐速度最快"></a>3. Groq ⭐速度最快</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.groq.com/openai/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://console.groq.com/">https://console.groq.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>1000次&#x2F;天，6000 tokens&#x2F;分钟</strong></td></tr><tr><td><strong>特色</strong></td><td>LPU推理芯片，<strong>业界最快</strong></td></tr><tr><td><strong>限制</strong></td><td>⚠️ 需要魔法</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Groq调用 - 极速推理</span></span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;gsk_你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.groq.com/openai/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;llama-3.3-70b-versatile&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;用Python写一个二分查找&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="4-HuggingFace-Inference-API"><a href="#4-HuggingFace-Inference-API" class="headerlink" title="4. HuggingFace Inference API"></a>4. HuggingFace Inference API</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api-inference.huggingface.co/v1/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://huggingface.co/inference-api">https://huggingface.co/inference-api</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>月度积分制</strong>（按账户等级）</td></tr><tr><td><strong>支持模型</strong></td><td>LLaMA、Mistral、Falcon等开源模型</td></tr><tr><td><strong>限制</strong></td><td>部分需魔法，限制10GB以下</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># HuggingFace调用</span></span><br><span class="line"><span class="keyword">from</span> huggingface_hub <span class="keyword">import</span> InferenceClient</span><br><span class="line"></span><br><span class="line">client = InferenceClient(token=<span class="string">&quot;hf_你的密钥&quot;</span>)</span><br><span class="line">response = client.chat_completion(</span><br><span class="line">    model=<span class="string">&quot;meta-llama/Llama-3.2-3B-Instruct&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;解释量子计算&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="5-Cloudflare-Workers-AI-⭐无需魔法"><a href="#5-Cloudflare-Workers-AI-⭐无需魔法" class="headerlink" title="5. Cloudflare Workers AI ⭐无需魔法"></a>5. Cloudflare Workers AI ⭐无需魔法</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.cloudflare.com/client/v4/ai/run/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://developers.cloudflare.com/workers-ai/">https://developers.cloudflare.com/workers-ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>10,000 Neurons&#x2F;天</strong></td></tr><tr><td><strong>特色</strong></td><td>全球CDN加速，<strong>国内可直接访问</strong></td></tr><tr><td><strong>支持能力</strong></td><td>LLM、嵌入、图像、音频全覆盖</td></tr></tbody></table><hr><h3 id="6-Mistral-La-Plateforme"><a href="#6-Mistral-La-Plateforme" class="headerlink" title="6. Mistral La Plateforme"></a>6. Mistral La Plateforme</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.mistral.ai/v1/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://console.mistral.ai/">https://console.mistral.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>1req&#x2F;s，500K tokens&#x2F;分钟</strong></td></tr><tr><td><strong>特色模型</strong></td><td>Mistral Small、Mistral Nemo</td></tr></tbody></table><hr><h3 id="7-Cerebras"><a href="#7-Cerebras" class="headerlink" title="7. Cerebras"></a>7. Cerebras</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.cerebras.ai/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://inference.cerebras.ai/">https://inference.cerebras.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>30 RPM，60K tokens&#x2F;分钟</strong></td></tr><tr><td><strong>特色</strong></td><td>WSE芯片超高速推理</td></tr><tr><td><strong>限制</strong></td><td>⚠️ 需加入等待列表</td></tr></tbody></table><hr><h3 id="8-NVIDIA-NIM"><a href="#8-NVIDIA-NIM" class="headerlink" title="8. NVIDIA NIM"></a>8. NVIDIA NIM</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://integrate.api.nvidia.com/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://developer.nvidia.com/nim">https://developer.nvidia.com/nim</a></td></tr><tr><td><strong>免费额度</strong></td><td>开发者计划<strong>免费原型</strong></td></tr><tr><td><strong>支持模型</strong></td><td>DeepSeek-V3.2等</td></tr></tbody></table><hr><h3 id="9-Together-AI"><a href="#9-Together-AI" class="headerlink" title="9. Together AI"></a>9. Together AI</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.together.xyz/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://together.ai/">https://together.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>无明确限制</strong></td></tr><tr><td><strong>支持模型</strong></td><td>Meta-Llama-3.1-70B等</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Together AI调用</span></span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key=<span class="string">&quot;tgk_你的密钥&quot;</span>,</span><br><span class="line">    base_url=<span class="string">&quot;https://api.together.xyz/v1&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">response = client.chat.completions.create(</span><br><span class="line">    model=<span class="string">&quot;meta-llama/Llama-3.1-70B-Instruct-Turbo&quot;</span>,</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;写一首关于AI的诗&quot;</span>&#125;]</span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="10-Fireworks-AI"><a href="#10-Fireworks-AI" class="headerlink" title="10. Fireworks AI"></a>10. Fireworks AI</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.fireworks.ai/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://fireworks.ai/">https://fireworks.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>$1免费积分</strong></td></tr><tr><td><strong>特色</strong></td><td>高并发支持</td></tr></tbody></table><hr><h3 id="11-Cohere"><a href="#11-Cohere" class="headerlink" title="11. Cohere"></a>11. Cohere</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.cohere.ai/v1</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://cohere.com/">https://cohere.com/</a></td></tr><tr><td><strong>免费额度</strong></td><td><strong>20 RPM</strong></td></tr><tr><td><strong>特色模型</strong></td><td>Command R+、command-a</td></tr></tbody></table><hr><h3 id="12-Perplexity-API"><a href="#12-Perplexity-API" class="headerlink" title="12. Perplexity API"></a>12. Perplexity API</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.perplexity.ai/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://perplexityapi.ai/">https://perplexityapi.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td>需申请</td></tr><tr><td><strong>特色</strong></td><td>实时网络搜索</td></tr></tbody></table><hr><h3 id="13-35-更多国际平台"><a href="#13-35-更多国际平台" class="headerlink" title="13-35. 更多国际平台"></a>13-35. 更多国际平台</h3><table><thead><tr><th>平台</th><th>API格式</th><th>特色</th></tr></thead><tbody><tr><td><strong>AI21 Jurassic</strong></td><td>OpenAI兼容</td><td>创意写作强</td></tr><tr><td><strong>Aleph Alpha</strong></td><td>API调用</td><td>欧洲AI合规</td></tr><tr><td><strong>Anthropic</strong></td><td>API调用</td><td>Claude系列</td></tr><tr><td><strong>Cohere</strong></td><td>API调用</td><td>RAG专用</td></tr><tr><td><strong>Databricks</strong></td><td>API调用</td><td>企业ML</td></tr><tr><td><strong>Forefront AI</strong></td><td>OpenAI兼容</td><td>多模型</td></tr><tr><td><strong>GooseAI</strong></td><td>OpenAI兼容</td><td>即插即用</td></tr><tr><td><strong>GPT4All</strong></td><td>本地API</td><td>隐私优先</td></tr><tr><td><strong>KoboldAI</strong></td><td>OpenAI兼容</td><td>创意写作</td></tr><tr><td><strong>LlamaAPI</strong></td><td>API调用</td><td>Llama专用</td></tr><tr><td><strong>Mancer</strong></td><td>API调用</td><td>开源聚合</td></tr><tr><td><strong>Mindry</strong></td><td>API调用</td><td>长上下文</td></tr><tr><td><strong>NLP Cloud</strong></td><td>API调用</td><td>NLP任务专用</td></tr><tr><td><strong>Nucliadb</strong></td><td>API调用</td><td>神经搜索</td></tr><tr><td><strong>OpenAI</strong></td><td>OpenAI格式</td><td>GPT系列</td></tr><tr><td><strong>Poe API</strong></td><td>API调用</td><td>多模型聚合</td></tr><tr><td><strong>Prem</strong></td><td>API调用</td><td>自托管</td></tr><tr><td><strong>Replicate</strong></td><td>API调用</td><td>开源模型</td></tr><tr><td><strong>SambaNova</strong></td><td>API调用</td><td>企业AI</td></tr><tr><td><strong>Scale AI</strong></td><td>API调用</td><td>企业LLM</td></tr><tr><td><strong>SebAi’s</strong></td><td>API调用</td><td>数学专用</td></tr><tr><td><strong>Silicon Cloud</strong></td><td>OpenAI兼容</td><td>开源低价</td></tr><tr><td><strong>Snowflake</strong></td><td>API调用</td><td>Cortex AI</td></tr><tr><td><strong>SparkAI</strong></td><td>API调用</td><td>多模型</td></tr><tr><td><strong>Switchboard</strong></td><td>API调用</td><td>实时数据</td></tr><tr><td><strong>TensorStack</strong></td><td>API调用</td><td>企业AI</td></tr><tr><td><strong>Tiledesk</strong></td><td>API调用</td><td>客服AI</td></tr><tr><td><strong>Writer API</strong></td><td>API调用</td><td>企业写作</td></tr><tr><td><strong>Yellow</strong></td><td>API调用</td><td>文档AI</td></tr><tr><td><strong>Zerve AI</strong></td><td>API调用</td><td>协作AI</td></tr></tbody></table><hr><h2 id="三、代码专用AI-API（15-个）"><a href="#三、代码专用AI-API（15-个）" class="headerlink" title="三、代码专用AI API（15+个）"></a>三、代码专用AI API（15+个）</h2><h3 id="1-GitHub-Copilot-API"><a href="#1-GitHub-Copilot-API" class="headerlink" title="1. GitHub Copilot API"></a>1. GitHub Copilot API</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td>通过GitHub Codespaces</td></tr><tr><td><strong>免费额度</strong></td><td>学生认证免费</td></tr><tr><td><strong>特色</strong></td><td>代码补全最强</td></tr></tbody></table><hr><h3 id="2-Sourcegraph-Cody"><a href="#2-Sourcegraph-Cody" class="headerlink" title="2. Sourcegraph Cody"></a>2. Sourcegraph Cody</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://sourcegraph.com/.api/graphql</code></td></tr><tr><td><strong>免费额度</strong></td><td>开源仓库免费</td></tr><tr><td><strong>特色</strong></td><td>代码理解、问答</td></tr></tbody></table><hr><h3 id="3-Codeium"><a href="#3-Codeium" class="headerlink" title="3. Codeium"></a>3. Codeium</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.codeium.com/</code></td></tr><tr><td><strong>免费额度</strong></td><td><strong>个人完全免费</strong></td></tr><tr><td><strong>特色</strong></td><td>Copilot替代品</td></tr></tbody></table><hr><h3 id="4-Tabnine"><a href="#4-Tabnine" class="headerlink" title="4. Tabnine"></a>4. Tabnine</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.tabnine.com/</code></td></tr><tr><td><strong>免费额度</strong></td><td>个人免费</td></tr><tr><td><strong>特色</strong></td><td>本地部署支持</td></tr></tbody></table><hr><h3 id="5-15-更多代码AI"><a href="#5-15-更多代码AI" class="headerlink" title="5-15. 更多代码AI"></a>5-15. 更多代码AI</h3><table><thead><tr><th>平台</th><th>特色</th></tr></thead><tbody><tr><td><strong>Amazon CodeWhisperer</strong></td><td>AWS集成</td></tr><tr><td><strong>CodeRabbit</strong></td><td>PR审查</td></tr><tr><td><strong>CodiumAI</strong></td><td>测试生成</td></tr><tr><td><strong>Mutable AI</strong></td><td>全栈开发</td></tr><tr><td><strong>Safurai</strong></td><td>代码搜索</td></tr><tr><td><strong>SinCode AI</strong></td><td>多语言支持</td></tr><tr><td><strong>StackBlitz</strong></td><td>Web容器</td></tr><tr><td><strong>Supermaven</strong></td><td>极速补全</td></tr><tr><td><strong>Trellis</strong></td><td>代码解释</td></tr><tr><td><strong>Velt</strong></td><td>团队协作</td></tr><tr><td><strong>Octane AI</strong></td><td>代码审查</td></tr></tbody></table><hr><h2 id="四、图像-x2F-视频生成API（12-个）"><a href="#四、图像-x2F-视频生成API（12-个）" class="headerlink" title="四、图像&#x2F;视频生成API（12+个）"></a>四、图像&#x2F;视频生成API（12+个）</h2><h3 id="1-OpenAI-DALL-E"><a href="#1-OpenAI-DALL-E" class="headerlink" title="1. OpenAI DALL-E"></a>1. OpenAI DALL-E</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.openai.com/v1/images/generations</code></td></tr><tr><td><strong>免费额度</strong></td><td>$5试用额度</td></tr><tr><td><strong>模型</strong></td><td>DALL-E 3</td></tr></tbody></table><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># DALL-E 3调用</span></span><br><span class="line">response = client.images.generate(</span><br><span class="line">    model=<span class="string">&quot;dall-e-3&quot;</span>,</span><br><span class="line">    prompt=<span class="string">&quot;一只穿着宇航服的猫咪在太空中&quot;</span>,</span><br><span class="line">    size=<span class="string">&quot;1024x1024&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure><hr><h3 id="2-Stability-AI"><a href="#2-Stability-AI" class="headerlink" title="2. Stability AI"></a>2. Stability AI</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.stability.ai/v1/</code></td></tr><tr><td><strong>注册地址</strong></td><td><a href="https://platform.stability.ai/">https://platform.stability.ai/</a></td></tr><tr><td><strong>免费额度</strong></td><td>新用户$10积分</td></tr><tr><td><strong>模型</strong></td><td>SDXL、Stable Diffusion</td></tr></tbody></table><hr><h3 id="3-Midjourney-API"><a href="#3-Midjourney-API" class="headerlink" title="3. Midjourney API"></a>3. Midjourney API</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td>第三方代理</td></tr><tr><td><strong>免费额度</strong></td><td>需付费</td></tr><tr><td><strong>特色</strong></td><td>图像质量最高</td></tr></tbody></table><hr><h3 id="4-Runway-ML"><a href="#4-Runway-ML" class="headerlink" title="4. Runway ML"></a>4. Runway ML</h3><table><thead><tr><th>项目</th><th>信息</th></tr></thead><tbody><tr><td><strong>API地址</strong></td><td><code>https://api.runwayml.com/v1/</code></td></tr><tr><td><strong>免费额度</strong></td><td>试用额度</td></tr><tr><td><strong>特色</strong></td><td>视频生成</td></tr></tbody></table><hr><h3 id="5-12-更多图像API"><a href="#5-12-更多图像API" class="headerlink" title="5-12. 更多图像API"></a>5-12. 更多图像API</h3><table><thead><tr><th>平台</th><th>特色</th></tr></thead><tbody><tr><td><strong>Adobe Firefly</strong></td><td>创意设计</td></tr><tr><td><strong>Canva AI</strong></td><td>在线设计</td></tr><tr><td><strong>Clipdrop</strong></td><td>图像处理</td></tr><tr><td><strong>Ideogram</strong></td><td>文字渲染</td></tr><tr><td><strong>Leonardo.ai</strong></td><td>游戏资产</td></tr><tr><td><strong>Picsart</strong></td><td>移动图像</td></tr><tr><td><strong>Remove.bg</strong></td><td>背景移除</td></tr><tr><td><strong>Slazag</strong></td><td>图像增强</td></tr></tbody></table><hr><h2 id="五、语音-x2F-音频API（8-个）"><a href="#五、语音-x2F-音频API（8-个）" class="headerlink" title="五、语音&#x2F;音频API（8+个）"></a>五、语音&#x2F;音频API（8+个）</h2><table><thead><tr><th>平台</th><th>API地址</th><th>免费额度</th><th>特色</th></tr></thead><tbody><tr><td><strong>ElevenLabs</strong></td><td><code>https://api.elevenlabs.io/</code></td><td>$0.10试用</td><td>语音克隆</td></tr><tr><td><strong>Azure TTS</strong></td><td><code>https://xxx.tts.speech.azure.com/</code></td><td>新用户$200</td><td>语音合成</td></tr><tr><td><strong>Google TTS</strong></td><td><code>https://texttospeech.googleapis.com/</code></td><td>每月100万字符</td><td>多语言</td></tr><tr><td><strong>Descript</strong></td><td><code>https://api.descript.com/</code></td><td>免费试用</td><td>音视频编辑</td></tr><tr><td><strong>AssemblyAI</strong></td><td><code>https://api.assemblyai.com/</code></td><td>每月3小时</td><td>语音转文字</td></tr><tr><td><strong>Deepgram</strong></td><td><code>https://api.deepgram.com/</code></td><td>每月200分钟</td><td>实时转录</td></tr><tr><td><strong>Murf AI</strong></td><td><code>https://api.murf.ai/</code></td><td>免费试用</td><td>专业配音</td></tr><tr><td><strong>Wellsaid</strong></td><td><code>https://api.wellsaid.io/</code></td><td>免费试用</td><td>自然语音</td></tr></tbody></table><hr><h2 id="六、API调用最佳实践"><a href="#六、API调用最佳实践" class="headerlink" title="六、API调用最佳实践"></a>六、API调用最佳实践</h2><h3 id="1-多平台备用策略"><a href="#1-多平台备用策略" class="headerlink" title="1. 多平台备用策略"></a>1. 多平台备用策略</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置多个API密钥</span></span><br><span class="line">API_PROVIDERS = &#123;</span><br><span class="line">    <span class="string">&quot;deepseek&quot;</span>: &#123;<span class="string">&quot;base_url&quot;</span>: <span class="string">&quot;https://api.deepseek.com/v1&quot;</span>, <span class="string">&quot;key&quot;</span>: os.getenv(<span class="string">&quot;DEEPSEEK_KEY&quot;</span>)&#125;,</span><br><span class="line">    <span class="string">&quot;siliconflow&quot;</span>: &#123;<span class="string">&quot;base_url&quot;</span>: <span class="string">&quot;https://api.siliconflow.cn/v1&quot;</span>, <span class="string">&quot;key&quot;</span>: os.getenv(<span class="string">&quot;SILICONFLOW_KEY&quot;</span>)&#125;,</span><br><span class="line">    <span class="string">&quot;groq&quot;</span>: &#123;<span class="string">&quot;base_url&quot;</span>: <span class="string">&quot;https://api.groq.com/openai/v1&quot;</span>, <span class="string">&quot;key&quot;</span>: os.getenv(<span class="string">&quot;GROQ_KEY&quot;</span>)&#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">call_with_fallback</span>(<span class="params">messages, model=<span class="string">&quot;deepseek-chat&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;带备用的API调用&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> name, config <span class="keyword">in</span> API_PROVIDERS.items():</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            client = OpenAI(api_key=config[<span class="string">&quot;key&quot;</span>], base_url=config[<span class="string">&quot;base_url&quot;</span>])</span><br><span class="line">            response = client.chat.completions.create(model=model, messages=messages)</span><br><span class="line">            <span class="keyword">return</span> response.choices[<span class="number">0</span>].message.content</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span> 调用失败: <span class="subst">&#123;e&#125;</span>, 尝试下一个...&quot;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;所有API均不可用&quot;</span></span><br></pre></td></tr></table></figure><hr><h3 id="2-速率限制处理"><a href="#2-速率限制处理" class="headerlink" title="2. 速率限制处理"></a>2. 速率限制处理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> ratelimit <span class="keyword">import</span> limits, sleep_and_retry</span><br><span class="line"></span><br><span class="line"><span class="meta">@sleep_and_retry</span></span><br><span class="line"><span class="meta">@limits(<span class="params">calls=<span class="number">30</span>, period=<span class="number">60</span></span>)  </span><span class="comment"># 30次/分钟</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">call_api_with_limit</span>(<span class="params">messages</span>):</span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=<span class="string">&quot;deepseek-chat&quot;</span>,</span><br><span class="line">        messages=messages</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure><hr><h3 id="3-环境变量配置"><a href="#3-环境变量配置" class="headerlink" title="3. 环境变量配置"></a>3. 环境变量配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .env 文件</span></span><br><span class="line">DEEPSEEK_KEY=sk-xxxx</span><br><span class="line">SILICONFLOW_KEY=sk-xxxx</span><br><span class="line">GROQ_KEY=gsk_xxxx</span><br><span class="line">OPENAI_KEY=sk-xxxx</span><br></pre></td></tr></table></figure><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># load_env.py</span></span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line">load_dotenv()</span><br></pre></td></tr></table></figure><hr><h2 id="七、免费额度排行总览"><a href="#七、免费额度排行总览" class="headerlink" title="七、免费额度排行总览"></a>七、免费额度排行总览</h2><table><thead><tr><th>🥇 排名</th><th>维度</th><th>平台</th><th>额度</th></tr></thead><tbody><tr><td>1</td><td><strong>每日请求最多</strong></td><td>Google AI Studio (Gemini 2.5 Flash)</td><td><strong>1440次&#x2F;天</strong></td></tr><tr><td>2</td><td><strong>每日请求最多</strong></td><td>ModelScope魔搭</td><td><strong>2000次&#x2F;天</strong></td></tr><tr><td>3</td><td><strong>Token总量最多</strong></td><td>智谱AI新用户</td><td><strong>2000万Token</strong></td></tr><tr><td>4</td><td><strong>速率最快</strong></td><td>Groq</td><td>LPU专用推理</td></tr><tr><td>5</td><td><strong>模型最丰富</strong></td><td>HuggingFace &#x2F; OpenRouter</td><td>海量开源模型</td></tr></tbody></table><hr><h2 id="八、按场景推荐"><a href="#八、按场景推荐" class="headerlink" title="八、按场景推荐"></a>八、按场景推荐</h2><table><thead><tr><th>🎯 场景</th><th>⭐ 推荐平台</th><th>原因</th></tr></thead><tbody><tr><td>学习测试</td><td>Google AI Studio、GitHub Models</td><td>门槛低、额度足</td></tr><tr><td>国内项目</td><td>OpenRouter、硅基流动、智谱AI</td><td>无需魔法、低延迟</td></tr><tr><td>极速推理</td><td>Groq、Cerebras</td><td>LPU&#x2F;WSE专用芯片</td></tr><tr><td>超长文本</td><td>Kimi (256K)、通义千问</td><td>长上下文支持</td></tr><tr><td>多模态</td><td>ModelScope、Google Gemini 3</td><td>图文混合能力</td></tr><tr><td>代码生成</td><td>DeepSeek、智谱AI、GitHub Models</td><td>代码能力强</td></tr><tr><td>图像生成</td><td>OpenAI DALL-E、Stability AI</td><td>艺术创作</td></tr><tr><td>语音合成</td><td>ElevenLabs、Azure TTS</td><td>自然语音</td></tr></tbody></table><hr><h2 id="九、重要注意事项"><a href="#九、重要注意事项" class="headerlink" title="九、重要注意事项"></a>九、重要注意事项</h2><blockquote><p>⚠️ <strong>重要提示</strong>：</p></blockquote><ol><li><strong>速率限制</strong>：所有免费API都有RPM&#x2F;RPD限制，建议添加指数退避重试</li><li><strong>网络环境</strong>：Google、HuggingFace等需魔法，OpenRouter&#x2F;Cloudflare可直连</li><li><strong>政策变动</strong>：免费额度可能随时调整，使用前请核实官网</li><li><strong>生产环境</strong>：务必使用付费API，免费仅限开发测试</li><li><strong>密钥安全</strong>：不要明文写入代码，使用环境变量管理</li><li><strong>数据合规</strong>：注意数据跨境传输合规要求</li></ol><hr><h2 id="十、总结"><a href="#十、总结" class="headerlink" title="十、总结"></a>十、总结</h2><p>2026年是AI API全面爆发的一年，本文整理了<strong>99+个免费AI API接口</strong>，覆盖文本生成、代码补全、图像视频、语音合成等全场景。建议收藏本文，开发时随时查阅！</p><table><thead><tr><th>分类</th><th>数量</th><th>代表平台</th></tr></thead><tbody><tr><td>国内平台</td><td>40+</td><td>智谱、Kimi、DeepSeek</td></tr><tr><td>国际平台</td><td>35+</td><td>Google、Groq、HuggingFace</td></tr><tr><td>代码专用</td><td>15+</td><td>GitHub Copilot、Codeium</td></tr><tr><td>图像视频</td><td>12+</td><td>DALL-E、Stability AI</td></tr><tr><td>语音音频</td><td>8+</td><td>ElevenLabs、Deepgram</td></tr><tr><td><strong>总计</strong></td><td><strong>99+</strong></td><td>涵盖AI全场景</td></tr></tbody></table><hr><blockquote><p>📢 <strong>免责声明</strong>：本文整理的API信息可能随时间变化，请以各平台官方最新公告为准。如有错误或遗漏，欢迎留言指正！</p></blockquote>]]></content>
     
@@ -33,23 +33,23 @@
     
     
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     
-    <category term="大模型" scheme="https://www.coomatrix.com/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="大模型" scheme="https://ai.coomatrix.com/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
-    <category term="AI API" scheme="https://www.coomatrix.com/tags/AI-API/"/>
+    <category term="AI API" scheme="https://ai.coomatrix.com/tags/AI-API/"/>
     
-    <category term="免费接口" scheme="https://www.coomatrix.com/tags/%E5%85%8D%E8%B4%B9%E6%8E%A5%E5%8F%A3/"/>
+    <category term="免费接口" scheme="https://ai.coomatrix.com/tags/%E5%85%8D%E8%B4%B9%E6%8E%A5%E5%8F%A3/"/>
     
-    <category term="API接口" scheme="https://www.coomatrix.com/tags/API%E6%8E%A5%E5%8F%A3/"/>
+    <category term="API接口" scheme="https://ai.coomatrix.com/tags/API%E6%8E%A5%E5%8F%A3/"/>
     
   </entry>
   
   <entry>
     <title>AI安全与对齐技术：构建可信赖的AI系统</title>
-    <link href="https://www.coomatrix.com/2026/05/03/2026-05-03-AI%E5%AE%89%E5%85%A8%E4%B8%8E%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF-%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BF%A1%E8%B5%96%E7%9A%84AI%E7%B3%BB%E7%BB%9F/"/>
-    <id>https://www.coomatrix.com/2026/05/03/2026-05-03-AI%E5%AE%89%E5%85%A8%E4%B8%8E%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF-%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BF%A1%E8%B5%96%E7%9A%84AI%E7%B3%BB%E7%BB%9F/</id>
+    <link href="https://ai.coomatrix.com/2026/05/03/2026-05-03-AI%E5%AE%89%E5%85%A8%E4%B8%8E%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF-%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BF%A1%E8%B5%96%E7%9A%84AI%E7%B3%BB%E7%BB%9F/"/>
+    <id>https://ai.coomatrix.com/2026/05/03/2026-05-03-AI%E5%AE%89%E5%85%A8%E4%B8%8E%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF-%E6%9E%84%E5%BB%BA%E5%8F%AF%E4%BF%A1%E8%B5%96%E7%9A%84AI%E7%B3%BB%E7%BB%9F/</id>
     <published>2026-05-03T02:00:00.000Z</published>
     <updated>2026-05-02T18:54:39.384Z</updated>
     
@@ -64,25 +64,25 @@
     
     
     
-    <category term="AI安全" scheme="https://www.coomatrix.com/categories/AI%E5%AE%89%E5%85%A8/"/>
+    <category term="AI安全" scheme="https://ai.coomatrix.com/categories/AI%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="RLHF" scheme="https://www.coomatrix.com/tags/RLHF/"/>
+    <category term="RLHF" scheme="https://ai.coomatrix.com/tags/RLHF/"/>
     
-    <category term="AI安全" scheme="https://www.coomatrix.com/tags/AI%E5%AE%89%E5%85%A8/"/>
+    <category term="AI安全" scheme="https://ai.coomatrix.com/tags/AI%E5%AE%89%E5%85%A8/"/>
     
-    <category term="对齐技术" scheme="https://www.coomatrix.com/tags/%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF/"/>
+    <category term="对齐技术" scheme="https://ai.coomatrix.com/tags/%E5%AF%B9%E9%BD%90%E6%8A%80%E6%9C%AF/"/>
     
-    <category term="红队测试" scheme="https://www.coomatrix.com/tags/%E7%BA%A2%E9%98%9F%E6%B5%8B%E8%AF%95/"/>
+    <category term="红队测试" scheme="https://ai.coomatrix.com/tags/%E7%BA%A2%E9%98%9F%E6%B5%8B%E8%AF%95/"/>
     
-    <category term="可解释AI" scheme="https://www.coomatrix.com/tags/%E5%8F%AF%E8%A7%A3%E9%87%8AAI/"/>
+    <category term="可解释AI" scheme="https://ai.coomatrix.com/tags/%E5%8F%AF%E8%A7%A3%E9%87%8AAI/"/>
     
   </entry>
   
   <entry>
     <title>人工智能科技与文献网</title>
-    <link href="https://www.coomatrix.com/2026/05/03/ai1/"/>
-    <id>https://www.coomatrix.com/2026/05/03/ai1/</id>
+    <link href="https://ai.coomatrix.com/2026/05/03/ai1/"/>
+    <id>https://ai.coomatrix.com/2026/05/03/ai1/</id>
     <published>2026-05-02T16:13:52.109Z</published>
     <updated>2026-05-02T16:13:52.123Z</updated>
     
@@ -97,17 +97,17 @@
     
     
     
-    <category term="人工智能" scheme="https://www.coomatrix.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="人工智能" scheme="https://ai.coomatrix.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
     
-    <category term="人工智能" scheme="https://www.coomatrix.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="人工智能" scheme="https://ai.coomatrix.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
   <entry>
     <title>开源大模型生态全面对比：2026年最新进展</title>
-    <link href="https://www.coomatrix.com/2026/05/02/2026-05-02-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%80%81%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/"/>
-    <id>https://www.coomatrix.com/2026/05/02/2026-05-02-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%80%81%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/</id>
+    <link href="https://ai.coomatrix.com/2026/05/02/2026-05-02-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%80%81%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/"/>
+    <id>https://ai.coomatrix.com/2026/05/02/2026-05-02-%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%80%81%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2026%E5%B9%B4%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/</id>
     <published>2026-05-02T02:00:00.000Z</published>
     <updated>2026-05-02T18:54:38.499Z</updated>
     
@@ -122,27 +122,27 @@
     
     
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     
-    <category term="LLaMA" scheme="https://www.coomatrix.com/tags/LLaMA/"/>
+    <category term="LLaMA" scheme="https://ai.coomatrix.com/tags/LLaMA/"/>
     
-    <category term="开源大模型" scheme="https://www.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="开源大模型" scheme="https://ai.coomatrix.com/tags/%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
-    <category term="Qwen" scheme="https://www.coomatrix.com/tags/Qwen/"/>
+    <category term="Qwen" scheme="https://ai.coomatrix.com/tags/Qwen/"/>
     
-    <category term="Mistral" scheme="https://www.coomatrix.com/tags/Mistral/"/>
+    <category term="Mistral" scheme="https://ai.coomatrix.com/tags/Mistral/"/>
     
-    <category term="DeepSeek" scheme="https://www.coomatrix.com/tags/DeepSeek/"/>
+    <category term="DeepSeek" scheme="https://ai.coomatrix.com/tags/DeepSeek/"/>
     
-    <category term="模型对比" scheme="https://www.coomatrix.com/tags/%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94/"/>
+    <category term="模型对比" scheme="https://ai.coomatrix.com/tags/%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%94/"/>
     
   </entry>
   
   <entry>
     <title>自主AI Agent系统架构设计与多Agent协作</title>
-    <link href="https://www.coomatrix.com/2026/04/28/2026-04-28-%E8%87%AA%E4%B8%BBAI-Agent%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C/"/>
-    <id>https://www.coomatrix.com/2026/04/28/2026-04-28-%E8%87%AA%E4%B8%BBAI-Agent%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C/</id>
+    <link href="https://ai.coomatrix.com/2026/04/28/2026-04-28-%E8%87%AA%E4%B8%BBAI-Agent%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C/"/>
+    <id>https://ai.coomatrix.com/2026/04/28/2026-04-28-%E8%87%AA%E4%B8%BBAI-Agent%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C/</id>
     <published>2026-04-28T02:00:00.000Z</published>
     <updated>2026-05-02T18:54:37.166Z</updated>
     
@@ -156,25 +156,25 @@
     
     
     
-    <category term="AI Agent" scheme="https://www.coomatrix.com/categories/AI-Agent/"/>
+    <category term="AI Agent" scheme="https://ai.coomatrix.com/categories/AI-Agent/"/>
     
     
-    <category term="AI Agent" scheme="https://www.coomatrix.com/tags/AI-Agent/"/>
+    <category term="AI Agent" scheme="https://ai.coomatrix.com/tags/AI-Agent/"/>
     
-    <category term="Agent架构" scheme="https://www.coomatrix.com/tags/Agent%E6%9E%B6%E6%9E%84/"/>
+    <category term="Agent架构" scheme="https://ai.coomatrix.com/tags/Agent%E6%9E%B6%E6%9E%84/"/>
     
-    <category term="Multi-Agent" scheme="https://www.coomatrix.com/tags/Multi-Agent/"/>
+    <category term="Multi-Agent" scheme="https://ai.coomatrix.com/tags/Multi-Agent/"/>
     
-    <category term="自主系统" scheme="https://www.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E7%B3%BB%E7%BB%9F/"/>
+    <category term="自主系统" scheme="https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E7%B3%BB%E7%BB%9F/"/>
     
-    <category term="协作框架" scheme="https://www.coomatrix.com/tags/%E5%8D%8F%E4%BD%9C%E6%A1%86%E6%9E%B6/"/>
+    <category term="协作框架" scheme="https://ai.coomatrix.com/tags/%E5%8D%8F%E4%BD%9C%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
   <entry>
     <title>多模态大模型最新进展：从GPT-4V到GPT-4o的演进</title>
-    <link href="https://www.coomatrix.com/2026/04/25/2026-04-25-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95-%E4%BB%8EGPT-4V%E5%88%B0GPT-4o/"/>
-    <id>https://www.coomatrix.com/2026/04/25/2026-04-25-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95-%E4%BB%8EGPT-4V%E5%88%B0GPT-4o/</id>
+    <link href="https://ai.coomatrix.com/2026/04/25/2026-04-25-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95-%E4%BB%8EGPT-4V%E5%88%B0GPT-4o/"/>
+    <id>https://ai.coomatrix.com/2026/04/25/2026-04-25-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95-%E4%BB%8EGPT-4V%E5%88%B0GPT-4o/</id>
     <published>2026-04-25T02:00:00.000Z</published>
     <updated>2026-05-02T18:54:36.377Z</updated>
     
@@ -189,25 +189,25 @@
     
     
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     
-    <category term="视觉语言" scheme="https://www.coomatrix.com/tags/%E8%A7%86%E8%A7%89%E8%AF%AD%E8%A8%80/"/>
+    <category term="视觉语言" scheme="https://ai.coomatrix.com/tags/%E8%A7%86%E8%A7%89%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="多模态" scheme="https://www.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
+    <category term="多模态" scheme="https://ai.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
     
-    <category term="GPT-4o" scheme="https://www.coomatrix.com/tags/GPT-4o/"/>
+    <category term="GPT-4o" scheme="https://ai.coomatrix.com/tags/GPT-4o/"/>
     
-    <category term="GPT-4V" scheme="https://www.coomatrix.com/tags/GPT-4V/"/>
+    <category term="GPT-4V" scheme="https://ai.coomatrix.com/tags/GPT-4V/"/>
     
-    <category term="端到端" scheme="https://www.coomatrix.com/tags/%E7%AB%AF%E5%88%B0%E7%AB%AF/"/>
+    <category term="端到端" scheme="https://ai.coomatrix.com/tags/%E7%AB%AF%E5%88%B0%E7%AB%AF/"/>
     
   </entry>
   
   <entry>
     <title>Mixture of Experts (MoE)：大模型稀疏激活技术深度解析</title>
-    <link href="https://www.coomatrix.com/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/"/>
-    <id>https://www.coomatrix.com/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/</id>
+    <link href="https://ai.coomatrix.com/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/"/>
+    <id>https://ai.coomatrix.com/2026/04/20/2026-04-20-Mixture-of-Experts-MoE%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB%E6%8A%80%E6%9C%AF%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/</id>
     <published>2026-04-20T02:00:00.000Z</published>
     <updated>2026-05-02T18:54:35.165Z</updated>
     
@@ -221,25 +221,25 @@
     
     
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     
-    <category term="GPT-4" scheme="https://www.coomatrix.com/tags/GPT-4/"/>
+    <category term="GPT-4" scheme="https://ai.coomatrix.com/tags/GPT-4/"/>
     
-    <category term="MoE" scheme="https://www.coomatrix.com/tags/MoE/"/>
+    <category term="MoE" scheme="https://ai.coomatrix.com/tags/MoE/"/>
     
-    <category term="混合专家" scheme="https://www.coomatrix.com/tags/%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6/"/>
+    <category term="混合专家" scheme="https://ai.coomatrix.com/tags/%E6%B7%B7%E5%90%88%E4%B8%93%E5%AE%B6/"/>
     
-    <category term="稀疏激活" scheme="https://www.coomatrix.com/tags/%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB/"/>
+    <category term="稀疏激活" scheme="https://ai.coomatrix.com/tags/%E7%A8%80%E7%96%8F%E6%BF%80%E6%B4%BB/"/>
     
-    <category term="大模型架构" scheme="https://www.coomatrix.com/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/"/>
+    <category term="大模型架构" scheme="https://ai.coomatrix.com/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
   <entry>
     <title>视频理解与视频大模型：技术原理与最新进展</title>
-    <link href="https://www.coomatrix.com/2026/04/15/2026-04-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/"/>
-    <id>https://www.coomatrix.com/2026/04/15/2026-04-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/</id>
+    <link href="https://ai.coomatrix.com/2026/04/15/2026-04-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/"/>
+    <id>https://ai.coomatrix.com/2026/04/15/2026-04-15-%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3%E4%B8%8E%E8%A7%86%E9%A2%91%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E6%9C%80%E6%96%B0%E8%BF%9B%E5%B1%95/</id>
     <published>2026-04-15T02:00:00.000Z</published>
     <updated>2026-05-03T16:59:24.853Z</updated>
     
@@ -254,25 +254,25 @@
     
     
     
-    <category term="计算机视觉" scheme="https://www.coomatrix.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"/>
+    <category term="计算机视觉" scheme="https://ai.coomatrix.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"/>
     
     
-    <category term="多模态" scheme="https://www.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
+    <category term="多模态" scheme="https://ai.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
     
-    <category term="视频生成" scheme="https://www.coomatrix.com/tags/%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90/"/>
+    <category term="视频生成" scheme="https://ai.coomatrix.com/tags/%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90/"/>
     
-    <category term="视频理解" scheme="https://www.coomatrix.com/tags/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/"/>
+    <category term="视频理解" scheme="https://ai.coomatrix.com/tags/%E8%A7%86%E9%A2%91%E7%90%86%E8%A7%A3/"/>
     
-    <category term="VideoLLM" scheme="https://www.coomatrix.com/tags/VideoLLM/"/>
+    <category term="VideoLLM" scheme="https://ai.coomatrix.com/tags/VideoLLM/"/>
     
-    <category term="时序建模" scheme="https://www.coomatrix.com/tags/%E6%97%B6%E5%BA%8F%E5%BB%BA%E6%A8%A1/"/>
+    <category term="时序建模" scheme="https://ai.coomatrix.com/tags/%E6%97%B6%E5%BA%8F%E5%BB%BA%E6%A8%A1/"/>
     
   </entry>
   
   <entry>
     <title>2026年AI技术回顾与2027年展望</title>
-    <link href="https://www.coomatrix.com/2026/04/10/2026-04-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/"/>
-    <id>https://www.coomatrix.com/2026/04/10/2026-04-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/</id>
+    <link href="https://ai.coomatrix.com/2026/04/10/2026-04-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/"/>
+    <id>https://ai.coomatrix.com/2026/04/10/2026-04-10-2026%E5%B9%B4AI%E6%8A%80%E6%9C%AF%E5%9B%9E%E9%A1%BE%E4%B8%8E2027%E5%B9%B4%E5%B1%95%E6%9C%9B/</id>
     <published>2026-04-10T02:00:00.000Z</published>
     <updated>2026-05-03T17:00:18.257Z</updated>
     
@@ -287,23 +287,23 @@
     
     
     
-    <category term="AI年度总结" scheme="https://www.coomatrix.com/categories/AI%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
+    <category term="AI年度总结" scheme="https://ai.coomatrix.com/categories/AI%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
     
     
-    <category term="年度总结" scheme="https://www.coomatrix.com/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
+    <category term="年度总结" scheme="https://ai.coomatrix.com/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
     
-    <category term="AI趋势" scheme="https://www.coomatrix.com/tags/AI%E8%B6%8B%E5%8A%BF/"/>
+    <category term="AI趋势" scheme="https://ai.coomatrix.com/tags/AI%E8%B6%8B%E5%8A%BF/"/>
     
-    <category term="技术展望" scheme="https://www.coomatrix.com/tags/%E6%8A%80%E6%9C%AF%E5%B1%95%E6%9C%9B/"/>
+    <category term="技术展望" scheme="https://ai.coomatrix.com/tags/%E6%8A%80%E6%9C%AF%E5%B1%95%E6%9C%9B/"/>
     
-    <category term="行业应用" scheme="https://www.coomatrix.com/tags/%E8%A1%8C%E4%B8%9A%E5%BA%94%E7%94%A8/"/>
+    <category term="行业应用" scheme="https://ai.coomatrix.com/tags/%E8%A1%8C%E4%B8%9A%E5%BA%94%E7%94%A8/"/>
     
   </entry>
   
   <entry>
     <title>Sora 2.0与视频生成大模型：从技术突破到产业变革</title>
-    <link href="https://www.coomatrix.com/2026/04/08/2026-04-08-Sora-2-0%E4%B8%8E%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8E%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E5%88%B0%E4%BA%A7%E4%B8%9A%E5%8F%98%E9%9D%A9/"/>
-    <id>https://www.coomatrix.com/2026/04/08/2026-04-08-Sora-2-0%E4%B8%8E%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8E%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E5%88%B0%E4%BA%A7%E4%B8%9A%E5%8F%98%E9%9D%A9/</id>
+    <link href="https://ai.coomatrix.com/2026/04/08/2026-04-08-Sora-2-0%E4%B8%8E%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8E%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E5%88%B0%E4%BA%A7%E4%B8%9A%E5%8F%98%E9%9D%A9/"/>
+    <id>https://ai.coomatrix.com/2026/04/08/2026-04-08-Sora-2-0%E4%B8%8E%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%BB%8E%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E5%88%B0%E4%BA%A7%E4%B8%9A%E5%8F%98%E9%9D%A9/</id>
     <published>2026-04-08T02:00:00.000Z</published>
     <updated>2026-05-03T17:00:39.709Z</updated>
     
@@ -317,25 +317,25 @@
     
     
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     
-    <category term="扩散模型" scheme="https://www.coomatrix.com/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/"/>
+    <category term="扩散模型" scheme="https://ai.coomatrix.com/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/"/>
     
-    <category term="Sora" scheme="https://www.coomatrix.com/tags/Sora/"/>
+    <category term="Sora" scheme="https://ai.coomatrix.com/tags/Sora/"/>
     
-    <category term="视频生成" scheme="https://www.coomatrix.com/tags/%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90/"/>
+    <category term="视频生成" scheme="https://ai.coomatrix.com/tags/%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90/"/>
     
-    <category term="文生视频" scheme="https://www.coomatrix.com/tags/%E6%96%87%E7%94%9F%E8%A7%86%E9%A2%91/"/>
+    <category term="文生视频" scheme="https://ai.coomatrix.com/tags/%E6%96%87%E7%94%9F%E8%A7%86%E9%A2%91/"/>
     
-    <category term="多模态AI" scheme="https://www.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81AI/"/>
+    <category term="多模态AI" scheme="https://ai.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81AI/"/>
     
   </entry>
   
   <entry>
     <title>世界模型与具身智能：AI理解物理世界的新范式</title>
-    <link href="https://www.coomatrix.com/2026/04/05/2026-04-05-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD-AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C%E7%9A%84%E6%96%B0%E8%8C%83%E5%BC%8F/"/>
-    <id>https://www.coomatrix.com/2026/04/05/2026-04-05-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD-AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C%E7%9A%84%E6%96%B0%E8%8C%83%E5%BC%8F/</id>
+    <link href="https://ai.coomatrix.com/2026/04/05/2026-04-05-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD-AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C%E7%9A%84%E6%96%B0%E8%8C%83%E5%BC%8F/"/>
+    <id>https://ai.coomatrix.com/2026/04/05/2026-04-05-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD-AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C%E7%9A%84%E6%96%B0%E8%8C%83%E5%BC%8F/</id>
     <published>2026-04-05T02:00:00.000Z</published>
     <updated>2026-05-02T18:28:57.113Z</updated>
     
@@ -349,25 +349,25 @@
     
     
     
-    <category term="AI前沿" scheme="https://www.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
+    <category term="AI前沿" scheme="https://ai.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
     
     
-    <category term="具身智能" scheme="https://www.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/"/>
+    <category term="具身智能" scheme="https://ai.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/"/>
     
-    <category term="机器人" scheme="https://www.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/"/>
+    <category term="机器人" scheme="https://ai.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/"/>
     
-    <category term="世界模型" scheme="https://www.coomatrix.com/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/"/>
+    <category term="世界模型" scheme="https://ai.coomatrix.com/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/"/>
     
-    <category term="物理仿真" scheme="https://www.coomatrix.com/tags/%E7%89%A9%E7%90%86%E4%BB%BF%E7%9C%9F/"/>
+    <category term="物理仿真" scheme="https://ai.coomatrix.com/tags/%E7%89%A9%E7%90%86%E4%BB%BF%E7%9C%9F/"/>
     
-    <category term="认知智能" scheme="https://www.coomatrix.com/tags/%E8%AE%A4%E7%9F%A5%E6%99%BA%E8%83%BD/"/>
+    <category term="认知智能" scheme="https://ai.coomatrix.com/tags/%E8%AE%A4%E7%9F%A5%E6%99%BA%E8%83%BD/"/>
     
   </entry>
   
   <entry>
     <title>AI Agent 2.0：自主智能体的架构设计与实践</title>
-    <link href="https://www.coomatrix.com/2026/03/10/2026-03-10-AI-Agent-2-0%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5/"/>
-    <id>https://www.coomatrix.com/2026/03/10/2026-03-10-AI-Agent-2-0%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5/</id>
+    <link href="https://ai.coomatrix.com/2026/03/10/2026-03-10-AI-Agent-2-0%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5/"/>
+    <id>https://ai.coomatrix.com/2026/03/10/2026-03-10-AI-Agent-2-0%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5/</id>
     <published>2026-03-10T02:00:00.000Z</published>
     <updated>2026-05-02T17:57:21.775Z</updated>
     
@@ -381,25 +381,25 @@
     
     
     
-    <category term="AI Agent" scheme="https://www.coomatrix.com/categories/AI-Agent/"/>
+    <category term="AI Agent" scheme="https://ai.coomatrix.com/categories/AI-Agent/"/>
     
     
-    <category term="AI Agent" scheme="https://www.coomatrix.com/tags/AI-Agent/"/>
+    <category term="AI Agent" scheme="https://ai.coomatrix.com/tags/AI-Agent/"/>
     
-    <category term="自主智能体" scheme="https://www.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93/"/>
+    <category term="自主智能体" scheme="https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E6%99%BA%E8%83%BD%E4%BD%93/"/>
     
-    <category term="Agent架构" scheme="https://www.coomatrix.com/tags/Agent%E6%9E%B6%E6%9E%84/"/>
+    <category term="Agent架构" scheme="https://ai.coomatrix.com/tags/Agent%E6%9E%B6%E6%9E%84/"/>
     
-    <category term="工具调用" scheme="https://www.coomatrix.com/tags/%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8/"/>
+    <category term="工具调用" scheme="https://ai.coomatrix.com/tags/%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8/"/>
     
-    <category term="任务规划" scheme="https://www.coomatrix.com/tags/%E4%BB%BB%E5%8A%A1%E8%A7%84%E5%88%92/"/>
+    <category term="任务规划" scheme="https://ai.coomatrix.com/tags/%E4%BB%BB%E5%8A%A1%E8%A7%84%E5%88%92/"/>
     
   </entry>
   
   <entry>
     <title>Gemini 2.0与Google AI生态系统深度解析</title>
-    <link href="https://www.coomatrix.com/2026/02/15/2026-02-15-Gemini-2-0%E4%B8%8EGoogle-AI%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/"/>
-    <id>https://www.coomatrix.com/2026/02/15/2026-02-15-Gemini-2-0%E4%B8%8EGoogle-AI%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/</id>
+    <link href="https://ai.coomatrix.com/2026/02/15/2026-02-15-Gemini-2-0%E4%B8%8EGoogle-AI%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/"/>
+    <id>https://ai.coomatrix.com/2026/02/15/2026-02-15-Gemini-2-0%E4%B8%8EGoogle-AI%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/</id>
     <published>2026-02-15T02:00:00.000Z</published>
     <updated>2026-05-02T18:28:55.823Z</updated>
     
@@ -413,27 +413,27 @@
     
     
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/categories/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
     
-    <category term="深度学习" scheme="https://www.coomatrix.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://ai.coomatrix.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
-    <category term="多模态" scheme="https://www.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
+    <category term="多模态" scheme="https://ai.coomatrix.com/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/"/>
     
-    <category term="Gemini" scheme="https://www.coomatrix.com/tags/Gemini/"/>
+    <category term="Gemini" scheme="https://ai.coomatrix.com/tags/Gemini/"/>
     
-    <category term="Google" scheme="https://www.coomatrix.com/tags/Google/"/>
+    <category term="Google" scheme="https://ai.coomatrix.com/tags/Google/"/>
     
-    <category term="AI生态" scheme="https://www.coomatrix.com/tags/AI%E7%94%9F%E6%80%81/"/>
+    <category term="AI生态" scheme="https://ai.coomatrix.com/tags/AI%E7%94%9F%E6%80%81/"/>
     
-    <category term="PaLM" scheme="https://www.coomatrix.com/tags/PaLM/"/>
+    <category term="PaLM" scheme="https://ai.coomatrix.com/tags/PaLM/"/>
     
   </entry>
   
   <entry>
     <title>2025-2026年AI大模型年度总结：迈向AGI的新征程</title>
-    <link href="https://www.coomatrix.com/2026/01/10/2026-01-10-2025-2026%E5%B9%B4AI%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
-    <id>https://www.coomatrix.com/2026/01/10/2026-01-10-2025-2026%E5%B9%B4AI%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</id>
+    <link href="https://ai.coomatrix.com/2026/01/10/2026-01-10-2025-2026%E5%B9%B4AI%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
+    <id>https://ai.coomatrix.com/2026/01/10/2026-01-10-2025-2026%E5%B9%B4AI%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</id>
     <published>2026-01-10T02:00:00.000Z</published>
     <updated>2026-05-02T18:57:28.048Z</updated>
     
@@ -447,29 +447,29 @@
     
     
     
-    <category term="AI年度总结" scheme="https://www.coomatrix.com/categories/AI%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
+    <category term="AI年度总结" scheme="https://ai.coomatrix.com/categories/AI%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
     
     
-    <category term="Gemini" scheme="https://www.coomatrix.com/tags/Gemini/"/>
+    <category term="Gemini" scheme="https://ai.coomatrix.com/tags/Gemini/"/>
     
-    <category term="AI大模型" scheme="https://www.coomatrix.com/tags/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
+    <category term="AI大模型" scheme="https://ai.coomatrix.com/tags/AI%E5%A4%A7%E6%A8%A1%E5%9E%8B/"/>
     
-    <category term="年度总结" scheme="https://www.coomatrix.com/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
+    <category term="年度总结" scheme="https://ai.coomatrix.com/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"/>
     
-    <category term="技术突破" scheme="https://www.coomatrix.com/tags/%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4/"/>
+    <category term="技术突破" scheme="https://ai.coomatrix.com/tags/%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4/"/>
     
-    <category term="GPT-5" scheme="https://www.coomatrix.com/tags/GPT-5/"/>
+    <category term="GPT-5" scheme="https://ai.coomatrix.com/tags/GPT-5/"/>
     
-    <category term="Claude-4" scheme="https://www.coomatrix.com/tags/Claude-4/"/>
+    <category term="Claude-4" scheme="https://ai.coomatrix.com/tags/Claude-4/"/>
     
-    <category term="AGI" scheme="https://www.coomatrix.com/tags/AGI/"/>
+    <category term="AGI" scheme="https://ai.coomatrix.com/tags/AGI/"/>
     
   </entry>
   
   <entry>
     <title>提示工程Prompt Engineering高级技巧</title>
-    <link href="https://www.coomatrix.com/2025/09/20/2025-09-20-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8BPrompt-Engineering%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/"/>
-    <id>https://www.coomatrix.com/2025/09/20/2025-09-20-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8BPrompt-Engineering%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/</id>
+    <link href="https://ai.coomatrix.com/2025/09/20/2025-09-20-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8BPrompt-Engineering%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/"/>
+    <id>https://ai.coomatrix.com/2025/09/20/2025-09-20-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8BPrompt-Engineering%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7/</id>
     <published>2025-09-20T02:00:00.000Z</published>
     <updated>2026-05-02T18:29:53.100Z</updated>
     
@@ -484,25 +484,25 @@
     
     
     
-    <category term="LLM应用" scheme="https://www.coomatrix.com/categories/LLM%E5%BA%94%E7%94%A8/"/>
+    <category term="LLM应用" scheme="https://ai.coomatrix.com/categories/LLM%E5%BA%94%E7%94%A8/"/>
     
     
-    <category term="Prompt Engineering" scheme="https://www.coomatrix.com/tags/Prompt-Engineering/"/>
+    <category term="Prompt Engineering" scheme="https://ai.coomatrix.com/tags/Prompt-Engineering/"/>
     
-    <category term="提示工程" scheme="https://www.coomatrix.com/tags/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/"/>
+    <category term="提示工程" scheme="https://ai.coomatrix.com/tags/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/"/>
     
-    <category term="LLM优化" scheme="https://www.coomatrix.com/tags/LLM%E4%BC%98%E5%8C%96/"/>
+    <category term="LLM优化" scheme="https://ai.coomatrix.com/tags/LLM%E4%BC%98%E5%8C%96/"/>
     
-    <category term="CoT" scheme="https://www.coomatrix.com/tags/CoT/"/>
+    <category term="CoT" scheme="https://ai.coomatrix.com/tags/CoT/"/>
     
-    <category term="Few-Shot" scheme="https://www.coomatrix.com/tags/Few-Shot/"/>
+    <category term="Few-Shot" scheme="https://ai.coomatrix.com/tags/Few-Shot/"/>
     
   </entry>
   
   <entry>
     <title>检索增强生成RAG系统优化：从基础到高级</title>
-    <link href="https://www.coomatrix.com/2025/08/15/2025-08-15-%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90RAG%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E9%AB%98%E7%BA%A7/"/>
-    <id>https://www.coomatrix.com/2025/08/15/2025-08-15-%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90RAG%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E9%AB%98%E7%BA%A7/</id>
+    <link href="https://ai.coomatrix.com/2025/08/15/2025-08-15-%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90RAG%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E9%AB%98%E7%BA%A7/"/>
+    <id>https://ai.coomatrix.com/2025/08/15/2025-08-15-%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90RAG%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E9%AB%98%E7%BA%A7/</id>
     <published>2025-08-15T02:00:00.000Z</published>
     <updated>2026-05-02T18:51:37.549Z</updated>
     
@@ -516,25 +516,25 @@
     
     
     
-    <category term="RAG系统" scheme="https://www.coomatrix.com/categories/RAG%E7%B3%BB%E7%BB%9F/"/>
+    <category term="RAG系统" scheme="https://ai.coomatrix.com/categories/RAG%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="RAG" scheme="https://www.coomatrix.com/tags/RAG/"/>
+    <category term="RAG" scheme="https://ai.coomatrix.com/tags/RAG/"/>
     
-    <category term="向量数据库" scheme="https://www.coomatrix.com/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <category term="向量数据库" scheme="https://ai.coomatrix.com/tags/%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
-    <category term="检索增强" scheme="https://www.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/"/>
+    <category term="检索增强" scheme="https://ai.coomatrix.com/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA/"/>
     
-    <category term="LLM应用" scheme="https://www.coomatrix.com/tags/LLM%E5%BA%94%E7%94%A8/"/>
+    <category term="LLM应用" scheme="https://ai.coomatrix.com/tags/LLM%E5%BA%94%E7%94%A8/"/>
     
-    <category term="知识库" scheme="https://www.coomatrix.com/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/"/>
+    <category term="知识库" scheme="https://ai.coomatrix.com/tags/%E7%9F%A5%E8%AF%86%E5%BA%93/"/>
     
   </entry>
   
   <entry>
     <title>AI编程工具全面对比：2025年最佳选择</title>
-    <link href="https://www.coomatrix.com/2025/06/10/2025-06-10-AI%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2025%E5%B9%B4%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9/"/>
-    <id>https://www.coomatrix.com/2025/06/10/2025-06-10-AI%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2025%E5%B9%B4%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9/</id>
+    <link href="https://ai.coomatrix.com/2025/06/10/2025-06-10-AI%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2025%E5%B9%B4%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9/"/>
+    <id>https://ai.coomatrix.com/2025/06/10/2025-06-10-AI%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7%E5%85%A8%E9%9D%A2%E5%AF%B9%E6%AF%94-2025%E5%B9%B4%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9/</id>
     <published>2025-06-10T02:00:00.000Z</published>
     <updated>2026-05-02T18:29:53.074Z</updated>
     
@@ -549,27 +549,27 @@
     
     
     
-    <category term="AI编程" scheme="https://www.coomatrix.com/categories/AI%E7%BC%96%E7%A8%8B/"/>
+    <category term="AI编程" scheme="https://ai.coomatrix.com/categories/AI%E7%BC%96%E7%A8%8B/"/>
     
     
-    <category term="AI编程" scheme="https://www.coomatrix.com/tags/AI%E7%BC%96%E7%A8%8B/"/>
+    <category term="AI编程" scheme="https://ai.coomatrix.com/tags/AI%E7%BC%96%E7%A8%8B/"/>
     
-    <category term="GitHub Copilot" scheme="https://www.coomatrix.com/tags/GitHub-Copilot/"/>
+    <category term="GitHub Copilot" scheme="https://ai.coomatrix.com/tags/GitHub-Copilot/"/>
     
-    <category term="代码生成" scheme="https://www.coomatrix.com/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/"/>
+    <category term="代码生成" scheme="https://ai.coomatrix.com/tags/%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/"/>
     
-    <category term="Claude" scheme="https://www.coomatrix.com/tags/Claude/"/>
+    <category term="Claude" scheme="https://ai.coomatrix.com/tags/Claude/"/>
     
-    <category term="Cursor" scheme="https://www.coomatrix.com/tags/Cursor/"/>
+    <category term="Cursor" scheme="https://ai.coomatrix.com/tags/Cursor/"/>
     
-    <category term="Devin" scheme="https://www.coomatrix.com/tags/Devin/"/>
+    <category term="Devin" scheme="https://ai.coomatrix.com/tags/Devin/"/>
     
   </entry>
   
   <entry>
     <title>世界模型与物理AI：让AI理解物理世界</title>
-    <link href="https://www.coomatrix.com/2025/05/10/2025-05-10-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%89%A9%E7%90%86AI-%E8%AE%A9AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C/"/>
-    <id>https://www.coomatrix.com/2025/05/10/2025-05-10-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%89%A9%E7%90%86AI-%E8%AE%A9AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C/</id>
+    <link href="https://ai.coomatrix.com/2025/05/10/2025-05-10-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%89%A9%E7%90%86AI-%E8%AE%A9AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C/"/>
+    <id>https://ai.coomatrix.com/2025/05/10/2025-05-10-%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%89%A9%E7%90%86AI-%E8%AE%A9AI%E7%90%86%E8%A7%A3%E7%89%A9%E7%90%86%E4%B8%96%E7%95%8C/</id>
     <published>2025-05-10T02:00:00.000Z</published>
     <updated>2026-05-02T18:51:38.532Z</updated>
     
@@ -584,25 +584,25 @@
     
     
     
-    <category term="AI前沿" scheme="https://www.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
+    <category term="AI前沿" scheme="https://ai.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
     
     
-    <category term="世界模型" scheme="https://www.coomatrix.com/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/"/>
+    <category term="世界模型" scheme="https://ai.coomatrix.com/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/"/>
     
-    <category term="物理AI" scheme="https://www.coomatrix.com/tags/%E7%89%A9%E7%90%86AI/"/>
+    <category term="物理AI" scheme="https://ai.coomatrix.com/tags/%E7%89%A9%E7%90%86AI/"/>
     
-    <category term="神经渲染" scheme="https://www.coomatrix.com/tags/%E7%A5%9E%E7%BB%8F%E6%B8%B2%E6%9F%93/"/>
+    <category term="神经渲染" scheme="https://ai.coomatrix.com/tags/%E7%A5%9E%E7%BB%8F%E6%B8%B2%E6%9F%93/"/>
     
-    <category term="仿真" scheme="https://www.coomatrix.com/tags/%E4%BB%BF%E7%9C%9F/"/>
+    <category term="仿真" scheme="https://ai.coomatrix.com/tags/%E4%BB%BF%E7%9C%9F/"/>
     
-    <category term="预测" scheme="https://www.coomatrix.com/tags/%E9%A2%84%E6%B5%8B/"/>
+    <category term="预测" scheme="https://ai.coomatrix.com/tags/%E9%A2%84%E6%B5%8B/"/>
     
   </entry>
   
   <entry>
     <title>具身智能与机器人学习：从模仿到自主</title>
-    <link href="https://www.coomatrix.com/2025/04/20/2025-04-20-%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6%E4%B9%A0-%E4%BB%8E%E6%A8%A1%E4%BB%BF%E5%88%B0%E8%87%AA%E4%B8%BB/"/>
-    <id>https://www.coomatrix.com/2025/04/20/2025-04-20-%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6%E4%B9%A0-%E4%BB%8E%E6%A8%A1%E4%BB%BF%E5%88%B0%E8%87%AA%E4%B8%BB/</id>
+    <link href="https://ai.coomatrix.com/2025/04/20/2025-04-20-%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6%E4%B9%A0-%E4%BB%8E%E6%A8%A1%E4%BB%BF%E5%88%B0%E8%87%AA%E4%B8%BB/"/>
+    <id>https://ai.coomatrix.com/2025/04/20/2025-04-20-%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD%E4%B8%8E%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6%E4%B9%A0-%E4%BB%8E%E6%A8%A1%E4%BB%BF%E5%88%B0%E8%87%AA%E4%B8%BB/</id>
     <published>2025-04-20T02:00:00.000Z</published>
     <updated>2026-05-02T18:51:39.438Z</updated>
     
@@ -616,25 +616,25 @@
     
     
     
-    <category term="AI前沿" scheme="https://www.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
+    <category term="AI前沿" scheme="https://ai.coomatrix.com/categories/AI%E5%89%8D%E6%B2%BF/"/>
     
     
-    <category term="强化学习" scheme="https://www.coomatrix.com/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/"/>
+    <category term="强化学习" scheme="https://ai.coomatrix.com/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/"/>
     
-    <category term="具身智能" scheme="https://www.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/"/>
+    <category term="具身智能" scheme="https://ai.coomatrix.com/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/"/>
     
-    <category term="机器人" scheme="https://www.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/"/>
+    <category term="机器人" scheme="https://ai.coomatrix.com/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/"/>
     
-    <category term="模仿学习" scheme="https://www.coomatrix.com/tags/%E6%A8%A1%E4%BB%BF%E5%AD%A6%E4%B9%A0/"/>
+    <category term="模仿学习" scheme="https://ai.coomatrix.com/tags/%E6%A8%A1%E4%BB%BF%E5%AD%A6%E4%B9%A0/"/>
     
-    <category term="自主导航" scheme="https://www.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/"/>
+    <category term="自主导航" scheme="https://ai.coomatrix.com/tags/%E8%87%AA%E4%B8%BB%E5%AF%BC%E8%88%AA/"/>
     
   </entry>
   
   <entry>
     <title>大模型推理优化技术：从理论到实践</title>
-    <link href="https://www.coomatrix.com/2025/03/15/2025-03-15-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5/"/>
-    <id>https://www.coomatrix.com/2025/03/15/2025-03-15-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5/</id>
+    <link href="https://ai.coomatrix.com/2025/03/15/2025-03-15-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5/"/>
+    <id>https://ai.coomatrix.com/2025/03/15/2025-03-15-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96%E6%8A%80%E6%9C%AF-%E4%BB%8E%E7%90%86%E8%AE%BA%E5%88%B0%E5%AE%9E%E8%B7%B5/</id>
     <published>2025-03-15T02:00:00.000Z</published>
     <updated>2026-05-02T18:51:41.040Z</updated>
     
@@ -649,18 +649,18 @@
     
     
     
-    <category term="AI推理优化" scheme="https://www.coomatrix.com/categories/AI%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/"/>
+    <category term="AI推理优化" scheme="https://ai.coomatrix.com/categories/AI%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/"/>
     
     
-    <category term="推理优化" scheme="https://www.coomatrix.com/tags/%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/"/>
+    <category term="推理优化" scheme="https://ai.coomatrix.com/tags/%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96/"/>
     
-    <category term="vLLM" scheme="https://www.coomatrix.com/tags/vLLM/"/>
+    <category term="vLLM" scheme="https://ai.coomatrix.com/tags/vLLM/"/>
     
-    <category term="TensorRT-LLM" scheme="https://www.coomatrix.com/tags/TensorRT-LLM/"/>
+    <category term="TensorRT-LLM" scheme="https://ai.coomatrix.com/tags/TensorRT-LLM/"/>
     
-    <category term="KV Cache" scheme="https://www.coomatrix.com/tags/KV-Cache/"/>
+    <category term="KV Cache" scheme="https://ai.coomatrix.com/tags/KV-Cache/"/>
     
-    <category term="批处理" scheme="https://www.coomatrix.com/tags/%E6%89%B9%E5%A4%84%E7%90%86/"/>
+    <category term="批处理" scheme="https://ai.coomatrix.com/tags/%E6%89%B9%E5%A4%84%E7%90%86/"/>
     
   </entry>
   

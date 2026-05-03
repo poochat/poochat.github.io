@@ -20,7 +20,7 @@
   <!-- PACE Progress Bar START -->
 
   
-  <title>扩散模型原理与代码实现：从ddpm到stable diffusion | ovo$^{mc^2}$</title>
+  <title>扩散模型原理与代码实现：从ddpm到stable diffusion | 云上零度 OvO$^{mc^2}$</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="学习" />
@@ -31,8 +31,8 @@
   <meta name="description" content="扩散模型原理与代码实现：从DDPM到Stable Diffusion引言扩散模型（Diffusion Models）是当前最强大的生成模型之一，在图像生成、音频合成、分子设计等领域取得了突破性成果。本文将从原理出发，详细讲解扩散模型的核心机制，并提供完整的代码实现。 扩散模型概述核心思想扩散模型的核心思想是：通过逐步添加噪声破坏数据，然后学习逆向去噪过程来生成新数据。 12前向过程（破坏）：x₀">
 <meta property="og:type" content="article">
 <meta property="og:title" content="扩散模型原理与代码实现：从DDPM到Stable Diffusion">
-<meta property="og:url" content="https://www.coomatrix.com/2024/03/15/2024-03-15-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E4%BB%8EDDPM%E5%88%B0StableDiffusion/index.html">
-<meta property="og:site_name" content="ovo$^{mc^2}$">
+<meta property="og:url" content="https://ai.coomatrix.com/2024/03/15/2024-03-15-%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E4%BB%8EDDPM%E5%88%B0StableDiffusion/index.html">
+<meta property="og:site_name" content="云上零度 OvO$^{mc^2}$">
 <meta property="og:description" content="扩散模型原理与代码实现：从DDPM到Stable Diffusion引言扩散模型（Diffusion Models）是当前最强大的生成模型之一，在图像生成、音频合成、分子设计等领域取得了突破性成果。本文将从原理出发，详细讲解扩散模型的核心机制，并提供完整的代码实现。 扩散模型概述核心思想扩散模型的核心思想是：通过逐步添加噪声破坏数据，然后学习逆向去噪过程来生成新数据。 12前向过程（破坏）：x₀">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e">
@@ -95,7 +95,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="ovo$^{mc^2}$" type="application/atom+xml">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="云上零度 OvO$^{mc^2}$" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
 <script>
@@ -131,9 +131,7 @@ var themeMenus = {};
 
           <h1 class="site-title">
             
-              <a href="/" rel="home" >
-                <img style="margin-bottom: 10px;"  width="980px" height="500px" alt="Hike News" src="/images/avatar.jpg">
-              </a>
+              <a href="/" title="云上零度 OvO$^{mc^2}$" rel="home"> 云上零度 OvO$^{mc^2}$ </a>
             
           </h1>
 
@@ -217,7 +215,7 @@ var themeMenus = {};
 <div class="article-gallery">
   <div class="article-gallery-photos">
     
-      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e" rel="gallery_cmoq2jmbl008umsv6es3kcy6u noopener">
+      <a class="article-gallery-img fancybox" target="_blank" href="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e" rel="gallery_cmoq2s660008lp0v65fvu00r2 noopener">
         <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e" itemprop="image">
       </a>
     
@@ -409,7 +407,7 @@ var a = new Donate({
           </li>
           <li class="post-copyright-link">
           <strong>文章链接:  </strong>
-          <a href="/2024/03/15/2024-03-15-扩散模型原理与代码实现从DDPM到StableDiffusion/" target="_blank" title="扩散模型原理与代码实现：从DDPM到Stable Diffusion">https://www.coomatrix.com/2024/03/15/2024-03-15-扩散模型原理与代码实现从DDPM到StableDiffusion/</a>
+          <a href="/2024/03/15/2024-03-15-扩散模型原理与代码实现从DDPM到StableDiffusion/" target="_blank" title="扩散模型原理与代码实现：从DDPM到Stable Diffusion">https://ai.coomatrix.com/2024/03/15/2024-03-15-扩散模型原理与代码实现从DDPM到StableDiffusion/</a>
           </li>
           <li class="post-copyright-license">
             <strong>版权声明:   </strong>
@@ -490,7 +488,7 @@ var a = new Donate({
 
   <div class="clearfix container">
       <div class="site-info">
-	      &copy; 2019-2026 ovo$^{mc^2}$ All Rights Reserved.
+	      &copy; 2019-2026 云上零度 OvO$^{mc^2}$ All Rights Reserved.
           
             | 站点总访问 <span class="fake-pv">28969</span> 次 | 访客 <span class="fake-uv">19045</span> 人
           
